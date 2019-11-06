@@ -7,6 +7,7 @@ runtime:
         - apcu
         - mbstring
         - sodium
+        - pdo_pgsql
         
 
 build:
@@ -35,3 +36,6 @@ hooks:
         set -x -e
 
         (>&2 symfony-deploy)
+
+relationships:
+    database: "database_resume:postgresql"
