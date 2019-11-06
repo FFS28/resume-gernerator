@@ -1,0 +1,5 @@
+db_resume:
+  # supported versions: 9.6, 10, 11
+  # 9.3 is also available but not maintained upstream
+  type: postgresql:11
+  disk: 128

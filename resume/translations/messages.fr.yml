@@ -1,0 +1,55 @@
+Attribute: Attribut
+Attributes: Attributs
+ID: "#"
+Slug: Slug
+Icon: Icone
+Value: Valeur
+Weight: Poids
+
+Education: Formation
+Educations: Formations
+Name: Nom
+School: Ecole
+Details: Détails
+Date begin: Date de début
+Date end: Date de fin
+
+Experience: Experience
+Experiences: Experiences
+Title: Titre
+Description: Description
+Is freelance: Freelance
+On site: Sur place
+On homepage: Page d'accueil
+
+Company: Entreprise
+Companies: Entreprises
+Location: Localisation
+Client: Client
+Contractor: Prestataire
+
+Invoice: Facture
+Invoices: Factures
+Check: Chèque
+Transfert: Virement
+Tjm: TJM
+Object: Objet
+totalHt: Total HT
+createdAt: Créé le
+payedAt: Payé le
+payedBy: Payé par
+number: Numéro
+
+Hobby: Loisir
+Hobbies: Loisirs
+
+Link: Lien
+Links: Liens
+Url: URL
+
+Skill: Compétence
+Skills: Compétence
+Type: Type
+Level: Niveau
+Parent: Parent
+Children: Enfants

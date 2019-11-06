@@ -1,0 +1,32 @@
+@import "variables";
+
+html, body{
+    width: 100%;
+    display: block;
+    position: relative;
+
+    font-family: Verdana, Geneva, sans-serif;
+    background-color: $white;
+
+    -webkit-overflow-scrolling: smooth;
+    scroll-behavior: smooth;
+}
+html, body, a{
+    color: $darkGrey;
+}
+
+@media (min-width: $screen-sm) {
+    .navbar + .container-fluid #head {
+        margin-top: 40px;
+    }
+    .navbar + .container-fluid > .container, .navbar + .container-fluid > .alert{
+        margin-top: 50px;
+    }
+}
+
+.btn > .fa + span, .btn > span + .fa,
+a > .fa + span, a > span + .fa,
+button > .fa + span, button > span + .fa,
+.alert > .fa + span, .alert > span + .fa{
+    margin-left: 10px;
+}
