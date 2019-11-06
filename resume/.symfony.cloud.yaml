@@ -24,6 +24,11 @@ disk: 512
 
 mounts:
     "/var": { source: local, source_path: var }
+    "/public/upload": { source: local, source_path: uploads }
+
+dependencies:
+    nodejs:
+        yarn: "*"
 
 hooks:
     build: |
@@ -31,6 +36,15 @@ hooks:
 
         curl -s https://get.symfony.com/cloud/configurator | (>&2 bash)
         (>&2 symfony-build)
+        (>&2
+            # Setup everything to use the Node installation
+            unset NPM_CONFIG_PREFIX
+            export NVM_DIR=$HOME/.nvm
+            yarn-install
+            set +x && . "${NVM_DIR}/nvm.sh" use --lts && set -x
+            # Starting from here, everything is setup to use the same Node
+            yarn encore production
+        )
 
     deploy: |
         set -x -e
@@ -38,4 +52,4 @@ hooks:
         (>&2 symfony-deploy)
 
 relationships:
-    database: "database_resume:postgresql"
+    database: "postgresql:postgresql"
