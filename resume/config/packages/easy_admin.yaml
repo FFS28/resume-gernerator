@@ -1,6 +1,133 @@
-#easy_admin:
-#    entities:
-#        # List the entity class name you want to manage
-#        - App\Entity\Product
-#        - App\Entity\Category
-#        - App\Entity\User
+easy_admin:
+  site_name: 'Admin'
+  design:
+    assets:
+      js:
+        - 'build/js/bootstrap-datepicker.js'
+        - 'build/js/bootstrap-datepicker.fr.js'
+        - 'build/js/app.js'
+        - 'build/runtime.js'
+      css:
+        - 'build/css/bootstrap-datepicker.css'
+  formats:
+    date: 'd/m/Y'
+  list:
+    max_results: 100
+  entities:
+    Experience:
+      class: App\Entity\Experience
+      form:
+        fields:
+          - title
+          - description
+          - company
+          - isFreelance
+          - onSite
+          - onHomepage
+          - { property: 'dateBegin',
+              type_options: {
+                widget: 'single_text', format: 'dd/MM/yyyy',
+                attr: {data-provide: 'datepicker', data-date-format: 'dd/mm/yyyy', data-date-language: 'fr'}
+              } }
+          - { property: 'dateEnd',
+              type_options: {
+                widget: 'single_text', format: 'dd/MM/yyyy',
+                attr: {data-provide: 'datepicker', data-date-format: 'dd/mm/yyyy', data-date-language: 'fr'}
+              } }
+          - skills
+      list:
+        fields:
+          - company
+          - dateBegin
+          - dateEnd
+          - onHomepage
+        sort: ['dateBegin', 'DESC']
+    Skill:
+      class: App\Entity\Skill
+      form:
+        fields:
+          - name
+          - { property: 'type',
+              type: 'choice', type_options: {
+              choices: {
+                Software: 'software',
+                Framework: 'framework',
+                Platform: 'platform',
+                Language: 'language',
+                OS: 'os',
+              } } }
+          - { property: 'level', type_options: {attr: {min: 0, max: 10 } } }
+          - parent
+          - onHomepage
+          - experiences
+      list:
+        fields:
+          - name
+          - { property: 'typeName', label: 'Type' }
+          - level
+          - parent
+          - onHomepage
+        sort: ['level', 'DESC']
+    Attribute:
+      class: App\Entity\Attribute
+      form:
+        fields:
+          - icon
+          - slug
+          - value
+          - weight
+      list:
+        fields:
+          - slug
+          - value
+          - weight
+        sort: ['weight', 'DESC']
+    Hobby:
+      class: App\Entity\Hobby
+      form:
+        fields:
+          - name
+      list:
+        fields:
+          - name
+        sort: ['name', 'DESC']
+    Link:
+      class: App\Entity\Link
+      form:
+        fields:
+          - icon
+          - name
+          - url
+      list:
+        fields:
+          - name
+          - url
+        sort: ['name', 'DESC']
+    Education:
+      class: App\Entity\Education
+      form:
+        fields:
+          - name
+          - school
+          - details
+          - location
+          - level
+          - { property: 'dateBegin',
+              type_options: {
+                widget: 'single_text', format: 'dd/MM/yyyy',
+                attr: {data-provide: 'datepicker', data-date-format: 'dd/mm/yyyy', data-date-language: 'fr'}
+              } }
+          - { property: 'dateEnd',
+              type_options: {
+                widget: 'single_text', format: 'dd/MM/yyyy',
+                attr: {data-provide: 'datepicker', data-date-format: 'dd/mm/yyyy', data-date-language: 'fr'}
+              } }
+      list:
+        fields:
+          - name
+          - school
+          - location
+          - level
+          - dateBegin
+          - dateEnd
+        sort: ['dateBegin', 'DESC']
