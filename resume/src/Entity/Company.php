@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CompanyRepository")
@@ -24,9 +25,30 @@ class Company
     private $name;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     * @Gedmo\Slug(fields={"name"})
+     */
+    private $slug;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $location;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Experience", mappedBy="company")
      */
     private $experiences;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Company", inversedBy="contractor", cascade={"persist", "remove"})
+     */
+    private $client;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Company", mappedBy="client", cascade={"persist", "remove"})
+     */
+    private $contractor;
 
     public function __construct()
     {
@@ -51,6 +73,30 @@ class Company
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getLocation(): ?string
+    {
+        return $this->location;
+    }
+
+    public function setLocation(?string $location): self
+    {
+        $this->location = $location;
 
         return $this;
     }
@@ -81,6 +127,36 @@ class Company
             if ($experience->getCompany() === $this) {
                 $experience->setCompany(null);
             }
+        }
+
+        return $this;
+    }
+
+    public function getClient(): ?self
+    {
+        return $this->client;
+    }
+
+    public function setClient(?self $client): self
+    {
+        $this->client = $client;
+
+        return $this;
+    }
+
+    public function getContractor(): ?self
+    {
+        return $this->contractor;
+    }
+
+    public function setContractor(?self $contractor): self
+    {
+        $this->contractor = $contractor;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newClient = null === $contractor ? null : $this;
+        if ($contractor->getClient() !== $newClient) {
+            $contractor->setClient($newClient);
         }
 
         return $this;

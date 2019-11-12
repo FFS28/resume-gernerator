@@ -1,10 +1,18 @@
 # Cloud
 
-####### compile assets once
-`yarn encore dev`
+### Notes 
 
-####### or, recompile assets automatically when files change
-`yarn encore dev --watch`
+- Compile assets once  
+`yarn encore dev`  
 
-####### on deploy, create a production build
-`yarn encore production`
+-  or, recompile assets automatically when files change  
+`bin/console server:run`  
+`yarn encore dev --watch`  
+
+- on deploy, create a production build  
+`yarn encore production`  
+
+### Todo
+
+- Gestion du livre des recettes
+- Timeline des différentes expériences
