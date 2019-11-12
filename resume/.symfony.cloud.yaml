@@ -26,6 +26,11 @@ mounts:
     "/var": { source: local, source_path: var }
     "/public/upload": { source: local, source_path: uploads }
 
+variables:
+    env:
+        APP_DEBUG: 1
+        APP_ENV: dev
+
 hooks:
     build: |
         set -x -e
