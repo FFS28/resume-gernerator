@@ -50,6 +50,11 @@ hooks:
         set -x -e
 
         (>&2 symfony-deploy)
-
+        
+    post_deploy: |
+        symfony console doctrine:database:create
+        symfony console doctrine:schema:update --force
+        symfony console doctrine:fixtures:load
+        
 relationships:
     database: "db_resume:postgresql"
