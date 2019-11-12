@@ -14,6 +14,21 @@ easy_admin:
   list:
     max_results: 100
   entities:
+    Company:
+      class: App\Entity\Company
+      form:
+        fields:
+          - name
+          - location
+          - client
+          - contractor
+      list:
+        fields:
+          - name
+          - location
+          - client
+          - contractor
+        sort: ['name', 'ASC']
     Experience:
       class: App\Entity\Experience
       form:

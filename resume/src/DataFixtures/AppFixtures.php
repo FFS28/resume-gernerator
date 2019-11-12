@@ -7,6 +7,7 @@ use App\Entity\Company;
 use App\Entity\Education;
 use App\Entity\Experience;
 use App\Entity\Hobby;
+use App\Entity\Invoice;
 use App\Entity\Link;
 use App\Entity\Skill;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -41,6 +42,7 @@ class AppFixtures extends Fixture
         $this->loadSkills();
         $this->loadCompanies();
         $this->loadExperience();
+        $this->loadInvoices();
 
         $this->manager->flush();
     }
@@ -746,6 +748,129 @@ class AppFixtures extends Fixture
         $experience->addSkill($this->skills['angular']);
         $experience->addSkill($this->skills['git']);
         $this->manager->persist($experience);
+    }
+
+    private function loadInvoices()
+    {
+        // 2015
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201505-1');
+        $invoice->setCompany($this->companies['opusline']);
+        $invoice->setTjm(300);
+        $invoice->setCreatedAt(new \DateTime('2015-05-04 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2015-05-19 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(3000);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201505-2');
+        $invoice->setCompany($this->companies['opusline']);
+        $invoice->setTjm(300);
+        $invoice->setCreatedAt(new \DateTime('2015-05-04 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2015-05-19 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(600);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201505-3');
+        $invoice->setCompany($this->companies['opusline']);
+        $invoice->setTjm(300);
+        $invoice->setCreatedAt(new \DateTime('2015-05-04 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2015-05-19 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(600);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201505-4');
+        $invoice->setCompany($this->companies['leidgens']);
+        $invoice->setTjm(300);
+        $invoice->setCreatedAt(new \DateTime('2015-05-04 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2015-05-19 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(450);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201505-5');
+        $invoice->setCompany($this->companies['talkspirit']);
+        $invoice->setTjm(300);
+        $invoice->setCreatedAt(new \DateTime('2015-05-04 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2015-05-19 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(1500);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201506-1');
+        $invoice->setCompany($this->companies['audiovisit']);
+        $invoice->setTjm(300);
+        $invoice->setCreatedAt(new \DateTime('2015-05-04 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2015-05-19 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(150);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201506-2');
+        $invoice->setCompany($this->companies['opusline']);
+        $invoice->setTjm(300);
+        $invoice->setCreatedAt(new \DateTime('2015-05-04 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2015-05-19 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(150);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201506-3');
+        $invoice->setCompany($this->companies['girlstakelyon']);
+        $invoice->setTjm(200);
+        $invoice->setCreatedAt(new \DateTime('2015-05-04 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2015-05-19 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(200);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201507-1');
+        $invoice->setCompany($this->companies['opusline']);
+        $invoice->setTjm(300);
+        $invoice->setCreatedAt(new \DateTime('2015-05-04 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2015-05-19 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(2100);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201509-1');
+        $invoice->setCompany($this->companies['ar']);
+        $invoice->setTjm(300);
+        $invoice->setCreatedAt(new \DateTime('2015-05-04 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2015-05-19 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(7200);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201510-1');
+        $invoice->setCompany($this->companies['ar']);
+        $invoice->setTjm(300);
+        $invoice->setCreatedAt(new \DateTime('2015-05-04 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2015-05-19 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(6000);
+        $invoice->setPayedBy(Invoice::PAYEDBY_CHECK);
+
+        // 2016
+
+        // 2017
+
+        // 2018
+
+        // 2019
     }
 }
 

@@ -50,9 +50,15 @@ class Company
      */
     private $contractor;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Invoice", mappedBy="company")
+     */
+    private $invoices;
+
     public function __construct()
     {
         $this->experiences = new ArrayCollection();
+        $this->invoices = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -157,6 +163,37 @@ class Company
         $newClient = null === $contractor ? null : $this;
         if ($contractor->getClient() !== $newClient) {
             $contractor->setClient($newClient);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Invoice[]
+     */
+    public function getInvoices(): Collection
+    {
+        return $this->invoices;
+    }
+
+    public function addInvoice(Invoice $invoice): self
+    {
+        if (!$this->invoices->contains($invoice)) {
+            $this->invoices[] = $invoice;
+            $invoice->setCompany($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInvoice(Invoice $invoice): self
+    {
+        if ($this->invoices->contains($invoice)) {
+            $this->invoices->removeElement($invoice);
+            // set the owning side to null (unless already changed)
+            if ($invoice->getCompany() === $this) {
+                $invoice->setCompany(null);
+            }
         }
 
         return $this;
