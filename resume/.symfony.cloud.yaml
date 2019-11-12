@@ -49,7 +49,7 @@ hooks:
         
     post_deploy: |
         symfony console doctrine:schema:update --force
-        symfony console doctrine:fixtures:load
+        symfony console doctrine:fixtures:load --env=prod
         
 relationships:
     database: "db_resume:postgresql"
