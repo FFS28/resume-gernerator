@@ -52,4 +52,4 @@ hooks:
         (>&2 symfony-deploy)
 
 relationships:
-    database: "postgresql:postgresql"
+    database: "db_resume:postgresql"
