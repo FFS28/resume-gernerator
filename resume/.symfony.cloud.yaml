@@ -26,10 +26,6 @@ mounts:
     "/var": { source: local, source_path: var }
     "/public/upload": { source: local, source_path: uploads }
 
-dependencies:
-    nodejs:
-        yarn: "*"
-
 hooks:
     build: |
         set -x -e
