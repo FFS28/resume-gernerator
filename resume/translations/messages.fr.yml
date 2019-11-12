@@ -11,18 +11,22 @@ Educations: Formations
 Name: Nom
 School: Ecole
 Details: Détails
-Location: Localisation
 Date begin: Date de début
 Date end: Date de fin
 
 Experience: Experience
 Experiences: Experiences
 Title: Titre
-Company: Entreprise
 Description: Description
 Is freelance: Freelance
 On site: Sur place
 On homepage: Page d'accueil
+
+Company: Entreprise
+Companies: Entreprises
+Location: Localisation
+Client: Client
+Contractor: Prestataire
 
 Hobby: Loisir
 Hobbies: Loisirs
