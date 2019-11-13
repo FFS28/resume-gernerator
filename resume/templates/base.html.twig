@@ -18,7 +18,7 @@
     <meta property="og:image:url" content="{% block image %}{{ asset('favicon.ico') }}{% endblock %}" />
     <link rel="author" href="humans.txt" />
     {#<link rel="sitemap" type="application/xml" title="Sitemap" href="{{ app.request.getSchemeAndHttpHost() ~ asset('/sitemap.xml' ) }}" />#}
-    <link rel="stylesheet" type="text/css" href="{{ app.request.getSchemeAndHttpHost() }}/build/css/app.css">
+    <link rel="stylesheet" type="text/css" href="{{ app.request.getSchemeAndHttpHost() }}{{ asset('build/css/app.css') }}">
     {% block stylesheets %}{% endblock %}
 </head>
 <body>
