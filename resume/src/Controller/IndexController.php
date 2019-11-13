@@ -8,8 +8,6 @@ use App\Repository\ExperienceRepository;
 use App\Repository\HobbyRepository;
 use App\Repository\LinkRepository;
 use App\Repository\SkillRepository;
-use Knp\Snappy\AbstractGenerator;
-use Knp\Snappy\Pdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -31,7 +29,7 @@ class IndexController extends AbstractController
             'attributes_exclude' => ['name', 'quote', 'job', 'subtitle'],
             'skills' => $skillRepository->findBy(['onHomepage' => true], ['level' => 'DESC']),
             'experiences' => $experienceRepository->findBy(['onHomepage' => true], ['dateBegin' => 'DESC']),
-            'educations' => $educationRepository->findAll([], ['dateBegin' => 'DESC']),
+            'educations' => $educationRepository->findBy([], ['dateBegin' => 'DESC']),
             'hobbies' => $hobbyRepository->findAll(),
             'links' => $linkRepository->findAll(),
         ];
@@ -78,8 +76,8 @@ class IndexController extends AbstractController
         ExperienceRepository $experienceRepository,
         EducationRepository $educationRepository,
         HobbyRepository $hobbyRepository,
-        LinkRepository $linkRepository,
-        Pdf $snappyPdf)
+        LinkRepository $linkRepository
+    )
     {
         $data = $this->loadData($attributeRepository, $skillRepository, $experienceRepository,
             $educationRepository, $hobbyRepository, $linkRepository);
@@ -92,7 +90,8 @@ class IndexController extends AbstractController
 
         return new Response(
             //$snappyPdf->getOutput($url),
-            $snappyPdf->getOutputFromHtml($html),
+            //$snappyPdf->getOutputFromHtml($html),
+            null,
             200,
             array(
                 'Content-Type'          => 'application/pdf',
