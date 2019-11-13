@@ -195,6 +195,15 @@ class AppFixtures extends Fixture
         $skill->setType(Skill::TYPE_FRAMEWORK);
         $this->manager->persist($skill);
         $this->skills['symfony'] = $skill;
+
+        $skill = new Skill();
+        $skill->setName('CodeIgniter');
+        $skill->setLevel(9);
+        $skill->setOnHomepage(false);
+        $skill->setParent($this->skills['php']);
+        $skill->setType(Skill::TYPE_FRAMEWORK);
+        $this->manager->persist($skill);
+        $this->skills['codeigniter'] = $skill;
         
         $skill = new Skill();
         $skill->setName('Js');
@@ -223,29 +232,30 @@ class AppFixtures extends Fixture
         $this->skills['angular'] = $skill;
 
         $skill = new Skill();
+        $skill->setName('ExtJS');
+        $skill->setLevel(4);
+        $skill->setOnHomepage(false);
+        $skill->setParent($this->skills['js']);
+        $skill->setType(Skill::TYPE_FRAMEWORK);
+        $this->manager->persist($skill);
+        $this->skills['extjs'] = $skill;
+
+        $skill = new Skill();
+        $skill->setName('jQuery');
+        $skill->setLevel(4);
+        $skill->setOnHomepage(false);
+        $skill->setParent($this->skills['js']);
+        $skill->setType(Skill::TYPE_FRAMEWORK);
+        $this->manager->persist($skill);
+        $this->skills['jquery'] = $skill;
+
+        $skill = new Skill();
         $skill->setName('Git');
         $skill->setLevel(4);
         $skill->setOnHomepage(false);
         $skill->setType(Skill::TYPE_SOFTWARE);
         $this->manager->persist($skill);
         $this->skills['git'] = $skill;
-
-        /*(3, 'PHP', 3, 8, 1, 1),
-        (4, 'Javascript', 4, 7, 1, 1),
-        (5, 'Symfony2', 3, 7, 2, 1),
-        (6, 'AngularJS', 4, 6, 2, 1),
-        (7, 'NodeJS', 4, 4, 4, 0),
-        (8, 'Git', NULL, 4, 3, 1),
-        (9, 'Webpack', 7, 2, 3, 0),
-        (10, 'HTML/CSS', NULL, 6, 4, 1),
-        (11, 'Sass', 10, 3, 3, 0),
-        (12, 'Photoshop', NULL, 2, 3, 0),
-        (13, 'Docker', NULL, 2, 3, 0),
-        (14, 'Gulp', 7, 2, 3, 0),
-        (15, 'Ionic', 6, 3, 4, 0),
-        (16, 'CodeIgniter', 3, 3, 2, 0),
-        (17, 'ExtJS', 4, 3, 2, 0),
-        (18, 'Jquery', 4, 3, 2, 0);*/
     }
 
     private function loadCompanies()
