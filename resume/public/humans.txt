@@ -1,0 +1,12 @@
+/* TEAM */
+Jérémy Achain
+Site: https://jeremy-achain.fr
+Location: Lyon, France
+
+/* SITE */
+Last update:  2020/01/01
+Standards: HTML5, CSS3
+Components: Webkit
+Languages: PHP7, Javascript
+Frameworks: Symfony5
+Softwares: PhpStorm

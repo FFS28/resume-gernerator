@@ -1,14 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title_page %}{{ 'Web Developer' | trans }}{% endblock %}
+{% block title %}Jérémy ACHAIN | {{ 'Web Developer' | trans }}{% endblock %}
 
-{%- block description_page -%}
+{%- block description -%}
     {%- if attributes['description'] is defined -%}
         {{ attributes['description'].value }}
     {%- endif -%}
 {%- endblock -%}
 
-{% block head_page %}
+{% block stylesheets %}
     {#<link rel="stylesheet" media="all" href="{{ app.request.getSchemeAndHttpHost() ~ asset('/assets/home/style.css' | assetVersion) }}">#}
 {% endblock %}
 
@@ -96,7 +96,8 @@
                 <div id="experiences">
                     <h3>
                         {{ 'Experiences' | trans }}
-                        {#<a href="{{ url('experiences') }}">{{ 'Experiences' | trans }}</a></h3>#}
+                        {#<a href="{{ url('experiences') }}">{{ 'Experiences' | trans }}</a>#}
+                    </h3>
                     <ul>
                         {% for experience in experiences %}
                             <li class="col-sm-6">
