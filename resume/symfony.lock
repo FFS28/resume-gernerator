@@ -2,6 +2,9 @@
     "h4cc/wkhtmltopdf-amd64": {
         "version": "0.12.4"
     },
+    "h4cc/wkhtmltopdf-i386": {
+        "version": "0.12.4"
+    },
     "izapbrasil/wkhtmltopdf-amd64": {
         "version": "0.12.5"
     },

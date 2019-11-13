@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "066ad9a9d40c87d68b3db15ee6029eaa",
+    "content-hash": "2dfa444c1a83cdb9ec598885d86b08a9",
     "packages": [
         {
             "name": "alterphp/easyadmin-extension-bundle",
@@ -1562,29 +1562,23 @@
             "time": "2019-03-17T18:16:12+00:00"
         },
         {
-            "name": "izapbrasil/wkhtmltopdf-amd64",
-            "version": "0.12.5",
+            "name": "h4cc/wkhtmltopdf-i386",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/izapbrasil/wkhtmltopdf-amd64.git",
-                "reference": "db20fa85e9c6d8ae9c314fbf9684de6188acafe2"
+                "url": "https://github.com/finelam/wkhtmltopdf-i386.git",
+                "reference": "adc34326155881ecb5b8097d326859ebfd58018b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/izapbrasil/wkhtmltopdf-amd64/zipball/db20fa85e9c6d8ae9c314fbf9684de6188acafe2",
-                "reference": "db20fa85e9c6d8ae9c314fbf9684de6188acafe2",
+                "url": "https://api.github.com/repos/finelam/wkhtmltopdf-i386/zipball/adc34326155881ecb5b8097d326859ebfd58018b",
+                "reference": "adc34326155881ecb5b8097d326859ebfd58018b",
                 "shasum": ""
             },
             "bin": [
-                "bin/wkhtmltopdf-amd64"
+                "bin/wkhtmltopdf-i386"
             ],
             "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "h4cc\\WKHTMLToPDF\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "LGPL Version 3"
             ],
@@ -1592,15 +1586,9 @@
                 {
                     "name": "Julius Beckmann",
                     "email": "github@h4cc.de"
-                },
-                {
-                    "name": "Valdeci Jr",
-                    "email": "valdeci.junior@izap.com.br",
-                    "homepage": "https://izap.com.br",
-                    "role": "Contributor"
                 }
             ],
-            "description": "Convert html to pdf using webkit (qtwebkit). Static linked linux binary for amd64 systems.",
+            "description": "Convert html to pdf using webkit (qtwebkit). Static linked linux binary for i386 systems.",
             "homepage": "http://wkhtmltopdf.org/",
             "keywords": [
                 "binary",
@@ -1610,7 +1598,10 @@
                 "thumbnail",
                 "wkhtmltopdf"
             ],
-            "time": "2019-02-27T21:18:00+00:00"
+            "support": {
+                "source": "https://github.com/finelam/wkhtmltopdf-i386/tree/master"
+            },
+            "time": "2019-01-04T23:04:04+00:00"
         },
         {
             "name": "jdorn/sql-formatter",
@@ -5975,6 +5966,57 @@
             "time": "2018-01-15T06:57:33+00:00"
         },
         {
+            "name": "izapbrasil/wkhtmltopdf-amd64",
+            "version": "0.12.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/izapbrasil/wkhtmltopdf-amd64.git",
+                "reference": "db20fa85e9c6d8ae9c314fbf9684de6188acafe2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/izapbrasil/wkhtmltopdf-amd64/zipball/db20fa85e9c6d8ae9c314fbf9684de6188acafe2",
+                "reference": "db20fa85e9c6d8ae9c314fbf9684de6188acafe2",
+                "shasum": ""
+            },
+            "bin": [
+                "bin/wkhtmltopdf-amd64"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "h4cc\\WKHTMLToPDF\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL Version 3"
+            ],
+            "authors": [
+                {
+                    "name": "Julius Beckmann",
+                    "email": "github@h4cc.de"
+                },
+                {
+                    "name": "Valdeci Jr",
+                    "email": "valdeci.junior@izap.com.br",
+                    "homepage": "https://izap.com.br",
+                    "role": "Contributor"
+                }
+            ],
+            "description": "Convert html to pdf using webkit (qtwebkit). Static linked linux binary for amd64 systems.",
+            "homepage": "http://wkhtmltopdf.org/",
+            "keywords": [
+                "binary",
+                "convert",
+                "pdf",
+                "snapshot",
+                "thumbnail",
+                "wkhtmltopdf"
+            ],
+            "time": "2019-02-27T21:18:00+00:00"
+        },
+        {
             "name": "nikic/php-parser",
             "version": "v4.3.0",
             "source": {
@@ -6376,7 +6418,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "h4cc/wkhtmltopdf-i386": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
