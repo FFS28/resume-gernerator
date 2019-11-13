@@ -29,6 +29,23 @@ easy_admin:
           - client
           - contractor
         sort: ['name', 'ASC']
+    Invoices:
+      class: App\Entity\Invoice
+      form:
+        fields:
+          - number
+          - company
+          - createdAt
+          - payedAt
+          - totalHt
+          - object
+          - tjm
+          - { property: 'payedBy',
+                type: 'choice', type_options: {
+              choices: {
+                Check: 'check',
+                Transfert: 'transfert',
+              } } }
     Experience:
       class: App\Entity\Experience
       form:

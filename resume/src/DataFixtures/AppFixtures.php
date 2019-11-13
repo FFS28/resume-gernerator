@@ -229,7 +229,7 @@ class AppFixtures extends Fixture
         $skill->setParent($this->skills['js']);
         $skill->setType(Skill::TYPE_FRAMEWORK);
         $this->manager->persist($skill);
-        $this->skills['angular'] = $skill;
+        $this->skills['nodejs'] = $skill;
 
         $skill = new Skill();
         $skill->setName('ExtJS');

@@ -57,13 +57,13 @@ class Invoice
      */
     private $payedBy;
 
-    const PAYEDBY_CHECK    = "Chèque";
-    const PAYEDBY_TRANSFERT = "Virement";
+    const PAYEDBY_CHECK    = "check";
+    const PAYEDBY_TRANSFERT = "transfert";
 
     /** @var array user friendly named type */
     protected static $payedByName = [
-        self::PAYEDBY_CHECK => 'Chèque',
-        self::PAYEDBY_TRANSFERT => 'Virement',
+        self::PAYEDBY_CHECK => 'Check',
+        self::PAYEDBY_TRANSFERT => 'Transfert',
     ];
 
     public function __construct()
