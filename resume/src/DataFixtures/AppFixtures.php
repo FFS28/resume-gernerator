@@ -741,7 +741,7 @@ class AppFixtures extends Fixture
         $experience->setIsFreelance(true);
         $experience->setOnSite(true);
         $experience->setOnHomepage(true);
-        $experience->addSkill($this->skills['javascript']);
+        $experience->addSkill($this->skills['js']);
         $experience->addSkill($this->skills['php']);
         $this->manager->persist($experience);
 
