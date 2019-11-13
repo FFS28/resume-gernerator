@@ -63,7 +63,7 @@ class AppFixtures extends Fixture
 
         $attribute = new Attribute();
         $attribute->setSlug('description');
-        $attribute->setValue('Jérémy Achain, développeur Web Freelance spécialisé PHP/Symfony et TS/Angular sur Lyon');
+        $attribute->setValue('Jérémy Achain, Développeur Web Freelance spécialisé PHP / Symfony et JS / Angular sur Lyon');
         $attribute->setWeight(0);
         $this->manager->persist($attribute);
 
