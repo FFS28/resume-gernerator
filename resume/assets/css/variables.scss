@@ -21,5 +21,11 @@ $footerHeight: 30px;
 
 $screen-xs:                  480px;
 $screen-sm:                  768px;
+$screen-sm-min: $screen-sm;
+$screen-xs-max: $screen-sm;
 $screen-md:                  992px;
+$screen-md-min: $screen-md;
+$screen-sm-max: $screen-md;
 $screen-lg:                  1200px;
+$screen-lg-min: $screen-lg;
+$screen-md-max: $screen-lg;

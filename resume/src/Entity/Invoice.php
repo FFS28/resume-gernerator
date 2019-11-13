@@ -3,9 +3,11 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\InvoiceRepository")
+ * @UniqueEntity("number")
  */
 class Invoice
 {
@@ -17,7 +19,7 @@ class Invoice
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     private $number;
 
@@ -72,6 +74,7 @@ class Invoice
         $this->createdAt = new \DateTime();
         $this->object = "Prestation de développement web - " . (new \DateTime())->format('Y-m');
         $this->setNumber((new \DateTime())->format('Y-m-'));
+        $this->setPayedBy(self::PAYEDBY_TRANSFERT);
     }
 
     public function __toString(): string

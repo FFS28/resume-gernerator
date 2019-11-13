@@ -6,9 +6,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CompanyRepository")
+ * @UniqueEntity("slug")
  */
 class Company
 {
@@ -25,7 +27,7 @@ class Company
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      * @Gedmo\Slug(fields={"name"})
      */
     private $slug;
@@ -41,14 +43,14 @@ class Company
     private $experiences;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Company", inversedBy="contractor", cascade={"persist", "remove"})
-     */
-    private $client;
-
-    /**
      * @ORM\OneToOne(targetEntity="App\Entity\Company", mappedBy="client", cascade={"persist", "remove"})
      */
     private $contractor;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Company", inversedBy="contractor", cascade={"persist", "remove"})
+     */
+    private $client;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Invoice", mappedBy="company")
@@ -138,18 +140,6 @@ class Company
         return $this;
     }
 
-    public function getClient(): ?self
-    {
-        return $this->client;
-    }
-
-    public function setClient(?self $client): self
-    {
-        $this->client = $client;
-
-        return $this;
-    }
-
     public function getContractor(): ?self
     {
         return $this->contractor;
@@ -166,6 +156,56 @@ class Company
         }
 
         return $this;
+    }
+
+    public function getClient(): ?self
+    {
+        return $this->client;
+    }
+
+    public function setClient(?self $client): self
+    {
+        $this->client = $client;
+
+        return $this;
+    }
+
+    /**
+     * @param Company[] $contractors
+     * @return Company[]
+     */
+    public function getAllContractors($contractors = []): array
+    {
+        if ($this->getContractor()) {
+            $contractor = $this->getContractor();
+
+            if (!in_array($contractor, $contractors)) {
+                $contractors[] = $contractor;
+
+                return $contractor->getAllContractors($contractors);
+            }
+        }
+
+        return $contractors;
+    }
+
+    /**
+     * @param Company[] $clients
+     * @return Company[]
+     */
+    public function getAllClients($clients = []): array
+    {
+        if ($this->getClient()) {
+            $client = $this->getClient();
+
+            if (!in_array($client, $clients)) {
+                $clients[] = $client;
+
+                return $client->getAllClients($clients);
+            }
+        }
+
+        return $clients;
     }
 
     /**

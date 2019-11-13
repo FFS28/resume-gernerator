@@ -154,25 +154,25 @@ class AppFixtures extends Fixture
     {
         $link = new Link();
         $link->setName('Linkedin');
-        $link->setIcon('linkedin');
+        $link->setIcon('fab fa-linkedin');
         $link->setUrl('https://www.linkedin.com/in/achainjeremy');
         $this->manager->persist($link);
 
         $link = new Link();
         $link->setName('Viadeo');
-        $link->setIcon('viadeo');
+        $link->setIcon('fab fa-viadeo');
         $link->setUrl('http://www.viadeo.com/p/002tx09f455dgvf');
         $this->manager->persist($link);
 
         $link = new Link();
         $link->setName('Hopwork');
-        $link->setIcon('wifi');
+        $link->setIcon('fas fa-wifi');
         $link->setUrl('https://www.hopwork.fr/profile/jeremyachain');
         $this->manager->persist($link);
 
         $link = new Link();
         $link->setName('Github');
-        $link->setIcon('github');
+        $link->setIcon('fab fa-github');
         $link->setUrl('https://github.com/alkemist');
         $this->manager->persist($link);
     }
@@ -773,6 +773,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(3000);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $this->manager->persist($invoice);
 
         $invoice = new Invoice();
         $invoice->setNumber('201505-2');
@@ -783,6 +784,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(600);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $this->manager->persist($invoice);
 
         $invoice = new Invoice();
         $invoice->setNumber('201505-3');
@@ -793,6 +795,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(600);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $this->manager->persist($invoice);
 
         $invoice = new Invoice();
         $invoice->setNumber('201505-4');
@@ -803,6 +806,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(450);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $this->manager->persist($invoice);
 
         $invoice = new Invoice();
         $invoice->setNumber('201505-5');
@@ -813,6 +817,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(1500);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $this->manager->persist($invoice);
 
         $invoice = new Invoice();
         $invoice->setNumber('201506-1');
@@ -823,6 +828,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(150);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $this->manager->persist($invoice);
 
         $invoice = new Invoice();
         $invoice->setNumber('201506-2');
@@ -833,6 +839,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(150);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $this->manager->persist($invoice);
 
         $invoice = new Invoice();
         $invoice->setNumber('201506-3');
@@ -843,6 +850,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(200);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $this->manager->persist($invoice);
 
         $invoice = new Invoice();
         $invoice->setNumber('201507-1');
@@ -853,6 +861,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(2100);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $this->manager->persist($invoice);
 
         $invoice = new Invoice();
         $invoice->setNumber('201509-1');
@@ -863,6 +872,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(7200);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $this->manager->persist($invoice);
 
         $invoice = new Invoice();
         $invoice->setNumber('201510-1');
@@ -873,6 +883,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(6000);
         $invoice->setPayedBy(Invoice::PAYEDBY_CHECK);
+        $this->manager->persist($invoice);
 
         // 2016
 

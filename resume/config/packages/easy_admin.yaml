@@ -28,9 +28,9 @@ easy_admin:
           - location
           - client
           - contractor
-        sort: ['name', 'ASC']
     Invoices:
       class: App\Entity\Invoice
+      controller: App\Controller\InvoiceController
       form:
         fields:
           - number
@@ -73,7 +73,6 @@ easy_admin:
           - dateBegin
           - dateEnd
           - onHomepage
-        sort: ['dateBegin', 'DESC']
     Skill:
       class: App\Entity\Skill
       form:
@@ -99,7 +98,6 @@ easy_admin:
           - level
           - parent
           - onHomepage
-        sort: ['level', 'DESC']
     Attribute:
       class: App\Entity\Attribute
       form:
@@ -113,7 +111,6 @@ easy_admin:
           - slug
           - value
           - weight
-        sort: ['weight', 'DESC']
     Hobby:
       class: App\Entity\Hobby
       form:
@@ -162,4 +159,3 @@ easy_admin:
           - level
           - dateBegin
           - dateEnd
-        sort: ['dateBegin', 'DESC']

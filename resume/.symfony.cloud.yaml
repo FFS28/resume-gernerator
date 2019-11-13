@@ -28,8 +28,7 @@ mounts:
 
 variables:
     env:
-        APP_DEBUG: 1
-        APP_ENV: dev
+        APP_VERSION: 1
 
 hooks:
     build: |

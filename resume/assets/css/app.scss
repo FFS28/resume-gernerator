@@ -1,4 +1,13 @@
 @import "variables";
+@import "../fontawesome/scss/fontawesome";
+@import "../fontawesome/scss/solid";
+@import "../fontawesome/scss/regular";
+@import "../fontawesome/scss/brands";
+@import "../bootstrap/css/bootstrap.min.css";
+
+* {
+    box-sizing: border-box;
+}
 
 html, body{
     width: 100%;
@@ -30,3 +39,5 @@ button > .fa + span, button > span + .fa,
 .alert > .fa + span, .alert > span + .fa{
     margin-left: 10px;
 }
+
+@import "index";
