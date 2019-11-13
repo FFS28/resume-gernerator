@@ -1,4 +1,7 @@
 {
+    "h4cc/wkhtmltopdf-amd64": {
+        "version": "0.12.4"
+    },
     "knplabs/knp-snappy": {
         "version": "v1.1.0"
     },

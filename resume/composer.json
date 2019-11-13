@@ -11,7 +11,6 @@
         "h4cc/wkhtmltopdf-amd64": "^0.12.4",
         "knplabs/knp-snappy-bundle": "^1.6",
         "konekt/pdf-invoice": "^1.4",
-        "mikehaertl/phpwkhtmltopdf": "^2.4",
         "sensio/framework-extra-bundle": "^5.5",
         "stof/doctrine-extensions-bundle": "^1.3",
         "symfony/cache": "4.3.*",
