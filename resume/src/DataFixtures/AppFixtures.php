@@ -49,23 +49,7 @@ class AppFixtures extends Fixture
 
     private function loadAttributes()
     {
-        $attribute = new Attribute();
-        $attribute->setSlug('tjm');
-        $attribute->setValue('TJM: 400€');
-        $attribute->setWeight(90);
-        $this->manager->persist($attribute);
-
-        $attribute = new Attribute();
-        $attribute->setSlug('quote');
-        $attribute->setValue('Programming is a creative art form based in logic. Every programmer is different');
-        $attribute->setWeight(0);
-        $this->manager->persist($attribute);
-
-        $attribute = new Attribute();
-        $attribute->setSlug('description');
-        $attribute->setValue('Jérémy Achain, Développeur Web Freelance spécialisé PHP / Symfony et JS / Angular sur Lyon');
-        $attribute->setWeight(0);
-        $this->manager->persist($attribute);
+        // Obligatoire
 
         $attribute = new Attribute();
         $attribute->setSlug('name');
@@ -80,14 +64,8 @@ class AppFixtures extends Fixture
         $this->manager->persist($attribute);
 
         $attribute = new Attribute();
-        $attribute->setSlug('status');
-        $attribute->setValue('Freelance');
-        $attribute->setWeight(100);
-        $this->manager->persist($attribute);
-
-        $attribute = new Attribute();
-        $attribute->setSlug('location');
-        $attribute->setValue('Lyon, France');
+        $attribute->setSlug('quote');
+        $attribute->setValue('Programming is a creative art form based in logic. Every programmer is different');
         $attribute->setWeight(0);
         $this->manager->persist($attribute);
 
@@ -98,15 +76,41 @@ class AppFixtures extends Fixture
         $this->manager->persist($attribute);
 
         $attribute = new Attribute();
+        $attribute->setSlug('description');
+        $attribute->setValue('Jérémy Achain, Développeur Web Freelance spécialisé PHP / Symfony et JS / Angular sur Lyon');
+        $attribute->setWeight(0);
+        $this->manager->persist($attribute);
+
+        // Facultatif
+
+        $attribute = new Attribute();
+        $attribute->setSlug('location');
+        $attribute->setValue('Lyon, France');
+        $attribute->setWeight(50);
+        $this->manager->persist($attribute);
+
+        $attribute = new Attribute();
+        $attribute->setSlug('status');
+        $attribute->setValue('Freelance');
+        $attribute->setWeight(40);
+        $this->manager->persist($attribute);
+
+        $attribute = new Attribute();
+        $attribute->setSlug('tjm');
+        $attribute->setValue('TJM: 400€');
+        $attribute->setWeight(30);
+        $this->manager->persist($attribute);
+
+        $attribute = new Attribute();
         $attribute->setSlug('duration');
         $attribute->setValue('3 mois renouvelables ou moins');
-        $attribute->setWeight(0);
+        $attribute->setWeight(20);
         $this->manager->persist($attribute);
 
         $attribute = new Attribute();
         $attribute->setSlug('time');
         $attribute->setValue('Temps partiel (4/5 max)');
-        $attribute->setWeight(0);
+        $attribute->setWeight(10);
         $this->manager->persist($attribute);
     }
 

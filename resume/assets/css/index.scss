@@ -11,6 +11,20 @@
   margin-right: 0px !important;
 }
 
+.container-fluid, #skills {
+  h3, .h3 {
+    margin: 10px 0 0;
+    padding-top: 40px;
+    font-weight: bold;
+    page-break-before: auto;
+    page-break-after: avoid;
+
+    a {
+      text-decoration: underline;
+    }
+  }
+}
+
 .container-fluid {
   ul{
     margin: 0;
@@ -24,15 +38,7 @@
     font-weight: normal;
   }
 
-  h3, .h3{
-    margin: 10px 0 0;
-    padding-top: 40px;
-    font-weight: bold;
-    page-break-before: auto;
-    page-break-after: avoid;
 
-    a{ text-decoration: underline;}
-  }
   ul{
     page-break-before: avoid;
     page-break-after: auto;

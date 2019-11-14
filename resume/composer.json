@@ -69,11 +69,5 @@
             "allow-contrib": false,
             "require": "4.3.*"
         }
-    },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/finelam/wkhtmltopdf-amd64"
-        }
-    ]
+    }
 }

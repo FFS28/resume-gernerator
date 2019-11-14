@@ -26,7 +26,7 @@ class IndexController extends AbstractController
     {
         return [
             'attributes' => $attributeRepository->findAllIndexedBy('slug'),
-            'attributes_exclude' => ['name', 'quote', 'job', 'subtitle'],
+            'attributes_exclude' => ['name', 'quote', 'job', 'subtitle', 'description'],
             'skills' => $skillRepository->findBy(['onHomepage' => true], ['level' => 'DESC']),
             'experiences' => $experienceRepository->findBy(['onHomepage' => true], ['dateBegin' => 'DESC']),
             'educations' => $educationRepository->findBy([], ['dateBegin' => 'DESC']),
