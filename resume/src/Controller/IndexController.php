@@ -88,6 +88,10 @@ class IndexController extends AbstractController
         //$url = $this->generateUrl('index', ['isPdf' => true], UrlGeneratorInterface::ABSOLUTE_URL);
         $html =  $this->renderView('page/index.html.twig', $data);
 
+        $mpdf = new \Mpdf\Mpdf();
+        $mpdf->WriteHTML($html);
+        return $mpdf->Output();
+
         return new Response(
             //$snappyPdf->getOutput($url),
             //$snappyPdf->getOutputFromHtml($html),

@@ -108,6 +108,12 @@
     "konekt/pdf-invoice": {
         "version": "1.4.0"
     },
+    "mpdf/mpdf": {
+        "version": "v8.0.3"
+    },
+    "myclabs/deep-copy": {
+        "version": "1.9.3"
+    },
     "nikic/php-parser": {
         "version": "v4.3.0"
     },
@@ -137,6 +143,9 @@
     },
     "setasign/fpdf": {
         "version": "1.8.1"
+    },
+    "setasign/fpdi": {
+        "version": "v2.2.0"
     },
     "stof/doctrine-extensions-bundle": {
         "version": "1.2",
