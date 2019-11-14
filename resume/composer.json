@@ -7,6 +7,7 @@
         "ext-iconv": "*",
         "alterphp/easyadmin-extension-bundle": "^2.1",
         "doctrine/doctrine-fixtures-bundle": "^3.2",
+        "dompdf/dompdf": "^0.8.3",
         "easycorp/easyadmin-bundle": "^2.3",
         "konekt/pdf-invoice": "^1.4",
         "mpdf/mpdf": "^8.0",
