@@ -25,6 +25,7 @@ disk: 1024
 mounts:
     "/var": { source: local, source_path: var }
     "/vendor/mpdf/mpdf/tmp": { source: local, source_path: tmp_mpdf }
+    "/vendor/dompdf/dompdf/lib/fonts": { source: local, source_path: tmp_dompdf }
     "/public/upload": { source: local, source_path: uploads }
 
 variables:
