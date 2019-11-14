@@ -9,6 +9,7 @@ use App\Repository\HobbyRepository;
 use App\Repository\LinkRepository;
 use App\Repository\SkillRepository;
 use Dompdf\Dompdf;
+use Spipu\Html2Pdf\Html2Pdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -98,11 +99,15 @@ class IndexController extends AbstractController
         $mpdf->WriteHTML($body);
         return $mpdf->Output();*/
 
-        $dompdf = new Dompdf();
+        /*$dompdf = new Dompdf();
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
-        return $dompdf->stream();
+        return $dompdf->stream();*/
+
+        $html2pdf = new Html2Pdf();
+        $html2pdf->writeHTML($html);
+        return $html2pdf->output();
 
         return new Response(
             //$snappyPdf->getOutput($url),

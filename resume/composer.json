@@ -12,6 +12,7 @@
         "konekt/pdf-invoice": "^1.4",
         "mpdf/mpdf": "^8.0",
         "sensio/framework-extra-bundle": "^5.5",
+        "spipu/html2pdf": "^5.2",
         "stof/doctrine-extensions-bundle": "^1.3",
         "symfony/cache": "4.3.*",
         "symfony/console": "4.3.*",

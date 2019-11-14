@@ -159,6 +159,9 @@
     "setasign/fpdi": {
         "version": "v2.2.0"
     },
+    "spipu/html2pdf": {
+        "version": "v5.2.1"
+    },
     "stof/doctrine-extensions-bundle": {
         "version": "1.2",
         "recipe": {
@@ -464,6 +467,9 @@
     },
     "symfony/yaml": {
         "version": "v4.3.8"
+    },
+    "tecnickcom/tcpdf": {
+        "version": "6.3.2"
     },
     "twig/twig": {
         "version": "v2.12.2"
