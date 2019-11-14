@@ -9,6 +9,8 @@ use App\Repository\HobbyRepository;
 use App\Repository\LinkRepository;
 use App\Repository\SkillRepository;
 use Dompdf\Dompdf;
+use PDFShift\PDFShift;
+use Spatie\Browsershot\Browsershot;
 use Spipu\Html2Pdf\Html2Pdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -102,17 +104,17 @@ class IndexController extends AbstractController
         /*$dompdf = new Dompdf();
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');
-        $dompdf->render();
-        return $dompdf->stream();*/
+        $dompdf->render();$dompdf->stream();*/
 
-        $html2pdf = new Html2Pdf();
-        $html2pdf->writeHTML($html);
-        return $html2pdf->output();
+        /*$html2pdf = new Html2Pdf();
+        $html2pdf->writeHTML($html);*/
+
+        return Browsershot::html('<h1>Hello world!!</h1>')->save('example.pdf');
 
         return new Response(
             //$snappyPdf->getOutput($url),
             //$snappyPdf->getOutputFromHtml($html),
-            null,
+            //$html2pdf->output(),
             200,
             array(
                 'Content-Type'          => 'application/pdf',
