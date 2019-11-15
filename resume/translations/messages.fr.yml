@@ -32,6 +32,19 @@ Companies: Entreprises
 Location: Localisation
 Client: Client
 Contractor: Prestataire
+Display name: Nom personnalisé
+street: Rue
+postalCode: Code postal
+city: Ville
+
+Person: Personne
+Persons: Personnes
+People: Personnes
+Civility: Civilité
+Firstname: Prénom
+Lastname: Nom
+Email: Email
+Phones: Téléphones
 
 Invoice: Facture
 Invoices: Factures
@@ -40,10 +53,17 @@ Transfert: Virement
 Tjm: TJM
 Object: Objet
 Total ht: Total HT
+Total tax: Total TAX
 Created at: Créé le
 Payed at: Payé le
 Payed by: Payé par
 Number: Numéro
+Status: Statut
+Draft: Brouillon
+Waiting: En attente
+Payed: Encaissé
+Credit: Avoir
+Days count: Nombre de jours
 
 Hobby: Loisir
 Hobbies: Loisirs

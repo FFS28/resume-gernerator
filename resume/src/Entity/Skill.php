@@ -98,7 +98,7 @@ class Skill
     private $onHomepage;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Experience", mappedBy="skills")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Experience", mappedBy="skills", cascade={"persist"})
      */
     private $experiences;
 

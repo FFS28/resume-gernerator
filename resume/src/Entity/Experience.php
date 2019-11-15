@@ -56,15 +56,20 @@ class Experience
     private $dateEnd;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Skill", inversedBy="experiences")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Skill", inversedBy="experiences", cascade={"persist"})
      */
     private $skills;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Company", inversedBy="experiences")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Company", inversedBy="experiences", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $company;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Invoice", mappedBy="experience", cascade={"persist"})
+     */
+    private $invoices;
 
     public function __toString(): string
     {
@@ -82,6 +87,8 @@ class Experience
         $this->dateBegin = new \DateTime();
         $this->dateEnd = new \DateTime();
         $this->title = "Développeur Web";
+        $this->invoices = new ArrayCollection();
+        $this->activities = new ArrayCollection();
     }
 
     public function getId()
@@ -231,6 +238,68 @@ class Experience
     public function setCompany(?Company $company): self
     {
         $this->company = $company;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Invoice[]
+     */
+    public function getInvoices(): Collection
+    {
+        return $this->invoices;
+    }
+
+    public function addInvoice(Invoice $invoice): self
+    {
+        if (!$this->invoices->contains($invoice)) {
+            $this->invoices[] = $invoice;
+            $invoice->setExperience($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInvoice(Invoice $invoice): self
+    {
+        if ($this->invoices->contains($invoice)) {
+            $this->invoices->removeElement($invoice);
+            // set the owning side to null (unless already changed)
+            if ($invoice->getExperience() === $this) {
+                $invoice->setExperience(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Activity[]
+     */
+    public function getActivities(): Collection
+    {
+        return $this->activities;
+    }
+
+    public function addActivity(Activity $activity): self
+    {
+        if (!$this->activities->contains($activity)) {
+            $this->activities[] = $activity;
+            $activity->setExperience($this);
+        }
+
+        return $this;
+    }
+
+    public function removeActivity(Activity $activity): self
+    {
+        if ($this->activities->contains($activity)) {
+            $this->activities->removeElement($activity);
+            // set the owning side to null (unless already changed)
+            if ($activity->getExperience() === $this) {
+                $activity->setExperience(null);
+            }
+        }
 
         return $this;
     }
