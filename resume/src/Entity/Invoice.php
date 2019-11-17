@@ -14,7 +14,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 class Invoice
 {
     /**
-     * @ORM\Id()
+     * @ORM\Id()', default: true , role: ROLE_USER_LIST }
+      - { entity: 'UsersManagement', label: 'Members management', icon: 'user' , role: ROLE_USER_ALL }
+      - { label: 'Meetings' }
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
@@ -55,7 +57,7 @@ class Invoice
     private $totalHt;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2)
+     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
      */
     private $totalTax;
 
