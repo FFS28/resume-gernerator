@@ -92,7 +92,7 @@ class Invoice
     const STATUS_PAYED = 'payed';
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true))
      */
     private $status;
 
