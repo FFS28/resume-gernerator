@@ -109,12 +109,13 @@ class IndexController extends AbstractController
         /*$html2pdf = new Html2Pdf();
         $html2pdf->writeHTML($html);*/
 
-        return Browsershot::html('<h1>Hello world!!</h1>')->save('example.pdf');
+        //return Browsershot::html('<h1>Hello world!!</h1>')->save('example.pdf');
 
         return new Response(
             //$snappyPdf->getOutput($url),
             //$snappyPdf->getOutputFromHtml($html),
             //$html2pdf->output(),
+        null,
             200,
             array(
                 'Content-Type'          => 'application/pdf',
