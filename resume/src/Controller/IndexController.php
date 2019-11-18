@@ -115,7 +115,7 @@ class IndexController extends AbstractController
             //$snappyPdf->getOutput($url),
             //$snappyPdf->getOutputFromHtml($html),
             //$html2pdf->output(),
-        null,
+            null,
             200,
             array(
                 'Content-Type'          => 'application/pdf',

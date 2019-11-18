@@ -5,6 +5,7 @@
 - Gestion de factures
 - Alert automatique en cas de dépassement des plafonds
 - Envoi des factures et relances
+- Gestion du CRA par un calendrier
 - Export de CRA
 - Arbres des entreprises Clients / Prestataires
 - Alertes déclaration TVA / URSSAF / IMPOTS

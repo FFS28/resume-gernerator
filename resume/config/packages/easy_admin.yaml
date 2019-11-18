@@ -19,33 +19,87 @@ easy_admin:
       form:
         fields:
           - name
+          - displayName
+          - { property: 'displayName', label: 'name' }
           - location
           - client
           - contractor
+            - street
+            - postalCode
+            - city
       list:
         fields:
-          - name
+          - displayName
           - location
           - client
           - contractor
-    Invoices:
+          - people
+    Persons:
+      class: App\Entity\Person
+      form:
+        fields:
+          - company
+          - { property: 'civility',
+              type: 'choice', type_options: {
+              choices: {
+                M: 'h',
+                Mme: 'f',
+              } } }
+          - firstname
+          - lastname
+          - email
+          - phones
+      list:
+        fields:
+          - company
+          - civility
+          - firstname
+          - lastname
+          - email
+          - phones
+    Invoice:
       class: App\Entity\Invoice
       controller: App\Controller\InvoiceController
       form:
         fields:
           - number
           - company
-          - createdAt
-          - payedAt
+          - experience
           - totalHt
-          - object
-          - tjm
+          - totalTax
+          - daysCount
+          - { property: 'createdAt',
+              type_options: {
+                widget: 'single_text', format: 'dd/MM/yyyy',
+                attr: {data-provide: 'datepicker', data-date-format: 'dd/mm/yyyy', data-date-language: 'fr'}
+              } }
+          - { property: 'payedAt',
+              type_options: {
+                widget: 'single_text', format: 'dd/MM/yyyy',
+                attr: {data-provide: 'datepicker', data-date-format: 'dd/mm/yyyy', data-date-language: 'fr'}
+              } }
           - { property: 'payedBy',
                 type: 'choice', type_options: {
               choices: {
                 Check: 'check',
                 Transfert: 'transfert',
               } } }
+          - { property: 'status',
+              type: 'choice', type_options: {
+              choices: {
+                Draft: 'draft',
+                Waiting: 'waiting',
+                Payed: 'payed',
+              } } }
+      list:
+        fields:
+          - number
+          - company
+          - experience
+          - { property: 'totalHt', format: '%.0f' }
+          - daysCount
+          - createdAt
+          - payedAt
     Experience:
       class: App\Entity\Experience
       form:
@@ -130,7 +184,7 @@ easy_admin:
       list:
         fields:
           - name
-          - url
+          - { property: 'url', type: 'url' }
         sort: ['name', 'DESC']
     Education:
       class: App\Entity\Education
