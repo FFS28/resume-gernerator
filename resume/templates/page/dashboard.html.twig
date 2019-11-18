@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'Dashboard' | trans }}{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ app.request.getSchemeAndHttpHost() }}{{ asset('build/css/dashboard.css') }}">
+{% endblock %}
+
+{% block body %}
+
+{% endblock %}

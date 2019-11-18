@@ -34,8 +34,10 @@ Encore
     .addEntry('js/bootstrap-datepicker', './assets/js/bootstrap-datepicker.js')
     .addEntry('js/bootstrap-datepicker.fr', './assets/js/bootstrap-datepicker.fr.js')
     .addEntry('js/app', './assets/js/app.js')
-    .addStyleEntry('css/app', './assets/css/app.scss')
     .addStyleEntry('css/bootstrap-datepicker', './assets/css/bootstrap-datepicker.css')
+
+    .addStyleEntry('css/index', './assets/css/index.scss')
+    .addStyleEntry('css/dashboard', './assets/css/dashboard.scss')
 
     // uncomment if you use TypeScript
     //.enableTypeScriptLoader()

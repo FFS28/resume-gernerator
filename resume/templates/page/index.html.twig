@@ -9,7 +9,7 @@
 {%- endblock -%}
 
 {% block stylesheets %}
-    {#<link rel="stylesheet" media="all" href="{{ app.request.getSchemeAndHttpHost() ~ asset('/assets/home/style.css' | assetVersion) }}">#}
+    <link rel="stylesheet" type="text/css" href="{{ app.request.getSchemeAndHttpHost() }}{{ asset('build/css/index.css') }}">
 {% endblock %}
 
 {% block body %}
@@ -51,7 +51,7 @@
                     {% if attribute.slug not in attributes_exclude %}
                         <li class="separator"><i class="fas fa-circle"></i></li>
                         <li>
-                            {% if attribute.icon %}<i class="{{ attribute.icon }}"></i>{% endif %}
+                            {% if attribute.icon %}<i class="icon {{ attribute.icon }}"></i>{% endif %}
                             <span>{{ attribute.value }}</span>
                         </li>
                     {% endif %}
@@ -110,7 +110,7 @@
                                 <div>{{ experience.description | nl2br }}</div>
                                 <div class="badges">
                                     <span class="badge">{{ (experience.isFreelance ? 'Freelance' : 'Employee') | trans }}</span>
-                                    <span class="badge">{{ experience.company.location }}</span>
+                                    <span class="badge">{{ experience.company.city }}</span>
                                     {% for skill in experience.skills %}
                                         <span class="badge">{{ skill }}</span>
                                     {% endfor %}
@@ -167,7 +167,7 @@
                     {% for link in links %}
                         <li>
                             <a href="{{ link.url }}" target="_blank">
-                                {% if link.icon %}<i class="{{ link.icon }}"></i>{% endif %}
+                                {% if link.icon %}<i class="icon {{ link.icon }}"></i>{% endif %}
                                 {% if link.name %}<span>{{ link.name }}</span>{% endif %}
                             </a>
                         </li>

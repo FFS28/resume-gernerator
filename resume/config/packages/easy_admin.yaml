@@ -9,28 +9,41 @@ easy_admin:
         - 'build/runtime.js'
       css:
         - 'build/css/bootstrap-datepicker.css'
+    menu:
+        - { label: 'Home', url: '/' }
+        - { label: 'Dashboard', url: '/admin/dashboard' }
+        - { label: 'Main' }
+        - Companies
+        - Persons
+        - Experiences
+        - Skills
+        - Invoices
+        - { label: 'Secondary' }
+        - Attributes
+        - Hobbies
+        - Educations
+        - Links
   formats:
     date: 'd/m/Y'
   list:
     max_results: 100
   entities:
-    Company:
+    Companies:
       class: App\Entity\Company
       form:
         fields:
           - name
           - displayName
-          - { property: 'displayName', label: 'name' }
-          - location
+          - { property: 'displayName', label: 'Name' }
           - client
           - contractor
-            - street
-            - postalCode
-            - city
+          - street
+          - postalCode
+          - city
       list:
         fields:
           - displayName
-          - location
+          - city
           - client
           - contractor
           - people
@@ -57,7 +70,7 @@ easy_admin:
           - lastname
           - email
           - phones
-    Invoice:
+    Invoices:
       class: App\Entity\Invoice
       controller: App\Controller\InvoiceController
       form:
@@ -67,7 +80,7 @@ easy_admin:
           - experience
           - totalHt
           - totalTax
-          - daysCount
+          - { property: 'daysCount', type: 'number'}
           - { property: 'createdAt',
               type_options: {
                 widget: 'single_text', format: 'dd/MM/yyyy',
@@ -100,7 +113,7 @@ easy_admin:
           - daysCount
           - createdAt
           - payedAt
-    Experience:
+    Experiences:
       class: App\Entity\Experience
       form:
         fields:
@@ -127,7 +140,7 @@ easy_admin:
           - dateBegin
           - dateEnd
           - onHomepage
-    Skill:
+    Skills:
       class: App\Entity\Skill
       form:
         fields:
@@ -152,7 +165,7 @@ easy_admin:
           - level
           - parent
           - onHomepage
-    Attribute:
+    Attributes:
       class: App\Entity\Attribute
       form:
         fields:
@@ -165,7 +178,7 @@ easy_admin:
           - slug
           - value
           - weight
-    Hobby:
+    Hobbies:
       class: App\Entity\Hobby
       form:
         fields:
@@ -174,7 +187,7 @@ easy_admin:
         fields:
           - name
         sort: ['name', 'DESC']
-    Link:
+    Links:
       class: App\Entity\Link
       form:
         fields:
@@ -186,7 +199,7 @@ easy_admin:
           - name
           - { property: 'url', type: 'url' }
         sort: ['name', 'DESC']
-    Education:
+    Educations:
       class: App\Entity\Education
       form:
         fields:

@@ -33,9 +33,9 @@ Location: Localisation
 Client: Client
 Contractor: Prestataire
 Display name: Nom personnalisé
-street: Rue
-postalCode: Code postal
-city: Ville
+Street: Rue
+Postal code: Code postal
+City: Ville
 
 Person: Personne
 Persons: Personnes
@@ -91,3 +91,8 @@ September: Septembre
 October: Octobre
 November: Novembre
 December: Decembre
+
+Home: Acceuil
+Dashboard: Dashboard
+Main: Principal
+Secondary: Secondaire

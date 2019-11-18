@@ -24,3 +24,13 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Entity'
                 prefix: 'App\Entity'
                 alias: App
+        dql:
+            numeric_functions:
+                if: App\DQL\IfFunction
+                collate: App\DQL\CollateFunction
+                distance: App\DQL\DistanceFunction
+                left: App\DQL\LeftFunction
+                right: App\DQL\RightFunction
+                soundex: App\DQL\SoundexFunction
+                dateFormat: App\DQL\DateFormatFunction
+                toChar: App\DQL\ToCharFunction

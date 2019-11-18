@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Invoice;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -18,7 +19,7 @@ class InvoiceType extends AbstractType
             ->add('totalHt')
             ->add('object')
             ->add('tjm')
-            ->add('daysCount', ['mapped' => false])
+            ->add('daysCount', NumberType::class, ['mapped' => false])
             ->add('payedBy')
             ->add('status')
             ->add('company')

@@ -52,7 +52,7 @@ class Invoice
     private $payedAt;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2)
+     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
      */
     private $totalHt;
 
@@ -214,18 +214,18 @@ class Invoice
         return $this->totalHt;
     }
 
-    public function getDaysCount(): ?float
-    {
-        return $this->getTjm() && $this->getTjm() !== null && $this->getTjm() > 0
-            ? $this->getTotalHt() / $this->getTjm()
-            : null;
-    }
-
     public function setTotalHt(string $totalHt): self
     {
         $this->totalHt = $totalHt;
 
         return $this;
+    }
+
+    public function getDaysCount(): ?float
+    {
+        return $this->getTjm() && $this->getTjm() !== null && $this->getTjm() > 0
+            ? $this->getTotalHt() / $this->getTjm()
+            : null;
     }
 
     public function getTotalTax(): ?string

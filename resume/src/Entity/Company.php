@@ -33,11 +33,6 @@ class Company
     private $slug;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $location;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Experience", mappedBy="company", cascade={"persist"})
      */
     private $experiences;
@@ -119,18 +114,6 @@ class Company
     public function setSlug(string $slug): self
     {
         $this->slug = $slug;
-
-        return $this;
-    }
-
-    public function getLocation(): ?string
-    {
-        return $this->location;
-    }
-
-    public function setLocation(?string $location): self
-    {
-        $this->location = $location;
 
         return $this;
     }

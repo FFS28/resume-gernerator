@@ -27,7 +27,7 @@ class ActivityRepository extends ServiceEntityRepository
     public function findActivitiesByDate(\DateTimeInterface $date): array
     {
         return $this->createQueryBuilder('a')
-            ->where('DATE_FORMAT(i.date, \'Ym\')) = :date')
+            ->where('ToChar(i.date, \'Ym\')) = :date')
             ->setParameter('date', $date->format('Ym'))
             ->getQuery()
             ->getResult()

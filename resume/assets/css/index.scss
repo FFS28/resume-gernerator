@@ -1,6 +1,48 @@
 @import "variables";
 @import "flexbox";
 @import "donut";
+@import "../fontawesome/scss/fontawesome";
+@import "../fontawesome/scss/solid";
+@import "../fontawesome/scss/regular";
+@import "../fontawesome/scss/brands";
+@import "../bootstrap/css/bootstrap.min.css";
+
+
+* {
+  box-sizing: border-box;
+}
+
+html, body{
+  width: 100%;
+  display: block;
+  position: relative;
+
+  font-family: Verdana, Geneva, sans-serif;
+  background-color: $white;
+
+  -webkit-overflow-scrolling: smooth;
+  scroll-behavior: smooth;
+}
+html, body, a{
+  color: $darkGrey;
+}
+
+@media (min-width: $screen-sm) {
+  .navbar + .container-fluid #head {
+    margin-top: 40px;
+  }
+  .navbar + .container-fluid > .container, .navbar + .container-fluid > .alert{
+    margin-top: 50px;
+  }
+}
+
+.btn > .icon + span, .btn > span + .icon,
+a > .icon + span, a > span + .icon,
+button > .icon + span, button > span + .icon,
+.alert > .icon + span, .alert > span + .icon{
+  margin-left: 10px;
+}
+
 
 .btn{
   border-radius: 0 !important;

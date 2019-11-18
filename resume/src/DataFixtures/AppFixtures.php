@@ -127,7 +127,7 @@ class AppFixtures extends Fixture
         $education->setDateBegin(new \DateTime('2007-09-01 00:00:00'));
         $education->setDateEnd(new \DateTime('2009-08-01 00:00:00'));
         $education->setDetails('Options développeur et math');
-        $education->setLocation('Nice');
+        $education->setCity('Nice');
         $education->setSchool('Lycée Honoré d\'Estienne d\'Orves');
         $this->manager->persist($education);
 
@@ -137,7 +137,7 @@ class AppFixtures extends Fixture
         $education->setDateBegin(new \DateTime('2009-09-01 00:00:00'));
         $education->setDateEnd(new \DateTime('2010-08-01 00:00:00'));
         $education->setDetails('Option IDSE');
-        $education->setLocation('Sophia Antipolis');
+        $education->setCity('Sophia Antipolis');
         $education->setSchool( 'Institut universitaire de technologie');
         $this->manager->persist($education);
     }
@@ -277,116 +277,116 @@ class AppFixtures extends Fixture
     {
         $company = new Company();
         $company->setName('NETexcom');
-        $company->setLocation('Monaco');
+        $company->setCity('Monaco');
         $this->manager->persist($company);
         $this->companies['netexcom'] = $company;
 
         $company = new Company();
         $company->setName('Eleusis Solution');
-        $company->setLocation('Nice');
+        $company->setCity('Nice');
         $this->manager->persist($company);
         $this->companies['eleusis'] = $company;
 
         $company = new Company();
         $company->setName('ACL Informatique');
-        $company->setLocation('Villeneuve-Loubet');
+        $company->setCity('Villeneuve-Loubet');
         $this->manager->persist($company);
         $this->companies['acl'] = $company;
 
         $company = new Company();
         $company->setName('e-Toxic');
-        $company->setLocation('Villeneuve-Loubet');
+        $company->setCity('Villeneuve-Loubet');
         $this->manager->persist($company);
         $this->companies['etoxic'] = $company;
 
         $company = new Company();
         $company->setName('Qwant');
-        $company->setLocation('Nice');
+        $company->setCity('Nice');
         $this->manager->persist($company);
         $this->companies['qwant'] = $company;
 
         $company = new Company();
         $company->setName('Audivox');
-        $company->setLocation('Lyon');
+        $company->setCity('Lyon');
         $this->manager->persist($company);
         $this->companies['audivox'] = $company;
 
         $company = new Company();
         $company->setName('Audiovisit');
-        $company->setLocation('Lyon');
+        $company->setCity('Lyon');
         $this->manager->persist($company);
         $this->companies['audiovisit'] = $company;
 
         $company = new Company();
         $company->setName('Opusline');
-        $company->setLocation('Paris');
+        $company->setCity('Paris');
         $this->manager->persist($company);
         $this->companies['opusline'] = $company;
 
         $company = new Company();
         $company->setName('Talkspirit');
-        $company->setLocation('Paris');
+        $company->setCity('Paris');
         $this->manager->persist($company);
         $this->companies['talkspirit'] = $company;
 
         $company = new Company();
         $company->setName('Jessica Rolland');
-        $company->setLocation('Lyon');
+        $company->setCity('Lyon');
         $this->manager->persist($company);
         $this->companies['girlstakelyon'] = $company;
 
         $company = new Company();
         $company->setName('Leidgens Groupe');
-        $company->setLocation('Lyon');
+        $company->setCity('Lyon');
         $this->manager->persist($company);
         $this->companies['leidgens'] = $company;
 
         $company = new Company();
         $company->setName('Pretty Cool');
-        $company->setLocation('Lyon');
+        $company->setCity('Lyon');
         $this->manager->persist($company);
         $this->companies['prettycool'] = $company;
 
         $company = new Company();
         $company->setName('Guillaume Ribot');
-        $company->setLocation('Paris');
+        $company->setCity('Paris');
         $this->manager->persist($company);
         $this->companies['ribot'] = $company;
 
         $company = new Company();
         $company->setName('CoSpirit');
-        $company->setLocation('Lyon');
+        $company->setCity('Lyon');
         $this->manager->persist($company);
         $this->companies['cospirit'] = $company;
 
         $company = new Company();
         $company->setName('Ar Developpement');
-        $company->setLocation('Lyon');
+        $company->setCity('Lyon');
         $company->setContractor($this->companies['cospirit']);
         $this->manager->persist($company);
         $this->companies['ar'] = $company;
 
         $company = new Company();
         $company->setName('Altima');
-        $company->setLocation('Lyon');
+        $company->setCity('Lyon');
         $this->manager->persist($company);
         $this->companies['altima'] = $company;
 
         $company = new Company();
         $company->setName('Obiz');
-        $company->setLocation('Lyon');
+        $company->setCity('Lyon');
         $this->manager->persist($company);
         $this->companies['obiz'] = $company;
 
         $company = new Company();
         $company->setName('Agixis');
-        $company->setLocation('Lyon');
+        $company->setCity('Lyon');
         $this->manager->persist($company);
         $this->companies['agixis'] = $company;
 
         $company = new Company();
         $company->setName('Spyrit');
-        $company->setLocation('Viroflay');
+        $company->setCity('Viroflay');
         $this->manager->persist($company);
         $this->companies['spyrit'] = $company;
 
@@ -398,70 +398,70 @@ class AppFixtures extends Fixture
 
         $company = new Company();
         $company->setName('La compagnie hyperactive');
-        $company->setLocation('Paris');
+        $company->setCity('Paris');
         $this->manager->persist($company);
         $this->companies['hyperactive'] = $company;
 
         $company = new Company();
         $company->setName('Drakona');
-        $company->setLocation('Lyon');
+        $company->setCity('Lyon');
         $this->manager->persist($company);
         $this->companies['drakona'] = $company;
 
         $company = new Company();
         $company->setName('CS Systemes D\'information');
-        $company->setLocation('Lyon');
+        $company->setCity('Lyon');
         $this->manager->persist($company);
         $this->companies['cs'] = $company;
 
         $company = new Company();
         $company->setName('Inpact');
-        $company->setLocation('Lyon');
+        $company->setCity('Lyon');
         $this->manager->persist($company);
         $this->companies['inpact'] = $company;
 
         $company = new Company();
         $company->setName('EDF Septen');
-        $company->setLocation('Villeurbanne');
+        $company->setCity('Villeurbanne');
         $this->manager->persist($company);
         $company->setContractor($this->companies['cs']);
         $this->companies['edf-septen'] = $company;
 
         $company = new Company();
         $company->setName('Apollo SSC');
-        $company->setLocation('Lyon');
+        $company->setCity('Lyon');
         $this->manager->persist($company);
         $this->companies['apollo'] = $company;
 
         $company = new Company();
         $company->setName('Cegid');
-        $company->setLocation('Lyon');
+        $company->setCity('Lyon');
         $this->manager->persist($company);
         $company->setContractor($this->companies['apollo']);
         $this->companies['cegid'] = $company;
 
         $company = new Company();
         $company->setName('Aleysia');
-        $company->setLocation('Lyon');
+        $company->setCity('Lyon');
         $this->manager->persist($company);
         $this->companies['aleysia'] = $company;
 
         $company = new Company();
         $company->setName('Ucly');
-        $company->setLocation('Lyon');
+        $company->setCity('Lyon');
         $this->manager->persist($company);
         $company->setContractor($this->companies['aleysia']);
         $this->companies['ucly'] = $company;
 
         $company = new Company();
         $company->setName('BeWizYu');
-        $company->setLocation('Lyon');
+        $company->setCity('Lyon');
         $this->manager->persist($company);
         $this->companies['bewizyu'] = $company;
 
         $company = new Company();
         $company->setName('Acte Media');
-        $company->setLocation('Bron');
+        $company->setCity('Bron');
         $this->manager->persist($company);
         $company->setContractor($this->companies['bewizyu']);
         $this->companies['actemedia'] = $company;
@@ -809,6 +809,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(1500);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -821,6 +822,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(3000);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -833,6 +835,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(600);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -845,6 +848,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(600);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -856,6 +860,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(450);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -868,6 +873,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(150);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -880,6 +886,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(150);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -891,6 +898,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(200);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -903,6 +911,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(2100);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -915,6 +924,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(7200);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -927,6 +937,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(6000);
         $invoice->setPayedBy(Invoice::PAYEDBY_CHECK);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         // 2016
@@ -940,6 +951,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(100);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -951,6 +963,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(-100);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -962,6 +975,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(300);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -974,6 +988,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(4200);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -986,6 +1001,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(3000);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -998,6 +1014,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(600);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1010,6 +1027,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(5100);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1022,6 +1040,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(-3000);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1034,6 +1053,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(-600);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1046,6 +1066,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(300);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1058,6 +1079,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(-300);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1070,6 +1092,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(900);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1082,6 +1105,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(300);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1094,6 +1118,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(9000);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1106,6 +1131,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(2100);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1118,6 +1144,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(2100);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1130,6 +1157,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(5600);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         // 2017
@@ -1144,6 +1172,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(800);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1156,6 +1185,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(2800);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1168,6 +1198,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(4400);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1180,6 +1211,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(800);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1192,6 +1224,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(2800);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1204,6 +1237,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(2000);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1216,6 +1250,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(1600);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1228,6 +1263,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(1600);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1240,6 +1276,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(2700);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1252,6 +1289,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(3300);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1264,6 +1302,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(3300);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1276,6 +1315,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(2640);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1288,6 +1328,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(4000);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         // 2018
@@ -1302,6 +1343,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(6300);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1314,6 +1356,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(3600);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1326,6 +1369,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(6000);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1338,6 +1382,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(7000);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1350,6 +1395,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(8200);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1362,6 +1408,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(5800);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1374,6 +1421,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(6400);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1386,6 +1434,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(6800);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1398,6 +1447,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(6000);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1410,6 +1460,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(-400);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1422,6 +1473,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(4800);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         // 2019
@@ -1436,6 +1488,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(5000);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1448,6 +1501,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(4000);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1460,6 +1514,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(4200);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1472,6 +1527,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(1800);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1484,6 +1540,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(1800);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1496,6 +1553,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(6000);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1508,6 +1566,7 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(5000);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1521,6 +1580,7 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(5400);
         $invoice->setTotalTax(1080);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1534,6 +1594,7 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(4200);
         $invoice->setTotalTax(840);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
     }
 }
