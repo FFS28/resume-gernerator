@@ -24,8 +24,6 @@ disk: 1024
 
 mounts:
     "/var": { source: local, source_path: var }
-    #"/vendor/mpdf/mpdf/tmp": { source: local, source_path: tmp_mpdf }
-    #"/vendor/dompdf/dompdf/lib/fonts": { source: local, source_path: tmp_dompdf }
     "/public/upload": { source: local, source_path: uploads }
 
 variables:
@@ -38,7 +36,6 @@ hooks:
 
         curl -s https://get.symfony.com/cloud/configurator | (>&2 bash)
         (>&2 symfony-build)
-        npm install phantomjs
 
     deploy: |
         set -x -e

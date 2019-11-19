@@ -8,10 +8,8 @@ use App\Repository\ExperienceRepository;
 use App\Repository\HobbyRepository;
 use App\Repository\LinkRepository;
 use App\Repository\SkillRepository;
-use Dompdf\Dompdf;
-use PDFShift\PDFShift;
-use Spatie\Browsershot\Browsershot;
-use Spipu\Html2Pdf\Html2Pdf;
+use Knp\Snappy\AbstractGenerator;
+use Knp\Snappy\Pdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -80,7 +78,8 @@ class IndexController extends AbstractController
         ExperienceRepository $experienceRepository,
         EducationRepository $educationRepository,
         HobbyRepository $hobbyRepository,
-        LinkRepository $linkRepository
+        LinkRepository $linkRepository,
+        Pdf $snappyPdf
     )
     {
         $data = $this->loadData($attributeRepository, $skillRepository, $experienceRepository,
@@ -89,33 +88,10 @@ class IndexController extends AbstractController
 
         $pdfFilename = 'jeremy-achain-cv.pdf';
 
-        //$url = $this->generateUrl('index', ['isPdf' => true], UrlGeneratorInterface::ABSOLUTE_URL);
         $html =  $this->renderView('page/index.html.twig', $data);
 
-        /*$body_begin = strpos($html, '<body>') + 6;
-        $body_end = strpos($html, '</body>');
-        $body = substr($html, $body_begin, strlen($html) - $body_end - $body_begin );
-
-        $mpdf = new \Mpdf\Mpdf();
-        $mpdf->WriteHTML(file_get_contents($this->getParameter('kernel.project_dir') . '/public/build/css/app.css'), \Mpdf\HTMLParserMode::HEADER_CSS);
-        $mpdf->WriteHTML($body);
-        return $mpdf->Output();*/
-
-        /*$dompdf = new Dompdf();
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'portrait');
-        $dompdf->render();$dompdf->stream();*/
-
-        /*$html2pdf = new Html2Pdf();
-        $html2pdf->writeHTML($html);*/
-
-        //return Browsershot::html('<h1>Hello world!!</h1>')->save('example.pdf');
-
         return new Response(
-            //$snappyPdf->getOutput($url),
-            //$snappyPdf->getOutputFromHtml($html),
-            //$html2pdf->output(),
-            null,
+            $snappyPdf->getOutputFromHtml($html),
             200,
             array(
                 'Content-Type'          => 'application/pdf',
