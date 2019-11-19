@@ -127,7 +127,7 @@ class AppFixtures extends Fixture
         $education->setDateBegin(new \DateTime('2007-09-01 00:00:00'));
         $education->setDateEnd(new \DateTime('2009-08-01 00:00:00'));
         $education->setDetails('Options développeur et math');
-        $education->setCity('Nice');
+        $education->setLocation('Nice');
         $education->setSchool('Lycée Honoré d\'Estienne d\'Orves');
         $this->manager->persist($education);
 
@@ -137,7 +137,7 @@ class AppFixtures extends Fixture
         $education->setDateBegin(new \DateTime('2009-09-01 00:00:00'));
         $education->setDateEnd(new \DateTime('2010-08-01 00:00:00'));
         $education->setDetails('Option IDSE');
-        $education->setCity('Sophia Antipolis');
+        $education->setLocation('Sophia Antipolis');
         $education->setSchool( 'Institut universitaire de technologie');
         $this->manager->persist($education);
     }
