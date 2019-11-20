@@ -30,22 +30,19 @@ html, body{
   padding: 0;
   margin: 0;
 
-  font-family: Verdana, Geneva, sans-serif;
+  font-family: Verdana, Geneva, DejaVuSans, sans-serif;
   background-color: #fff;
-
-  -webkit-overflow-scrolling: smooth;
-  scroll-behavior: smooth;
 }
 html, body, a{
   color: #333;
 }
-ul{
+.ul{
   margin: 0;
   padding: 10px 40px 20px;
   display: block;
   width: 100%;
 }
-li {
+.li {
   list-style: none;
   display: inline-block;
 }
@@ -61,7 +58,7 @@ h2{
   padding-top: 60px;
 }
 h4{
-  margin: 0px;
+  margin: 0;
   padding: 10px 0;
 }
 .text-center{
@@ -124,7 +121,7 @@ h4{
       margin: 0;
     }
   }
-  #delimiter{
+  #de.limiter{
     width:0;
     height: 100px;
     border-right: 1px solid;
@@ -140,7 +137,7 @@ h4{
   @include align-items(center);
   @include flex-wrap(wrap);
 
-  li {
+  .li {
 
     &:not(.separator) {
       margin: 0 20px;
@@ -159,7 +156,7 @@ h4{
 }
 
 #skills {
-  li {
+  .li {
     margin: 0 40px;
     padding: 20px 0;
 
@@ -178,21 +175,21 @@ h4{
 
 #experiences, #educations {
   &:not(.html-pdf) {
-    ul {
+    .ul {
       @include inline-flex();
       @include flex-flow(row wrap);
       @include align-items(flex-start);
       @include justify-content(space-between);
 
-      li{
+      .li{
         width: 50%;
         min-width: 400px;
       }
     }
   }
 
-  ul {
-    li {
+  .ul {
+    .li {
       display: block;
       text-align: left;
       padding: 20px 40px;
@@ -202,13 +199,13 @@ h4{
 
 #links {
   padding: 60px 0 20px;
-  ul {
+  .ul {
     @include inline-flex();
     @include flex-flow(row wrap);
     @include align-items(flex-start);
     @include justify-content(center);
 
-    li {
+    .li {
       margin: 0 20px;
     }
   }
@@ -298,13 +295,17 @@ h4{
       line-height: 24px;
       text-align: center;
       position: absolute;
-      bottom: 0px;
+      bottom: 0;
       width: 100%;
     }
   }
 }
 
 @mixin html-pdf(){
+  html, body{
+    font-family: DejaVuSans, sans-serif;
+  }
+
   .hidden-print {
     display: none !important;
   }
@@ -317,15 +318,20 @@ h4{
   h2 {
     padding-top: 20px;
   }
-  ul {
+  .ul {
     padding-left: 0;
     padding-right: 0;
   }
-  #attributes li:not(.separator) {
+  #me #name{
+    &, div {
+      text-align: center;
+    }
+  }
+  #attributes .li:not(.separator) {
     margin: 0 10px;
     font-size: 12px;
   }
-  &#experiences ul li, &#educations ul li {
+  &#experiences .ul .li, &#educations .ul .li {
     padding: 20px 10px;
   }
   #me, #attributes, &.section {

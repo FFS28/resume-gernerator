@@ -30,6 +30,8 @@ class IndexController extends AbstractController
      * @param EducationRepository $educationRepository
      * @param HobbyRepository $hobbyRepository
      * @param LinkRepository $linkRepository
+     * @return Response
+     * @throws \Mpdf\MpdfException
      */
     public function index(
         Request $request,
@@ -38,8 +40,7 @@ class IndexController extends AbstractController
         ExperienceRepository $experienceRepository,
         EducationRepository $educationRepository,
         HobbyRepository $hobbyRepository,
-        LinkRepository $linkRepository,
-        TCPDFController $tcpdfService
+        LinkRepository $linkRepository
     ) {
         $experiencesFilter = $request->query->get('all') ? [] : ['onHomepage' => true];
         $data = [
@@ -60,7 +61,16 @@ class IndexController extends AbstractController
             $data['css'] = file_get_contents($this->getParameter('kernel.project_dir') . '/public/build/css/index.css');
             $pdf = null;
 
-            if ($request->query->get('pdf') === 'html2pdf') {
+            if ($request->query->get('pdf') === 'mpdf') {
+                $mpdf = new \Mpdf\Mpdf([
+                    'default_font' => 'DejaVuSans'
+                ]);
+                //$mpdf->WriteHTML(file_get_contents(, \Mpdf\HTMLParserMode::HEADER_CSS);
+                $mpdf->WriteHTML($html);
+                $pdf = $mpdf->Output();
+            }
+
+            /*if ($request->query->get('pdf') === 'html2pdf') {
                 $html2pdf = new Html2Pdf();
                 $html2pdf->writeHTML($html);
                 $pdf = $html2pdf->output();
@@ -74,13 +84,6 @@ class IndexController extends AbstractController
                 $pdf = $dompdf->output();
             }
 
-            if ($request->query->get('pdf') === 'mpdf') {
-                $mpdf = new \Mpdf\Mpdf();
-                //$mpdf->WriteHTML(file_get_contents(, \Mpdf\HTMLParserMode::HEADER_CSS);
-                $mpdf->WriteHTML($html);
-                $pdf = $mpdf->Output();
-            }
-
             if ($request->query->get('pdf') === 'tcpdf') {
                 $tcpdf = $tcpdfService->create('vertical', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
                 $tcpdf->AddPage();
@@ -90,7 +93,7 @@ class IndexController extends AbstractController
 
             if ($request->query->get('pdf') === 'browsershot') {
                 $pdf = Browsershot::html($html)->pdf();
-            }
+            }*/
 
             if ($pdf) {
                 return new Response(

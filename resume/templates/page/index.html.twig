@@ -32,10 +32,10 @@
                 {% endif %}
                 <h1 id="name">
                     {% if attributes['name'] is defined %}
-                        <span class="name" itemprop="name">{{ attributes['name'].value }}</span>
+                        <div class="name" itemprop="name">{{ attributes['name'].value }}</div>
                     {% endif %}
                     {% if attributes['job'] is defined %}
-                        <span class="h2 job" itemprop="jobTitle">{{ attributes['job'].value }}</span>
+                        <div class="h2 job" itemprop="jobTitle">{{ attributes['job'].value }}</div>
                     {% endif %}
                 </h1>
             </div>
@@ -44,25 +44,25 @@
             {% if attributes['subtitle'] is defined and not isPdf %}
                 <h2 id="subtitle" class="text-center hidden-print">{{ attributes['subtitle'].value }}</h2>
             {% endif %}
-            <ul id="attributes" class="text-center">
+            <div id="attributes" class="ul text-center">
                 {% set age = date('now').diff((date('1988-09-05'))).format('%y') %}
-                <li>{{ 'Age' | trans({'{age}':age}) }}</li>
+                <span class="li">{{ 'Age' | trans({'{age}':age}) }}</span>
                 {% if attributes['city'] is defined %}
-                    <li class="separator hidden-xs"><i class="fas fa-circle"></i></li>
-                    <li itemprop="homeLocation" itemscope itemtype="http://schema.org/PostalAddress">
+                    <span class="li separator hidden-xs"><i class="fas fa-circle"></i></span>
+                    <span class="li" itemprop="homeLocation" itemscope itemtype="http://schema.org/PostalAddress">
                         <span itemprop="addressLocality">{{ attributes['city'].value }}</span>
-                    </li>
+                    </span>
                 {% endif %}
                 {% for attribute in attributes %}
                     {% if attribute.slug not in attributes_exclude %}
-                        <li class="separator hidden-xs"><i class="fas fa-circle"></i></li>
-                        <li>
+                        <span class="li separator hidden-xs"><i class="fas fa-circle"></i></span>
+                        <span class="li">
                             {% if attribute.icon %}<i class="icon {{ attribute.icon }}"></i>{% endif %}
                             <span>{{ attribute.value }}</span>
-                        </li>
+                        </span>
                     {% endif %}
                 {% endfor %}
-            </ul>
+            </div>
         </div>
     </div>
     <div id="skills" class="section text-center {% if isPdf %}html-pdf{% endif %}">
@@ -70,9 +70,9 @@
             {{ 'Skills' | trans }}
             {#<a href="{{ url('skills') }}">{{ 'Skills' | trans }}</a>#}
         </h2>
-        <ul>
+        <div class="ul">
             {% for skill in skills %}
-                <li>
+                <span class="li">
                     <div class="">
                         {% if isPdf %}
                             <div class="bar-chart">
@@ -90,17 +90,17 @@
                         {% endif %}
                     </div>
                     <div class="name">{{ skill.name }}</div>
-                </li>
+                </span>
             {% endfor %}
-        </ul>
+        </div>
     </div>
     <div id="experiences" class="section text-center {% if isPdf %}html-pdf{% endif %}">
         <h2>
             {{ 'Experiences' | trans }}
         </h2>
-        <ul>
+        <div class="ul">
             {% for experience in experiences %}
-                <li class="">
+                <span class="li">
                     <div class="date">
                         <span>{{ experience.dateBegin | date('F') | trans }} {{ experience.dateBegin | date('Y') }}</span>&nbsp;-&nbsp;<span>{{ experience.dateEnd | date('F') | trans }} {{ experience.dateEnd | date('Y') }}</span>
                     </div>
@@ -114,16 +114,16 @@
                             <span class="badge">{{ skill }}</span>
                         {% endfor %}
                     </div>
-                </li>
+                </span>
             {% endfor %}
-        </ul>
+        </div>
         <div class="clearfix"></div>
     </div>
     <div id="educations" class="section text-center {% if isPdf %}html-pdf{% endif %}">
         <h2>{{ 'Educations' | trans }}</h2>
-        <ul>
+        <div class="ul">
             {% for education in educations %}
-                <li class="">
+                <span class="li">
                     <div class="date">
                         <span>{{ education.dateBegin | date('F') | trans }} {{ education.dateBegin | date('Y') }}</span> - <span>{{ education.dateEnd | date('F') | trans }} {{ education.dateEnd | date('Y') }}</span>
                     </div>
@@ -137,17 +137,17 @@
                     {% if education.location %}
                         <div><span class="badge">{{ education.location }}</span></div>
                     {% endif %}
-                </li>
+                </span>
             {% endfor %}
-        </ul>
+        </div>
     </div>
     <div id="hobbies" class="section text-center {% if isPdf %}html-pdf{% endif %}">
         <h2>{{ 'Hobbies' | trans }}</h2>
-        <ul>
+        <div class="ul">
             {% for hobby in hobbies %}
-                <li class="badge">{{ hobby.name }}</li>
+                <span class="li badge">{{ hobby.name }}</span>
             {% endfor %}
-        </ul>
+        </div>
     </div>
     {% if not isPdf %}
         <a id="" class="hidden-print" href="{{ url('index', {'pdf' : true}) }}"></a>
@@ -157,16 +157,16 @@
             </div>
         {% endif %}
         <div id="links" class="hidden-print">
-            <ul>
+            <div class="ul">
                 {% for link in links %}
-                    <li>
+                    <span class="li">
                         <a href="{{ link.url }}" target="_blank">
                             {% if link.icon %}<i class="icon {{ link.icon }}"></i>{% endif %}
                             {% if link.name %}<span>{{ link.name }}</span>{% endif %}
                         </a>
-                    </li>
+                    </span>
                 {% endfor %}
-            </ul>
+            </div>
         </div>
     {% endif %}
 {% endblock %}
