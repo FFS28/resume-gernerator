@@ -95,13 +95,28 @@ h4{
     overflow: hidden;
   }
   #quote{
-    font-style: italic;
+    margin-top: 30px;
+    margin-left: 30px;
+
     .quote{
       font-size: 14px;
+      font-style: italic;
     }
-    i.fa-quote-left{ margin-top: -10px;}
-    i.fa-quote-right{ margin-top: 15px;}
-    margin-left: 30px;
+    i.fa-quote-left{
+      margin-left: -10px;
+      margin-top: -14px;
+      float: left;
+    }
+    i.fa-quote-right{
+      float: right;
+      margin-right: -10px;
+      margin-top: 30px;
+    }
+    i{
+      font-size: 44px;
+      line-height: 14px;
+      font-weight: bold;
+    }
 
 
     @media (max-width: 767px) {
@@ -205,16 +220,16 @@ h4{
     #name, #quote{
       float: none;
       display: inline-block;
-      max-width: 280px;
+      max-width: 300px;
     }
 
     #name{
       margin:10px 0;
       text-align: right;
-      width: 280px;
+      width: 300px;
     }
   }
-  #head :not(.html-pdf) #me {
+  #head:not(.html-pdf) #me {
     @include flexbox();
     @include flex-direction(row-reverse);
     @include justify-content(center);
@@ -316,6 +331,9 @@ h4{
   }
   #me, #attributes, &.section {
     background: #fff !important;
+  }
+  #quote i {
+    display: none;
   }
 }
 

@@ -57,7 +57,7 @@ class IndexController extends AbstractController
             $pdfFilename = 'jeremy-achain-cv.pdf';
             $html =  $this->renderView('page/index.html.twig', $data);
 
-            return new Response(
+            /*return new Response(
                 $html,
                 200,
                 array(
@@ -65,7 +65,7 @@ class IndexController extends AbstractController
                     'Content-Disposition'   => 'inline; filename="'.$pdfFilename.'"'
                     //'Content-Disposition'   => 'attachment; filename="'.$pdfFilename.'"'
                 )
-            );
+            );*/
         }
 
         return $this->render('page/index.html.twig', $data);

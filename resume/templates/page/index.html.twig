@@ -18,9 +18,9 @@
             <div id="me">
                 {% if attributes['quote'] is defined and not isPdf %}
                     <div id="quote" class="hidden-print">
-                        <i class="fas fa-quote-left pull-left" aria-hidden="true"></i>
+                        <i class="fas fa-quote-left hidden-xs" aria-hidden="true">&ldquo;</i>
                         <span class="quote">{{ attributes['quote'].value }}</span>
-                        <i class="fas fa-quote-right pull-right" aria-hidden="true"></i>
+                        <i class="fas fa-quote-right hidden-xs" aria-hidden="true">&rdquo;</i>
                     </div>
                     <div id="delimiter" class="hidden-xs hidden-print"></div>
                 {% endif %}
