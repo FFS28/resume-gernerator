@@ -214,7 +214,6 @@ h4{
   }
 }
 
-/* Small screen / tablet */
 @media (min-width: $screen-sm-min) {
   #me{
     #name, #quote{
@@ -344,4 +343,3 @@ h4{
 @media print {
   @include html-pdf();
 }
-

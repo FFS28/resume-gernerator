@@ -9,7 +9,13 @@
 {%- endblock -%}
 
 {% block stylesheets %}
-    <link rel="stylesheet" type="text/css" href="{{ app.request.getSchemeAndHttpHost() }}{{ asset('build/css/index.css') }}">
+    {% if isPdf %}
+        <style>
+            {{ css }}
+        </style>
+    {% else %}
+        <link rel="stylesheet" type="text/css" href="{{ asset('build/css/index.css') }}">
+    {% endif %}
 {% endblock %}
 
 {% block body %}
