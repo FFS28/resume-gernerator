@@ -8,9 +8,6 @@ use App\Repository\ExperienceRepository;
 use App\Repository\HobbyRepository;
 use App\Repository\LinkRepository;
 use App\Repository\SkillRepository;
-use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
-use Knp\Snappy\AbstractGenerator;
-use Knp\Snappy\Pdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,16 +34,14 @@ class IndexController extends AbstractController
         ExperienceRepository $experienceRepository,
         EducationRepository $educationRepository,
         HobbyRepository $hobbyRepository,
-        LinkRepository $linkRepository,
-        Pdf $snappyPdf
+        LinkRepository $linkRepository
     ) {
+        $experiencesFilter = $request->query->get('all') ? [] : ['onHomepage' => true];
         $data = [
             'attributes' => $attributeRepository->findAllIndexedBy('slug'),
             'attributes_exclude' => ['name', 'quote', 'job', 'subtitle', 'description'],
             'skills' => $skillRepository->findBy(['onHomepage' => true], ['level' => 'DESC']),
-            'experiences' => $experienceRepository->findBy([
-                'onHomepage' => $request->query->get('all') ? false : true
-            ], ['dateBegin' => 'DESC']),
+            'experiences' => $experienceRepository->findBy($experiencesFilter, ['dateBegin' => 'DESC']),
             'educations' => $educationRepository->findBy([], ['dateBegin' => 'DESC']),
             'hobbies' => $hobbyRepository->findAll(),
             'links' => $linkRepository->findAll(),
