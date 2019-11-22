@@ -20,3 +20,10 @@
     
 - Entreprises
     - Liste les clients et les prestataires pour chaque entreprise
+    
+### Migration to Symfony 5
+
+## En attention de mise à jour
+
+- alterphp/easyadmin-extension-bundle
+- stof/doctrine-extensions-bundle
