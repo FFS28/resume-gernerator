@@ -6,12 +6,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * Skill
- *
- * @ORM\Table(name="skill")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\SkillRepository")
+ * @UniqueEntity("slug")
  */
 class Skill
 {
@@ -32,7 +31,7 @@ class Skill
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      * @Gedmo\Slug(fields={"name"})
      */
     private $slug;
@@ -99,7 +98,7 @@ class Skill
     private $onHomepage;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Experience", mappedBy="skills")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Experience", mappedBy="skills", cascade={"persist"})
      */
     private $experiences;
 
@@ -253,5 +252,24 @@ class Skill
         }
 
         return $this;
+    }
+
+    /**
+     * @param Skill[] $parents
+     * @return Skill[]
+     */
+    public function getAllParents(array $parents = []): array
+    {
+        if ($this->getParent()) {
+            $parent = $this->getParent();
+
+            if (!in_array($parent, $parents)) {
+                $parents[] = $parent;
+
+                return $parent->getAllParents($parents);
+            }
+        }
+
+        return $parents;
     }
 }

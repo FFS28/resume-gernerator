@@ -6,9 +6,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CompanyRepository")
+ * @UniqueEntity("slug")
  */
 class Company
 {
@@ -25,25 +27,15 @@ class Company
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      * @Gedmo\Slug(fields={"name"})
      */
     private $slug;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $location;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Experience", mappedBy="company")
+     * @ORM\OneToMany(targetEntity="App\Entity\Experience", mappedBy="company", cascade={"persist"})
      */
     private $experiences;
-
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Company", inversedBy="contractor", cascade={"persist", "remove"})
-     */
-    private $client;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Company", mappedBy="client", cascade={"persist", "remove"})
@@ -51,14 +43,45 @@ class Company
     private $contractor;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Invoice", mappedBy="company")
+     * @ORM\OneToOne(targetEntity="App\Entity\Company", inversedBy="contractor", cascade={"persist", "remove"})
+     */
+    private $client;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Invoice", mappedBy="company", cascade={"persist"})
      */
     private $invoices;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $displayName;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $street;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $postalCode;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $city;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Person", mappedBy="company", cascade={"persist"})
+     */
+    private $persons;
 
     public function __construct()
     {
         $this->experiences = new ArrayCollection();
         $this->invoices = new ArrayCollection();
+        $this->persons = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -95,18 +118,6 @@ class Company
         return $this;
     }
 
-    public function getLocation(): ?string
-    {
-        return $this->location;
-    }
-
-    public function setLocation(?string $location): self
-    {
-        $this->location = $location;
-
-        return $this;
-    }
-
     /**
      * @return Collection|Experience[]
      */
@@ -138,18 +149,6 @@ class Company
         return $this;
     }
 
-    public function getClient(): ?self
-    {
-        return $this->client;
-    }
-
-    public function setClient(?self $client): self
-    {
-        $this->client = $client;
-
-        return $this;
-    }
-
     public function getContractor(): ?self
     {
         return $this->contractor;
@@ -166,6 +165,56 @@ class Company
         }
 
         return $this;
+    }
+
+    public function getClient(): ?self
+    {
+        return $this->client;
+    }
+
+    public function setClient(?self $client): self
+    {
+        $this->client = $client;
+
+        return $this;
+    }
+
+    /**
+     * @param Company[] $contractors
+     * @return Company[]
+     */
+    public function getAllContractors($contractors = []): array
+    {
+        if ($this->getContractor()) {
+            $contractor = $this->getContractor();
+
+            if (!in_array($contractor, $contractors)) {
+                $contractors[] = $contractor;
+
+                return $contractor->getAllContractors($contractors);
+            }
+        }
+
+        return $contractors;
+    }
+
+    /**
+     * @param Company[] $clients
+     * @return Company[]
+     */
+    public function getAllClients($clients = []): array
+    {
+        if ($this->getClient()) {
+            $client = $this->getClient();
+
+            if (!in_array($client, $clients)) {
+                $clients[] = $client;
+
+                return $client->getAllClients($clients);
+            }
+        }
+
+        return $clients;
     }
 
     /**
@@ -193,6 +242,85 @@ class Company
             // set the owning side to null (unless already changed)
             if ($invoice->getCompany() === $this) {
                 $invoice->setCompany(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getDisplayName(): ?string
+    {
+        return $this->displayName ? $this->displayName : $this->getName();
+    }
+
+    public function setDisplayName(?string $displayName): self
+    {
+        $this->displayName = $displayName;
+
+        return $this;
+    }
+
+    public function getStreet(): ?string
+    {
+        return $this->street;
+    }
+
+    public function setStreet(?string $street): self
+    {
+        $this->street = $street;
+
+        return $this;
+    }
+
+    public function getPostalCode(): ?string
+    {
+        return $this->postalCode;
+    }
+
+    public function setPostalCode(?string $postalCode): self
+    {
+        $this->postalCode = $postalCode;
+
+        return $this;
+    }
+
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    public function setCity(?string $city): self
+    {
+        $this->city = $city;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Person[]
+     */
+    public function getPersons(): Collection
+    {
+        return $this->persons;
+    }
+
+    public function addPerson(Person $person): self
+    {
+        if (!$this->persons->contains($person)) {
+            $this->persons[] = $person;
+            $person->setCompany($this);
+        }
+
+        return $this;
+    }
+
+    public function removePerson(Person $person): self
+    {
+        if ($this->persons->contains($person)) {
+            $this->persons->removeElement($person);
+            // set the owning side to null (unless already changed)
+            if ($person->getCompany() === $this) {
+                $person->setCompany(null);
             }
         }
 

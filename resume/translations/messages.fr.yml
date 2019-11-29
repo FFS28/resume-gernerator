@@ -1,3 +1,5 @@
+Web Developer: Développeur Web
+
 Attribute: Attribut
 Attributes: Attributs
 ID: "#"
@@ -5,6 +7,7 @@ Slug: Slug
 Icon: Icone
 Value: Valeur
 Weight: Poids
+Age: '{age} ans'
 
 Education: Formation
 Educations: Formations
@@ -19,14 +22,33 @@ Experiences: Experiences
 Title: Titre
 Description: Description
 Is freelance: Freelance
+Freelance: Freelance
+Employee: Employé
 On site: Sur place
 On homepage: Page d'accueil
+Options: Options
+Invoicing: Facturation
 
 Company: Entreprise
 Companies: Entreprises
 Location: Localisation
 Client: Client
 Contractor: Prestataire
+Display name: Nom personnalisé
+Address: Adresse
+Street: Rue
+Postal code: Code postal
+City: Ville
+Principal: Principal
+Hierarchy: Hierarchie
+
+Person: Personne
+Persons: Personnes
+Civility: Civilité
+Firstname: Prénom
+Lastname: Nom
+Email: Email
+Phones: Téléphones
 
 Invoice: Facture
 Invoices: Factures
@@ -34,11 +56,26 @@ Check: Chèque
 Transfert: Virement
 Tjm: TJM
 Object: Objet
-totalHt: Total HT
-createdAt: Créé le
-payedAt: Payé le
-payedBy: Payé par
-number: Numéro
+Total ht: Total HT
+Total tax: Total TAX
+Created at: Créé le
+Created at year: Créé l'année
+Created at quarter: Créé le trimestre
+Payed at: Payé le
+Payed at year: Payé l'année
+Payed at quarter: Payé le trimestre
+Payed by: Payé par
+Number: Numéro
+Status: Statut
+Draft: Brouillon
+draft: Brouillon
+Waiting: En attente
+waiting: En attente
+Payed: Encaissé
+payed: Encaissé
+Credit: Avoir
+Days count: Nombre de jours
+Payment: Paiement
 
 Hobby: Loisir
 Hobbies: Loisirs
@@ -53,3 +90,24 @@ Type: Type
 Level: Niveau
 Parent: Parent
 Children: Enfants
+
+Date: Date
+Year: Année
+Trimestre: Trimestre
+January: Janvier
+February: Fevrier
+March: Mars
+April: Avril
+May: Mai
+June: Juin
+July: Juillet
+August: Aout
+September: Septembre
+October: Octobre
+November: Novembre
+December: Decembre
+
+Home: Acceuil
+Dashboard: Dashboard
+Main: Principal
+Secondary: Secondaire

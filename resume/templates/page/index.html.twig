@@ -1,20 +1,183 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello {{ controller_name }}!{% endblock %}
+{% block title %}Jérémy ACHAIN | {{ 'Web Developer' | trans }}{% endblock %}
+
+{%- block description -%}
+    {%- if attributes['description'] is defined -%}
+        {{ attributes['description'].value }}
+    {%- endif -%}
+{%- endblock -%}
+
+{% block stylesheets %}
+    {% if isPdf %}
+        <style>
+            {{ css }}
+        </style>
+    {% else %}
+        <link rel="stylesheet" type="text/css" href="{{ asset('build/css/index.css') }}">
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    {% if isPdf %}
+        <script type='text/javascript'>
+            window.print();
+        </script>
+    {% endif %}
+{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'src/Controller/IndexController.php'|file_link(0) }}">src/Controller/IndexController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'templates/page/index.html.twig'|file_link(0) }}">templates/page/index.html.twig</a></code></li>
-    </ul>
-</div>
+    {% if not isPdf %}
+        <a id="download" href="/?pdf=true" target="_blank" class="hidden-print">⇩</a>
+    {% endif %}
+    <div itemscope itemtype="http://schema.org/Person">
+        <div id="head" class="text-center {% if isPdf %}html-pdf{% endif %}">
+            <div id="me">
+                {% if attributes['quote'] is defined and not isPdf %}
+                    <div id="quote" class="hidden-print">
+                        <i class="fas fa-quote-left hidden-xs" aria-hidden="true">&ldquo;</i>
+                        <span class="quote">{{ attributes['quote'].value }}</span>
+                        <i class="fas fa-quote-right hidden-xs" aria-hidden="true">&rdquo;</i>
+                    </div>
+                    <div id="delimiter" class="hidden-xs hidden-print"></div>
+                {% endif %}
+                <h1 id="name">
+                    {% if attributes['name'] is defined %}
+                        <div class="name" itemprop="name">{{ attributes['name'].value }}</div>
+                    {% endif %}
+                    {% if attributes['job'] is defined %}
+                        <div class="h2 job" itemprop="jobTitle">{{ attributes['job'].value }}</div>
+                    {% endif %}
+                </h1>
+            </div>
+        </div>
+        <div class="{% if isPdf %}html-pdf{% endif %}">
+            {% if attributes['subtitle'] is defined and not isPdf %}
+                <h2 id="subtitle" class="text-center hidden-print">{{ attributes['subtitle'].value }}</h2>
+            {% endif %}
+            <div id="attributes" class="ul text-center">
+                {% set age = date('now').diff((date('1988-09-05'))).format('%y') %}
+                <span class="li">{{ 'Age' | trans({'{age}':age}) }}</span>
+                {% if attributes['city'] is defined %}
+                    <span class="li separator hidden-xs"><i class="fas fa-circle"></i></span>
+                    <span class="li" itemprop="homeLocation" itemscope itemtype="http://schema.org/PostalAddress">
+                        <span itemprop="addressLocality">{{ attributes['city'].value }}</span>
+                    </span>
+                {% endif %}
+                {% for attribute in attributes %}
+                    {% if attribute.slug not in attributes_exclude %}
+                        <span class="li separator hidden-xs"><i class="fas fa-circle"></i></span>
+                        <span class="li">
+                            {% if attribute.icon %}<i class="icon {{ attribute.icon }}"></i>{% endif %}
+                            <span>{{ attribute.value }}</span>
+                        </span>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div id="skills" class="section text-center {% if isPdf %}html-pdf{% endif %}">
+        <h2>
+            {{ 'Skills' | trans }}
+            {#<a href="{{ url('skills') }}">{{ 'Skills' | trans }}</a>#}
+        </h2>
+        <div class="ul">
+            {% for skill in skills %}
+                <span class="li">
+                    <div class="">
+                        {% if isPdf %}
+                            <div class="bar-chart">
+                                <div style="height:{{ (10 - skill.level) * 10 }}%"></div>
+                                <span>{{ skill.level }}</span>
+                            </div>
+                        {% else %}
+                            <div class="donut-chart donut-{{ skill.level }}">
+                                <div class="slice one"></div>
+                                <div class="slice two"></div>
+                                <div class="chart-center">
+                                    <span></span>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="name">{{ skill.name }}</div>
+                </span>
+            {% endfor %}
+        </div>
+    </div>
+    <div id="experiences" class="section text-center {% if isPdf %}html-pdf{% endif %}">
+        <h2>
+            {{ 'Experiences' | trans }}
+        </h2>
+        <div class="ul">
+            {% for experience in experiences %}
+                <span class="li">
+                    <div class="date">
+                        <span>{{ experience.dateBegin | date('F') | trans }} {{ experience.dateBegin | date('Y') }}</span>&nbsp;-&nbsp;<span>{{ experience.dateEnd | date('F') | trans }} {{ experience.dateEnd | date('Y') }}</span>
+                    </div>
+                    <h4 class="title">
+                        <span>{{ experience.title }}</span> / <span>{{ experience.company }}</span>
+                    </h4>
+                    <div class="description">{{ experience.description | nl2br }}</div>
+                    <div class="badges">
+                        <span class="badge">{{ (experience.isFreelance ? 'Freelance' : 'Employee') | trans }}</span>
+                        {% for skill in experience.skills %}
+                            <span class="badge">{{ skill }}</span>
+                        {% endfor %}
+                    </div>
+                </span>
+            {% endfor %}
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div id="educations" class="section text-center {% if isPdf %}html-pdf{% endif %}">
+        <h2>{{ 'Educations' | trans }}</h2>
+        <div class="ul">
+            {% for education in educations %}
+                <span class="li">
+                    <div class="date">
+                        <span>{{ education.dateBegin | date('F') | trans }} {{ education.dateBegin | date('Y') }}</span> - <span>{{ education.dateEnd | date('F') | trans }} {{ education.dateEnd | date('Y') }}</span>
+                    </div>
+                    <h4 class="title"><span>Bac +{{ education.level }}</span> : <span>{{ education.name }}</span></h4>
+                    {% if education.details %}
+                        <div>{{ education.details }}</div>
+                    {% endif %}
+                    {% if education.school %}
+                        <div>{{ education.school }}</div>
+                    {% endif %}
+                    {% if education.location %}
+                        <div><span class="badge">{{ education.location }}</span></div>
+                    {% endif %}
+                </span>
+            {% endfor %}
+        </div>
+    </div>
+    <div id="hobbies" class="section text-center {% if isPdf %}html-pdf{% endif %}">
+        <h2>{{ 'Hobbies' | trans }}</h2>
+        <div class="ul">
+            {% for hobby in hobbies %}
+                <span class="li badge">{{ hobby.name }}</span>
+            {% endfor %}
+        </div>
+    </div>
+    {% if not isPdf %}
+        <a id="" class="hidden-print" href="{{ url('index', {'pdf' : true}) }}"></a>
+        {% if contactForm is defined %}
+            <div class="hidden-print">
+                {{ form(contactForm) }}
+            </div>
+        {% endif %}
+        <div id="links" class="hidden-print">
+            <div class="ul">
+                {% for link in links %}
+                    <span class="li">
+                        <a href="{{ link.url }}" target="_blank">
+                            {% if link.icon %}<i class="icon {{ link.icon }}"></i>{% endif %}
+                            {% if link.name %}<span>{{ link.name }}</span>{% endif %}
+                        </a>
+                    </span>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}

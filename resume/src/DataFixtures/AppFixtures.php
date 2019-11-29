@@ -30,6 +30,11 @@ class AppFixtures extends Fixture
      */
     private $companies;
 
+    /**
+     * @var Experience[]
+     */
+    private $experiences;
+
     public function load(ObjectManager $manager)
     {
         $this->manager = $manager;
@@ -49,17 +54,7 @@ class AppFixtures extends Fixture
 
     private function loadAttributes()
     {
-        $attribute = new Attribute();
-        $attribute->setSlug('tjm');
-        $attribute->setValue('TJM: 400€');
-        $attribute->setWeight(90);
-        $this->manager->persist($attribute);
-
-        $attribute = new Attribute();
-        $attribute->setSlug('quote');
-        $attribute->setValue('Programming is a creative art form based in logic. Every programmer is different');
-        $attribute->setWeight(0);
-        $this->manager->persist($attribute);
+        // Obligatoire
 
         $attribute = new Attribute();
         $attribute->setSlug('name');
@@ -74,14 +69,8 @@ class AppFixtures extends Fixture
         $this->manager->persist($attribute);
 
         $attribute = new Attribute();
-        $attribute->setSlug('status');
-        $attribute->setValue('Freelance');
-        $attribute->setWeight(100);
-        $this->manager->persist($attribute);
-
-        $attribute = new Attribute();
-        $attribute->setSlug('location');
-        $attribute->setValue('Lyon, France');
+        $attribute->setSlug('quote');
+        $attribute->setValue('Programming is a creative art form based in logic. Every programmer is different');
         $attribute->setWeight(0);
         $this->manager->persist($attribute);
 
@@ -92,15 +81,41 @@ class AppFixtures extends Fixture
         $this->manager->persist($attribute);
 
         $attribute = new Attribute();
+        $attribute->setSlug('description');
+        $attribute->setValue('Jérémy Achain, Développeur Web Freelance spécialisé PHP / Symfony et JS / Angular sur Lyon');
+        $attribute->setWeight(0);
+        $this->manager->persist($attribute);
+
+        // Facultatif
+
+        $attribute = new Attribute();
+        $attribute->setSlug('location');
+        $attribute->setValue('Lyon, France');
+        $attribute->setWeight(50);
+        $this->manager->persist($attribute);
+
+        $attribute = new Attribute();
+        $attribute->setSlug('status');
+        $attribute->setValue('Freelance');
+        $attribute->setWeight(40);
+        $this->manager->persist($attribute);
+
+        $attribute = new Attribute();
+        $attribute->setSlug('tjm');
+        $attribute->setValue('TJM: 400€');
+        $attribute->setWeight(30);
+        $this->manager->persist($attribute);
+
+        $attribute = new Attribute();
         $attribute->setSlug('duration');
         $attribute->setValue('3 mois renouvelables ou moins');
-        $attribute->setWeight(0);
+        $attribute->setWeight(20);
         $this->manager->persist($attribute);
 
         $attribute = new Attribute();
         $attribute->setSlug('time');
         $attribute->setValue('Temps partiel (4/5 max)');
-        $attribute->setWeight(0);
+        $attribute->setWeight(10);
         $this->manager->persist($attribute);
     }
 
@@ -154,25 +169,25 @@ class AppFixtures extends Fixture
     {
         $link = new Link();
         $link->setName('Linkedin');
-        $link->setIcon('linkedin');
+        $link->setIcon('fab fa-linkedin');
         $link->setUrl('https://www.linkedin.com/in/achainjeremy');
         $this->manager->persist($link);
 
         $link = new Link();
         $link->setName('Viadeo');
-        $link->setIcon('viadeo');
+        $link->setIcon('fab fa-viadeo');
         $link->setUrl('http://www.viadeo.com/p/002tx09f455dgvf');
         $this->manager->persist($link);
 
         $link = new Link();
         $link->setName('Hopwork');
-        $link->setIcon('wifi');
+        $link->setIcon('fas fa-wifi');
         $link->setUrl('https://www.hopwork.fr/profile/jeremyachain');
         $this->manager->persist($link);
 
         $link = new Link();
         $link->setName('Github');
-        $link->setIcon('github');
+        $link->setIcon('fab fa-github');
         $link->setUrl('https://github.com/alkemist');
         $this->manager->persist($link);
     }
@@ -262,116 +277,116 @@ class AppFixtures extends Fixture
     {
         $company = new Company();
         $company->setName('NETexcom');
-        $company->setLocation('Monaco');
+        $company->setCity('Monaco');
         $this->manager->persist($company);
         $this->companies['netexcom'] = $company;
 
         $company = new Company();
         $company->setName('Eleusis Solution');
-        $company->setLocation('Nice');
+        $company->setCity('Nice');
         $this->manager->persist($company);
         $this->companies['eleusis'] = $company;
 
         $company = new Company();
         $company->setName('ACL Informatique');
-        $company->setLocation('Villeneuve-Loubet');
+        $company->setCity('Villeneuve-Loubet');
         $this->manager->persist($company);
         $this->companies['acl'] = $company;
 
         $company = new Company();
         $company->setName('e-Toxic');
-        $company->setLocation('Villeneuve-Loubet');
+        $company->setCity('Villeneuve-Loubet');
         $this->manager->persist($company);
         $this->companies['etoxic'] = $company;
 
         $company = new Company();
         $company->setName('Qwant');
-        $company->setLocation('Nice');
+        $company->setCity('Nice');
         $this->manager->persist($company);
         $this->companies['qwant'] = $company;
 
         $company = new Company();
         $company->setName('Audivox');
-        $company->setLocation('Lyon');
+        $company->setCity('Lyon');
         $this->manager->persist($company);
         $this->companies['audivox'] = $company;
 
         $company = new Company();
         $company->setName('Audiovisit');
-        $company->setLocation('Lyon');
+        $company->setCity('Lyon');
         $this->manager->persist($company);
         $this->companies['audiovisit'] = $company;
 
         $company = new Company();
         $company->setName('Opusline');
-        $company->setLocation('Paris');
+        $company->setCity('Paris');
         $this->manager->persist($company);
         $this->companies['opusline'] = $company;
 
         $company = new Company();
         $company->setName('Talkspirit');
-        $company->setLocation('Paris');
+        $company->setCity('Paris');
         $this->manager->persist($company);
         $this->companies['talkspirit'] = $company;
 
         $company = new Company();
         $company->setName('Jessica Rolland');
-        $company->setLocation('Lyon');
+        $company->setCity('Lyon');
         $this->manager->persist($company);
         $this->companies['girlstakelyon'] = $company;
 
         $company = new Company();
         $company->setName('Leidgens Groupe');
-        $company->setLocation('Lyon');
+        $company->setCity('Lyon');
         $this->manager->persist($company);
         $this->companies['leidgens'] = $company;
 
         $company = new Company();
         $company->setName('Pretty Cool');
-        $company->setLocation('Lyon');
+        $company->setCity('Lyon');
         $this->manager->persist($company);
         $this->companies['prettycool'] = $company;
 
         $company = new Company();
         $company->setName('Guillaume Ribot');
-        $company->setLocation('Paris');
+        $company->setCity('Paris');
         $this->manager->persist($company);
         $this->companies['ribot'] = $company;
 
         $company = new Company();
         $company->setName('CoSpirit');
-        $company->setLocation('Lyon');
+        $company->setCity('Lyon');
         $this->manager->persist($company);
         $this->companies['cospirit'] = $company;
 
         $company = new Company();
         $company->setName('Ar Developpement');
-        $company->setLocation('Lyon');
+        $company->setCity('Lyon');
         $company->setContractor($this->companies['cospirit']);
         $this->manager->persist($company);
         $this->companies['ar'] = $company;
 
         $company = new Company();
         $company->setName('Altima');
-        $company->setLocation('Lyon');
+        $company->setCity('Lyon');
         $this->manager->persist($company);
         $this->companies['altima'] = $company;
 
         $company = new Company();
         $company->setName('Obiz');
-        $company->setLocation('Lyon');
+        $company->setCity('Lyon');
         $this->manager->persist($company);
         $this->companies['obiz'] = $company;
 
         $company = new Company();
         $company->setName('Agixis');
-        $company->setLocation('Lyon');
+        $company->setCity('Lyon');
         $this->manager->persist($company);
         $this->companies['agixis'] = $company;
 
         $company = new Company();
         $company->setName('Spyrit');
-        $company->setLocation('Viroflay');
+        $company->setCity('Viroflay');
         $this->manager->persist($company);
         $this->companies['spyrit'] = $company;
 
@@ -383,70 +398,70 @@ class AppFixtures extends Fixture
 
         $company = new Company();
         $company->setName('La compagnie hyperactive');
-        $company->setLocation('Paris');
+        $company->setCity('Paris');
         $this->manager->persist($company);
         $this->companies['hyperactive'] = $company;
 
         $company = new Company();
         $company->setName('Drakona');
-        $company->setLocation('Lyon');
+        $company->setCity('Lyon');
         $this->manager->persist($company);
         $this->companies['drakona'] = $company;
 
         $company = new Company();
         $company->setName('CS Systemes D\'information');
-        $company->setLocation('Lyon');
+        $company->setCity('Lyon');
         $this->manager->persist($company);
         $this->companies['cs'] = $company;
 
         $company = new Company();
         $company->setName('Inpact');
-        $company->setLocation('Lyon');
+        $company->setCity('Lyon');
         $this->manager->persist($company);
         $this->companies['inpact'] = $company;
 
         $company = new Company();
         $company->setName('EDF Septen');
-        $company->setLocation('Villeurbanne');
+        $company->setCity('Villeurbanne');
         $this->manager->persist($company);
         $company->setContractor($this->companies['cs']);
         $this->companies['edf-septen'] = $company;
 
         $company = new Company();
         $company->setName('Apollo SSC');
-        $company->setLocation('Lyon');
+        $company->setCity('Lyon');
         $this->manager->persist($company);
         $this->companies['apollo'] = $company;
 
         $company = new Company();
         $company->setName('Cegid');
-        $company->setLocation('Lyon');
+        $company->setCity('Lyon');
         $this->manager->persist($company);
         $company->setContractor($this->companies['apollo']);
         $this->companies['cegid'] = $company;
 
         $company = new Company();
         $company->setName('Aleysia');
-        $company->setLocation('Lyon');
+        $company->setCity('Lyon');
         $this->manager->persist($company);
         $this->companies['aleysia'] = $company;
 
         $company = new Company();
         $company->setName('Ucly');
-        $company->setLocation('Lyon');
+        $company->setCity('Lyon');
         $this->manager->persist($company);
         $company->setContractor($this->companies['aleysia']);
         $this->companies['ucly'] = $company;
 
         $company = new Company();
         $company->setName('BeWizYu');
-        $company->setLocation('Lyon');
+        $company->setCity('Lyon');
         $this->manager->persist($company);
         $this->companies['bewizyu'] = $company;
 
         $company = new Company();
         $company->setName('Acte Media');
-        $company->setLocation('Bron');
+        $company->setCity('Bron');
         $this->manager->persist($company);
         $company->setContractor($this->companies['bewizyu']);
         $this->companies['actemedia'] = $company;
@@ -466,6 +481,8 @@ class AppFixtures extends Fixture
 
     private function loadExperience()
     {
+        // Salarié
+
         $experience = new Experience();
         $experience->setTitle('Développeur Web');
         $experience->setCompany($this->companies['netexcom']);
@@ -556,19 +573,9 @@ class AppFixtures extends Fixture
         $experience->addSkill($this->skills['symfony']);
         $experience->addSkill($this->skills['angular']);
         $this->manager->persist($experience);
+        $this->experiences['201502'] = $experience;
 
-        $experience = new Experience();
-        $experience->setTitle('Développeur Web');
-        $experience->setCompany($this->companies['opusline']);
-        $experience->setDateBegin(new \DateTime('2015-05-01 00:00:00'));
-        $experience->setDateEnd(new \DateTime('2015-07-01 00:00:00'));
-        $experience->setDescription('Développement d\'une application de traitement/filtrage de donnée importé et d\'affichage de statistiques. Analyse des besoins et solutions à apporter avec l’intermédiaire technique qui revendra l\'application à des assurances.');
-        $experience->setIsFreelance(true);
-        $experience->setOnSite(false);
-        $experience->setOnHomepage(false);
-        $experience->addSkill($this->skills['symfony']);
-        $experience->addSkill($this->skills['angular']);
-        $this->manager->persist($experience);
+        // Freelance
 
         $experience = new Experience();
         $experience->setTitle('Développeur Web');
@@ -582,6 +589,21 @@ class AppFixtures extends Fixture
         $experience->addSkill($this->skills['angular']);
         $experience->addSkill($this->skills['git']);
         $this->manager->persist($experience);
+        $this->experiences['201504'] = $experience;
+
+        $experience = new Experience();
+        $experience->setTitle('Développeur Web');
+        $experience->setCompany($this->companies['opusline']);
+        $experience->setDateBegin(new \DateTime('2015-05-01 00:00:00'));
+        $experience->setDateEnd(new \DateTime('2015-07-01 00:00:00'));
+        $experience->setDescription('Développement d\'une application de traitement/filtrage de donnée importé et d\'affichage de statistiques. Analyse des besoins et solutions à apporter avec l’intermédiaire technique qui revendra l\'application à des assurances.');
+        $experience->setIsFreelance(true);
+        $experience->setOnSite(false);
+        $experience->setOnHomepage(false);
+        $experience->addSkill($this->skills['symfony']);
+        $experience->addSkill($this->skills['angular']);
+        $this->manager->persist($experience);
+        $this->experiences['201505'] = $experience;
 
         $experience = new Experience();
         $experience->setTitle('Développeur Web');
@@ -596,6 +618,7 @@ class AppFixtures extends Fixture
         $experience->addSkill($this->skills['angular']);
         $experience->addSkill($this->skills['git']);
         $this->manager->persist($experience);
+        $this->experiences['201508'] = $experience;
 
         $experience = new Experience();
         $experience->setTitle('Développeur Web');
@@ -610,6 +633,7 @@ class AppFixtures extends Fixture
         $experience->addSkill($this->skills['nodejs']);
         $experience->addSkill($this->skills['js']);
         $this->manager->persist($experience);
+        $this->experiences['201601'] = $experience;
 
         $experience = new Experience();
         $experience->setTitle('Développeur Web');
@@ -624,6 +648,7 @@ class AppFixtures extends Fixture
         $experience->addSkill($this->skills['angular']);
         $experience->addSkill($this->skills['git']);
         $this->manager->persist($experience);
+        $this->experiences['201607'] = $experience;
 
         $experience = new Experience();
         $experience->setTitle('Développeur Web');
@@ -636,6 +661,7 @@ class AppFixtures extends Fixture
         $experience->setOnHomepage(false);
         $experience->addSkill($this->skills['angular']);
         $this->manager->persist($experience);
+        $this->experiences['201611'] = $experience;
 
         $experience = new Experience();
         $experience->setTitle('Développeur Web');
@@ -650,6 +676,7 @@ class AppFixtures extends Fixture
         $experience->addSkill($this->skills['angular']);
         $experience->addSkill($this->skills['git']);
         $this->manager->persist($experience);
+        $this->experiences['201612'] = $experience;
 
         $experience = new Experience();
         $experience->setTitle('Développeur Web');
@@ -664,6 +691,7 @@ class AppFixtures extends Fixture
         $experience->addSkill($this->skills['jquery']);
         $experience->addSkill($this->skills['git']);
         $this->manager->persist($experience);
+        $this->experiences['201707'] = $experience;
 
         $experience = new Experience();
         $experience->setTitle('Développeur Web');
@@ -677,6 +705,7 @@ class AppFixtures extends Fixture
         $experience->addSkill($this->skills['angular']);
         $experience->addSkill($this->skills['git']);
         $this->manager->persist($experience);
+        $this->experiences['201709'] = $experience;
 
         $experience = new Experience();
         $experience->setTitle('Développeur Web');
@@ -691,6 +720,7 @@ class AppFixtures extends Fixture
         $experience->addSkill($this->skills['angular']);
         $experience->addSkill($this->skills['git']);
         $this->manager->persist($experience);
+        $this->experiences['201711'] = $experience;
 
         $experience = new Experience();
         $experience->setTitle('Développeur Web');
@@ -705,6 +735,7 @@ class AppFixtures extends Fixture
         $experience->addSkill($this->skills['angular']);
         $experience->addSkill($this->skills['git']);
         $this->manager->persist($experience);
+        $this->experiences['201712'] = $experience;
 
         $experience = new Experience();
         $experience->setTitle('Développeur Web');
@@ -718,6 +749,7 @@ class AppFixtures extends Fixture
         $experience->addSkill($this->skills['symfony']);
         $experience->addSkill($this->skills['git']);
         $this->manager->persist($experience);
+        $this->experiences['201804'] = $experience;
 
         $experience = new Experience();
         $experience->setTitle('Développeur Web');
@@ -731,6 +763,7 @@ class AppFixtures extends Fixture
         $experience->addSkill($this->skills['angular']);
         $experience->addSkill($this->skills['git']);
         $this->manager->persist($experience);
+        $this->experiences['201805'] = $experience;
 
         $experience = new Experience();
         $experience->setTitle('Développeur Web');
@@ -744,6 +777,7 @@ class AppFixtures extends Fixture
         $experience->addSkill($this->skills['js']);
         $experience->addSkill($this->skills['php']);
         $this->manager->persist($experience);
+        $this->experiences['201904'] = $experience;
 
         $experience = new Experience();
         $experience->setTitle('Développeur Web');
@@ -758,6 +792,7 @@ class AppFixtures extends Fixture
         $experience->addSkill($this->skills['angular']);
         $experience->addSkill($this->skills['git']);
         $this->manager->persist($experience);
+        $this->experiences['201906'] = $experience;
     }
 
     private function loadInvoices()
@@ -765,122 +800,816 @@ class AppFixtures extends Fixture
         // 2015
 
         $invoice = new Invoice();
+        $invoice->setNumber('201505-5');
+        $invoice->setCompany($this->companies['talkspirit']);
+        $invoice->setExperience($this->experiences['201504']);
+        $invoice->setTjm(300);
+        $invoice->setCreatedAt(new \DateTime('2015-05-28 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2015-06-09 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(1500);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
         $invoice->setNumber('201505-1');
         $invoice->setCompany($this->companies['opusline']);
+        $invoice->setExperience($this->experiences['201505']);
         $invoice->setTjm(300);
         $invoice->setCreatedAt(new \DateTime('2015-05-04 00:00:00'));
         $invoice->setPayedAt(new \DateTime('2015-05-19 00:00:00'));
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(3000);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
 
         $invoice = new Invoice();
         $invoice->setNumber('201505-2');
         $invoice->setCompany($this->companies['opusline']);
+        $invoice->setExperience($this->experiences['201505']);
         $invoice->setTjm(300);
-        $invoice->setCreatedAt(new \DateTime('2015-05-04 00:00:00'));
+        $invoice->setCreatedAt(new \DateTime('2015-05-09 00:00:00'));
         $invoice->setPayedAt(new \DateTime('2015-05-19 00:00:00'));
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(600);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
 
         $invoice = new Invoice();
         $invoice->setNumber('201505-3');
         $invoice->setCompany($this->companies['opusline']);
+        $invoice->setExperience($this->experiences['201505']);
         $invoice->setTjm(300);
-        $invoice->setCreatedAt(new \DateTime('2015-05-04 00:00:00'));
-        $invoice->setPayedAt(new \DateTime('2015-05-19 00:00:00'));
+        $invoice->setCreatedAt(new \DateTime('2015-05-22 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2015-06-05 00:00:00'));
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(600);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
 
         $invoice = new Invoice();
         $invoice->setNumber('201505-4');
         $invoice->setCompany($this->companies['leidgens']);
         $invoice->setTjm(300);
-        $invoice->setCreatedAt(new \DateTime('2015-05-04 00:00:00'));
-        $invoice->setPayedAt(new \DateTime('2015-05-19 00:00:00'));
+        $invoice->setCreatedAt(new \DateTime('2015-05-26 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2015-06-10 00:00:00'));
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(450);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
-
-        $invoice = new Invoice();
-        $invoice->setNumber('201505-5');
-        $invoice->setCompany($this->companies['talkspirit']);
-        $invoice->setTjm(300);
-        $invoice->setCreatedAt(new \DateTime('2015-05-04 00:00:00'));
-        $invoice->setPayedAt(new \DateTime('2015-05-19 00:00:00'));
-        $invoice->setObject('Prestation de développement web');
-        $invoice->setTotalHt(1500);
-        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
 
         $invoice = new Invoice();
         $invoice->setNumber('201506-1');
         $invoice->setCompany($this->companies['audiovisit']);
+        $invoice->setExperience($this->experiences['201502']);
         $invoice->setTjm(300);
-        $invoice->setCreatedAt(new \DateTime('2015-05-04 00:00:00'));
-        $invoice->setPayedAt(new \DateTime('2015-05-19 00:00:00'));
+        $invoice->setCreatedAt(new \DateTime('2015-06-12 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2015-06-24 00:00:00'));
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(150);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
 
         $invoice = new Invoice();
         $invoice->setNumber('201506-2');
         $invoice->setCompany($this->companies['opusline']);
+        $invoice->setExperience($this->experiences['201505']);
         $invoice->setTjm(300);
-        $invoice->setCreatedAt(new \DateTime('2015-05-04 00:00:00'));
-        $invoice->setPayedAt(new \DateTime('2015-05-19 00:00:00'));
+        $invoice->setCreatedAt(new \DateTime('2015-06-12 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2015-06-26 00:00:00'));
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(150);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
 
         $invoice = new Invoice();
         $invoice->setNumber('201506-3');
         $invoice->setCompany($this->companies['girlstakelyon']);
         $invoice->setTjm(200);
-        $invoice->setCreatedAt(new \DateTime('2015-05-04 00:00:00'));
-        $invoice->setPayedAt(new \DateTime('2015-05-19 00:00:00'));
+        $invoice->setCreatedAt(new \DateTime('2015-06-23 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2015-06-30 00:00:00'));
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(200);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
 
         $invoice = new Invoice();
         $invoice->setNumber('201507-1');
         $invoice->setCompany($this->companies['opusline']);
+        $invoice->setExperience($this->experiences['201505']);
         $invoice->setTjm(300);
-        $invoice->setCreatedAt(new \DateTime('2015-05-04 00:00:00'));
-        $invoice->setPayedAt(new \DateTime('2015-05-19 00:00:00'));
+        $invoice->setCreatedAt(new \DateTime('2015-07-15 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2015-07-31 00:00:00'));
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(2100);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
 
         $invoice = new Invoice();
         $invoice->setNumber('201509-1');
         $invoice->setCompany($this->companies['ar']);
+        $invoice->setExperience($this->experiences['201508']);
         $invoice->setTjm(300);
-        $invoice->setCreatedAt(new \DateTime('2015-05-04 00:00:00'));
-        $invoice->setPayedAt(new \DateTime('2015-05-19 00:00:00'));
+        $invoice->setCreatedAt(new \DateTime('2015-09-25 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2015-09-30 00:00:00'));
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(7200);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
 
         $invoice = new Invoice();
         $invoice->setNumber('201510-1');
         $invoice->setCompany($this->companies['ar']);
+        $invoice->setExperience($this->experiences['201508']);
         $invoice->setTjm(300);
-        $invoice->setCreatedAt(new \DateTime('2015-05-04 00:00:00'));
-        $invoice->setPayedAt(new \DateTime('2015-05-19 00:00:00'));
+        $invoice->setCreatedAt(new \DateTime('2015-10-31 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2015-11-13 00:00:00'));
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(6000);
         $invoice->setPayedBy(Invoice::PAYEDBY_CHECK);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
 
         // 2016
 
+        $invoice = new Invoice();
+        $invoice->setNumber('201601-1');
+        $invoice->setCompany($this->companies['prettycool']);
+        $invoice->setTjm(100);
+        $invoice->setCreatedAt(new \DateTime('2016-01-12 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2016-01-20 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(100);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201601-2');
+        $invoice->setCompany($this->companies['prettycool']);
+        $invoice->setTjm(100);
+        $invoice->setCreatedAt(new \DateTime('2016-01-20 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2016-01-20 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(-100);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201602-1');
+        $invoice->setCompany($this->companies['ribot']);
+        $invoice->setTjm(300);
+        $invoice->setCreatedAt(new \DateTime('2016-02-12 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2016-02-26 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(300);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201605-1');
+        $invoice->setCompany($this->companies['ar']);
+        $invoice->setExperience($this->experiences['201508']);
+        $invoice->setTjm(300);
+        $invoice->setCreatedAt(new \DateTime('2016-05-02 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2016-05-16 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(4200);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201606-1');
+        $invoice->setCompany($this->companies['altima']);
+        $invoice->setExperience($this->experiences['201601']);
+        $invoice->setTjm(300);
+        $invoice->setCreatedAt(new \DateTime('2016-06-10 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2016-06-30 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(3000);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201606-2');
+        $invoice->setCompany($this->companies['altima']);
+        $invoice->setExperience($this->experiences['201601']);
+        $invoice->setTjm(300);
+        $invoice->setCreatedAt(new \DateTime('2016-06-10 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2016-06-30 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(600);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201606-3');
+        $invoice->setCompany($this->companies['altima']);
+        $invoice->setExperience($this->experiences['201601']);
+        $invoice->setTjm(300);
+        $invoice->setCreatedAt(new \DateTime('2016-06-23 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2016-06-30 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(5100);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201606-4');
+        $invoice->setCompany($this->companies['altima']);
+        $invoice->setExperience($this->experiences['201601']);
+        $invoice->setTjm(300);
+        $invoice->setCreatedAt(new \DateTime('2016-06-23 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2016-06-30 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(-3000);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201606-5');
+        $invoice->setCompany($this->companies['altima']);
+        $invoice->setExperience($this->experiences['201601']);
+        $invoice->setTjm(300);
+        $invoice->setCreatedAt(new \DateTime('2016-06-23 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2016-06-30 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(-600);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201607-1');
+        $invoice->setCompany($this->companies['altima']);
+        $invoice->setExperience($this->experiences['201601']);
+        $invoice->setTjm(300);
+        $invoice->setCreatedAt(new \DateTime('2016-07-11 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2016-07-15 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(300);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201607-2');
+        $invoice->setCompany($this->companies['altima']);
+        $invoice->setExperience($this->experiences['201601']);
+        $invoice->setTjm(300);
+        $invoice->setCreatedAt(new \DateTime('2016-07-15 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2016-07-15 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(-300);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201607-3');
+        $invoice->setCompany($this->companies['altima']);
+        $invoice->setExperience($this->experiences['201601']);
+        $invoice->setTjm(300);
+        $invoice->setCreatedAt(new \DateTime('2016-07-15 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2016-07-30 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(900);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201607-4');
+        $invoice->setCompany($this->companies['altima']);
+        $invoice->setExperience($this->experiences['201601']);
+        $invoice->setTjm(300);
+        $invoice->setCreatedAt(new \DateTime('2016-07-15 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2016-07-30 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(300);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201609-1');
+        $invoice->setCompany($this->companies['obiz']);
+        $invoice->setExperience($this->experiences['201607']);
+        $invoice->setTjm(300);
+        $invoice->setCreatedAt(new \DateTime('2016-09-05 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2016-09-20 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(9000);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201611-1');
+        $invoice->setCompany($this->companies['agixis']);
+        $invoice->setExperience($this->experiences['201611']);
+        $invoice->setTjm(300);
+        $invoice->setCreatedAt(new \DateTime('2016-11-30 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2016-12-30 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(2100);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201612-1');
+        $invoice->setCompany($this->companies['agixis']);
+        $invoice->setExperience($this->experiences['201611']);
+        $invoice->setTjm(300);
+        $invoice->setCreatedAt(new \DateTime('2016-12-02 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2016-12-31 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(2100);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201612-2');
+        $invoice->setCompany($this->companies['spyrit']);
+        $invoice->setExperience($this->experiences['201612']);
+        $invoice->setTjm(400);
+        $invoice->setCreatedAt(new \DateTime('2016-12-31 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2016-12-31 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(5600);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
         // 2017
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201701-1');
+        $invoice->setCompany($this->companies['spyrit']);
+        $invoice->setExperience($this->experiences['201612']);
+        $invoice->setTjm(400);
+        $invoice->setCreatedAt(new \DateTime('2017-01-03 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2017-01-31 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(800);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201701-2');
+        $invoice->setCompany($this->companies['spyrit']);
+        $invoice->setExperience($this->experiences['201612']);
+        $invoice->setTjm(400);
+        $invoice->setCreatedAt(new \DateTime('2017-01-18 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2017-02-28 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(2800);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201702-1');
+        $invoice->setCompany($this->companies['spyrit']);
+        $invoice->setExperience($this->experiences['201612']);
+        $invoice->setTjm(400);
+        $invoice->setCreatedAt(new \DateTime('2017-02-07 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2017-03-06 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(4400);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201702-2');
+        $invoice->setCompany($this->companies['spyrit']);
+        $invoice->setExperience($this->experiences['201612']);
+        $invoice->setTjm(400);
+        $invoice->setCreatedAt(new \DateTime('2017-02-23 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2017-05-03 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(800);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201703-1');
+        $invoice->setCompany($this->companies['spyrit']);
+        $invoice->setExperience($this->experiences['201612']);
+        $invoice->setTjm(400);
+        $invoice->setCreatedAt(new \DateTime('2017-03-15 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2017-05-03 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(2800);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201703-2');
+        $invoice->setCompany($this->companies['spyrit']);
+        $invoice->setExperience($this->experiences['201612']);
+        $invoice->setTjm(400);
+        $invoice->setCreatedAt(new \DateTime('2017-03-24 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2017-06-29 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(2000);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201704-1');
+        $invoice->setCompany($this->companies['spyrit']);
+        $invoice->setExperience($this->experiences['201612']);
+        $invoice->setTjm(400);
+        $invoice->setCreatedAt(new \DateTime('2017-04-24 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2017-06-24 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(1600);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201705-1');
+        $invoice->setCompany($this->companies['spyrit']);
+        $invoice->setExperience($this->experiences['201612']);
+        $invoice->setTjm(400);
+        $invoice->setCreatedAt(new \DateTime('2017-05-10 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2017-06-29 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(1600);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201707-1');
+        $invoice->setCompany($this->companies['hyperactive']);
+        $invoice->setExperience($this->experiences['201707']);
+        $invoice->setTjm(300);
+        $invoice->setCreatedAt(new \DateTime('2017-07-27 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2017-09-18 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(2700);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201709-1');
+        $invoice->setCompany($this->companies['cs']);
+        $invoice->setExperience($this->experiences['201709']);
+        $invoice->setTjm(330);
+        $invoice->setCreatedAt(new \DateTime('2017-09-22 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2017-11-10 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(3300);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201710-1');
+        $invoice->setCompany($this->companies['cs']);
+        $invoice->setExperience($this->experiences['201709']);
+        $invoice->setTjm(330);
+        $invoice->setCreatedAt(new \DateTime('2017-10-06 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2017-12-07 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(3300);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201710-2');
+        $invoice->setCompany($this->companies['cs']);
+        $invoice->setExperience($this->experiences['201709']);
+        $invoice->setTjm(330);
+        $invoice->setCreatedAt(new \DateTime('2017-10-23 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2017-12-07 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(2640);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201711-1');
+        $invoice->setCompany($this->companies['inpact']);
+        $invoice->setExperience($this->experiences['201711']);
+        $invoice->setTjm(400);
+        $invoice->setCreatedAt(new \DateTime('2017-11-17 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2017-11-17 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(4000);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
 
         // 2018
 
+        $invoice = new Invoice();
+        $invoice->setNumber('1');
+        $invoice->setCompany($this->companies['spyrit']);
+        $invoice->setExperience($this->experiences['201712']);
+        $invoice->setTjm(450);
+        $invoice->setCreatedAt(new \DateTime('2018-01-12 00:00:00'));
+        $invoice->setPayedAt($invoice->getCreatedAt());
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(6300);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('2');
+        $invoice->setCompany($this->companies['spyrit']);
+        $invoice->setExperience($this->experiences['201712']);
+        $invoice->setTjm(450);
+        $invoice->setCreatedAt(new \DateTime('2018-01-29 00:00:00'));
+        $invoice->setPayedAt($invoice->getCreatedAt());
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(3600);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('3');
+        $invoice->setCompany($this->companies['drakona']);
+        $invoice->setExperience($this->experiences['201804']);
+        $invoice->setTjm(400);
+        $invoice->setCreatedAt(new \DateTime('2018-04-16 00:00:00'));
+        $invoice->setPayedAt($invoice->getCreatedAt());
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(6000);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('4');
+        $invoice->setCompany($this->companies['apollo']);
+        $invoice->setExperience($this->experiences['201805']);
+        $invoice->setTjm(400);
+        $invoice->setCreatedAt(new \DateTime('2018-05-28 00:00:00'));
+        $invoice->setPayedAt($invoice->getCreatedAt());
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(7000);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('5');
+        $invoice->setCompany($this->companies['apollo']);
+        $invoice->setExperience($this->experiences['201805']);
+        $invoice->setTjm(400);
+        $invoice->setCreatedAt(new \DateTime('2018-06-29 00:00:00'));
+        $invoice->setPayedAt($invoice->getCreatedAt());
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(8200);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('6');
+        $invoice->setCompany($this->companies['apollo']);
+        $invoice->setExperience($this->experiences['201805']);
+        $invoice->setTjm(400);
+        $invoice->setCreatedAt(new \DateTime('2018-07-20 00:00:00'));
+        $invoice->setPayedAt($invoice->getCreatedAt());
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(5800);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('7');
+        $invoice->setCompany($this->companies['apollo']);
+        $invoice->setExperience($this->experiences['201805']);
+        $invoice->setTjm(400);
+        $invoice->setCreatedAt(new \DateTime('2018-09-19 00:00:00'));
+        $invoice->setPayedAt($invoice->getCreatedAt());
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(6400);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('8');
+        $invoice->setCompany($this->companies['apollo']);
+        $invoice->setExperience($this->experiences['201805']);
+        $invoice->setTjm(400);
+        $invoice->setCreatedAt(new \DateTime('2018-10-22 00:00:00'));
+        $invoice->setPayedAt($invoice->getCreatedAt());
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(6800);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('9');
+        $invoice->setCompany($this->companies['apollo']);
+        $invoice->setExperience($this->experiences['201805']);
+        $invoice->setTjm(400);
+        $invoice->setCreatedAt(new \DateTime('2018-11-20 00:00:00'));
+        $invoice->setPayedAt($invoice->getCreatedAt());
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(6000);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('10');
+        $invoice->setCompany($this->companies['apollo']);
+        $invoice->setExperience($this->experiences['201805']);
+        $invoice->setTjm(400);
+        $invoice->setCreatedAt(new \DateTime('2018-12-06 00:00:00'));
+        $invoice->setPayedAt($invoice->getCreatedAt());
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(-400);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('11');
+        $invoice->setCompany($this->companies['apollo']);
+        $invoice->setExperience($this->experiences['201805']);
+        $invoice->setTjm(400);
+        $invoice->setCreatedAt(new \DateTime('2018-12-28 00:00:00'));
+        $invoice->setPayedAt($invoice->getCreatedAt());
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(4800);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
         // 2019
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201901-1');
+        $invoice->setCompany($this->companies['apollo']);
+        $invoice->setExperience($this->experiences['201805']);
+        $invoice->setTjm(400);
+        $invoice->setCreatedAt(new \DateTime('2019-01-30 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2019-03-01 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(5000);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201902-1');
+        $invoice->setCompany($this->companies['apollo']);
+        $invoice->setExperience($this->experiences['201805']);
+        $invoice->setTjm(400);
+        $invoice->setCreatedAt(new \DateTime('2019-02-24 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2019-03-19 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(4000);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201904-1');
+        $invoice->setCompany($this->companies['aleysia']);
+        $invoice->setExperience($this->experiences['201904']);
+        $invoice->setTjm(400);
+        $invoice->setCreatedAt(new \DateTime('2019-04-30 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2019-05-20 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(4200);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201905-1');
+        $invoice->setCompany($this->companies['aleysia']);
+        $invoice->setExperience($this->experiences['201904']);
+        $invoice->setTjm(400);
+        $invoice->setCreatedAt(new \DateTime('2019-05-09 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2019-06-24 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(1800);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201906-1');
+        $invoice->setCompany($this->companies['bewizyu']);
+        $invoice->setExperience($this->experiences['201906']);
+        $invoice->setTjm(400);
+        $invoice->setCreatedAt(new \DateTime('2019-06-29 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2019-06-30 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(1800);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201907-1');
+        $invoice->setCompany($this->companies['bewizyu']);
+        $invoice->setExperience($this->experiences['201906']);
+        $invoice->setTjm(400);
+        $invoice->setCreatedAt(new \DateTime('2019-07-12 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2019-08-31 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(6000);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201908-1');
+        $invoice->setCompany($this->companies['bewizyu']);
+        $invoice->setExperience($this->experiences['201906']);
+        $invoice->setTjm(400);
+        $invoice->setCreatedAt(new \DateTime('2019-08-06 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2019-09-30 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(5000);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201909-1');
+        $invoice->setCompany($this->companies['bewizyu']);
+        $invoice->setExperience($this->experiences['201906']);
+        $invoice->setTjm(400);
+        $invoice->setCreatedAt(new \DateTime('2019-09-03 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2019-10-31 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(5400);
+        $invoice->setTotalTax(1080);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201910-1');
+        $invoice->setCompany($this->companies['bewizyu']);
+        $invoice->setExperience($this->experiences['201906']);
+        $invoice->setTjm(400);
+        $invoice->setCreatedAt(new \DateTime('2019-10-29 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2019-11-30 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(4200);
+        $invoice->setTotalTax(840);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201911-1');
+        $invoice->setCompany($this->companies['bewizyu']);
+        $invoice->setExperience($this->experiences['201906']);
+        $invoice->setTjm(400);
+        $invoice->setCreatedAt(new \DateTime('2019-11-08 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2019-12-30 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(2400);
+        $invoice->setTotalTax(480);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
     }
 }
 

@@ -4,11 +4,9 @@ type: php:7.3
 
 runtime:
     extensions:
-        - apcu
         - mbstring
         - sodium
         - pdo_pgsql
-        
 
 build:
     flavor: none
@@ -20,16 +18,16 @@ web:
             expires: 1h
             passthru: "/index.php"
 
-disk: 512
+disk: 1024
 
 mounts:
     "/var": { source: local, source_path: var }
+    "/tmp": { source: local, source_path: tmp }
     "/public/upload": { source: local, source_path: uploads }
 
 variables:
     env:
-        APP_DEBUG: 1
-        APP_ENV: dev
+        APP_VERSION: 1
 
 hooks:
     build: |
@@ -42,7 +40,7 @@ hooks:
         set -x -e
 
         (>&2 symfony-deploy)
-        
+
     post_deploy: |
         symfony console doctrine:schema:update --force
         symfony console doctrine:fixtures:load --env=dev

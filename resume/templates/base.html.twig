@@ -1,14 +1,30 @@
+{% set current_route = app.request.attributes.get('_route') | default('app_index') %}
+{% set current_params = app.request.attributes.get('_route_params') | default([]) %}
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="stylesheet" type="text/css" href="/build/css/app.css">
-        {% block stylesheets %}{% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
-    <script></script>
-    </body>
+<html lang="{{ app.request.locale | split('_')[0] }}">
+<head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}{% endblock %}</title>
+    <meta property="og:title" content="{{ block('title') }}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="{{ url(current_route, current_params) }}" />
+    <meta property="og:site_name" content="Jérémy ACHAIN" />
+    <link rel="alternate" href="{{ url(current_route, (current_params | merge({'_locale': 'fr'}))) }}" hreflang="{{ ( app.request.locale | split('_') ) | join('-') }}"/>
+    <link rel="icon" type="image/x-icon" href="{% block icon %}{{ asset('favicon.ico') }}{% endblock %}" />
+    <meta name="description" content="{%- block description -%}{%- endblock -%}"/>
+    <meta property="og:description" content="{{ block('description') }}" />
+    <link rel="image_src" href="{{ block('image') }}"/>
+    <meta property="og:image:url" content="{% block image %}{{ asset('favicon.ico') }}{% endblock %}" />
+    <link rel="author" href="humans.txt" />
+    {#<link rel="sitemap" type="application/xml" title="Sitemap" href="{{ app.request.getSchemeAndHttpHost() ~ asset('/sitemap.xml' ) }}" />#}
+    {% block stylesheets %}{% endblock %}
+</head>
+<body id="body">
+{% spaceless %}
+    {% block body %}{% endblock %}
+    {% block foot %}{% endblock %}
+    {% block javascripts %}{% endblock %}
+{% endspaceless %}
+</body>
 </html>

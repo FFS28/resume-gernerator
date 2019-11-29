@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Entity\Invoice;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * @method Invoice|null find($id, $lockMode = null, $lockVersion = null)
@@ -17,6 +19,173 @@ class InvoiceRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Invoice::class);
+    }
+
+    /**
+     * @return int[]
+     */
+    public function findYears(): array
+    {
+        $query = $this->createQueryBuilder('i')
+            ->select('ToChar(i.createdAt, \'YYYY\') AS year')
+            ->orderBy('year')
+            ->distinct();
+
+        return array_map(function($arr) {return $arr['year'];}, $query->getQuery()->getScalarResult());
+    }
+
+    /**
+     * @param \DateTime $date
+     * @return string
+     * @throws NonUniqueResultException
+     */
+    public function getNewInvoiceNumber($date = null): string
+    {
+        if (!$date) {
+            $date = new \DateTime('now');
+        }
+
+        $date_number = $date->format(Invoice::NUMBER_DATE_FORMAT);
+        $lastNumber = null;
+
+        $lastInvoice = $this->createQueryBuilder('i')
+            ->select('i.number')
+            ->where('i.number LIKE :date')
+            ->setParameter('date', $date_number . '%')
+            ->orderBy('i.number', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        if ($lastInvoice && strpos($lastInvoice['number'], '-') > -1) {
+            $lastNumber = substr($lastInvoice['number'], strpos($lastInvoice['number'], '-') + 1);
+        }
+
+        return $date_number . (intval($lastNumber) + 1);
+    }
+
+    /**
+     * @param QueryBuilder $query
+     * @param int $year
+     * @param int $quarter
+     * @param bool $isPayed
+     * @return QueryBuilder
+     */
+    private function addFilters(QueryBuilder $query, int $year = null, int $quarter = null, $isPayed = null): QueryBuilder
+    {
+        if ($year !== null) {
+            $query->andWhere('ToChar(i.createdAt, \'YYYY\') = :year')
+                ->setParameter('year', (string) $year);
+        }
+
+        if ($quarter !== null) {
+            $query->andWhere('ToChar(i.createdAt, \'Q\') = :quarter')
+                ->setParameter('quarter', (string) $quarter);
+        }
+
+        if ($isPayed !== null) {
+            if ($isPayed == true) {
+                $query->andWhere('i.payedAt IS NOT NULL');
+            } else {
+                $query->andWhere('i.payedAt IS NULL');
+            }
+        }
+
+        return $query;
+    }
+
+    /**
+     * @param int $year
+     * @param int $quarter
+     * @param bool $isPayed
+     * @return Invoice[]
+     */
+    public function findInvoicesBy(int $year = null, int $quarter = null, $isPayed = null): array
+    {
+        $query = $this->createQueryBuilder('i');
+
+        $query = $this->addFilters($query, $year, $quarter, $isPayed);
+
+        return $query->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @param string $groupBy
+     * @param int $year
+     * @param int $quarter
+     * @param bool $isPayed
+     * @return Invoice[]
+     */
+    public function getSalesRevenuesGroupBy(string $groupBy, int $year = null, int $quarter = null, $isPayed = null): array
+    {
+        $query = $this->createQueryBuilder('i')
+            ->select('SUM(i.totalHt) total');
+
+        switch ($groupBy) {
+            case 'month':
+                $query->addSelect('ToChar(i.createdAt, \'MM\') AS month')
+                    ->orderBy('month')
+                    ->groupBy('month');
+                break;
+
+            case 'quarter':
+                $query->addSelect('ToChar(i.createdAt, \'Q\') AS quarter')
+                    ->orderBy('quarter')
+                    ->groupBy('quarter');
+                break;
+
+            case 'year':
+            default:
+                $query->addSelect('ToChar(i.createdAt, \'YYYY\') AS year')
+                    ->orderBy('year')
+                    ->groupBy('year');
+                break;
+        }
+
+        $query = $this->addFilters($query, $year, $quarter, $isPayed);
+
+        return $query->getQuery()->getResult();
+    }
+
+    public function getDaysCountByMonth(int $year)
+    {
+        $query = $this->createQueryBuilder('i')
+            ->select('ToChar(i.createdAt, \'MM\') AS month')
+            ->addSelect('SUM(i.totalHt / i.tjm) total')
+            ->orderBy('month')
+            ->groupBy('month');;
+
+        $query = $this->addFilters($query, $year, null, null);
+
+        return array_map(function($arr) {$arr['total'] = floatval($arr['total']); return $arr;}, $query->getQuery()->getResult());
+    }
+
+    /**
+     * @param int $year
+     * @param int $quarter
+     * @param bool $isPayed
+     * @return int
+     * @throws NonUniqueResultException
+     */
+    public function getSalesRevenuesBy(int $year = null, int $quarter = null, $isPayed = null): int
+    {
+        $query = $this->createQueryBuilder('i')
+            ->select('SUM(i.totalHt) total');
+
+        $query = $this->addFilters($query, $year, $quarter, $isPayed);
+
+        return intval($query->getQuery()->getSingleScalarResult());
+    }
+
+    public function isOutOfTvaLimit(): bool
+    {
+        return $this->getSalesRevenuesBy((new \DateTime('now'))->format('Y')) >= Invoice::LIMIT_AE_TVA;
+    }
+
+    public function isOutOfLimit(): bool
+    {
+        return $this->getSalesRevenuesBy((new \DateTime('now'))->format('Y')) >= Invoice::LIMIT_AE;
     }
 
     // /**

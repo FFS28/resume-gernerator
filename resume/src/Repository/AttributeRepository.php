@@ -19,6 +19,14 @@ class AttributeRepository extends ServiceEntityRepository
         parent::__construct($registry, Attribute::class);
     }
 
+    public function findAllIndexedBy($attribute)
+    {
+        return $this->createQueryBuilder('a')
+            ->indexBy('a', 'a.' . $attribute)
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Attribute[] Returns an array of Attribute objects
 //     */
