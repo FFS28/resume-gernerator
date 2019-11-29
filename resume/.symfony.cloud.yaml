@@ -9,7 +9,6 @@ runtime:
         - sodium
         - pdo_pgsql
 
-
 build:
     flavor: none
 
