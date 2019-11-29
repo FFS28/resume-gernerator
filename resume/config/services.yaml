@@ -29,11 +29,11 @@ services:
     App\Service\InvoiceService:
         public: true
         arguments:
-            $pdfFileDirectory: '/data/invoices/'
-            $companyName: 'Jérémy ACHAIN'
-            $companyStreet: '40, rue de chateau Gaillard'
-            $companyCity: '69100 Villeurbanne'
-            $companySiret: '525 230 207 00041'
-            $companyApe: '6201Z'
-            $companyStatut: 'Auto-entreprise'
-            $companyTva: 'FR32525230207'
+            $pdfFileDirectory: '%kernel.project_dir%%env(resolve:DIRECTORY_INVOICE)%'
+            $companyName: '%env(resolve:COMPANY_NAME)%'
+            $companyStreet: '%env(resolve:COMPANY_STREET)%'
+            $companyCity: '%env(resolve:COMPANY_CITY)%'
+            $companySiret: '%env(resolve:COMPANY_SIRET)%'
+            $companyApe: '%env(resolve:COMPANY_APE)%'
+            $companyStatut: '%env(resolve:COMPANY_STATUT)%'
+            $companyTva: '%env(resolve:COMPANY_TVA)%'

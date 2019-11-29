@@ -154,7 +154,7 @@ class Invoice
 
     public function getFilename(): string
     {
-        return $this->getNumber();
+        return $this->getNumber().'.pdf';
     }
 
     public function __toString(): string

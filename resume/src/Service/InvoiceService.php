@@ -43,7 +43,7 @@ class InvoiceService
      * @return InvoicePrinter
      * @throws \Exception
      */
-    public function createPdf(Invoice $invoice): InvoicePrinter
+    public function createPdf(Invoice $invoice)
     {
         $pdfInvoice = new InvoicePrinter('A4', '€', 'fr');
 
@@ -117,8 +117,22 @@ class InvoiceService
 
         $pdfInvoice->setFooternote(utf8_decode(implode(' - ', $footerInformations)));
 
-        $pdfInvoice->render($invoice->getFilename(), 'F');
-
         return $pdfInvoice;
+    }
+
+    /**
+     * @param Invoice $invoice
+     * @return string
+     * @throws \Exception
+     */
+    public function getOrCreatePdf(Invoice $invoice, $force = false): string
+    {
+        if (!$force && file_exists($this->pdfFileDirectory.$invoice->getFilename())) {
+            return file_get_contents($this->pdfFileDirectory.$invoice->getFilename());
+        }
+
+        $this->createPdf($invoice)->render($this->pdfFileDirectory.$invoice->getFilename(), 'F');
+
+        return file_get_contents($this->pdfFileDirectory.$invoice->getFilename());
     }
 }
