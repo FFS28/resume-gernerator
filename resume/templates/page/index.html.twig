@@ -18,7 +18,18 @@
     {% endif %}
 {% endblock %}
 
+{% block javascripts %}
+    {% if isPdf %}
+        <script type='text/javascript'>
+            window.print();
+        </script>
+    {% endif %}
+{% endblock %}
+
 {% block body %}
+    {% if not isPdf %}
+        <a id="download" href="/?pdf=true" target="_blank" class="hidden-print">⇩</a>
+    {% endif %}
     <div itemscope itemtype="http://schema.org/Person">
         <div id="head" class="text-center {% if isPdf %}html-pdf{% endif %}">
             <div id="me">

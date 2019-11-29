@@ -20,7 +20,7 @@
     {#<link rel="sitemap" type="application/xml" title="Sitemap" href="{{ app.request.getSchemeAndHttpHost() ~ asset('/sitemap.xml' ) }}" />#}
     {% block stylesheets %}{% endblock %}
 </head>
-<body>
+<body id="body">
 {% spaceless %}
     {% block body %}{% endblock %}
     {% block foot %}{% endblock %}
