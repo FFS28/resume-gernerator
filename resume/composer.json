@@ -8,6 +8,7 @@
         "alterphp/easyadmin-extension-bundle": "^2.1",
         "doctrine/doctrine-fixtures-bundle": "^3.2",
         "easycorp/easyadmin-bundle": "^2.3",
+        "friendsofsymfony/user-bundle": "^2.1",
         "konekt/pdf-invoice": "^1.4",
         "sensio/framework-extra-bundle": "^5.5",
         "stof/doctrine-extensions-bundle": "^1.3",
@@ -16,7 +17,9 @@
         "symfony/dotenv": "4.3.*",
         "symfony/flex": "^1.3.1",
         "symfony/framework-bundle": "4.3.*",
+        "symfony/orm-pack": "^1.0",
         "symfony/swiftmailer-bundle": "^3.3",
+        "symfony/twig-pack": "^1.0",
         "symfony/webpack-encore-bundle": "^1.7",
         "symfony/yaml": "4.3.*"
     },
