@@ -3,11 +3,12 @@
 ### Features
 
 - Factures
+    x Création des pdf
+    - Calcul automatique du total avec le tjm + nbj
     - Valider une facture
-    - Envoi d'une facture ou d'une relance
+    - Envoi d'une facture
     - Visualiser, éditer (par calendrier) ou exporter le CRA
     - Export du livre des recettes
-    - Calcul automatique du total avec le tjm + nbj
     - Modification automatique du status si date de réglement
     
 - Dashboard
