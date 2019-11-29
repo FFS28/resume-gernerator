@@ -4,7 +4,7 @@ type: php:7.4
 
 runtime:
     extensions:
-        - apcu
+        #- apcu
         - mbstring
         - sodium
         - pdo_pgsql
