@@ -103,6 +103,18 @@ class Invoice
         self::STATUS_PAYED => 'Payed',
     ];
 
+    const DUE_INTERVAL_1M = 'P1M';
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $dueInterval;
+
+    /** @var array user friendly named type */
+    protected static $dueIntervalName = [
+        self::DUE_INTERVAL_1M => '30 days end of month',
+    ];
+
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Activity", mappedBy="invoice")
      */
@@ -122,6 +134,7 @@ class Invoice
         $this->status = self::STATUS_DRAFT;
         $this->totalTax = 0;
         $this->activities = new ArrayCollection();
+        $this->dueInterval = 'P1M';
     }
 
     /**
@@ -137,6 +150,11 @@ class Invoice
         }
 
         $this->setTotalHt($dayCount * $this->getTjm());
+    }
+
+    public function getFilename(): string
+    {
+        return $this->getNumber();
     }
 
     public function __toString(): string
@@ -232,6 +250,11 @@ class Invoice
     public function getTotalHt(): ?string
     {
         return $this->totalHt;
+    }
+
+    public function getTotalTtc(): ?string
+    {
+        return $this->totalHt + $this->getTotalTax();
     }
 
     public function setTotalHt(string $totalHt): self
@@ -383,6 +406,18 @@ class Invoice
                 $activity->setInvoice(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDueInterval(): ?string
+    {
+        return $this->dueInterval;
+    }
+
+    public function setDueInterval(?string $dueInterval): self
+    {
+        $this->dueInterval = $dueInterval;
 
         return $this;
     }

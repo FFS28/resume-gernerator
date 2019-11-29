@@ -129,6 +129,8 @@ easy_admin:
           - { property: status, type: 'App\Form\Filter\InvoiceStatusFilterType' }
           - { property: createdAtYear, mapped: false, type: 'App\Form\Filter\DateYearFilterType', type_options: {data: 'createdAt'} }
           - { property: createdAtQuarter, mapped: false, type: 'App\Form\Filter\DateQuarterFilterType', type_options: {data: 'createdAt'} }
+        actions:
+          - pdf
     Experiences:
       class: App\Entity\Experience
       form:

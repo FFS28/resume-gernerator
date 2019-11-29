@@ -25,3 +25,15 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\Service\InvoiceService:
+        public: true
+        arguments:
+            $pdfFileDirectory: '/data/invoices/'
+            $companyName: 'Jérémy ACHAIN'
+            $companyStreet: '40, rue de chateau Gaillard'
+            $companyCity: '69100 Villeurbanne'
+            $companySiret: '525 230 207 00041'
+            $companyApe: '6201Z'
+            $companyStatut: 'Auto-entreprise'
+            $companyTva: 'FR32525230207'

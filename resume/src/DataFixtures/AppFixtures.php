@@ -455,7 +455,9 @@ class AppFixtures extends Fixture
 
         $company = new Company();
         $company->setName('BeWizYu');
-        $company->setCity('Lyon');
+        $company->setStreet('16 quai Ernest Renaud');
+        $company->setPostalCode('44100');
+        $company->setCity('Nantes');
         $this->manager->persist($company);
         $this->companies['bewizyu'] = $company;
 
