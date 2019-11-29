@@ -61,7 +61,7 @@ class IndexController extends AbstractController
             $data['css'] = file_get_contents($this->getParameter('kernel.project_dir') . '/public/build/css/index.css');
             $pdf = null;
 
-            if ($request->query->get('pdf') === 'mpdf') {
+            /*if ($request->query->get('pdf') === 'mpdf') {
                 $mpdf = new \Mpdf\Mpdf([
                     'default_font' => 'DejaVuSans'
                 ]);
@@ -70,7 +70,7 @@ class IndexController extends AbstractController
                 $pdf = $mpdf->Output();
             }
 
-            /*if ($request->query->get('pdf') === 'html2pdf') {
+            if ($request->query->get('pdf') === 'html2pdf') {
                 $html2pdf = new Html2Pdf();
                 $html2pdf->writeHTML($html);
                 $pdf = $html2pdf->output();
