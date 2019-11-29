@@ -29,7 +29,7 @@ class DashboardController extends EasyAdminController
         $data['isOutOfLimit'] = $invoiceRepository->isOutOfLimit();
         $data['isOutOfTvaLimit'] = $invoiceRepository->isOutOfTvaLimit();
 
-        dump($data);
+        //dump($data);
 
         return $this->render('page/dashboard.html.twig', $data);
     }

@@ -23,7 +23,7 @@
     
 ### Migration to Symfony 5
 
-## En attention de mise à jour
+## En attente de mise à jour
 
 - alterphp/easyadmin-extension-bundle
 - stof/doctrine-extensions-bundle

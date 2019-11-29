@@ -1,11 +1,16 @@
-{% extends 'base.html.twig' %}
+{# extends 'base.html.twig' #}
+{% extends '@EasyAdmin/page/content.html.twig' %}
 
-{% block title %}{{ 'Dashboard' | trans }}{% endblock %}
+{% block content_title %}{{ 'Dashboard' | trans }}{% endblock %}
 
-{% block stylesheets %}
-    <link rel="stylesheet" type="text/css" href="{{ app.request.getSchemeAndHttpHost() }}{{ asset('build/css/dashboard.css') }}">
+{% block main %}
+    Main
 {% endblock %}
 
-{% block body %}
+{% block content_footer %}
+    Footer
+{% endblock %}
+
+{% block body_javascript %}
 
 {% endblock %}

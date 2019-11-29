@@ -209,6 +209,26 @@ class Invoice
         return $this;
     }
 
+    public function getCreatedAtYear(): int
+    {
+        return $this->createdAt->format('Y');
+    }
+
+    public function getPayedAtYear(): int
+    {
+        return $this->payedAt->format('Y');
+    }
+
+    public function getCreatedAtQuarter(): int
+    {
+        return ceil($this->createdAt->format('n') / 3);
+    }
+
+    public function getPayedAtQuarter(): int
+    {
+        return ceil($this->payedAt->format('n') / 3);
+    }
+
     public function getTotalHt(): ?string
     {
         return $this->totalHt;
@@ -326,6 +346,14 @@ class Invoice
     public static function getAvailableStatus()
     {
         return array_keys(static::$statusName);
+    }
+
+    /**
+     * @return array<string>
+     */
+    public static function getStatusList()
+    {
+        return array_flip(static::$statusName);
     }
 
     /**

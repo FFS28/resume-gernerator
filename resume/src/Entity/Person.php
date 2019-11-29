@@ -51,7 +51,7 @@ class Person
     private $phones = [];
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Company", inversedBy="people", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Company", inversedBy="persons", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $company;

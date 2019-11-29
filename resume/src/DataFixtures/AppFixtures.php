@@ -1596,6 +1596,20 @@ class AppFixtures extends Fixture
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201911-1');
+        $invoice->setCompany($this->companies['bewizyu']);
+        $invoice->setExperience($this->experiences['201906']);
+        $invoice->setTjm(400);
+        $invoice->setCreatedAt(new \DateTime('2019-11-08 00:00:00'));
+        $invoice->setPayedAt(new \DateTime('2019-12-30 00:00:00'));
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(2400);
+        $invoice->setTotalTax(480);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->manager->persist($invoice);
     }
 }
 

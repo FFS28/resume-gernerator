@@ -8,16 +8,11 @@ use App\Repository\ExperienceRepository;
 use App\Repository\HobbyRepository;
 use App\Repository\LinkRepository;
 use App\Repository\SkillRepository;
-use Dompdf\Dompdf;
-use Spatie\Browsershot\Browsershot;
-use Spipu\Html2Pdf\Html2Pdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use WhiteOctober\TCPDFBundle\Controller\TCPDFController;
-use WhiteOctober\TCPDFBundle\WhiteOctoberTCPDFBundle;
 
 class IndexController extends AbstractController
 {
@@ -31,7 +26,6 @@ class IndexController extends AbstractController
      * @param HobbyRepository $hobbyRepository
      * @param LinkRepository $linkRepository
      * @return Response
-     * @throws \Mpdf\MpdfException
      */
     public function index(
         Request $request,

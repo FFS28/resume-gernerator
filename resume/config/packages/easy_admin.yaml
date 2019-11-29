@@ -9,6 +9,7 @@ easy_admin:
         - 'build/runtime.js'
       css:
         - 'build/css/bootstrap-datepicker.css'
+        - 'build/css/dashboard.css'
     menu:
         - { label: 'Home', url: '/' }
         - { label: 'Dashboard', url: '/admin/dashboard' }
@@ -32,21 +33,27 @@ easy_admin:
       class: App\Entity\Company
       form:
         fields:
+          - { type: 'group', columns: 3, label: 'Principal' }
           - name
           - displayName
           - { property: 'displayName', label: 'Name' }
-          - client
-          - contractor
+          - { type: 'group', columns: 3, label: 'Hierarchy' }
+          - { property: 'client', type: 'easyadmin_autocomplete', type_options: { class: 'App\Entity\Company', attr: { create: true } } }
+          - { property: 'contractor', type: 'easyadmin_autocomplete', type_options: { class: 'App\Entity\Company', attr: { create: true } } }
+          - { property: 'persons', type: 'easyadmin_autocomplete', type_options: { class: 'App\Entity\Person', attr: { create: true } } }
+          - { type: 'group', columns: 6, label: 'Address' }
           - street
           - postalCode
           - city
+          - { type: 'group', columns: 12, label: 'Invoices' }
+          - { property: invoices, label: '', type: embedded_list }
       list:
         fields:
           - displayName
           - city
           - client
           - contractor
-          - people
+          - persons
     Persons:
       class: App\Entity\Person
       form:
@@ -57,7 +64,8 @@ easy_admin:
               choices: {
                 M: 'h',
                 Mme: 'f',
-              } } }
+              }
+            } }
           - firstname
           - lastname
           - email
@@ -75,12 +83,15 @@ easy_admin:
       controller: App\Controller\InvoiceController
       form:
         fields:
+          - { type: 'group', columns: 3, label: 'Principal' }
           - number
-          - company
-          - experience
+          - { property: 'experience', type: 'easyadmin_autocomplete', type_options: { class: 'App\Entity\Experience', attr: { create: true } } }
+          - { type: 'group', columns: 3, label: 'Invoicing' }
+          - { property: 'company', type: 'easyadmin_autocomplete', type_options: { class: 'App\Entity\Company', attr: { create: true } } }
           - totalHt
           - totalTax
           - { property: 'daysCount', type: 'number'}
+          - { type: 'group', columns: 3, label: 'Date' }
           - { property: 'createdAt',
               type_options: {
                 widget: 'single_text', format: 'dd/MM/yyyy',
@@ -91,6 +102,7 @@ easy_admin:
                 widget: 'single_text', format: 'dd/MM/yyyy',
                 attr: {data-provide: 'datepicker', data-date-format: 'dd/mm/yyyy', data-date-language: 'fr'}
               } }
+          - { type: 'group', columns: 3, label: 'Payment' }
           - { property: 'payedBy',
                 type: 'choice', type_options: {
               choices: {
@@ -112,17 +124,20 @@ easy_admin:
           - { property: 'totalHt', format: '%.0f' }
           - daysCount
           - createdAt
-          - payedAt
+        filters:
+          - company
+          - { property: status, type: 'App\Form\Filter\InvoiceStatusFilterType' }
+          - { property: createdAtYear, mapped: false, type: 'App\Form\Filter\DateYearFilterType', type_options: {data: 'createdAt'} }
+          - { property: createdAtQuarter, mapped: false, type: 'App\Form\Filter\DateQuarterFilterType', type_options: {data: 'createdAt'} }
     Experiences:
       class: App\Entity\Experience
       form:
         fields:
+          - { type: 'group', columns: 4, label: 'Principal' }
           - title
           - description
-          - company
-          - isFreelance
-          - onSite
-          - onHomepage
+          - { property: 'company', type: 'easyadmin_autocomplete', type_options: { class: 'App\Entity\Company', attr: { create: true } } }
+          - { type: 'group', columns: 4, label: 'Date' }
           - { property: 'dateBegin',
               type_options: {
                 widget: 'single_text', format: 'dd/MM/yyyy',
@@ -133,7 +148,11 @@ easy_admin:
                 widget: 'single_text', format: 'dd/MM/yyyy',
                 attr: {data-provide: 'datepicker', data-date-format: 'dd/mm/yyyy', data-date-language: 'fr'}
               } }
-          - skills
+          - { type: 'group', columns: 4, label: 'Options' }
+          - { property: 'skills', type: 'easyadmin_autocomplete', type_options: { class: 'App\Entity\Skill', attr: { create: true } } }
+          - isFreelance
+          - onSite
+          - onHomepage
       list:
         fields:
           - company
@@ -155,7 +174,7 @@ easy_admin:
                 OS: 'os',
               } } }
           - { property: 'level', type_options: {attr: {min: 0, max: 10 } } }
-          - parent
+          - { property: 'parent', type: 'easyadmin_autocomplete', type_options: { class: 'App\Entity\Skill', attr: { create: true } } }
           - onHomepage
           - experiences
       list:
@@ -226,3 +245,6 @@ easy_admin:
           - level
           - dateBegin
           - dateEnd
+
+easy_admin_extension:
+  minimum_role: ROLE_ADMIN

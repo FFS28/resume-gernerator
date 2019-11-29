@@ -75,13 +75,13 @@ class Company
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Person", mappedBy="company", cascade={"persist"})
      */
-    private $people;
+    private $persons;
 
     public function __construct()
     {
         $this->experiences = new ArrayCollection();
         $this->invoices = new ArrayCollection();
-        $this->people = new ArrayCollection();
+        $this->persons = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -299,15 +299,15 @@ class Company
     /**
      * @return Collection|Person[]
      */
-    public function getPeople(): Collection
+    public function getPersons(): Collection
     {
-        return $this->people;
+        return $this->persons;
     }
 
     public function addPerson(Person $person): self
     {
-        if (!$this->people->contains($person)) {
-            $this->people[] = $person;
+        if (!$this->persons->contains($person)) {
+            $this->persons[] = $person;
             $person->setCompany($this);
         }
 
@@ -316,8 +316,8 @@ class Company
 
     public function removePerson(Person $person): self
     {
-        if ($this->people->contains($person)) {
-            $this->people->removeElement($person);
+        if ($this->persons->contains($person)) {
+            $this->persons->removeElement($person);
             // set the owning side to null (unless already changed)
             if ($person->getCompany() === $this) {
                 $person->setCompany(null);
