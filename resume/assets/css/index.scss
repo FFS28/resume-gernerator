@@ -195,6 +195,14 @@ h4{
       padding: 20px 40px;
     }
   }
+
+  .li {
+    page-break-inside: avoid;
+  }
+}
+
+#hobbies .ul {
+  padding: 0 10px 10px;
 }
 
 #links {
@@ -317,6 +325,7 @@ h4{
   }
   h2 {
     padding-top: 20px;
+    text-align: left;
   }
   .ul {
     padding-left: 0;
@@ -326,6 +335,9 @@ h4{
     &, div {
       text-align: center;
     }
+  }
+  &#skills {
+    display: none;
   }
   #attributes .li:not(.separator) {
     margin: 0 10px;
@@ -339,6 +351,9 @@ h4{
   }
   #quote i {
     display: none;
+  }
+  &#hobbies {
+    text-align: left !important;
   }
 }
 
