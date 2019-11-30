@@ -29,7 +29,7 @@ class InvoiceController extends EasyAdminController
     public function pdf(Invoice $invoice)
     {
         return new Response(
-            $this->invoiceService->getOrCreatePdf($invoice),
+            $this->invoiceService->getOrCreatePdf($invoice, true),
             200,
             array(
                 'Content-Type' => 'application/pdf',

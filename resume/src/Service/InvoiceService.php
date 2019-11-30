@@ -38,9 +38,10 @@ class InvoiceService
         $this->companyTva = $companyTva;
     }
 
-    private function decode(string $string): string
+    private function decode(?string $string): string
     {
-        return iconv('UTF-8', 'utf-8//IGNORE', utf8_encode($string));
+        if (!$string) return '';
+        return iconv(mb_detect_encoding($string), 'utf-8//IGNORE', ($string));
     }
 
     /**
@@ -127,6 +128,7 @@ class InvoiceService
 
     /**
      * @param Invoice $invoice
+     * @param bool $force
      * @return string
      * @throws \Exception
      */
