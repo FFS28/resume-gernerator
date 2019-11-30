@@ -41,7 +41,12 @@ class InvoiceService
     private function decode(?string $string): string
     {
         if (!$string) return '';
-        return iconv(mb_detect_encoding($string), 'utf-8//IGNORE', ($string));
+        //return iconv(mb_detect_encoding($string), 'utf-8//IGNORE', ($string));
+        $fromEncoding = mb_detect_encoding($string);
+        $toEncoding = 'UTF-8';
+
+        return $convertedString = @mb_convert_encoding($string, $toEncoding, $fromEncoding) ?:
+            @iconv($fromEncoding, $toEncoding . '//IGNORE', $string);
     }
 
     /**
