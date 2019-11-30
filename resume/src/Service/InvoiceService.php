@@ -40,7 +40,7 @@ class InvoiceService
 
     private function decode(string $string): string
     {
-        return iconv('UTF-8', 'utf-8//TRANSLIT', utf8_encode($string));
+        return iconv('UTF-8', 'utf-8//IGNORE', utf8_encode($string));
     }
 
     /**
@@ -54,7 +54,7 @@ class InvoiceService
 
         /* Header settings */
         $pdfInvoice->setColor("#007fff");      // pdf color scheme
-        $pdfInvoice->setType("Facture n° " . $invoice->getNumber());    // Invoice Type
+        $pdfInvoice->setType($this->decode("Facture n° " . $invoice->getNumber()));    // Invoice Type
         $pdfInvoice->setNumberFormat(',', ' ');
         $pdfInvoice->setReference($invoice->getNumber());   // Reference
         $pdfInvoice->setDate($invoice->getCreatedAt()->format('d/m/Y'));   //Billing Date
@@ -74,7 +74,7 @@ class InvoiceService
         ]);
 
         $pdfInvoice->addItem(
-            "Journée de prestation",
+            $this->decode("Journée de prestation"),
             "",
             $invoice->getDaysCount(),
             $invoice->getTotalTax() ? (Invoice::TAX_MULTIPLIER * 100)."%" : '',
@@ -89,13 +89,13 @@ class InvoiceService
 
         $pdfInvoice->addTitle("Règlement");
 
-        $pdfInvoice->addParagraph("
+        $pdfInvoice->addParagraph($this->decode("
             RIB : 10278 07374 00020438301 93
             IBAN : FR76 1027 8073 7400 0204 3830 193
             BIC : CMCIFR2A
-        ");
+        "));
 
-        $pdfInvoice->addTitle("Informations légales");
+        $pdfInvoice->addTitle($this->decode("Informations légales"));
 
         $legalInformations = "
             Taux des pénalités en cas de retard de paiement : taux directeur de refinancement de la BCE, majoré de 10 points
@@ -110,7 +110,7 @@ class InvoiceService
             ${legalInformations}";
         }
 
-        $pdfInvoice->addParagraph($legalInformations);
+        $pdfInvoice->addParagraph($this->decode($legalInformations));
 
         $footerInformations = [
             $this->companyName,
