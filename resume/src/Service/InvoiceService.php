@@ -43,10 +43,11 @@ class InvoiceService
         if (!$string) return '';
         //return iconv(mb_detect_encoding($string), 'utf-8//IGNORE', ($string));
         $fromEncoding = mb_detect_encoding($string);
-        $toEncoding = 'UTF-8';
+        $toEncoding = 'UTF-8////IGNORE';
+        $toEncoding = 'US-ASCII//TRANSLIT';
 
         return $convertedString = @mb_convert_encoding($string, $toEncoding, $fromEncoding) ?:
-            @iconv($fromEncoding, $toEncoding . '//IGNORE', $string);
+            @iconv($fromEncoding, $toEncoding, $string);
     }
 
     /**
@@ -60,7 +61,7 @@ class InvoiceService
 
         /* Header settings */
         $pdfInvoice->setColor("#007fff");      // pdf color scheme
-        $pdfInvoice->setType($this->decode("Facture n° " . $invoice->getNumber()));    // Invoice Type
+        $pdfInvoice->setType($this->decode("Facture"));    // Invoice Type
         $pdfInvoice->setNumberFormat(',', ' ');
         $pdfInvoice->setReference($invoice->getNumber());   // Reference
         $pdfInvoice->setDate($invoice->getCreatedAt()->format('d/m/Y'));   //Billing Date
