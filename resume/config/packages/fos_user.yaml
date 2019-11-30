@@ -8,8 +8,12 @@ fos_user:
 
   registration:
     confirmation:
-      from_email: "%env(resolve:MAILER_USER)%"
+      from_email:
+        address: "%env(resolve:MAILER_USER)%"
+        sender_name: "%env(resolve:MAILER_USER)%"
 
   resetting:
     email:
-      from_email: "%env(resolve:MAILER_USER)%"
+      from_email:
+        address: "%env(resolve:MAILER_USER)%"
+        sender_name: "%env(resolve:MAILER_USER)%"
