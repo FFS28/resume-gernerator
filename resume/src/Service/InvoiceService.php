@@ -38,6 +38,11 @@ class InvoiceService
         $this->companyTva = $companyTva;
     }
 
+    private function decode(string $string): string
+    {
+        return iconv('UTF-8', 'utf-8//TRANSLIT', $string);
+    }
+
     /**
      * @param Invoice $invoice
      * @return InvoicePrinter
@@ -56,16 +61,16 @@ class InvoiceService
         $pdfInvoice->setDue($invoice->getCreatedAt()->add(new DateInterval('P1M'))->format('t/m/Y'));   //Billing Date
 
         $pdfInvoice->setFrom([
-            utf8_decode($this->companyName),
+            $this->decode($this->companyName),
             '',
-            utf8_decode($this->companyStreet),
-            utf8_decode($this->companyCity)
+            $this->decode($this->companyStreet),
+            $this->decode($this->companyCity)
         ]);
         $pdfInvoice->setTo([
-            utf8_decode($invoice->getCompany()->getName()),
+            $this->decode($invoice->getCompany()->getName()),
             '',
-            utf8_decode($invoice->getCompany()->getStreet()),
-            utf8_decode($invoice->getCompany()->getPostalCode() . ' ' . $invoice->getCompany()->getCity())
+            $this->decode($invoice->getCompany()->getStreet()),
+            $this->decode($invoice->getCompany()->getPostalCode() . ' ' . $invoice->getCompany()->getCity())
         ]);
 
         $pdfInvoice->addItem(
@@ -115,7 +120,7 @@ class InvoiceService
             'N° TVA : ' . $this->companyTva
         ];
 
-        $pdfInvoice->setFooternote(utf8_decode(implode(' - ', $footerInformations)));
+        $pdfInvoice->setFooternote($this->decode(implode(' - ', $footerInformations)));
 
         return $pdfInvoice;
     }
