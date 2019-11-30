@@ -5,3 +5,11 @@ fos_user:
   from_email:
     address: "%env(resolve:MAILER_USER)%"
     sender_name: "%env(resolve:MAILER_USER)%"
+
+  registration:
+    confirmation:
+      from_email: "%env(resolve:MAILER_USER)%"
+
+  resetting:
+    email:
+      from_email: "%env(resolve:MAILER_USER)%"
