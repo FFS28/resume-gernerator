@@ -40,7 +40,7 @@ class InvoiceService
 
     private function decode(string $string): string
     {
-        return iconv('UTF-8', 'utf-8//TRANSLIT', $string);
+        return iconv('UTF-8', 'utf-8//TRANSLIT', utf8_encode($string));
     }
 
     /**
