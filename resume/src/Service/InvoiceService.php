@@ -44,7 +44,7 @@ class InvoiceService
         //return iconv(mb_detect_encoding($string), 'utf-8//IGNORE', ($string));
         $fromEncoding = mb_detect_encoding($string);
         $toEncoding = 'UTF-8////IGNORE';
-        $toEncoding = 'US-ASCII//TRANSLIT';
+        //$toEncoding = 'US-ASCII//TRANSLIT';
 
         return $convertedString = @mb_convert_encoding($string, $toEncoding, $fromEncoding) ?:
             @iconv($fromEncoding, $toEncoding, $string);
@@ -117,7 +117,7 @@ class InvoiceService
             ${legalInformations}";
         }
 
-        $pdfInvoice->addParagraph($this->decode($legalInformations));
+        //$pdfInvoice->addParagraph($this->decode($legalInformations));
 
         $footerInformations = [
             $this->companyName,
@@ -127,7 +127,7 @@ class InvoiceService
             'N° TVA : ' . $this->companyTva
         ];
 
-        $pdfInvoice->setFooternote($this->decode(implode(' - ', $footerInformations)));
+        //$pdfInvoice->setFooternote($this->decode(implode(' - ', $footerInformations)));
 
         return $pdfInvoice;
     }
