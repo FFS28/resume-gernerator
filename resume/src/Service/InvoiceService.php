@@ -127,7 +127,7 @@ class InvoiceService
             'N° TVA : ' . $this->companyTva
         ];
 
-        //$pdfInvoice->setFooternote($this->encode(implode(' - ', $footerInformations)));
+        $pdfInvoice->setFooternote($this->encode(implode(' - ', $footerInformations)));
 
         return $pdfInvoice;
     }
