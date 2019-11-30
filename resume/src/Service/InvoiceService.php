@@ -38,7 +38,7 @@ class InvoiceService
         $this->companyTva = $companyTva;
     }
 
-    private function decode(?string $string): string
+    private function encode(?string $string): string
     {
         if (!$string) return '';
         //return iconv(mb_detect_encoding($string), 'utf-8//IGNORE', ($string));
@@ -61,27 +61,27 @@ class InvoiceService
 
         /* Header settings */
         $pdfInvoice->setColor("#007fff");      // pdf color scheme
-        $pdfInvoice->setType($this->decode("Facture"));    // Invoice Type
+        $pdfInvoice->setType($this->encode("Facture n° " . $invoice->getNumber()));    // Invoice Type
         $pdfInvoice->setNumberFormat(',', ' ');
         $pdfInvoice->setReference($invoice->getNumber());   // Reference
         $pdfInvoice->setDate($invoice->getCreatedAt()->format('d/m/Y'));   //Billing Date
         $pdfInvoice->setDue($invoice->getCreatedAt()->add(new DateInterval('P1M'))->format('t/m/Y'));   //Billing Date
 
         $pdfInvoice->setFrom([
-            $this->decode($this->companyName),
+            $this->encode($this->companyName),
             '',
-            $this->decode($this->companyStreet),
-            $this->decode($this->companyCity)
+            $this->encode($this->companyStreet),
+            $this->encode($this->companyCity)
         ]);
         $pdfInvoice->setTo([
-            $this->decode($invoice->getCompany()->getName()),
+            $this->encode($invoice->getCompany()->getName()),
             '',
-            $this->decode($invoice->getCompany()->getStreet()),
-            $this->decode($invoice->getCompany()->getPostalCode() . ' ' . $invoice->getCompany()->getCity())
+            $this->encode($invoice->getCompany()->getStreet()),
+            $this->encode($invoice->getCompany()->getPostalCode() . ' ' . $invoice->getCompany()->getCity())
         ]);
 
         $pdfInvoice->addItem(
-            $this->decode("Journée de prestation"),
+            $this->encode("Journée de prestation"),
             "",
             $invoice->getDaysCount(),
             $invoice->getTotalTax() ? (Invoice::TAX_MULTIPLIER * 100)."%" : '',
@@ -96,17 +96,17 @@ class InvoiceService
 
         $pdfInvoice->addTitle("Règlement");
 
-        $pdfInvoice->addParagraph($this->decode("
+        $pdfInvoice->addParagraph($this->encode("
             RIB : 10278 07374 00020438301 93
             IBAN : FR76 1027 8073 7400 0204 3830 193
             BIC : CMCIFR2A
         "));
 
-        $pdfInvoice->addTitle($this->decode("Informations légales"));
+        $pdfInvoice->addTitle($this->encode("Informations légales"));
 
         $legalInformations = "
             Taux des pénalités en cas de retard de paiement : taux directeur de refinancement de la BCE, majoré de 10 points
-            En cas de retard de paiement, indemnité forfaitaire légale pour frais de recouvrement : 40,00 €
+            En cas de retard de paiement, indemnité forfaitaire légale pour frais de recouvrement : 40,00 EUR
             Escompte en cas de paiement anticipé : aucun
           
             Dispensé d'immatriculation au Registre du Commerce et des Sociétés et au Répertoire des Métiers";
@@ -114,10 +114,10 @@ class InvoiceService
         if(!$invoice->getTotalTax()) {
             $legalInformations = "
             TVA non applicable, art. 293B du CGI
-            ${legalInformations}";
+            ".$legalInformations;
         }
 
-        //$pdfInvoice->addParagraph($this->decode($legalInformations));
+        $pdfInvoice->addParagraph($this->encode($legalInformations));
 
         $footerInformations = [
             $this->companyName,
@@ -127,7 +127,7 @@ class InvoiceService
             'N° TVA : ' . $this->companyTva
         ];
 
-        //$pdfInvoice->setFooternote($this->decode(implode(' - ', $footerInformations)));
+        //$pdfInvoice->setFooternote($this->encode(implode(' - ', $footerInformations)));
 
         return $pdfInvoice;
     }
