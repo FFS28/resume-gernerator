@@ -29,11 +29,11 @@ services:
     App\Service\InvoiceService:
         public: true
         arguments:
-            $pdfFileDirectory: '%kernel.project_dir%%env(resolve:DIRECTORY_INVOICE)%'
-            $companyName: '%env(resolve:COMPANY_NAME)%'
-            $companyStreet: '%env(resolve:COMPANY_STREET)%'
-            $companyCity: '%env(resolve:COMPANY_CITY)%'
-            $companySiret: '%env(resolve:COMPANY_SIRET)%'
-            $companyApe: '%env(resolve:COMPANY_APE)%'
-            $companyStatut: '%env(resolve:COMPANY_STATUT)%'
-            $companyTva: '%env(resolve:COMPANY_TVA)%'
+            $pdfFileDirectory: '%kernel.project_dir%%env(DIRECTORY_INVOICE)%'
+            $companyName: '%env(COMPANY_NAME)%'
+            $companyStreet: '%env(COMPANY_STREET)%'
+            $companyCity: '%env(COMPANY_CITY)%'
+            $companySiret: '%env(COMPANY_SIRET)%'
+            $companyApe: '%env(COMPANY_APE)%'
+            $companyStatut: '%env(COMPANY_STATUT)%'
+            $companyTva: '%env(COMPANY_TVA)%'
