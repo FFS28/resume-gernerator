@@ -123,7 +123,7 @@ class InvoiceService
             'Siret : ' . $this->companySiret,
             'APE : ' . $this->companyApe,
             $this->companyStatut,
-            'Numéro TVA : ' . $this->companyTva
+            'Numero TVA : ' . $this->companyTva
         ];
 
         $pdfInvoice->setFooternote($this->encode(implode(' - ', $footerInformations)));

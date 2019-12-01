@@ -1,6 +1,6 @@
 swiftmailer:
     url: '%env(MAILER_URL)%'
-    sender_address: '%env(MAILER_USER)%'
+    sender_address: 'achain.jeremy@gmail.com'
     delivery_addresses:
-        - '%env(MAILER_USER)%'
+        - 'achain.jeremy@gmail.com'
     spool: { type: 'memory' }
