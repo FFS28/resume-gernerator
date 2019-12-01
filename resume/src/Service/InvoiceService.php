@@ -59,7 +59,7 @@ class InvoiceService
         $pdfInvoice = new InvoicePrinter('A4', '€', 'fr');
 
         /* Header settings */
-        $pdfInvoice->setColor("#007fff");      // pdf color scheme
+        $pdfInvoice->setColor("#5cb85c");      // pdf color scheme
         $pdfInvoice->setType($this->encode("Facture n° " . $invoice->getNumber()));    // Invoice Type
         $pdfInvoice->setNumberFormat(',', ' ');
         $pdfInvoice->setReference($invoice->getNumber());   // Reference

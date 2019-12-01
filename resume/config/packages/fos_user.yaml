@@ -3,17 +3,5 @@ fos_user:
   firewall_name: main
   user_class: App\Entity\User
   from_email:
-    address: "achain.jeremy@gmail.com"
-    sender_name: "achain.jeremy@gmail.com"
-
-  registration:
-    confirmation:
-      from_email:
-        address: "achain.jeremy@gmail.com"
-        sender_name: "achain.jeremy@gmail.com"
-
-  resetting:
-    email:
-      from_email:
-        address: "achain.jeremy@gmail.com"
-        sender_name: "achain.jeremy@gmail.com"
+    address: "%env(MAILER_FROM)%"
+    sender_name: "Cloud Server"
