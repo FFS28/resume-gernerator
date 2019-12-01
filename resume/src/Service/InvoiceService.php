@@ -41,10 +41,9 @@ class InvoiceService
     private function encode(?string $string): string
     {
         if (!$string) return '';
-        //return iconv(mb_detect_encoding($string), 'utf-8//IGNORE', ($string));
+
         $fromEncoding = mb_detect_encoding($string);
         $toEncoding = 'UTF-8////IGNORE';
-        //$toEncoding = 'US-ASCII//TRANSLIT';
 
         return $convertedString = @mb_convert_encoding($string, $toEncoding, $fromEncoding) ?:
             @iconv($fromEncoding, $toEncoding, $string);
@@ -124,7 +123,7 @@ class InvoiceService
             'Siret : ' . $this->companySiret,
             'APE : ' . $this->companyApe,
             $this->companyStatut,
-            'N° TVA : ' . $this->companyTva
+            'Numéro TVA : ' . $this->companyTva
         ];
 
         $pdfInvoice->setFooternote($this->encode(implode(' - ', $footerInformations)));
