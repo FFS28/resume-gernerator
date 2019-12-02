@@ -28,6 +28,7 @@ On site: Sur place
 On homepage: Page d'accueil
 Options: Options
 Invoicing: Facturation
+in progress: en cours
 
 Company: Entreprise
 Companies: Entreprises
@@ -112,12 +113,19 @@ September: Septembre
 October: Octobre
 November: Novembre
 December: Decembre
-in progress: en cours
+Monday: Lundi
+Tuesday: Mardi
+Wednesday: Mercredi
+Thursday: Jeudi
+Friday: Vendredi
+Saturday: Samedi
+Sunday: Dimanche
+
 
 Home: Acceuil
-Dashboard: Dashboard
-Main: Principal
-Secondary: Secondaire
+Dashboard: Tableau de bord
+Report: Rapport d'activité
+Resume: CV
 
 Annual income: CA de l'année
 Quarterly income: CA du trimestre

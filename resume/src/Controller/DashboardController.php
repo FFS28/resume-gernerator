@@ -17,10 +17,11 @@ class DashboardController extends EasyAdminController
     /**
      * @Route("/admin/dashboard/{year<\d+>?0}/{quarter<\d+>?0}", name="dashboard")
      */
-    public function index(int $year = 0, int $quarter = 0,
-                          InvoiceRepository $invoiceRepository,
-                          ExperienceRepository $experienceRepository,
-                          TranslatorInterface $translator
+    public function index(
+        int $year = 0, int $quarter = 0,
+        InvoiceRepository $invoiceRepository,
+        ExperienceRepository $experienceRepository,
+        TranslatorInterface $translator
     ) {
         $data = [];
 
@@ -48,11 +49,10 @@ class DashboardController extends EasyAdminController
          * - Clients en cours
          */
 
-
         $data['currentYear'] = intval((new \DateTime())->format('Y'));
         $data['currentQuarter'] = ceil((new \DateTime())->format('n') / 3);
-        $data['activeYear'] = $year ? $year : (new \DateTime())->format('Y');
-        $data['activeQuarter'] = $quarter ? $quarter : ceil((new \DateTime())->format('n') / 3);
+        $data['activeYear'] = $year ? $year : $data['currentYear'];
+        $data['activeQuarter'] = $quarter ? $quarter : $data['currentQuarter'];
         $data['years'] = $invoiceRepository->findYears();
 
         $data['activeRevenuesOnYear'] = $invoiceRepository->getSalesRevenuesBy($data['activeYear']);
@@ -69,21 +69,53 @@ class DashboardController extends EasyAdminController
             array_map(function($item) {return $item['year'];}, $revenuesByYears),
             array_map(function($item) {return intval($item['total']);}, $revenuesByYears)
         );
+
         $revenuesByQuarters = $invoiceRepository->getSalesRevenuesGroupBy('quarter', $data['activeYear']);
         $data['revenuesByQuarters'] = array_combine(
             array_map(function($item) {return 'T'.$item['quarter'];}, $revenuesByQuarters),
             array_map(function($item) {return intval($item['total']);}, $revenuesByQuarters)
         );
+
         $data['daysByMonth'] = [];
         $daysByMonth = $invoiceRepository->getDaysCountByMonth($data['activeYear']);
-        foreach ($daysByMonth as $monthNumber => $monthValue) {
-            $monthName = $translator->trans(date('F', mktime(0, 0, 0, $monthNumber, 10)));
-            $data['daysByMonth'][$monthName] =  $monthValue['total'];
+        $daysByMonthAssociative = [];
+        foreach ($daysByMonth as $item) {
+            $daysByMonthAssociative[intval($item['month'])] = $item['total'];
+        }
+        for($i = 1; $i <= 12; $i++) {
+            $monthName = $translator->trans(date('F', mktime(0, 0, 0, $i, 10)));
+            $data['daysByMonth'][$monthName] =  isset($daysByMonthAssociative[$i]) ? $daysByMonthAssociative[$i] : 0;
+        }
+
+        $data['colorsByYears'] = [];
+        foreach ($data['years'] as $year) {
+            $data['colorsByYears'][] = $year == $data['activeYear'] ? 'rgba(56, 142, 60, 0.6)' : 'rgba(0, 0, 0, 0.1)';
+        }
+
+        $data['colorsByQuarters'] = [];
+        foreach ($data['revenuesByQuarters'] as $quarter => $item) {
+            $data['colorsByQuarters'][] = $quarter[1] == $data['activeQuarter'] ? 'rgba(56, 142, 60, 0.6)' : 'rgba(0, 0, 0, 0.1)';
         }
 
         $data['unpayedInvoices'] = $invoiceRepository->findInvoicesBy(null, null, false);
         $data['currentExperiences'] = $experienceRepository->getCurrents();
 
         return $this->render('page/dashboard.html.twig', $data);
+    }
+
+    /**
+     * @Route("/admin/report/{year<\d+>?0}/{month<\d+>?0}", name="cra")
+     */
+    public function report(
+        int $year = 0, int $month = 0,
+        InvoiceRepository $invoiceRepository
+    )
+    {
+        $data = [];
+        $data['activeYear'] = $year ? $year : (new \DateTime())->format('Y');
+        $data['activeMonth'] = $month ? $month : (new \DateTime())->format('m');
+        $data['years'] = $invoiceRepository->findYears();
+
+        return $this->render('page/report.html.twig', $data);
     }
 }

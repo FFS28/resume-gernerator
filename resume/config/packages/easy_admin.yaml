@@ -10,16 +10,18 @@ easy_admin:
       css:
         - 'build/css/bootstrap-datepicker.css'
         - 'build/css/dashboard.css'
+        - 'build/css/report.css'
     menu:
         - { label: 'Home', url: '/' }
-        - { label: 'Dashboard', url: '/admin/dashboard' }
-        - { label: 'Main' }
+        - { label: 'Dashboard', url: '/admin/dashboard', default: true }
+        - { label: 'Report', url: '/admin/report' }
+        - { label: 'Invoicing' }
+        - { entity: 'Invoices', default: true}
         - Companies
         - Persons
+        - { label: 'Resume' }
         - Experiences
         - Skills
-        - Invoices
-        - { label: 'Secondary' }
         - Attributes
         - Hobbies
         - Educations

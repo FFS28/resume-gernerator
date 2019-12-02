@@ -6,6 +6,9 @@ $secondaryColor: #eee;
 $thirdColor: #333;
 
 #dashboard {
+  .card-navigation .card-content{
+    margin: -38px -40px 0;
+  }
 
   ul, li {
     margin: 0;
