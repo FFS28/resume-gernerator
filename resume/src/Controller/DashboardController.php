@@ -109,12 +109,21 @@ class DashboardController extends EasyAdminController
     public function report(
         int $year = 0, int $month = 0,
         InvoiceRepository $invoiceRepository
-    )
-    {
+    ) {
         $data = [];
         $data['activeYear'] = $year ? $year : (new \DateTime())->format('Y');
         $data['activeMonth'] = $month ? $month : (new \DateTime())->format('m');
         $data['years'] = $invoiceRepository->findYears();
+
+        $currentDate = new \DateTime($data['activeYear'].($data['activeMonth'] < 10 ? '0' : '').$data['activeMonth'].'01');
+        $data['daysCount'] = $currentDate->format('t');
+
+        $data['days'] = [];
+        for ($i = 1; $i <= $data['daysCount']; $i++) {
+            $data['days'][] = [
+
+            ];
+        }
 
         return $this->render('page/report.html.twig', $data);
     }
