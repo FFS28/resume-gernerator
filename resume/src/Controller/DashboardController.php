@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use AlterPHP\EasyAdminExtensionBundle\Controller\EasyAdminController;
 use App\Entity\Invoice;
+use App\Repository\ExperienceRepository;
 use App\Repository\InvoiceRepository;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,8 +17,11 @@ class DashboardController extends EasyAdminController
     /**
      * @Route("/admin/dashboard/{year<\d+>?0}/{quarter<\d+>?0}", name="dashboard")
      */
-    public function index(InvoiceRepository $invoiceRepository, int $year = 0, int $quarter = 0, TranslatorInterface $translator)
-    {
+    public function index(int $year = 0, int $quarter = 0,
+                          InvoiceRepository $invoiceRepository,
+                          ExperienceRepository $experienceRepository,
+                          TranslatorInterface $translator
+    ) {
         $data = [];
 
         /**
@@ -77,7 +81,8 @@ class DashboardController extends EasyAdminController
             $data['daysByMonth'][$monthName] =  $monthValue['total'];
         }
 
-        $data['unpayedInvoices'] = $invoiceRepository->findInvoicesBy(0, 0, false);
+        $data['unpayedInvoices'] = $invoiceRepository->findInvoicesBy(null, null, false);
+        $data['currentExperiences'] = $experienceRepository->getCurrents();
 
         return $this->render('page/dashboard.html.twig', $data);
     }

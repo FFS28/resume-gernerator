@@ -78,6 +78,7 @@ Days count: Nombre de jours
 Payment: Paiement
 Pdf: Pdf
 30 days end of month: 30 jours fin du mois
+Validate: Valider
 
 Hobby: Loisir
 Hobbies: Loisirs
@@ -111,6 +112,7 @@ September: Septembre
 October: Octobre
 November: Novembre
 December: Decembre
+in progress: en cours
 
 Home: Acceuil
 Dashboard: Dashboard
@@ -126,3 +128,4 @@ Revenues by years: CA par années
 Revenues by quarter: CA par trimestre
 Days by month: Journées par mois
 Unpayed invoices: Factures en cours
+Current experiences: Missions en cours

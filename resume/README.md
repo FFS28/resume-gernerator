@@ -5,7 +5,7 @@
 - Factures
     x Création des pdf
     - Calcul automatique du total avec le tjm + nbj
-    - Valider une facture
+    x Valider une facture (modifier statut + date paiement)
     - Envoi d'une facture
     - Visualiser, éditer (par calendrier) ou exporter le CRA
     - Export du livre des recettes

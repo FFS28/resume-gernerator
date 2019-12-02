@@ -85,7 +85,6 @@ class Experience
         $this->onSite = true;
         $this->onHomepage = true;
         $this->dateBegin = new \DateTime();
-        $this->dateEnd = new \DateTime();
         $this->title = "Développeur Web";
         $this->invoices = new ArrayCollection();
         $this->activities = new ArrayCollection();
@@ -185,7 +184,7 @@ class Experience
         return $this->dateEnd;
     }
 
-    public function setDateEnd(\DateTimeInterface $dateEnd): self
+    public function setDateEnd(?\DateTimeInterface $dateEnd): self
     {
         $this->dateEnd = $dateEnd;
 

@@ -113,7 +113,12 @@
             {% for experience in experiences %}
                 <span class="li">
                     <div class="date">
-                        <span>{{ experience.dateBegin | date('F') | trans }} {{ experience.dateBegin | date('Y') }}</span>&nbsp;-&nbsp;<span>{{ experience.dateEnd | date('F') | trans }} {{ experience.dateEnd | date('Y') }}</span>
+                        <span>{{ experience.dateBegin | date('F') | trans }} {{ experience.dateBegin | date('Y') }}</span>&nbsp;-&nbsp;
+                        <span>{% if experience.dateEnd %}
+                                {{ experience.dateEnd | date('F') | trans }} {{ experience.dateEnd | date('Y') }}
+                            {% else %}
+                                {{ 'in progress' | trans }}
+                            {% endif %}</span>
                     </div>
                     <h4 class="title">
                         <span>{{ experience.title }}</span> / <span>{{ experience.company }}</span>
