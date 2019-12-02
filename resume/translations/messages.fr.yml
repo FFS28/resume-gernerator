@@ -96,6 +96,9 @@ Children: Enfants
 Date: Date
 Year: Année
 Trimestre: Trimestre
+Month: Mois
+Day: Journée
+Days: Journées
 January: Janvier
 February: Fevrier
 March: Mars
@@ -113,3 +116,13 @@ Home: Acceuil
 Dashboard: Dashboard
 Main: Principal
 Secondary: Secondaire
+
+Annual income: CA de l'année
+Quarterly income: CA du trimestre
+Days remaining before taxes: Jours restant avant TVA
+Quarterly taxes: TVA du trimestre
+Days remaining: Jours restant
+Revenues by years: CA par années
+Revenues by quarter: CA par trimestre
+Days by month: Journées par mois
+Unpayed invoices: Factures en cours

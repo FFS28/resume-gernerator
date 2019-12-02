@@ -1,16 +1,139 @@
-{# extends 'base.html.twig' #}
+{% set active_route = app.request.attributes.get('_route') | default('app_index') %}
+{% set active_params = app.request.attributes.get('_route_params') | default([]) %}
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
 {% block content_title %}{{ 'Dashboard' | trans }}{% endblock %}
 
 {% block main %}
-    Main
+    <div class="cards cards-row-120">
+        <div class="card card-1 card-navigation">
+            <div class="card-content">
+                <ul>
+                    {% for year in years %}
+                        <li>
+                            <a class="{% if year == activeYear %}active{% endif %}" href="{{ url(active_route, (active_params | merge({'year' : year}))) }}">{{ year }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <ul>
+                    {% for quarter in [1, 2, 3, 4] %}
+                        <li>
+                            <a class="{% if quarter == activeQuarter %}active{% endif %}" href="{{ url(active_route, (active_params | merge({'quarter' : quarter}))) }}">T{{ quarter }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="cards cards-row-120">
+        <div class="card card-4">
+            <div class="card-content">
+                <h4>{{ 'Annual income' | trans }}</h4>
+                <span>{{ activeRevenuesOnYear | number_format(0, ',', ' ') }}</span>
+            </div>
+        </div>
+        <div class="card card-4">
+            <div class="card-content">
+                <h4>{{ 'Quarterly income' | trans }}</h4>
+                <span>{{ activeRevenuesOnQuarter | number_format(0, ',', ' ') }}</span>
+            </div>
+        </div>
+        <div class="card card-4">
+            <div class="card-content">
+                {% if currentYear == activeYear and remainingDaysBeforeTvaLimit > 0 %}
+                    <h4>{{ 'Days remaining before taxes' | trans }}</h4>
+                    <span>{{ remainingDaysBeforeTvaLimit }}</span>
+                {% else %}
+                    <h4>{{ 'Quarterly taxes' | trans }}</h4>
+                    <span>{{ currentTaxesOnQuarter | number_format(0, ',', ' ') }}</span>
+                {% endif %}
+            </div>
+        </div>
+        <div class="card card-4">
+            <div class="card-content">
+                <h4>{{ 'Days remaining' | trans }}</h4>
+                <span>{{ remainingDaysBeforeLimit }}</span>
+            </div>
+        </div>
+    </div>
+    <div class="cards">
+        <div class="card card-3">
+            <div class="card-content">
+                <h4>{{ 'Revenues by years' | trans }}</h4>
+                <canvas id="revenuesByYears" width="100%" height="100%"></canvas>
+            </div>
+        </div>
+        <div class="card card-3">
+            <div class="card-content">
+                <h4>{{ 'Revenues by quarter' | trans }}</h4>
+                <canvas id="revenuesByQuarters" width="100%" height="100%"></canvas>
+            </div>
+        </div>
+        <div class="card card-3">
+            <div class="card-content">
+                <h4>{{ 'Days by month' | trans }}</h4>
+                <canvas id="daysByMonth" width="100%" height="100%"></canvas>
+            </div>
+        </div>
+    </div>
+    {% if (unpayedInvoices | length) > 0 %}
+        <div class="cards">
+            <div class="card card-1 card-left">
+                <div class="card-content">
+                    <h4>{{ 'Unpayed invoices' | trans }}</h4>
+                    <div>
+                        {% for invoice in unpayedInvoices %}
+
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}
 
 {% block content_footer %}
-    Footer
+
 {% endblock %}
 
 {% block body_javascript %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css"/>
+    <script>
+        var ctx = document.getElementById('revenuesByYears');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['{{ (revenuesByYears | keys) | join("', '") | raw }}'],
+                datasets: [{
+                    label: 'CA (€)',
+                    data: ['{{ (revenuesByYears) | join("', '") | raw }}'],
+                }]
+            }
+        });
 
+        var ctx = document.getElementById('revenuesByQuarters');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['{{ (revenuesByQuarters | keys) | join("', '") | raw }}'],
+                datasets: [{
+                    label: 'CA (€)',
+                    data: ['{{ (revenuesByQuarters) | join("', '") | raw }}'],
+                }]
+            }
+        });
+
+        var ctx = document.getElementById('daysByMonth');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['{{ (daysByMonth | keys) | join("', '") | raw }}'],
+                datasets: [{
+                    label: '{{ 'Days' | trans }}',
+                    data: ['{{ (daysByMonth) | join("', '") | raw }}'],
+                }]
+            }
+        });
+    </script>
 {% endblock %}

@@ -23,7 +23,7 @@ class InvoiceController extends EasyAdminController
     }
 
     /**
-     * @Route("/admin/invoice/{id}/pdf", name="dashboard")
+     * @Route("/admin/invoice/{id}/pdf", name="invoice")
      * @ParamConverter("invoice", class="App:Invoice")
      */
     public function pdf(Invoice $invoice)
