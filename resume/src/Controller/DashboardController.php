@@ -104,7 +104,7 @@ class DashboardController extends EasyAdminController
     }
 
     /**
-     * @Route("/admin/report/{year<\d+>?0}/{month<\d+>?0}", name="cra")
+     * @Route("/admin/report/{year<\d+>?0}/{month<\d+>?0}", name="report")
      */
     public function report(
         int $year = 0, int $month = 0,
