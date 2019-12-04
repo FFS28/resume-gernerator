@@ -3,8 +3,8 @@
 ### Features
 
 - Factures
-    x Création des pdf
-    x Valider une facture (modifier statut + date paiement)
+    - x Création des pdf
+    - x Valider une facture (modifier statut + date paiement)
     - Calcul automatique du total avec le tjm + nbj
     - Modification automatique du status si date de réglement
     - Envoi d'une facture

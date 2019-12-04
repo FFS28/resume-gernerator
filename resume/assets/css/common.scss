@@ -1,0 +1,24 @@
+@import "flexbox";
+@import "variables";
+
+$primaryColor: #388e3c;
+$secondaryColor: #eee;
+$thirdColor: #333;
+
+ul, li {
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  list-style: none;
+}
+
+li, a {
+  display: inline-block
+}
+
+a {
+  color: $primaryColor;
+  font-weight: bold;
+}

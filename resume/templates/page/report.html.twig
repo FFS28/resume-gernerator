@@ -6,7 +6,45 @@
 
 {% block main %}
     <div id="report">
-
+        <div class="navigation">
+            <ul>
+                {% for year in years %}
+                    <li>
+                        <a class="{% if year == activeYear %}active{% endif %}" href="{{ url(active_route, (active_params | merge({'year' : year}))) }}">{{ year }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+            <ul>
+                {% for month in months %}
+                    <li>
+                        <a class="{% if month['int'] == activeMonth %}active{% endif %}" href="{{ url(active_route, (active_params | merge({'month' : month['int']}))) }}">{{ month['str'] }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="tr">
+            <span class="th">{{ 'Monday' | trans }}</span>
+            <span class="th">{{ 'Tuesday' | trans }}</span>
+            <span class="th">{{ 'Wednesday' | trans }}</span>
+            <span class="th">{{ 'Thursday' | trans }}</span>
+            <span class="th">{{ 'Friday' | trans }}</span>
+            <span class="th">{{ 'Saturday' | trans }}</span>
+            <span class="th">{{ 'Sunday' | trans }}</span>
+        </div>
+        <div class="days">
+            {% for day in days %}
+                {% if day['date'] %}
+                    <div class="day day-active">
+                        <input type="checkbox" {% if day['value'] %}checked{% endif %} id="{{ day['date'] }}"/>
+                        <label for="{{ day['date'] }}">
+                            <input type="number" value="{{ day['value'] ? day['value'] : 1 }}" max="1" min="0" step="0.5"/>
+                        </label>
+                    </div>
+                {% else %}
+                    <div class="day day-empty"></div>
+                {% endif %}
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}
 

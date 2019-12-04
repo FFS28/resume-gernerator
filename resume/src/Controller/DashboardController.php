@@ -4,10 +4,19 @@ namespace App\Controller;
 
 use AlterPHP\EasyAdminExtensionBundle\Controller\EasyAdminController;
 use App\Entity\Invoice;
+use App\Form\Type\ActivityType;
+use App\Form\Type\MonthActivitiesType;
+use App\Repository\ActivityRepository;
 use App\Repository\ExperienceRepository;
 use App\Repository\InvoiceRepository;
+use DateInterval;
+use DateTime;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Translation\Translator;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -15,13 +24,21 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class DashboardController extends EasyAdminController
 {
     /**
+     * @param int $year
+     * @param int $quarter
+     * @param InvoiceRepository $invoiceRepository
+     * @param ExperienceRepository $experienceRepository
+     * @param TranslatorInterface $translator
+     * @return Response
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      * @Route("/admin/dashboard/{year<\d+>?0}/{quarter<\d+>?0}", name="dashboard")
      */
     public function index(
-        int $year = 0, int $quarter = 0,
         InvoiceRepository $invoiceRepository,
         ExperienceRepository $experienceRepository,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        int $year = 0, int $quarter = 0
     ) {
         $data = [];
 
@@ -49,8 +66,8 @@ class DashboardController extends EasyAdminController
          * - Clients en cours
          */
 
-        $data['currentYear'] = intval((new \DateTime())->format('Y'));
-        $data['currentQuarter'] = ceil((new \DateTime())->format('n') / 3);
+        $data['currentYear'] = intval((new DateTime())->format('Y'));
+        $data['currentQuarter'] = ceil((new DateTime())->format('n') / 3);
         $data['activeYear'] = $year ? $year : $data['currentYear'];
         $data['activeQuarter'] = $quarter ? $quarter : $data['currentQuarter'];
         $data['years'] = $invoiceRepository->findYears();
@@ -104,26 +121,74 @@ class DashboardController extends EasyAdminController
     }
 
     /**
+     * @param InvoiceRepository $invoiceRepository
+     * @param ActivityRepository $activityRepository
+     * @param TranslatorInterface $translator
+     * @param int $year
+     * @param int $month
+     * @return Response
+     * @throws Exception
      * @Route("/admin/report/{year<\d+>?0}/{month<\d+>?0}", name="report")
      */
     public function report(
-        int $year = 0, int $month = 0,
-        InvoiceRepository $invoiceRepository
+        InvoiceRepository $invoiceRepository,
+        ActivityRepository $activityRepository,
+        TranslatorInterface $translator,
+        int $year = 0, int $month = 0
     ) {
         $data = [];
-        $data['activeYear'] = $year ? $year : (new \DateTime())->format('Y');
-        $data['activeMonth'] = $month ? $month : (new \DateTime())->format('m');
+        $data['activeYear'] = $year ? $year : (new DateTime())->format('Y');
+        $data['activeMonth'] = $month ? $month : (new DateTime())->format('m');
         $data['years'] = $invoiceRepository->findYears();
 
-        $currentDate = new \DateTime($data['activeYear'].($data['activeMonth'] < 10 ? '0' : '').$data['activeMonth'].'01');
+        $currentDate = new DateTime($data['activeYear'].($data['activeMonth'] < 10 ? '0' : '').$data['activeMonth'].'01');
         $data['daysCount'] = $currentDate->format('t');
 
-        $data['days'] = [];
-        for ($i = 1; $i <= $data['daysCount']; $i++) {
-            $data['days'][] = [
+        $data['months'] = [];
 
+        for($i = 1; $i <= 12; $i++) {
+            $monthDate = new DateTime($data['activeYear'].($i < 10 ? '0' : '').$i.'01');
+            $data['months'][] = [
+              'int' => $i,
+              'str' => $translator->trans($monthDate->format('F'))
             ];
         }
+
+        $activities = $activityRepository->findActivitiesByDate($currentDate);
+        $form = $this->createForm(MonthActivitiesType::class, null, [
+            'activities' => []
+        ]);
+        /*$form->get('activities')->add('00000000', ActivityType::class, [
+            'date' => '',
+            'value' => '',
+            'invoice' => null
+        ]);*/
+        dump($form);
+
+        $data['days'] = [];
+
+        for($i = 1; $i < $currentDate->format('N'); $i++) {
+            $data['days'][] = [
+                'date' => null,
+                'day' => $i
+            ];
+        }
+
+        for ($i = 1; $i <= $data['daysCount']; $i++) {
+            $date = $currentDate->format('Ymd');
+
+            $data['days'][$date] = [
+                'date' => $date,
+                'value' => 0
+            ];
+            $currentDate->add(new DateInterval('P1D'));
+        }
+
+        foreach ($activities as $activity) {
+            $data['days'][$activity->getDate()->format('Ymd')]['value'] = $activity->getValue();
+        }
+
+        dump($data);
 
         return $this->render('page/report.html.twig', $data);
     }

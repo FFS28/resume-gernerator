@@ -27,6 +27,11 @@ class ExperienceRepository extends ServiceEntityRepository
         return $query->getQuery()->getResult();
     }
 
+    public function findByMonth(int $month)
+    {
+
+    }
+
 //    /**
 //     * @return Experience[] Returns an array of Experience objects
 //     */
