@@ -9,7 +9,7 @@
 {%- endblock -%}
 
 {% block stylesheets %}
-    {% if isPdf %}
+    {% if isPdf and css %}
         <style>
             {{ css }}
         </style>
