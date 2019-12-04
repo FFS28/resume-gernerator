@@ -174,7 +174,7 @@ class InvoiceRepository extends ServiceEntityRepository
 
         $query = $this->addFilters($query, $year, null, null);
 
-        return floatval($query->getQuery()->getSingleScalarResult()['total']);
+        return floatval($query->getQuery()->getSingleScalarResult());
     }
 
     /**
