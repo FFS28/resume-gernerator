@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Form\Type\ContactFormType;
 use App\Repository\AttributeRepository;
 use App\Repository\EducationRepository;
 use App\Repository\ExperienceRepository;
@@ -12,6 +13,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Asset\Packages;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -26,7 +29,9 @@ class IndexController extends AbstractController
      * @param EducationRepository $educationRepository
      * @param HobbyRepository $hobbyRepository
      * @param LinkRepository $linkRepository
+     * @param MailerInterface $mailer
      * @return Response
+     * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
      */
     public function index(
         Request $request,
@@ -36,8 +41,11 @@ class IndexController extends AbstractController
         EducationRepository $educationRepository,
         HobbyRepository $hobbyRepository,
         LinkRepository $linkRepository,
-        Packages $assetManager
+        MailerInterface $mailer
     ) {
+        $form = $this->createForm(ContactFormType::class);
+        $form->handleRequest($request);
+
         $experiencesFilter = $request->query->get('all') ? [] : ['onHomepage' => true];
         $data = [
             'attributes' => $attributeRepository->findAllIndexedBy('slug'),
@@ -47,18 +55,14 @@ class IndexController extends AbstractController
             'educations' => $educationRepository->findBy([], ['dateBegin' => 'DESC']),
             'hobbies' => $hobbyRepository->findAll(),
             'links' => $linkRepository->findAll(),
-            'css' => ''
+            'css' => '',
+            'isPdf' => $request->query->get('pdf') ? true : false,
+            'contactForm' => $form->createView()
         ];
-        $data['isPdf'] = $request->query->get('pdf') ? true : false;
 
         if ($data['isPdf']) {
             $pdfFilename = 'jeremy-achain-cv.pdf';
             $html =  $this->renderView('page/index.html.twig', $data);
-
-            $cssUri = $this->getParameter('kernel.project_dir').$assetManager->getUrl('/public/build/css/index.css');
-            if(file_exists($cssUri)) {
-                $data['css'] = file_get_contents($cssUri);
-            }
             $pdf = null;
 
             /*if ($request->query->get('pdf') === 'mpdf') {
@@ -106,6 +110,21 @@ class IndexController extends AbstractController
                     )
                 );
             }
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+
+            $email = (new Email())
+                ->from($this->getParameter('MAILER_FROM'))
+                ->to($this->getParameter('MAILER_FROM'))
+                ->replyTo($data['email'])
+                ->subject($this->getParameter('MAILER_SUBJECT') . ' New message')
+                ->text($data['message']);
+
+            $mailer->send($email);
+
+            return $this->redirectToRoute('index');
         }
 
         return $this->render('page/index.html.twig', $data);
