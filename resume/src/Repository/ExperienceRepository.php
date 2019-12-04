@@ -19,6 +19,14 @@ class ExperienceRepository extends ServiceEntityRepository
         parent::__construct($registry, Experience::class);
     }
 
+    public function getCurrents()
+    {
+        $query = $this->createQueryBuilder('e')
+            ->where('e.dateEnd IS NULL');
+
+        return $query->getQuery()->getResult();
+    }
+
 //    /**
 //     * @return Experience[] Returns an array of Experience objects
 //     */

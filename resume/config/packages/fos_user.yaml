@@ -3,5 +3,5 @@ fos_user:
   firewall_name: main
   user_class: App\Entity\User
   from_email:
-    address: "%env(resolve:MAILER_USER)%"
-    sender_name: "%env(resolve:MAILER_USER)%"
+    address: "%env(MAILER_FROM)%"
+    sender_name: "Cloud Server"

@@ -28,6 +28,7 @@ On site: Sur place
 On homepage: Page d'accueil
 Options: Options
 Invoicing: Facturation
+in progress: en cours
 
 Company: Entreprise
 Companies: Entreprises
@@ -76,6 +77,9 @@ payed: Encaissé
 Credit: Avoir
 Days count: Nombre de jours
 Payment: Paiement
+Pdf: Pdf
+30 days end of month: 30 jours fin du mois
+Validate: Valider
 
 Hobby: Loisir
 Hobbies: Loisirs
@@ -94,6 +98,9 @@ Children: Enfants
 Date: Date
 Year: Année
 Trimestre: Trimestre
+Month: Mois
+Day: Journée
+Days: Journées
 January: Janvier
 February: Fevrier
 March: Mars
@@ -106,8 +113,27 @@ September: Septembre
 October: Octobre
 November: Novembre
 December: Decembre
+Monday: Lundi
+Tuesday: Mardi
+Wednesday: Mercredi
+Thursday: Jeudi
+Friday: Vendredi
+Saturday: Samedi
+Sunday: Dimanche
+
 
 Home: Acceuil
-Dashboard: Dashboard
-Main: Principal
-Secondary: Secondaire
+Dashboard: Tableau de bord
+Report: Rapport d'activité
+Resume: CV
+
+Annual income: CA de l'année
+Quarterly income: CA du trimestre
+Days remaining before taxes: Jours restant avant TVA
+Quarterly taxes: TVA du trimestre
+Days remaining: Jours restant
+Revenues by years: CA par années
+Revenues by quarter: CA par trimestre
+Days by month: Journées par mois
+Unpayed invoices: Factures en cours
+Current experiences: Missions en cours

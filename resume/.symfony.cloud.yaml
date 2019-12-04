@@ -23,6 +23,7 @@ disk: 1024
 mounts:
     "/var": { source: local, source_path: var }
     "/tmp": { source: local, source_path: tmp }
+    "/data/invoices": { source: local, source_path: invoices }
     "/public/upload": { source: local, source_path: uploads }
 
 variables:
@@ -43,7 +44,14 @@ hooks:
 
     post_deploy: |
         symfony console doctrine:schema:update --force
-        symfony console doctrine:fixtures:load --env=dev
         
 relationships:
     database: "db_resume:postgresql"
+
+crons:
+    snapshot:
+        # everyday at 5AM
+        spec: 0 5 * * *
+        cmd: |
+            # only snapshot the master environment, aka production
+            croncape symfony snapshot:create --no-wait

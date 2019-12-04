@@ -25,3 +25,15 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\Service\InvoiceService:
+        public: true
+        arguments:
+            $pdfFileDirectory: '%kernel.project_dir%%env(DIRECTORY_INVOICE)%'
+            $companyName: '%env(COMPANY_NAME)%'
+            $companyStreet: '%env(COMPANY_STREET)%'
+            $companyCity: '%env(COMPANY_CITY)%'
+            $companySiret: '%env(COMPANY_SIRET)%'
+            $companyApe: '%env(COMPANY_APE)%'
+            $companyStatut: '%env(COMPANY_STATUT)%'
+            $companyTva: '%env(COMPANY_TVA)%'

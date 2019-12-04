@@ -93,20 +93,20 @@ h4{
   }
   #quote{
     margin-top: 30px;
-    margin-left: 30px;
+    margin-left: 80px;
 
     .quote{
       font-size: 14px;
       font-style: italic;
     }
     i.fa-quote-left{
-      margin-left: -10px;
+      margin-left: -26px;
       margin-top: -14px;
       float: left;
     }
     i.fa-quote-right{
       float: right;
-      margin-right: -10px;
+      margin-right: -26px;
       margin-top: 30px;
     }
     i{
@@ -252,16 +252,21 @@ h4{
 
 @media (min-width: $screen-sm-min) {
   #me{
+    #name {
+      max-width: 320px;
+    }
+    #quote{
+      max-width: 300px;
+    }
     #name, #quote{
       float: none;
       display: inline-block;
-      max-width: 300px;
     }
 
     #name{
       margin:10px 0;
       text-align: right;
-      width: 300px;
+      width: 320px;
     }
   }
   #head:not(.html-pdf) #me {

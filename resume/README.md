@@ -3,12 +3,13 @@
 ### Features
 
 - Factures
-    - Valider une facture
-    - Envoi d'une facture ou d'une relance
-    - Visualiser, éditer (par calendrier) ou exporter le CRA
-    - Export du livre des recettes
+    x Création des pdf
+    x Valider une facture (modifier statut + date paiement)
     - Calcul automatique du total avec le tjm + nbj
     - Modification automatique du status si date de réglement
+    - Envoi d'une facture
+    - Visualiser, éditer (par calendrier) ou exporter le CRA
+    - Export du livre des recettes (CSV)
     
 - Dashboard
     - Alert automatique en cas de dépassement des plafonds

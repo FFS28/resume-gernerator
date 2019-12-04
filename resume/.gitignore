@@ -23,3 +23,9 @@ yarn-error.log
 ###> phpstorm ###
 /.idea/
 ###< phpstorm ###
+
+###> data ###
+/public/upload/
+/data/
+/tmp/
+###< data ###

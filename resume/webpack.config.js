@@ -38,6 +38,7 @@ Encore
 
     .addStyleEntry('css/index', './assets/css/index.scss')
     .addStyleEntry('css/dashboard', './assets/css/dashboard.scss')
+    .addStyleEntry('css/report', './assets/css/report.scss')
 
     // uncomment if you use TypeScript
     //.enableTypeScriptLoader()

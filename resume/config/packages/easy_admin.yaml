@@ -10,16 +10,18 @@ easy_admin:
       css:
         - 'build/css/bootstrap-datepicker.css'
         - 'build/css/dashboard.css'
+        - 'build/css/report.css'
     menu:
         - { label: 'Home', url: '/' }
-        - { label: 'Dashboard', url: '/admin/dashboard' }
-        - { label: 'Main' }
+        - { label: 'Dashboard', url: '/admin/dashboard', default: true }
+        - { label: 'Report', url: '/admin/report' }
+        - { label: 'Invoicing' }
+        - { entity: 'Invoices', default: true}
         - Companies
         - Persons
+        - { label: 'Resume' }
         - Experiences
         - Skills
-        - Invoices
-        - { label: 'Secondary' }
         - Attributes
         - Hobbies
         - Educations
@@ -116,6 +118,13 @@ easy_admin:
                 Waiting: 'waiting',
                 Payed: 'payed',
               } } }
+        actions:
+          - { name: 'pdf', target: '_blank', label: 'Pdf', icon: 'file-pdf', css_class: 'btn btn-secondary'}
+          - { name: 'validate', label: 'Validate', icon: 'check', css_class: 'btn btn-secondary'}
+      show:
+        actions:
+          - { name: 'pdf', target: '_blank', label: 'Pdf', icon: 'file-pdf', css_class: 'btn btn-secondary'}
+          - { name: 'validate', label: 'Validate', icon: 'check', css_class: 'btn btn-secondary'}
       list:
         fields:
           - number
@@ -129,6 +138,9 @@ easy_admin:
           - { property: status, type: 'App\Form\Filter\InvoiceStatusFilterType' }
           - { property: createdAtYear, mapped: false, type: 'App\Form\Filter\DateYearFilterType', type_options: {data: 'createdAt'} }
           - { property: createdAtQuarter, mapped: false, type: 'App\Form\Filter\DateQuarterFilterType', type_options: {data: 'createdAt'} }
+        actions:
+          - { name: 'pdf', target: '_blank', label: 'Pdf'}
+          - { name: 'validate', label: 'Validate'}
     Experiences:
       class: App\Entity\Experience
       form:

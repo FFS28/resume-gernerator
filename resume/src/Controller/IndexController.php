@@ -9,6 +9,7 @@ use App\Repository\HobbyRepository;
 use App\Repository\LinkRepository;
 use App\Repository\SkillRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Asset\Packages;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -34,7 +35,8 @@ class IndexController extends AbstractController
         ExperienceRepository $experienceRepository,
         EducationRepository $educationRepository,
         HobbyRepository $hobbyRepository,
-        LinkRepository $linkRepository
+        LinkRepository $linkRepository,
+        Packages $assetManager
     ) {
         $experiencesFilter = $request->query->get('all') ? [] : ['onHomepage' => true];
         $data = [
@@ -52,7 +54,11 @@ class IndexController extends AbstractController
         if ($data['isPdf']) {
             $pdfFilename = 'jeremy-achain-cv.pdf';
             $html =  $this->renderView('page/index.html.twig', $data);
-            $data['css'] = file_get_contents($this->getParameter('kernel.project_dir') . '/public/build/css/index.css');
+
+            $cssUri = $this->getParameter('kernel.project_dir').$assetManager->getUrl('/public/build/css/index.css');
+            if(file_exists($cssUri)) {
+                $data['css'] = file_get_contents($cssUri);
+            }
             $pdf = null;
 
             /*if ($request->query->get('pdf') === 'mpdf') {

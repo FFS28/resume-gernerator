@@ -154,7 +154,7 @@ class InvoiceRepository extends ServiceEntityRepository
             ->select('ToChar(i.createdAt, \'MM\') AS month')
             ->addSelect('SUM(i.totalHt / i.tjm) total')
             ->orderBy('month')
-            ->groupBy('month');;
+            ->groupBy('month');
 
         $query = $this->addFilters($query, $year, null, null);
 
@@ -163,10 +163,27 @@ class InvoiceRepository extends ServiceEntityRepository
 
     /**
      * @param int $year
-     * @param int $quarter
-     * @param bool $isPayed
+     * @return float
+     * @throws NonUniqueResultException
+     * @throws \Doctrine\ORM\NoResultException
+     */
+    public function getDaysCountByYear(int $year)
+    {
+        $query = $this->createQueryBuilder('i')
+            ->select('SUM(i.totalHt / i.tjm) total');
+
+        $query = $this->addFilters($query, $year, null, null);
+
+        return floatval($query->getQuery()->getSingleScalarResult()['total']);
+    }
+
+    /**
+     * @param int|null $year
+     * @param int|null $quarter
+     * @param null $isPayed
      * @return int
      * @throws NonUniqueResultException
+     * @throws \Doctrine\ORM\NoResultException
      */
     public function getSalesRevenuesBy(int $year = null, int $quarter = null, $isPayed = null): int
     {
@@ -176,6 +193,38 @@ class InvoiceRepository extends ServiceEntityRepository
         $query = $this->addFilters($query, $year, $quarter, $isPayed);
 
         return intval($query->getQuery()->getSingleScalarResult());
+    }
+
+    /**
+     * @param int|null $year
+     * @param int|null $quarter
+     * @param null $isPayed
+     * @return int
+     * @throws NonUniqueResultException
+     * @throws \Doctrine\ORM\NoResultException
+     */
+    public function getSalesTaxesBy(int $year = null, int $quarter = null, $isPayed = null): int
+    {
+        $query = $this->createQueryBuilder('i')
+            ->select('SUM(i.totalTax) total');
+
+        $query = $this->addFilters($query, $year, $quarter, $isPayed);
+
+        return intval($query->getQuery()->getSingleScalarResult());
+    }
+
+    public function remainingDaysBeforeTvaLimit(): float
+    {
+        $remainingRevenues = Invoice::LIMIT_AE_TVA - $this->getSalesRevenuesBy((new \DateTime('now'))->format('Y'));
+
+        return $remainingRevenues < 0 ? 0 : $remainingRevenues / Invoice::TJM_DEFAULT;
+    }
+
+    public function remainingDaysBeforeLimit(): float
+    {
+        $remainingRevenues = Invoice::LIMIT_AE - $this->getSalesRevenuesBy((new \DateTime('now'))->format('Y'));
+
+        return $remainingRevenues < 0 ? 0 : $remainingRevenues / Invoice::TJM_DEFAULT;
     }
 
     public function isOutOfTvaLimit(): bool

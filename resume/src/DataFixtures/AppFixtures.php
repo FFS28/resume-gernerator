@@ -455,7 +455,9 @@ class AppFixtures extends Fixture
 
         $company = new Company();
         $company->setName('BeWizYu');
-        $company->setCity('Lyon');
+        $company->setStreet('16 quai Ernest Renaud');
+        $company->setPostalCode('44100');
+        $company->setCity('Nantes');
         $this->manager->persist($company);
         $this->companies['bewizyu'] = $company;
 
@@ -783,7 +785,7 @@ class AppFixtures extends Fixture
         $experience->setTitle('Développeur Web');
         $experience->setCompany($this->companies['laposte']);
         $experience->setDateBegin(new \DateTime('2019-06-01 00:00:00'));
-        $experience->setDateEnd(new \DateTime('2019-12-01 00:00:00'));
+        $experience->setDateEnd(null);
         $experience->setDescription('Ajout de fonctionnalité sur une application de gestion existante');
         $experience->setIsFreelance(true);
         $experience->setOnSite(true);
@@ -1603,12 +1605,12 @@ class AppFixtures extends Fixture
         $invoice->setExperience($this->experiences['201906']);
         $invoice->setTjm(400);
         $invoice->setCreatedAt(new \DateTime('2019-11-08 00:00:00'));
-        $invoice->setPayedAt(new \DateTime('2019-12-30 00:00:00'));
+        $invoice->setPayedAt(null);
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(2400);
         $invoice->setTotalTax(480);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
-        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $invoice->setStatus(Invoice::STATUS_WAITING);
         $this->manager->persist($invoice);
     }
 }
