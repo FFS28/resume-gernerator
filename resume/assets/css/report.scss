@@ -6,6 +6,12 @@
 
   label {margin: 0;}
 
+  form {
+    width: 100%;
+    padding: 0;
+    background: transparent;
+  }
+
   .navigation{
     padding: 10px;
     margin: -20px -20px 20px -20px;
@@ -83,6 +89,19 @@
           margin: 0 auto;
         }
       }
+    }
+  }
+
+  .actions {
+    padding: 20px;
+    text-align: center;
+
+    button {
+      padding: 6px 14px;
+      background: transparent;
+      border: 1px solid $primaryColor;
+      color: $primaryColor;
+      font-weight: bold;
     }
   }
 

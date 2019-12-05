@@ -31,21 +31,36 @@
             <span class="th">{{ 'Saturday' | trans }}</span>
             <span class="th">{{ 'Sunday' | trans }}</span>
         </div>
+        {{ form_start(reportForm) }}
         <div class="days">
-            {% for day in days %}
-                {% if day['date'] %}
+            {% for activity in reportForm.activities %}
+                {% if activity.vars.data.date != null %}
                     <div class="day day-active">
-                        <input type="checkbox" {% if day['value'] %}checked{% endif %} id="{{ day['date'] }}"/>
-                        <label for="{{ day['date'] }}">
-                            <input type="number" value="{{ day['value'] ? day['value'] : 1 }}" max="1" min="0" step="0.5"/>
+                        {{ form_widget(activity.selected) }}
+                        <label for="month_activities_activities_{{ loop.index0 }}_selected">
+                            {{ form_widget(activity.value) }}
+                            {{ form_widget(activity.date) }}
+                            {{ form_widget(activity.invoice) }}
                         </label>
                     </div>
                 {% else %}
-                    <div class="day day-empty"></div>
+                    <div class="day day-empty">
+                        <div style="display: none;">
+                            {{ form_widget(activity.selected) }}
+                            {{ form_widget(activity.value) }}
+                            {{ form_widget(activity.date) }}
+                            {{ form_widget(activity.invoice) }}
+                        </div>
+                    </div>
                 {% endif %}
             {% endfor %}
         </div>
+        <div class="actions">
+            {{ form_widget(reportForm.send) }}
+        </div>
+        {{ form_end(reportForm) }}
     </div>
+
 {% endblock %}
 
 {% block content_footer %}
