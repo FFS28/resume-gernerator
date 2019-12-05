@@ -22,6 +22,9 @@
 - Entreprises
     - Liste les clients et les prestataires pour chaque entreprise
     
+- Attributs
+    - Possibilité d'ajouter un message personnalité en bannière
+    
 ### Migration to Symfony 5
 
 ## En attente de mise à jour
