@@ -86,7 +86,7 @@ class Company
 
     public function __toString(): string
     {
-        return $this->getName();
+        return $this->getDisplayName();
     }
 
     public function getId()

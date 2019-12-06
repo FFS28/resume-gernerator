@@ -9,6 +9,7 @@ use App\Entity\Experience;
 use App\Entity\Hobby;
 use App\Entity\Invoice;
 use App\Entity\Link;
+use App\Entity\Person;
 use App\Entity\Skill;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -35,6 +36,11 @@ class AppFixtures extends Fixture
      */
     private $experiences;
 
+    /**
+     * @var Person[]
+     */
+    private $persons;
+
     public function load(ObjectManager $manager)
     {
         $this->manager = $manager;
@@ -46,6 +52,7 @@ class AppFixtures extends Fixture
 
         $this->loadSkills();
         $this->loadCompanies();
+        $this->loadPersons();
         $this->loadExperience();
         $this->loadInvoices();
 
@@ -283,18 +290,21 @@ class AppFixtures extends Fixture
 
         $company = new Company();
         $company->setName('Eleusis Solution');
+        $company->setDisplayName('Eleusis');
         $company->setCity('Nice');
         $this->manager->persist($company);
         $this->companies['eleusis'] = $company;
 
         $company = new Company();
         $company->setName('ACL Informatique');
+        $company->setDisplayName('ACL');
         $company->setCity('Villeneuve-Loubet');
         $this->manager->persist($company);
         $this->companies['acl'] = $company;
 
         $company = new Company();
         $company->setName('e-Toxic');
+        $company->setDisplayName('Etoxic');
         $company->setCity('Villeneuve-Loubet');
         $this->manager->persist($company);
         $this->companies['etoxic'] = $company;
@@ -331,24 +341,28 @@ class AppFixtures extends Fixture
 
         $company = new Company();
         $company->setName('Jessica Rolland');
+        $company->setDisplayName('GTL');
         $company->setCity('Lyon');
         $this->manager->persist($company);
         $this->companies['girlstakelyon'] = $company;
 
         $company = new Company();
         $company->setName('Leidgens Groupe');
+        $company->setDisplayName('Leidgens');
         $company->setCity('Lyon');
         $this->manager->persist($company);
         $this->companies['leidgens'] = $company;
 
         $company = new Company();
         $company->setName('Pretty Cool');
+        $company->setDisplayName('Pretty');
         $company->setCity('Lyon');
         $this->manager->persist($company);
         $this->companies['prettycool'] = $company;
 
         $company = new Company();
         $company->setName('Guillaume Ribot');
+        $company->setDisplayName('Ribot');
         $company->setCity('Paris');
         $this->manager->persist($company);
         $this->companies['ribot'] = $company;
@@ -361,6 +375,7 @@ class AppFixtures extends Fixture
 
         $company = new Company();
         $company->setName('Ar Developpement');
+        $company->setDisplayName('Ar');
         $company->setCity('Lyon');
         $company->setContractor($this->companies['cospirit']);
         $this->manager->persist($company);
@@ -398,6 +413,7 @@ class AppFixtures extends Fixture
 
         $company = new Company();
         $company->setName('La compagnie hyperactive');
+        $company->setDisplayName('Hyperactive');
         $company->setCity('Paris');
         $this->manager->persist($company);
         $this->companies['hyperactive'] = $company;
@@ -410,6 +426,7 @@ class AppFixtures extends Fixture
 
         $company = new Company();
         $company->setName('CS Systemes D\'information');
+        $company->setDisplayName('CS');
         $company->setCity('Lyon');
         $this->manager->persist($company);
         $this->companies['cs'] = $company;
@@ -422,6 +439,7 @@ class AppFixtures extends Fixture
 
         $company = new Company();
         $company->setName('EDF Septen');
+        $company->setDisplayName('EDF');
         $company->setCity('Villeurbanne');
         $this->manager->persist($company);
         $company->setContractor($this->companies['cs']);
@@ -429,6 +447,7 @@ class AppFixtures extends Fixture
 
         $company = new Company();
         $company->setName('Apollo SSC');
+        $company->setDisplayName('Apollo');
         $company->setCity('Lyon');
         $this->manager->persist($company);
         $this->companies['apollo'] = $company;
@@ -463,6 +482,7 @@ class AppFixtures extends Fixture
 
         $company = new Company();
         $company->setName('Acte Media');
+        $company->setDisplayName('ActeMedia');
         $company->setCity('Bron');
         $this->manager->persist($company);
         $company->setContractor($this->companies['bewizyu']);
@@ -479,6 +499,11 @@ class AppFixtures extends Fixture
         $this->manager->persist($company);
         $company->setContractor($this->companies['marquetis']);
         $this->companies['laposte'] = $company;
+    }
+
+    private function loadPersons()
+    {
+
     }
 
     private function loadExperience()

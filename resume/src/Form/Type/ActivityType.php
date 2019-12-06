@@ -19,6 +19,13 @@ class ActivityType extends AbstractType
             ->add('selected', CheckboxType::class, [
                 'required' => false,
             ])
+            ->add('invoice', EntityType::class, [
+                'class' => Invoice::class,
+                'required' => false,
+                'choice_label' => function (Invoice $invoice) {
+                    return $invoice->getCompany();
+                }
+            ])
             ->add('value', NumberType::class, [
                 'html5' => true,
                 'attr' => [

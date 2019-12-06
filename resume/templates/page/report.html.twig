@@ -24,9 +24,6 @@
         </div>
         <div>
             {{ form_start(reportForm) }}
-            <div class="invoice">
-                {{ form_row(reportForm.invoice) }}
-            </div>
             <div>
                 <div class="tr">
                     <span class="th">{{ 'Monday' | trans }}</span>
@@ -45,6 +42,7 @@
                                 <label for="month_activities_activities_{{ loop.index0 }}_selected">
                                     {{ form_widget(activity.value) }}
                                     {{ form_widget(activity.date) }}
+                                    {{ form_widget(activity.invoice) }}
                                 </label>
                             </div>
                         {% else %}
@@ -53,6 +51,7 @@
                                     {{ form_widget(activity.selected) }}
                                     {{ form_widget(activity.value) }}
                                     {{ form_widget(activity.date) }}
+                                    {{ form_widget(activity.invoice) }}
                                 </div>
                             </div>
                         {% endif %}

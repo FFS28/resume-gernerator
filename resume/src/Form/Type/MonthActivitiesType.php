@@ -56,15 +56,6 @@ class MonthActivitiesType extends AbstractType
         }
         
         $builder
-            ->add('invoice', EntityType::class, [
-                'class' => Invoice::class,
-                'required' => false,
-                'query_builder' => function (InvoiceRepository $er) {
-                    return $er->createQueryBuilder('i')
-                        ->where('ToChar(i.createdAt, \'YYYYMM\') = :date')
-                        ->setParameter('date', $this->currentDate->format('Ym'));
-                },
-            ])
             ->add('activities', CollectionType::class, [
                 'entry_type' => ActivityType::class,
                 'data' => array_values($activitiesData)
