@@ -89,6 +89,23 @@
           margin: 0 auto;
         }
       }
+      input[type=number] + div {
+        display: none;
+      }
+    }
+  }
+
+  .invoice{
+    padding: 20px;
+    text-align: center;
+
+    label {
+      font-weight: bold;
+      margin-right: 20px;
+    }
+
+    select {
+      padding: 4px;
     }
   }
 

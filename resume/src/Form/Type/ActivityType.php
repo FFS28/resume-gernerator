@@ -29,14 +29,6 @@ class ActivityType extends AbstractType
                 'required' => false,
             ])
             ->add('date', DateType::class, [
-                'data' => null,
-                'required' => false,
-                'attr' => [
-                    'class' => 'hidden'
-                ]
-            ])
-            ->add('invoice', EntityType::class, [
-                'class' => Invoice::class,
                 'required' => false,
                 'attr' => [
                     'class' => 'hidden'
@@ -48,8 +40,7 @@ class ActivityType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => null,
-            'date' => null
+            'data_class' => null
         ]);
     }
 }

@@ -21,16 +21,33 @@ class ActivityRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param \DateTime $date
+     * @param \DateTimeInterface $date
      * @return Activity[]
      */
     public function findActivitiesByDate(\DateTimeInterface $date): array
     {
         return $this->createQueryBuilder('a')
-            ->where('ToChar(a.date, \'Ym\') = :date')
+            ->where('ToChar(a.date, \'YYYYMM\') = :date')
             ->setParameter('date', $date->format('Ym'))
             ->getQuery()
             ->getResult()
+            ;
+    }
+
+    /**
+     * @param Invoice $invoice
+     * @param \DateTimeInterface $date
+     */
+    public function cleanByDateAndInvoice(Invoice $invoice, \DateTimeInterface $date)
+    {
+        $activities = $this->createQueryBuilder('a')
+            ->delete()
+            ->where('a.invoice = :invoice')
+            ->andWhere('ToChar(a.date, \'YYYYMM\') = :date')
+            ->setParameter('invoice', $invoice)
+            ->setParameter('date', $date->format('Ym'))
+            ->getQuery()
+            ->execute()
             ;
     }
 

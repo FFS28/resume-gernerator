@@ -4,7 +4,10 @@ namespace App\Form\Type;
 
 use App\Entity\Activity;
 use App\Entity\Invoice;
+use App\Repository\InvoiceRepository;
 use DateInterval;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -13,17 +16,17 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MonthActivitiesType extends AbstractType
 {
+    /** @var \DateTime $currentDate */
+    public $currentDate;
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        /** @var \DateTime $currentDate */
-        $currentDate = $options['currentDate'];
+        $this->currentDate = $options['currentDate'];
         /** @var Activity[] $activities */
         $activities = $options['activities'];
-        /** @var Invoice $invoice */
-        $invoice = $options['invoice'];
 
         $activitiesData = [];
-        for($i = 1; $i < $currentDate->format('N'); $i++) {
+        for($i = 1; $i < $this->currentDate->format('N'); $i++) {
             $activitiesData[] = [
                 'selected' => false,
                 'date' => null,
@@ -31,14 +34,14 @@ class MonthActivitiesType extends AbstractType
             ];
         }
 
-        for ($i = 1; $i <= $currentDate->format('t'); $i++) {
+        $currentDate = clone $this->currentDate;
+        for ($i = 1; $i <= $this->currentDate->format('t'); $i++) {
             $date = $currentDate->format('Ymd');
 
             $activitiesData[$date] = [
                 'selected' => false,
-                'date' => new \DateTime('now'),
+                'date' => clone $currentDate,
                 'value' => 0,
-                'invoice' => $invoice
             ];
             $currentDate->add(new DateInterval('P1D'));
         }
@@ -53,6 +56,15 @@ class MonthActivitiesType extends AbstractType
         }
         
         $builder
+            ->add('invoice', EntityType::class, [
+                'class' => Invoice::class,
+                'required' => false,
+                'query_builder' => function (InvoiceRepository $er) {
+                    return $er->createQueryBuilder('i')
+                        ->where('ToChar(i.createdAt, \'YYYYMM\') = :date')
+                        ->setParameter('date', $this->currentDate->format('Ym'));
+                },
+            ])
             ->add('activities', CollectionType::class, [
                 'entry_type' => ActivityType::class,
                 'data' => array_values($activitiesData)
@@ -64,7 +76,6 @@ class MonthActivitiesType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'invoice' => null,
             'activities' => [],
             'currentDate' => null
         ]);

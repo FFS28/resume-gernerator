@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use AlterPHP\EasyAdminExtensionBundle\Controller\EasyAdminController;
+use App\Entity\Activity;
 use App\Entity\Invoice;
 use App\Form\Type\ActivityType;
 use App\Form\Type\MonthActivitiesType;
@@ -12,6 +13,7 @@ use App\Repository\InvoiceRepository;
 use DateInterval;
 use DateTime;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Exception;
@@ -126,6 +128,8 @@ class DashboardController extends EasyAdminController
      * @param InvoiceRepository $invoiceRepository
      * @param ActivityRepository $activityRepository
      * @param TranslatorInterface $translator
+     * @param Request $request
+     * @param EntityManager $entityManager
      * @param int $year
      * @param int $month
      * @return Response
@@ -137,6 +141,7 @@ class DashboardController extends EasyAdminController
         ActivityRepository $activityRepository,
         TranslatorInterface $translator,
         Request $request,
+        EntityManagerInterface $entityManager,
         int $year = 0, int $month = 0
     ) {
         $viewData = [];
@@ -158,24 +163,50 @@ class DashboardController extends EasyAdminController
         }
 
         $activities = $activityRepository->findActivitiesByDate($currentDate);
+
         $form = $this->createForm(MonthActivitiesType::class, null, [
-            'invoice' => null,
-            'activities' => [],
-            'currentDate' => $currentDate
+            'activities' => $activities,
+            'currentDate' => clone $currentDate
         ]);
         $form->handleRequest($request);
-        /*$form->get('activities')->add('00000000', ActivityType::class, [
-            'date' => '',
-            'value' => '',
-            'invoice' => null
-        ]);*/
         $viewData['reportForm'] = $form->createView();
-
-        dump($form->getData());
 
         if ($form->isSubmitted() && $form->isValid()) {
             $formData = $form->getData();
+            $dayCount = 0;
 
+            foreach ($formData['activities'] as $activityData) {
+                if ($activityData['date'] && $activityData['selected']) {
+                    $dayCount++;
+                }
+            }
+
+            if (!$formData['invoice']) {
+                $number = $invoiceRepository->getNewInvoiceNumber($currentDate);
+
+                $invoice = new Invoice();
+                $invoice->setNumber($number);
+
+                $entityManager->persist($invoice);
+                $formData['invoice'] = $invoice;
+            }
+
+            $activityRepository->cleanByDateAndInvoice($formData['invoice'], $currentDate);
+
+            foreach ($formData['activities'] as $activityData) {
+                if ($activityData['date'] && $activityData['selected']) {
+                    $activity = new Activity();
+                    $activity->setDate($activity['date']);
+                    $activity->setValue($activity['value']);
+                    $activity->setInvoice($formData['invoice']);
+
+                    $entityManager->persist($activity);
+                }
+
+            }
+
+            dump($formData);
+            //$entityManager->flush();
         }
 
         return $this->render('page/report.html.twig', $viewData);

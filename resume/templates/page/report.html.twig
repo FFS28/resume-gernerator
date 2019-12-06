@@ -22,43 +22,48 @@
                 {% endfor %}
             </ul>
         </div>
-        <div class="tr">
-            <span class="th">{{ 'Monday' | trans }}</span>
-            <span class="th">{{ 'Tuesday' | trans }}</span>
-            <span class="th">{{ 'Wednesday' | trans }}</span>
-            <span class="th">{{ 'Thursday' | trans }}</span>
-            <span class="th">{{ 'Friday' | trans }}</span>
-            <span class="th">{{ 'Saturday' | trans }}</span>
-            <span class="th">{{ 'Sunday' | trans }}</span>
+        <div>
+            {{ form_start(reportForm) }}
+            <div class="invoice">
+                {{ form_row(reportForm.invoice) }}
+            </div>
+            <div>
+                <div class="tr">
+                    <span class="th">{{ 'Monday' | trans }}</span>
+                    <span class="th">{{ 'Tuesday' | trans }}</span>
+                    <span class="th">{{ 'Wednesday' | trans }}</span>
+                    <span class="th">{{ 'Thursday' | trans }}</span>
+                    <span class="th">{{ 'Friday' | trans }}</span>
+                    <span class="th">{{ 'Saturday' | trans }}</span>
+                    <span class="th">{{ 'Sunday' | trans }}</span>
+                </div>
+                <div class="days">
+                    {% for activity in reportForm.activities %}
+                        {% if activity.vars.data.date != null %}
+                            <div class="day day-active">
+                                {{ form_widget(activity.selected) }}
+                                <label for="month_activities_activities_{{ loop.index0 }}_selected">
+                                    {{ form_widget(activity.value) }}
+                                    {{ form_widget(activity.date) }}
+                                </label>
+                            </div>
+                        {% else %}
+                            <div class="day day-empty">
+                                <div style="display: none;">
+                                    {{ form_widget(activity.selected) }}
+                                    {{ form_widget(activity.value) }}
+                                    {{ form_widget(activity.date) }}
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="actions">
+                    {{ form_widget(reportForm.send) }}
+                </div>
+            </div>
+            {{ form_end(reportForm) }}
         </div>
-        {{ form_start(reportForm) }}
-        <div class="days">
-            {% for activity in reportForm.activities %}
-                {% if activity.vars.data.date != null %}
-                    <div class="day day-active">
-                        {{ form_widget(activity.selected) }}
-                        <label for="month_activities_activities_{{ loop.index0 }}_selected">
-                            {{ form_widget(activity.value) }}
-                            {{ form_widget(activity.date) }}
-                            {{ form_widget(activity.invoice) }}
-                        </label>
-                    </div>
-                {% else %}
-                    <div class="day day-empty">
-                        <div style="display: none;">
-                            {{ form_widget(activity.selected) }}
-                            {{ form_widget(activity.value) }}
-                            {{ form_widget(activity.date) }}
-                            {{ form_widget(activity.invoice) }}
-                        </div>
-                    </div>
-                {% endif %}
-            {% endfor %}
-        </div>
-        <div class="actions">
-            {{ form_widget(reportForm.send) }}
-        </div>
-        {{ form_end(reportForm) }}
     </div>
 
 {% endblock %}
