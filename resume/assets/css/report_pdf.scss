@@ -1,6 +1,10 @@
 @import "flexbox";
 @import "variables";
 
+*{
+  box-sizing: border-box;
+}
+
 html, body{
   width: 100%;
   display: block;
@@ -17,10 +21,45 @@ html, body{
   padding: 20px;
 
   .days {
+    margin: 20px 0;
+    border: 1px solid #000;
+
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: 80px repeat(7, 1fr);
     grid-template-rows: repeat(6, 1fr);
-    grid-column-gap: 0px;
-    grid-row-gap: 0px;
+    grid-column-gap: 0;
+    grid-row-gap: 0;
+
+    .day, .dayName{
+      min-height: 40px;
+      position: relative;
+      border: 0.5px solid #000;
+
+      @include flexbox();
+      @include align-items(center);
+      @include flex-wrap(wrap);
+      @include justify-content(center);
+      @include flex-direction(column);
+
+      .num {
+        position: absolute;
+        top: 0;
+        left: 0;
+        padding: 2px;
+        font-size: 12px;
+        border-right: 1px solid #000;
+        border-bottom: 1px solid #000;
+      }
+
+      &.day-active{
+
+      }
+      &.day-value{
+
+      }
+      &.day-6, &.day-7{
+
+      }
+    }
   }
 }

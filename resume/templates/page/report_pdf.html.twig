@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{% endblock %}
+{% block title %}Rapport mensuel d'activité {{ company.name }} {{ month }} {{ year }}{% endblock %}
 
 {% block stylesheets %}
     <link rel="stylesheet" type="text/css" href="{{ asset('build/css/report_pdf.css') }}">
@@ -14,8 +14,16 @@
 
 {% block body %}
     <div id="report_pdf">
-        <h1>{{ month }} {{ year }}</h1>
+        <h1>Rapport mensuel d'activité</h1>
+        <div class="informations">
+            <div>Nom et prénom : {{ name }}</div>
+            <div>Fonction : Développeur Web</div>
+            <div>Société : {{ company.name }}</div>
+            <div>Mois : {{ month }}</div>
+            <div>Année : {{ year }}</div>
+        </div>
         <div class="days">
+            <div class="dayName day-0">{{ 'Week' | trans }}</div>
             <div class="dayName day-1">{{ 'Monday' | trans }}</div>
             <div class="dayName day-2">{{ 'Tuesday' | trans }}</div>
             <div class="dayName day-3">{{ 'Wednesday' | trans }}</div>
@@ -23,19 +31,37 @@
             <div class="dayName day-5">{{ 'Friday' | trans }}</div>
             <div class="dayName day-6">{{ 'Saturday' | trans }}</div>
             <div class="dayName day-7">{{ 'Sunday' | trans }}</div>
+            {% set daysCount = 0 %}
             {% for day in reportData %}
                 {% if day.date != null %}
+                    {% if (day.date | date('N') == 1) %}
+                        <div class="day day-0">
+                            {{ day.date | date('W') }}
+                        </div>
+                    {% endif %}
                     {% if day.selected and day.value > 0 %}
-                        <div class="day day-active day-{{ day.date | date('N') }}">
-                            {{ day.value }}
+                        <div class="day day-active day-{{ day.date | date('N') }}{% if day.value > 0 %}day-value{% endif %}">
+                            {% set daysCount = daysCount + day.value %}
+                            <span class="num">{{ day.date | date('j') }}</span>
+                            <span class="value">{{ day.value }}</span>
                         </div>
                     {% else %}
-                        <div class="day day-active day-{{ day.date | date('N') }}"></div>
+                        <div class="day day-active day-{{ day.date | date('N') }}">
+                            <span class="num">{{ day.date | date('j') }}</span>
+                        </div>
                     {% endif %}
                 {% else %}
+                    {% if loop.index == 1 %}
+                        <div class="day day-0">{{ firstWeek }}</div>
+                    {% endif %}
                     <div class="day day-{{ loop.index }}"></div>
                 {% endif %}
             {% endfor %}
+        </div>
+        <div class="total">Total en jours : {{ daysCount }}</div>
+        <div class="visa">
+            <div>Visa client : </div>
+            <div>Visa collaborateur : </div>
         </div>
     </div>
 {% endblock %}
