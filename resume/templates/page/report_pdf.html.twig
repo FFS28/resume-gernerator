@@ -16,11 +16,11 @@
     <div id="report_pdf">
         <h1>Rapport mensuel d'activité</h1>
         <div class="informations">
-            <div>Nom et prénom : {{ name }}</div>
-            <div>Fonction : Développeur Web</div>
-            <div>Société : {{ company.name }}</div>
-            <div>Mois : {{ month }}</div>
-            <div>Année : {{ year }}</div>
+            <div class="name">Nom et prénom : {{ name }}</div>
+            <div class="job">Fonction : Développeur Web</div>
+            <div class="company">Société : {{ company.name }}</div>
+            <div class="month">Mois : {{ month }}</div>
+            <div class="year">Année : {{ year }}</div>
         </div>
         <div class="days">
             <div class="dayName day-0">{{ 'Week' | trans }}</div>

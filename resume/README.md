@@ -5,16 +5,19 @@
 - Factures
     - x Création des pdf
     - x Valider une facture (modifier statut + date paiement)
-    - Calcul automatique du total avec le tjm + nbj
-    - Modification automatique du status si date de réglement
+    - x Visualiser, éditer (par calendrier) ou exporter le CRA
+    - x Calcul automatique du total avec le tjm + nbj
+    - x Modification automatique du status si date de réglement
+    - Ajout de la signature au compte rendu
+    - Création facture TVA automatique si dépassement plafond
     - Envoi d'une facture
-    - Visualiser, éditer (par calendrier) ou exporter le CRA
+    - Envoi d'un compte rendu
     - Export du livre des recettes (CSV)
     
 - Dashboard
     - Alert automatique en cas de dépassement des plafonds
     - Alertes déclaration TVA / URSSAF / IMPOTS
-    - Liste des factures non réglés
+    - x Liste des factures non réglés
 
 - Experiences
     - Visualisation en timeline

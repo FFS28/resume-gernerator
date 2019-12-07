@@ -262,6 +262,21 @@ class Company
         return $this->persons;
     }
 
+    public function getEmail(): string
+    {
+        $email = '';
+        foreach ($this->getPersons() as $person)
+        {
+            if ($person->getIsInvoicingDefault()) {
+                return $person->getEmail();
+            }
+            elseif (!$email) {
+                $email = $person->getEmail();
+            }
+        }
+        return $email;
+    }
+
     public function addPerson(Person $person): self
     {
         if (!$this->persons->contains($person)) {
