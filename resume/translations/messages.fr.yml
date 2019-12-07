@@ -50,6 +50,7 @@ Firstname: Prénom
 Lastname: Nom
 Email: Email
 Phones: Téléphones
+Is invoicing default: Gère la facturation
 
 Invoice: Facture
 Invoices: Factures
@@ -80,6 +81,10 @@ Payment: Paiement
 Pdf: Pdf
 30 days end of month: 30 jours fin du mois
 Validate: Valider
+Due interval: Intervalle de paiement
+
+Activities: Journées
+Activity: Journée
 
 Hobby: Loisir
 Hobbies: Loisirs
@@ -124,11 +129,11 @@ Friday: Vendredi
 Saturday: Samedi
 Sunday: Dimanche
 
-
 Home: Acceuil
 Dashboard: Tableau de bord
 Report: Rapport d'activité
 Resume: CV
+Export: Export
 
 Annual income: CA de l'année
 Quarterly income: CA du trimestre

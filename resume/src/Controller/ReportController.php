@@ -1,0 +1,201 @@
+<?php
+
+namespace App\Controller;
+
+use AlterPHP\EasyAdminExtensionBundle\Controller\EasyAdminController;
+use App\Entity\Activity;
+use App\Entity\Company;
+use App\Entity\Experience;
+use App\Entity\Invoice;
+use App\Form\Type\ActivityType;
+use App\Form\Type\MonthActivitiesType;
+use App\Repository\ActivityRepository;
+use App\Repository\ExperienceRepository;
+use App\Repository\InvoiceRepository;
+use DateInterval;
+use DateTime;
+use Doctrine\DBAL\Exception\NotNullConstraintViolationException;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
+use Exception;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Translation\Translator;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+
+class ReportController extends EasyAdminController
+{
+    /**
+     * @Route("/admin/report/{year<\d+>?0}/{month<\d+>?0}/{slug?}", name="report")
+     * @param InvoiceRepository $invoiceRepository
+     * @param ActivityRepository $activityRepository
+     * @param ExperienceRepository $experienceRepository
+     * @param TranslatorInterface $translator
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @param int $year
+     * @param int $month
+     * @param Company|null $company
+     * @return Response
+     * @throws Exception
+     */
+    public function report(
+        InvoiceRepository $invoiceRepository,
+        ActivityRepository $activityRepository,
+        ExperienceRepository $experienceRepository,
+        TranslatorInterface $translator,
+        Request $request,
+        EntityManagerInterface $entityManager,
+        int $year = 0, int $month = 0, Company $company = null
+    )
+    {
+        $viewData = [];
+        $viewData['activeYear'] = $year ? $year : (new DateTime())->format('Y');
+        $viewData['activeMonth'] = $month ? $month : (new DateTime())->format('m');
+        $viewData['years'] = $invoiceRepository->findYears();
+
+        $currentDate = new DateTime($viewData['activeYear'] . ($viewData['activeMonth'] < 10 ? '0' : '') . $viewData['activeMonth'] . '01');
+        $viewData['daysCount'] = $currentDate->format('t');
+
+        $viewData['months'] = [];
+
+        for ($i = 1; $i <= 12; $i++) {
+            $monthDate = new DateTime($viewData['activeYear'] . ($i < 10 ? '0' : '') . $i . '01');
+            $viewData['months'][] = [
+                'int' => $i,
+                'str' => $translator->trans($monthDate->format('F'))
+            ];
+        }
+
+        $viewData['companies'] = [];
+        /** @var Experience[] $currentExperiences */
+        $currentExperiences = $experienceRepository->getCurrents();
+        foreach ($currentExperiences as $experience){
+            $viewData['companies'][] = $experience->getClient();
+        }
+        $viewData['activeCompany'] = count($viewData['companies']) == 1 ?? !$company ? $viewData['companies'][0] : $company;
+
+        $viewData['invoices'] = $invoiceRepository->getByDate($currentDate);
+
+        $activities = $activityRepository->findByDate($currentDate);
+        $viewData['companyActivities'] = $viewData['activeCompany'] ? $activityRepository->findByCompanyAndDate($viewData['activeCompany'], $currentDate) : null;
+
+        $form = $this->createForm(MonthActivitiesType::class, null, [
+            'activities' => $activities,
+            'currentDate' => clone $currentDate,
+            'company' => $viewData['activeCompany']
+        ]);
+        $form->handleRequest($request);
+        $viewData['reportForm'] = $form->createView();
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $formData = $form->getData();
+            $dayCount = 0;
+
+            foreach ($formData['activities'] as $activityData) {
+                if ($activityData['date'] && $activityData['selected']) {
+                    $dayCount++;
+                }
+            }
+
+            $activityRepository->cleanByDate($currentDate);
+
+            foreach ($formData['activities'] as $activityData) {
+                if ($activityData['date'] && $activityData['selected']) {
+                    $activity = new Activity();
+                    $activity->setDate($activityData['date']);
+                    $activity->setValue($activityData['value']);
+                    $activity->setCompany($activityData['company']);
+
+                    $entityManager->persist($activity);
+                }
+
+            }
+
+            $entityManager->flush();
+            return $this->redirectToRoute('report', ['year' => $viewData['activeYear'], 'month' => $viewData['activeMonth'], 'slug' => $viewData['activeCompany']->getSlug()]);
+        }
+
+        return $this->render('page/report.html.twig', $viewData);
+    }
+
+    private function getActivities(ActivityRepository $activityRepository, Company $company, int $year, int $month)
+    {
+        $currentDate = new \DateTime($year . ($month < 10 ? '0' : '') . $month . '01');
+        $activities = $activityRepository->findByCompanyAndDate($company, $currentDate);
+
+        if (count($activities) == 0) {
+            throw new NotNullConstraintViolationException();
+        }
+
+        return [$currentDate, $activities];
+    }
+
+    /**
+     * @Route("/admin/report/{year<\d+>}/{month<\d+>}/{slug}/invoice", name="report_invoice")
+     * @param ActivityRepository $activityRepository
+     * @param InvoiceRepository $invoiceRepository
+     * @param ExperienceRepository $experienceRepository
+     * @param EntityManagerInterface $entityManager
+     * @param int $year
+     * @param int $month
+     * @param Company $company
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @throws NonUniqueResultException
+     * @throws NotNullConstraintViolationException
+     */
+    public function invoice(
+        ActivityRepository $activityRepository,
+        InvoiceRepository $invoiceRepository,
+        ExperienceRepository $experienceRepository,
+        EntityManagerInterface $entityManager,
+        int $year, int $month, Company $company
+    )
+    {
+        list($currentDate, $activities) = $this->getActivities($activityRepository, $company, $year, $month);
+
+
+        $number = $invoiceRepository->getNewInvoiceNumber($currentDate);
+
+        $invoice = new Invoice();
+        $invoice->setNumber($number);
+        $invoice->setCompany($company);
+        $invoice->importActivities($activities);
+
+        $experiences = $experienceRepository->findByDate($currentDate);
+        if ($experiences && count($experiences) == 1) {
+            $invoice->setExperience($experiences[0]);
+        }
+
+        $entityManager->persist($invoice);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('easyadmin', ['entity'=> 'Invoices', 'action'=> 'show', 'id'=> $invoice->getId()]);
+    }
+
+
+    /**
+     * @Route("/admin/report/{year<\d+>}/{month<\d+>}/{slug}/export", name="report_export")
+     * @param ActivityRepository $activityRepository
+     * @param InvoiceRepository $invoiceRepository
+     * @param EntityManagerInterface $entityManager
+     * @param int $year
+     * @param int $month
+     * @param Company $company
+     * @throws NotNullConstraintViolationException
+     */
+    public function export(
+        ActivityRepository $activityRepository,
+        InvoiceRepository $invoiceRepository,
+        EntityManagerInterface $entityManager,
+        int $year, int $month, Company $company
+    )
+    {
+        list($currentDate, $activities) = $this->getActivities($activityRepository, $company, $year, $month);
+    }
+}

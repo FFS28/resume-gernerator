@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use AlterPHP\EasyAdminExtensionBundle\Controller\EasyAdminController;
 use App\Entity\Activity;
+use App\Entity\Company;
 use App\Entity\Invoice;
 use App\Form\Type\ActivityType;
 use App\Form\Type\MonthActivitiesType;
@@ -122,93 +123,5 @@ class DashboardController extends EasyAdminController
         $viewData['currentExperiences'] = $experienceRepository->getCurrents();
 
         return $this->render('page/dashboard.html.twig', $viewData);
-    }
-
-    /**
-     * @param InvoiceRepository $invoiceRepository
-     * @param ActivityRepository $activityRepository
-     * @param TranslatorInterface $translator
-     * @param Request $request
-     * @param EntityManager $entityManager
-     * @param int $year
-     * @param int $month
-     * @return Response
-     * @throws Exception
-     * @Route("/admin/report/{year<\d+>?0}/{month<\d+>?0}", name="report")
-     */
-    public function report(
-        InvoiceRepository $invoiceRepository,
-        ActivityRepository $activityRepository,
-        TranslatorInterface $translator,
-        Request $request,
-        EntityManagerInterface $entityManager,
-        int $year = 0, int $month = 0
-    ) {
-        $viewData = [];
-        $viewData['activeYear'] = $year ? $year : (new DateTime())->format('Y');
-        $viewData['activeMonth'] = $month ? $month : (new DateTime())->format('m');
-        $viewData['years'] = $invoiceRepository->findYears();
-
-        $currentDate = new DateTime($viewData['activeYear'].($viewData['activeMonth'] < 10 ? '0' : '').$viewData['activeMonth'].'01');
-        $viewData['daysCount'] = $currentDate->format('t');
-
-        $viewData['months'] = [];
-
-        for($i = 1; $i <= 12; $i++) {
-            $monthDate = new DateTime($viewData['activeYear'].($i < 10 ? '0' : '').$i.'01');
-            $viewData['months'][] = [
-              'int' => $i,
-              'str' => $translator->trans($monthDate->format('F'))
-            ];
-        }
-
-        $activities = $activityRepository->findActivitiesByDate($currentDate);
-
-        $form = $this->createForm(MonthActivitiesType::class, null, [
-            'activities' => $activities,
-            'currentDate' => clone $currentDate
-        ]);
-        $form->handleRequest($request);
-        $viewData['reportForm'] = $form->createView();
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $formData = $form->getData();
-            $dayCount = 0;
-
-            foreach ($formData['activities'] as $activityData) {
-                if ($activityData['date'] && $activityData['selected']) {
-                    $dayCount++;
-                }
-            }
-
-            if (!$formData['invoice']) {
-                $number = $invoiceRepository->getNewInvoiceNumber($currentDate);
-
-                $invoice = new Invoice();
-                $invoice->setNumber($number);
-
-                $entityManager->persist($invoice);
-                $formData['invoice'] = $invoice;
-            }
-
-            $activityRepository->cleanByDateAndInvoice($formData['invoice'], $currentDate);
-
-            foreach ($formData['activities'] as $activityData) {
-                if ($activityData['date'] && $activityData['selected']) {
-                    $activity = new Activity();
-                    $activity->setDate($activity['date']);
-                    $activity->setValue($activity['value']);
-                    $activity->setInvoice($formData['invoice']);
-
-                    $entityManager->persist($activity);
-                }
-
-            }
-
-            dump($formData);
-            //$entityManager->flush();
-        }
-
-        return $this->render('page/report.html.twig', $viewData);
     }
 }

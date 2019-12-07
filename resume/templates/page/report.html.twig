@@ -2,7 +2,10 @@
 {% set active_params = app.request.attributes.get('_route_params') | default([]) %}
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
-{% block content_title %}{{ 'Report' | trans }}{% endblock %}
+{% block content_title %}
+    {{ 'Report' | trans }}
+    {{ form_start(reportForm) }}
+{% endblock %}
 
 {% block main %}
     <div id="report">
@@ -21,9 +24,26 @@
                     </li>
                 {% endfor %}
             </ul>
+            <ul>
+                {% for company in companies %}
+                    <li>
+                        <a class="{% if company == activeCompany %}active{% endif %}" href="{{ url(active_route, (active_params | merge({'slug' : company.slug }))) }}">{{ company }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+            {% if invoices | length > 0 %}
+                <ul>
+                    {% for invoice in invoices %}
+                        <li>
+                            <a href="{{ url('easyadmin', {entity: 'Invoices', action: 'show', id: invoice.id}) }}">
+                                {{ invoice.company }} - {{ invoice }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
         </div>
         <div>
-            {{ form_start(reportForm) }}
             <div>
                 <div class="tr">
                     <span class="th">{{ 'Monday' | trans }}</span>
@@ -42,7 +62,7 @@
                                 <label for="month_activities_activities_{{ loop.index0 }}_selected">
                                     {{ form_widget(activity.value) }}
                                     {{ form_widget(activity.date) }}
-                                    {{ form_widget(activity.invoice) }}
+                                    {{ form_widget(activity.company) }}
                                 </label>
                             </div>
                         {% else %}
@@ -51,24 +71,33 @@
                                     {{ form_widget(activity.selected) }}
                                     {{ form_widget(activity.value) }}
                                     {{ form_widget(activity.date) }}
-                                    {{ form_widget(activity.invoice) }}
+                                    {{ form_widget(activity.company) }}
                                 </div>
                             </div>
                         {% endif %}
                     {% endfor %}
                 </div>
-                <div class="actions">
-                    {{ form_widget(reportForm.send) }}
-                </div>
             </div>
-            {{ form_end(reportForm) }}
         </div>
     </div>
 
 {% endblock %}
 
 {% block content_footer %}
-
+    <div class="form-actions">
+        {{ form_widget(reportForm.send) }}
+        {% if activeYear and activeMonth and activeCompany and companyActivities %}
+            <a name="" class="btn text-danger" title="" href="{{ url('report_invoice', {'year': activeYear, 'month': activeMonth, 'slug': activeCompany.slug}) }}" target="_self">
+                <i class="fa fa-file"></i>
+                {{ 'Invoice' | trans }}
+            </a>
+            <a name="" class="btn text-danger" title="" href="{{ url('report_export', {'year': activeYear, 'month': activeMonth, 'slug': activeCompany.slug}) }}" target="_self">
+                <i class="fa fa-file"></i>
+                {{ 'Export' | trans }}
+            </a>
+        {% endif %}
+    </div>
+    {{ form_end(reportForm) }}
 {% endblock %}
 
 {% block body_javascript %}

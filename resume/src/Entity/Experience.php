@@ -71,6 +71,12 @@ class Experience
      */
     private $invoices;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Company")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $client;
+
     public function __toString(): string
     {
         return $this->getTitle() . ' ' .
@@ -237,6 +243,7 @@ class Experience
     public function setCompany(?Company $company): self
     {
         $this->company = $company;
+        $this->client = $company;
 
         return $this;
     }
@@ -299,6 +306,18 @@ class Experience
                 $activity->setExperience(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getClient(): ?Company
+    {
+        return $this->client;
+    }
+
+    public function setClient(?Company $client): self
+    {
+        $this->client = $client;
 
         return $this;
     }

@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Activity;
+use App\Entity\Company;
 use App\Entity\Invoice;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -24,10 +25,29 @@ class ActivityRepository extends ServiceEntityRepository
      * @param \DateTimeInterface $date
      * @return Activity[]
      */
-    public function findActivitiesByDate(\DateTimeInterface $date): array
+    public function findByDate(\DateTimeInterface $date): array
     {
         return $this->createQueryBuilder('a')
             ->where('ToChar(a.date, \'YYYYMM\') = :date')
+            ->andWhere('a.value > 0')
+            ->setParameter('date', $date->format('Ym'))
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    /**
+     * @param Company $company
+     * @param \DateTimeInterface $date
+     * @return Activity[]
+     */
+    public function findByCompanyAndDate(Company $company, \DateTimeInterface $date): ?array
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.company = :company')
+            ->andWhere('ToChar(a.date, \'YYYYMM\') = :date')
+            ->andWhere('a.value > 0')
+            ->setParameter('company', $company)
             ->setParameter('date', $date->format('Ym'))
             ->getQuery()
             ->getResult()
@@ -38,13 +58,11 @@ class ActivityRepository extends ServiceEntityRepository
      * @param Invoice $invoice
      * @param \DateTimeInterface $date
      */
-    public function cleanByDateAndInvoice(Invoice $invoice, \DateTimeInterface $date)
+    public function cleanByDate(\DateTimeInterface $date)
     {
         $activities = $this->createQueryBuilder('a')
             ->delete()
-            ->where('a.invoice = :invoice')
             ->andWhere('ToChar(a.date, \'YYYYMM\') = :date')
-            ->setParameter('invoice', $invoice)
             ->setParameter('date', $date->format('Ym'))
             ->getQuery()
             ->execute()

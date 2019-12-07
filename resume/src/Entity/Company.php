@@ -77,11 +77,17 @@ class Company
      */
     private $persons;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Activity", mappedBy="company")
+     */
+    private $activities;
+
     public function __construct()
     {
         $this->experiences = new ArrayCollection();
         $this->invoices = new ArrayCollection();
         $this->persons = new ArrayCollection();
+        $this->activities = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -321,6 +327,37 @@ class Company
             // set the owning side to null (unless already changed)
             if ($person->getCompany() === $this) {
                 $person->setCompany(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Activity[]
+     */
+    public function getActivities(): Collection
+    {
+        return $this->activities;
+    }
+
+    public function addActivity(Activity $activity): self
+    {
+        if (!$this->activities->contains($activity)) {
+            $this->activities[] = $activity;
+            $activity->setInvoice($this);
+        }
+
+        return $this;
+    }
+
+    public function removeActivity(Activity $activity): self
+    {
+        if ($this->activities->contains($activity)) {
+            $this->activities->removeElement($activity);
+            // set the owning side to null (unless already changed)
+            if ($activity->getInvoice() === $this) {
+                $activity->setInvoice(null);
             }
         }
 

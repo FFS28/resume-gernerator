@@ -503,7 +503,15 @@ class AppFixtures extends Fixture
 
     private function loadPersons()
     {
-
+        $person = new Person();
+        $person->setCivility(Person::CIVILITY_H);
+        $person->setFirstname('Antonin');
+        $person->setLastname('L\'ecolier');
+        $person->setPhones(['0769435380']);
+        $person->setEmail('alecolier@bewizyu.com');
+        $person->setCompany($this->companies['bewizyu']);
+        $person->setIsInvoicingDefault(true);
+        $this->manager->persist($person);
     }
 
     private function loadExperience()
@@ -635,6 +643,7 @@ class AppFixtures extends Fixture
         $experience = new Experience();
         $experience->setTitle('Développeur Web');
         $experience->setCompany($this->companies['ar']);
+        $experience->setClient($this->companies['cospirit']);
         $experience->setDateBegin(new \DateTime('2015-08-01 00:00:00'));
         $experience->setDateEnd(new \DateTime('2016-04-01 00:00:00'));
         $experience->setDescription('Intégration dans une équipe de 4 développeurs pour le soutien dans le développement d’une application de gestion de support de communication. Abstraction complexe de l\'architecture du projet, avec plusieurs projets qui communique entre eux (API, Assets, Front, Core).');
@@ -693,6 +702,7 @@ class AppFixtures extends Fixture
         $experience = new Experience();
         $experience->setTitle('Développeur Web');
         $experience->setCompany($this->companies['helfrich']);
+        $experience->setClient($this->companies['spyrit']);
         $experience->setDateBegin(new \DateTime('2016-12-01 00:00:00'));
         $experience->setDateEnd(new \DateTime('2017-05-01 00:00:00'));
         $experience->setDescription('Développement de fonctionnalités Back et/ou Front sur un projet de plateforme de gestion de comité d\'entreprise. Le projet a plus d\'un an, avec la participation de 2 autres entreprises travaillant à distance, à destination d\'un client final qui revendra la solution en mode SAS. L\'équipe est constitué de 4 développeur(e)s. La gestion de projet est en mode agile, avec des sprints en 2 ou 3 semaines.');
@@ -723,6 +733,7 @@ class AppFixtures extends Fixture
         $experience = new Experience();
         $experience->setTitle('Développeur Web');
         $experience->setCompany($this->companies['edf-septen']);
+        $experience->setClient($this->companies['cs']);
         $experience->setDateBegin(new \DateTime('2017-09-01 00:00:00'));
         $experience->setDateEnd(new \DateTime('2017-10-01 00:00:00'));
         $experience->setDescription('Développement d\'un POC, coté front, pour la gestion des données lié à la sûreté des centrales nucléaires. L\'équipe est constitué d\'un autre développeur, JAVA, qui s\'est occupé de faire l\'API REST et la gestion de projet fait par une ESN, qui a fait appel à nous. Analyse des besoins techniques et fonctionnels fait en amont avec le client final.');
@@ -752,6 +763,7 @@ class AppFixtures extends Fixture
         $experience = new Experience();
         $experience->setTitle('Développeur Web');
         $experience->setCompany($this->companies['helfrich']);
+        $experience->setClient($this->companies['spyrit']);
         $experience->setDateBegin(new \DateTime('2017-12-01 00:00:00'));
         $experience->setDateEnd(new \DateTime('2018-01-01 00:00:00'));
         $experience->setDescription('Développement de fonctionnalités Back et/ou Front sur un projet de plateforme de gestion de comité d\'entreprise. Le projet a plus d\'un an, avec la participation de 2 autres entreprises travaillant à distance, à destination d\'un client final qui revendra la solution en mode SAS. L\'équipe est constitué de 4 développeur(e)s. La gestion de projet est en mode agile, avec des sprints en 2 ou 3 semaines.');
@@ -781,6 +793,7 @@ class AppFixtures extends Fixture
         $experience = new Experience();
         $experience->setTitle('Développeur Web');
         $experience->setCompany($this->companies['cegid']);
+        $experience->setClient($this->companies['apollo']);
         $experience->setDateBegin(new \DateTime('2018-05-01 00:00:00'));
         $experience->setDateEnd(new \DateTime('2019-02-01 00:00:00'));
         $experience->setDescription('Développement d\'une application de gestion RH, POC sur les 3 premier mois, puis d\'un MVP sur la suite. Le projet avait commencé depuis seulement 1 mois, avec une équipe de 3 développeurs (uniquement back), puis s\'est agrandit à une équipe de 8 développeurs (6 back et 2 autres front).');
@@ -795,6 +808,7 @@ class AppFixtures extends Fixture
         $experience = new Experience();
         $experience->setTitle('Développeur Web');
         $experience->setCompany($this->companies['ucly']);
+        $experience->setClient($this->companies['aleysia']);
         $experience->setDateBegin(new \DateTime('2019-04-01 00:00:00'));
         $experience->setDateEnd(new \DateTime('2019-05-01 00:00:00'));
         $experience->setDescription('Soutien dans une équipe de 3 développeurs. Ajout de nouvelle fonctionnalité dans le site d\'inscription.');
@@ -809,6 +823,7 @@ class AppFixtures extends Fixture
         $experience = new Experience();
         $experience->setTitle('Développeur Web');
         $experience->setCompany($this->companies['laposte']);
+        $experience->setClient($this->companies['bewizyu']);
         $experience->setDateBegin(new \DateTime('2019-06-01 00:00:00'));
         $experience->setDateEnd(null);
         $experience->setDescription('Ajout de fonctionnalité sur une application de gestion existante');

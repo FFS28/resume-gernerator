@@ -2,6 +2,7 @@
 
 namespace App\Form\Type;
 
+use App\Entity\Company;
 use App\Entity\Invoice;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -19,12 +20,9 @@ class ActivityType extends AbstractType
             ->add('selected', CheckboxType::class, [
                 'required' => false,
             ])
-            ->add('invoice', EntityType::class, [
-                'class' => Invoice::class,
-                'required' => false,
-                'choice_label' => function (Invoice $invoice) {
-                    return $invoice->getCompany();
-                }
+            ->add('company', EntityType::class, [
+                'class' => Company::class,
+                'required' => false
             ])
             ->add('value', NumberType::class, [
                 'html5' => true,

@@ -116,7 +116,7 @@ class Invoice
     ];
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Activity", mappedBy="invoice")
+     * @ORM\OneToMany(targetEntity="App\Entity\Activity", mappedBy="invoice", cascade={"persist", "remove"})
      */
     private $activities;
 
@@ -133,8 +133,8 @@ class Invoice
         $this->setPayedBy(self::PAYEDBY_TRANSFERT);
         $this->status = self::STATUS_DRAFT;
         $this->totalTax = 0;
-        $this->activities = new ArrayCollection();
         $this->dueInterval = 'P1M';
+        $this->activities = new ArrayCollection();
     }
 
     /**
@@ -379,6 +379,18 @@ class Invoice
         return array_flip(static::$statusName);
     }
 
+    public function getDueInterval(): ?string
+    {
+        return $this->dueInterval;
+    }
+
+    public function setDueInterval(?string $dueInterval): self
+    {
+        $this->dueInterval = $dueInterval;
+
+        return $this;
+    }
+
     /**
      * @return Collection|Activity[]
      */
@@ -406,18 +418,6 @@ class Invoice
                 $activity->setInvoice(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getDueInterval(): ?string
-    {
-        return $this->dueInterval;
-    }
-
-    public function setDueInterval(?string $dueInterval): self
-    {
-        $this->dueInterval = $dueInterval;
 
         return $this;
     }

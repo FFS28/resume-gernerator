@@ -3,6 +3,7 @@
 namespace App\Form\Type;
 
 use App\Entity\Activity;
+use App\Entity\Company;
 use App\Entity\Invoice;
 use App\Repository\InvoiceRepository;
 use DateInterval;
@@ -24,6 +25,8 @@ class MonthActivitiesType extends AbstractType
         $this->currentDate = $options['currentDate'];
         /** @var Activity[] $activities */
         $activities = $options['activities'];
+        /** @var Company $company */
+        $company = $options['company'];
 
         $activitiesData = [];
         for($i = 1; $i < $this->currentDate->format('N'); $i++) {
@@ -41,7 +44,8 @@ class MonthActivitiesType extends AbstractType
             $activitiesData[$date] = [
                 'selected' => false,
                 'date' => clone $currentDate,
-                'value' => 0,
+                'value' => 1,
+                'company' => $company
             ];
             $currentDate->add(new DateInterval('P1D'));
         }
@@ -51,6 +55,7 @@ class MonthActivitiesType extends AbstractType
 
             if (isset($activitiesData[$date])) {
                 $activitiesData[$date]['value'] = $activity->getValue();
+                $activitiesData[$date]['company'] = $activity->getCompany();
                 $activitiesData[$date]['selected'] = true;
             }
         }
@@ -60,7 +65,11 @@ class MonthActivitiesType extends AbstractType
                 'entry_type' => ActivityType::class,
                 'data' => array_values($activitiesData)
             ])
-            ->add('send', SubmitType::class)
+            ->add('send', SubmitType::class, [
+                'attr' => [
+                    'class' => 'btn btn-primary action-save'
+                ]
+            ])
         ;
     }
 
@@ -68,7 +77,8 @@ class MonthActivitiesType extends AbstractType
     {
         $resolver->setDefaults([
             'activities' => [],
-            'currentDate' => null
+            'currentDate' => null,
+            'company' => null
         ]);
     }
 }

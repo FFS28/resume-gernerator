@@ -19,7 +19,10 @@ class ExperienceRepository extends ServiceEntityRepository
         parent::__construct($registry, Experience::class);
     }
 
-    public function getCurrents()
+    /**
+     * @return Experience[]
+     */
+    public function getCurrents(): array
     {
         $query = $this->createQueryBuilder('e')
             ->where('e.dateEnd IS NULL');
@@ -27,9 +30,26 @@ class ExperienceRepository extends ServiceEntityRepository
         return $query->getQuery()->getResult();
     }
 
-    public function findByMonth(int $month)
+    /**
+     * @param \DateTime $date
+     * @return Experience[]
+     */
+    public function findByDate(\DateTime $date): array
     {
+        $query = $this->createQueryBuilder('e')
+            ->setParameter('date', $date->format('Y-m-d'));
 
+        $query->where(':date BETWEEN e.dateBegin AND e.dateEnd')
+        ->orWhere(
+            $query->expr()->andX(
+                $query->expr()->gte( ':date', 'e.dateBegin'),
+                $query->expr()->isNull('e.dateEnd')
+            )
+        );
+
+        return $query
+            ->getQuery()
+            ->getResult();
     }
 
 //    /**
