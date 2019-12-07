@@ -6,6 +6,7 @@ use App\Entity\Activity;
 use App\Entity\Company;
 use App\Entity\Invoice;
 use App\Repository\InvoiceRepository;
+use App\Service\ReportService;
 use DateInterval;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -20,6 +21,14 @@ class MonthActivitiesType extends AbstractType
     /** @var \DateTime $currentDate */
     public $currentDate;
 
+    /** @var ReportService */
+    public $reportService;
+
+    public function __construct(ReportService $reportService)
+    {
+        $this->reportService = $reportService;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $this->currentDate = $options['currentDate'];
@@ -28,38 +37,9 @@ class MonthActivitiesType extends AbstractType
         /** @var Company $company */
         $company = $options['company'];
 
-        $activitiesData = [];
-        for($i = 1; $i < $this->currentDate->format('N'); $i++) {
-            $activitiesData[] = [
-                'selected' => false,
-                'date' => null,
-                'value' => null
-            ];
-        }
-
         $currentDate = clone $this->currentDate;
-        for ($i = 1; $i <= $this->currentDate->format('t'); $i++) {
-            $date = $currentDate->format('Ymd');
+        $activitiesData = $this->reportService->generateMonth(clone $currentDate, $activities, $company);
 
-            $activitiesData[$date] = [
-                'selected' => false,
-                'date' => clone $currentDate,
-                'value' => 1,
-                'company' => $company
-            ];
-            $currentDate->add(new DateInterval('P1D'));
-        }
-
-        foreach ($activities as $activity) {
-            $date = $activity->getDate()->format('Ymd');
-
-            if (isset($activitiesData[$date])) {
-                $activitiesData[$date]['value'] = $activity->getValue();
-                $activitiesData[$date]['company'] = $activity->getCompany();
-                $activitiesData[$date]['selected'] = true;
-            }
-        }
-        
         $builder
             ->add('activities', CollectionType::class, [
                 'entry_type' => ActivityType::class,

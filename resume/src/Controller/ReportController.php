@@ -12,6 +12,7 @@ use App\Form\Type\MonthActivitiesType;
 use App\Repository\ActivityRepository;
 use App\Repository\ExperienceRepository;
 use App\Repository\InvoiceRepository;
+use App\Service\ReportService;
 use DateInterval;
 use DateTime;
 use Doctrine\DBAL\Exception\NotNullConstraintViolationException;
@@ -159,7 +160,6 @@ class ReportController extends EasyAdminController
     {
         list($currentDate, $activities) = $this->getActivities($activityRepository, $company, $year, $month);
 
-
         $number = $invoiceRepository->getNewInvoiceNumber($currentDate);
 
         $invoice = new Invoice();
@@ -183,19 +183,40 @@ class ReportController extends EasyAdminController
      * @Route("/admin/report/{year<\d+>}/{month<\d+>}/{slug}/export", name="report_export")
      * @param ActivityRepository $activityRepository
      * @param InvoiceRepository $invoiceRepository
+     * @param ReportService $reportService
+     * @param TranslatorInterface $translator
      * @param EntityManagerInterface $entityManager
      * @param int $year
      * @param int $month
      * @param Company $company
+     * @return Response
      * @throws NotNullConstraintViolationException
      */
     public function export(
         ActivityRepository $activityRepository,
         InvoiceRepository $invoiceRepository,
+        ReportService $reportService,
+        TranslatorInterface $translator,
         EntityManagerInterface $entityManager,
         int $year, int $month, Company $company
     )
     {
-        list($currentDate, $activities) = $this->getActivities($activityRepository, $company, $year, $month);
+        list($currentDate, $activities) = $this->getActivities(
+            $activityRepository,
+            $company->getContractor() ? $company->getContractor() : $company,
+            $year, $month
+        );
+
+        $viewData = [
+            'company' => $company,
+            'name' => $this->getParameter('COMPANY_NAME'),
+            'month' => $translator->trans($currentDate->format('F')),
+            'year' => $currentDate->format('Y'),
+            'reportData' => $reportService->generateMonth($currentDate, $activities)
+        ];
+
+        dump($viewData);
+
+        return $this->render('page/report_pdf.html.twig', $viewData);
     }
 }

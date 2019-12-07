@@ -377,7 +377,7 @@ class AppFixtures extends Fixture
         $company->setName('Ar Developpement');
         $company->setDisplayName('Ar');
         $company->setCity('Lyon');
-        $company->setContractor($this->companies['cospirit']);
+        $this->companies['cospirit']->addClient($company);;
         $this->manager->persist($company);
         $this->companies['ar'] = $company;
 
@@ -407,7 +407,7 @@ class AppFixtures extends Fixture
 
         $company = new Company();
         $company->setName('Helfrich');
-        $company->setContractor($this->companies['spyrit']);
+        $this->companies['spyrit']->addClient($company);;
         $this->manager->persist($company);
         $this->companies['helfrich'] = $company;
 
@@ -442,7 +442,7 @@ class AppFixtures extends Fixture
         $company->setDisplayName('EDF');
         $company->setCity('Villeurbanne');
         $this->manager->persist($company);
-        $company->setContractor($this->companies['cs']);
+        $this->companies['cs']->addClient($company);;
         $this->companies['edf-septen'] = $company;
 
         $company = new Company();
@@ -456,7 +456,7 @@ class AppFixtures extends Fixture
         $company->setName('Cegid');
         $company->setCity('Lyon');
         $this->manager->persist($company);
-        $company->setContractor($this->companies['apollo']);
+        $this->companies['apollo']->addClient($company);;
         $this->companies['cegid'] = $company;
 
         $company = new Company();
@@ -469,7 +469,7 @@ class AppFixtures extends Fixture
         $company->setName('Ucly');
         $company->setCity('Lyon');
         $this->manager->persist($company);
-        $company->setContractor($this->companies['aleysia']);
+        $this->companies['aleysia']->addClient($company);;
         $this->companies['ucly'] = $company;
 
         $company = new Company();
@@ -485,19 +485,19 @@ class AppFixtures extends Fixture
         $company->setDisplayName('ActeMedia');
         $company->setCity('Bron');
         $this->manager->persist($company);
-        $company->setContractor($this->companies['bewizyu']);
+        $this->companies['bewizyu']->addClient($company);;
         $this->companies['actemedia'] = $company;
 
         $company = new Company();
         $company->setName('Marquetis');
         $this->manager->persist($company);
-        $company->setContractor($this->companies['actemedia']);
+        $this->companies['actemedia']->addClient($company);;
         $this->companies['marquetis'] = $company;
 
         $company = new Company();
         $company->setName('La Poste');
         $this->manager->persist($company);
-        $company->setContractor($this->companies['marquetis']);
+        $this->companies['marquetis']->addClient($company);;
         $this->companies['laposte'] = $company;
     }
 

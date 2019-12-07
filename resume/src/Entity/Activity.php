@@ -27,9 +27,19 @@ class Activity
     private $value;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Invoice", inversedBy="activities", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Company", inversedBy="activities", cascade={"persist"})
+     */
+    private $company;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Invoice", inversedBy="activities")
      */
     private $invoice;
+
+    public function __toString()
+    {
+        return $this->getCompany() . ' - ' . $this->getValue() . ' - '. $this->getDate()->format('d/m/Y');
+    }
 
     public function getId(): ?int
     {
@@ -56,6 +66,18 @@ class Activity
     public function setValue(?string $value): self
     {
         $this->value = $value;
+
+        return $this;
+    }
+
+    public function getCompany(): ?Company
+    {
+        return $this->company;
+    }
+
+    public function setCompany(?Company $Company): self
+    {
+        $this->company = $Company;
 
         return $this;
     }

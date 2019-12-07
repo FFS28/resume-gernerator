@@ -27,6 +27,11 @@ class Company
     private $name;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $displayName;
+
+    /**
      * @ORM\Column(type="string", length=255, unique=true)
      * @Gedmo\Slug(fields={"name"})
      */
@@ -38,24 +43,9 @@ class Company
     private $experiences;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Company", mappedBy="client", cascade={"persist", "remove"})
-     */
-    private $contractor;
-
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Company", inversedBy="contractor", cascade={"persist", "remove"})
-     */
-    private $client;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Invoice", mappedBy="company", cascade={"persist"})
      */
     private $invoices;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $displayName;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -82,12 +72,23 @@ class Company
      */
     private $activities;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Company", inversedBy="clients")
+     */
+    private $contractor;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Company", mappedBy="contractor")
+     */
+    private $clients;
+
     public function __construct()
     {
         $this->experiences = new ArrayCollection();
         $this->invoices = new ArrayCollection();
         $this->persons = new ArrayCollection();
         $this->activities = new ArrayCollection();
+        $this->clients = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -155,36 +156,6 @@ class Company
         return $this;
     }
 
-    public function getContractor(): ?self
-    {
-        return $this->contractor;
-    }
-
-    public function setContractor(?self $contractor): self
-    {
-        $this->contractor = $contractor;
-
-        // set (or unset) the owning side of the relation if necessary
-        $newClient = null === $contractor ? null : $this;
-        if ($contractor->getClient() !== $newClient) {
-            $contractor->setClient($newClient);
-        }
-
-        return $this;
-    }
-
-    public function getClient(): ?self
-    {
-        return $this->client;
-    }
-
-    public function setClient(?self $client): self
-    {
-        $this->client = $client;
-
-        return $this;
-    }
-
     /**
      * @param Company[] $contractors
      * @return Company[]
@@ -202,25 +173,6 @@ class Company
         }
 
         return $contractors;
-    }
-
-    /**
-     * @param Company[] $clients
-     * @return Company[]
-     */
-    public function getAllClients($clients = []): array
-    {
-        if ($this->getClient()) {
-            $client = $this->getClient();
-
-            if (!in_array($client, $clients)) {
-                $clients[] = $client;
-
-                return $client->getAllClients($clients);
-            }
-        }
-
-        return $clients;
     }
 
     /**
@@ -358,6 +310,49 @@ class Company
             // set the owning side to null (unless already changed)
             if ($activity->getInvoice() === $this) {
                 $activity->setInvoice(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getContractor(): ?self
+    {
+        return $this->contractor;
+    }
+
+    public function setContractor(?self $contractor): self
+    {
+        $this->contractor = $contractor;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|self[]
+     */
+    public function getClients(): Collection
+    {
+        return $this->clients;
+    }
+
+    public function addClient(self $client): self
+    {
+        if (!$this->clients->contains($client)) {
+            $this->clients[] = $client;
+            $client->setContractor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeClient(self $client): self
+    {
+        if ($this->clients->contains($client)) {
+            $this->clients->removeElement($client);
+            // set the owning side to null (unless already changed)
+            if ($client->getContractor() === $this) {
+                $client->setContractor(null);
             }
         }
 

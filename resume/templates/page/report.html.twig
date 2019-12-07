@@ -91,10 +91,13 @@
                 <i class="fa fa-file"></i>
                 {{ 'Invoice' | trans }}
             </a>
-            <a name="" class="btn text-danger" title="" href="{{ url('report_export', {'year': activeYear, 'month': activeMonth, 'slug': activeCompany.slug}) }}" target="_self">
-                <i class="fa fa-file"></i>
-                {{ 'Export' | trans }}
-            </a>
+            {% set clients = activeCompany.clients ? activeCompany.clients : [activeCompany] %}
+            {% for client in clients %}
+                <a name="" class="btn text-danger" title="" href="{{ url('report_export', {'year': activeYear, 'month': activeMonth, 'slug': client.slug}) }}" target="_self">
+                    <i class="fa fa-file"></i>
+                    {{ 'Export' | trans }} {{ client }}
+                </a>
+            {% endfor %}
         {% endif %}
     </div>
     {{ form_end(reportForm) }}

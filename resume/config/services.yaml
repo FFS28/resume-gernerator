@@ -6,6 +6,7 @@
 parameters:
     MAILER_FROM: '%env(MAILER_FROM)%'
     MAILER_SUBJECT: '%env(MAILER_SUBJECT)%'
+    COMPANY_NAME: '%env(COMPANY_NAME)%'
 
 services:
     # default configuration for services in *this* file

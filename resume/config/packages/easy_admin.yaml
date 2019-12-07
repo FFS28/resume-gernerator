@@ -41,7 +41,7 @@ easy_admin:
           - displayName
           - { property: 'displayName', label: 'Display name' }
           - { type: 'group', columns: 3, label: 'Hierarchy' }
-          - { property: 'client', type: 'easyadmin_autocomplete', type_options: { class: 'App\Entity\Company', attr: { create: true } } }
+          - { property: 'clients', type: 'easyadmin_autocomplete', type_options: { class: 'App\Entity\Company', attr: { create: true } } }
           - { property: 'contractor', type: 'easyadmin_autocomplete', type_options: { class: 'App\Entity\Company', attr: { create: true } } }
           - { property: 'persons', type: 'easyadmin_autocomplete', type_options: { class: 'App\Entity\Person', attr: { create: true } } }
           - { type: 'group', columns: 6, label: 'Address' }
@@ -53,10 +53,9 @@ easy_admin:
       list:
         fields:
           - displayName
-          - city
-          - client
+          - { property: 'clients', type: 'array' }
           - contractor
-          - persons
+          - { property: 'persons', type: 'array' }
     Persons:
       class: App\Entity\Person
       form:
