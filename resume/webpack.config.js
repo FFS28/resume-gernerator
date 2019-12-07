@@ -36,9 +36,12 @@ Encore
     .addEntry('js/app', './assets/js/app.js')
     .addStyleEntry('css/bootstrap-datepicker', './assets/css/bootstrap-datepicker.css')
 
+    .addStyleEntry('css/app', './assets/css/app.scss')
+    .addStyleEntry('css/login', './assets/css/login.scss')
     .addStyleEntry('css/index', './assets/css/index.scss')
     .addStyleEntry('css/dashboard', './assets/css/dashboard.scss')
     .addStyleEntry('css/report', './assets/css/report.scss')
+    .addStyleEntry('css/report_pdf', './assets/css/report_pdf.scss')
 
     // uncomment if you use TypeScript
     //.enableTypeScriptLoader()

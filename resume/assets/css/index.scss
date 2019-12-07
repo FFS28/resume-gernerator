@@ -1,5 +1,7 @@
 @import "flexbox";
+@import "variables";
 @import "donut";
+@import "form";
 
 
 $pageWidth: 1200px;
@@ -86,6 +88,7 @@ h4{
     .job{
       font-size: 30px;
       font-weight: normal;
+      padding-left: 40px;
     }
 
     white-space: nowrap;
@@ -121,7 +124,7 @@ h4{
       margin: 0;
     }
   }
-  #de.limiter{
+  #delimiter{
     width:0;
     height: 100px;
     border-right: 1px solid;
@@ -201,8 +204,11 @@ h4{
   }
 }
 
-#hobbies .ul {
-  padding: 0 10px 10px;
+#hobbies {
+  padding-bottom: 40px;
+  .ul {
+    padding: 0 10px 10px;
+  }
 }
 
 #links {
@@ -217,6 +223,10 @@ h4{
       margin: 0 20px;
     }
   }
+}
+
+form{
+  max-width: 500px !important;
 }
 
 #download {
@@ -287,6 +297,10 @@ h4{
 @media (max-width: 767px) {
   .hidden-xs {
     display: none !important;
+  }
+  form {
+    padding-right: 20px;
+    padding-left: 20px;
   }
 }
 

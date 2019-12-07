@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Company;
 use App\Entity\Invoice;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -62,6 +63,35 @@ class InvoiceRepository extends ServiceEntityRepository
         }
 
         return $date_number . (intval($lastNumber) + 1);
+    }
+
+    /**
+     * @param \DateTime $date
+     * @return Invoice[]
+     */
+    public function getByDate(\DateTime $date): array
+    {
+        return $this->createQueryBuilder('i')
+        ->where('ToChar(i.createdAt, \'YYYYMM\') = :date')
+        ->setParameter('date', $date->format('Ym'))
+        ->getQuery()
+        ->getResult();
+    }
+
+    /**
+     * @param Company $company
+     * @param \DateTime $date
+     * @return Invoice[]
+     */
+    public function getByCompanyAndDate(Company $company, \DateTime $date): array
+    {
+        return $this->createQueryBuilder('i')
+        ->where('i.company = :company')
+        ->andWhere('ToChar(i.createdAt, \'YYYYMM\') = :date')
+        ->setParameter('company', $company)
+        ->setParameter('date', $date->format('Ym'))
+        ->getQuery()
+        ->getResult();
     }
 
     /**
@@ -174,7 +204,7 @@ class InvoiceRepository extends ServiceEntityRepository
 
         $query = $this->addFilters($query, $year, null, null);
 
-        return floatval($query->getQuery()->getSingleScalarResult()['total']);
+        return floatval($query->getQuery()->getSingleScalarResult());
     }
 
     /**

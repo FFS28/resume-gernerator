@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('build/css/report_pdf.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    {#<script type='text/javascript'>
+        window.print();
+    </script>#}
+{% endblock %}
+
+{% block body %}
+    <div id="report_pdf">
+        <h1>{{ month }} {{ year }}</h1>
+        <div class="days">
+            <div class="dayName day-1">{{ 'Monday' | trans }}</div>
+            <div class="dayName day-2">{{ 'Tuesday' | trans }}</div>
+            <div class="dayName day-3">{{ 'Wednesday' | trans }}</div>
+            <div class="dayName day-4">{{ 'Thursday' | trans }}</div>
+            <div class="dayName day-5">{{ 'Friday' | trans }}</div>
+            <div class="dayName day-6">{{ 'Saturday' | trans }}</div>
+            <div class="dayName day-7">{{ 'Sunday' | trans }}</div>
+            {% for day in reportData %}
+                {% if day.date != null %}
+                    {% if day.selected and day.value > 0 %}
+                        <div class="day day-active day-{{ day.date | date('N') }}">
+                            {{ day.value }}
+                        </div>
+                    {% else %}
+                        <div class="day day-active day-{{ day.date | date('N') }}"></div>
+                    {% endif %}
+                {% else %}
+                    <div class="day day-{{ loop.index }}"></div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

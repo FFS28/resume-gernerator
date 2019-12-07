@@ -3,11 +3,24 @@
 namespace App\Controller;
 
 use AlterPHP\EasyAdminExtensionBundle\Controller\EasyAdminController;
+use App\Entity\Activity;
+use App\Entity\Company;
 use App\Entity\Invoice;
+use App\Form\Type\ActivityType;
+use App\Form\Type\MonthActivitiesType;
+use App\Repository\ActivityRepository;
 use App\Repository\ExperienceRepository;
 use App\Repository\InvoiceRepository;
+use DateInterval;
+use DateTime;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Translation\Translator;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -15,15 +28,23 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class DashboardController extends EasyAdminController
 {
     /**
+     * @param int $year
+     * @param int $quarter
+     * @param InvoiceRepository $invoiceRepository
+     * @param ExperienceRepository $experienceRepository
+     * @param TranslatorInterface $translator
+     * @return Response
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      * @Route("/admin/dashboard/{year<\d+>?0}/{quarter<\d+>?0}", name="dashboard")
      */
     public function index(
-        int $year = 0, int $quarter = 0,
         InvoiceRepository $invoiceRepository,
         ExperienceRepository $experienceRepository,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        int $year = 0, int $quarter = 0
     ) {
-        $data = [];
+        $viewData = [];
 
         /**
          * Informations
@@ -49,82 +70,58 @@ class DashboardController extends EasyAdminController
          * - Clients en cours
          */
 
-        $data['currentYear'] = intval((new \DateTime())->format('Y'));
-        $data['currentQuarter'] = ceil((new \DateTime())->format('n') / 3);
-        $data['activeYear'] = $year ? $year : $data['currentYear'];
-        $data['activeQuarter'] = $quarter ? $quarter : $data['currentQuarter'];
-        $data['years'] = $invoiceRepository->findYears();
+        $viewData['currentYear'] = intval((new DateTime())->format('Y'));
+        $viewData['currentQuarter'] = ceil((new DateTime())->format('n') / 3);
+        $viewData['activeYear'] = $year ? $year : $viewData['currentYear'];
+        $viewData['activeQuarter'] = $quarter ? $quarter : $viewData['currentQuarter'];
+        $viewData['years'] = $invoiceRepository->findYears();
 
-        $data['activeRevenuesOnYear'] = $invoiceRepository->getSalesRevenuesBy($data['activeYear']);
-        $data['activeRevenuesOnQuarter'] = $invoiceRepository->getSalesRevenuesBy($data['activeYear'], $data['activeQuarter']);
-        $data['currentRevenuesOnYear'] = $invoiceRepository->getSalesRevenuesBy($data['currentYear']);
-        $data['currentRevenuesOnQuarter'] = $invoiceRepository->getSalesRevenuesBy($data['currentYear'], $data['currentQuarter']);
+        $viewData['activeRevenuesOnYear'] = $invoiceRepository->getSalesRevenuesBy($viewData['activeYear']);
+        $viewData['activeRevenuesOnQuarter'] = $invoiceRepository->getSalesRevenuesBy($viewData['activeYear'], $viewData['activeQuarter']);
+        $viewData['currentRevenuesOnYear'] = $invoiceRepository->getSalesRevenuesBy($viewData['currentYear']);
+        $viewData['currentRevenuesOnQuarter'] = $invoiceRepository->getSalesRevenuesBy($viewData['currentYear'], $viewData['currentQuarter']);
+        $viewData['dayCount'] = $invoiceRepository->getDaysCountByYear($viewData['activeYear']);
 
-        $data['remainingDaysBeforeTvaLimit'] = $invoiceRepository->remainingDaysBeforeTvaLimit();
-        $data['remainingDaysBeforeLimit'] = $invoiceRepository->remainingDaysBeforeLimit();
-        $data['currentTaxesOnQuarter'] = $invoiceRepository->getSalesTaxesBy($data['activeYear'], $data['activeQuarter']);
+        $viewData['remainingDaysBeforeTvaLimit'] = $invoiceRepository->remainingDaysBeforeTvaLimit();
+        $viewData['remainingDaysBeforeLimit'] = $invoiceRepository->remainingDaysBeforeLimit();
+        $viewData['currentTaxesOnQuarter'] = $invoiceRepository->getSalesTaxesBy($viewData['activeYear'], $viewData['activeQuarter']);
 
         $revenuesByYears = $invoiceRepository->getSalesRevenuesGroupBy('year');
-        $data['revenuesByYears'] = array_combine(
+        $viewData['revenuesByYears'] = array_combine(
             array_map(function($item) {return $item['year'];}, $revenuesByYears),
             array_map(function($item) {return intval($item['total']);}, $revenuesByYears)
         );
 
-        $revenuesByQuarters = $invoiceRepository->getSalesRevenuesGroupBy('quarter', $data['activeYear']);
-        $data['revenuesByQuarters'] = array_combine(
+        $revenuesByQuarters = $invoiceRepository->getSalesRevenuesGroupBy('quarter', $viewData['activeYear']);
+        $viewData['revenuesByQuarters'] = array_combine(
             array_map(function($item) {return 'T'.$item['quarter'];}, $revenuesByQuarters),
             array_map(function($item) {return intval($item['total']);}, $revenuesByQuarters)
         );
 
-        $data['daysByMonth'] = [];
-        $daysByMonth = $invoiceRepository->getDaysCountByMonth($data['activeYear']);
+        $viewData['daysByMonth'] = [];
+        $daysByMonth = $invoiceRepository->getDaysCountByMonth($viewData['activeYear']);
         $daysByMonthAssociative = [];
         foreach ($daysByMonth as $item) {
             $daysByMonthAssociative[intval($item['month'])] = $item['total'];
         }
         for($i = 1; $i <= 12; $i++) {
             $monthName = $translator->trans(date('F', mktime(0, 0, 0, $i, 10)));
-            $data['daysByMonth'][$monthName] =  isset($daysByMonthAssociative[$i]) ? $daysByMonthAssociative[$i] : 0;
+            $viewData['daysByMonth'][$monthName] =  isset($daysByMonthAssociative[$i]) ? $daysByMonthAssociative[$i] : 0;
         }
 
-        $data['colorsByYears'] = [];
-        foreach ($data['years'] as $year) {
-            $data['colorsByYears'][] = $year == $data['activeYear'] ? 'rgba(56, 142, 60, 0.6)' : 'rgba(0, 0, 0, 0.1)';
+        $viewData['colorsByYears'] = [];
+        foreach ($viewData['years'] as $year) {
+            $viewData['colorsByYears'][] = $year == $viewData['activeYear'] ? 'rgba(56, 142, 60, 0.6)' : 'rgba(0, 0, 0, 0.1)';
         }
 
-        $data['colorsByQuarters'] = [];
-        foreach ($data['revenuesByQuarters'] as $quarter => $item) {
-            $data['colorsByQuarters'][] = $quarter[1] == $data['activeQuarter'] ? 'rgba(56, 142, 60, 0.6)' : 'rgba(0, 0, 0, 0.1)';
+        $viewData['colorsByQuarters'] = [];
+        foreach ($viewData['revenuesByQuarters'] as $quarter => $item) {
+            $viewData['colorsByQuarters'][] = $quarter[1] == $viewData['activeQuarter'] ? 'rgba(56, 142, 60, 0.6)' : 'rgba(0, 0, 0, 0.1)';
         }
 
-        $data['unpayedInvoices'] = $invoiceRepository->findInvoicesBy(null, null, false);
-        $data['currentExperiences'] = $experienceRepository->getCurrents();
+        $viewData['unpayedInvoices'] = $invoiceRepository->findInvoicesBy(null, null, false);
+        $viewData['currentExperiences'] = $experienceRepository->getCurrents();
 
-        return $this->render('page/dashboard.html.twig', $data);
-    }
-
-    /**
-     * @Route("/admin/report/{year<\d+>?0}/{month<\d+>?0}", name="report")
-     */
-    public function report(
-        int $year = 0, int $month = 0,
-        InvoiceRepository $invoiceRepository
-    ) {
-        $data = [];
-        $data['activeYear'] = $year ? $year : (new \DateTime())->format('Y');
-        $data['activeMonth'] = $month ? $month : (new \DateTime())->format('m');
-        $data['years'] = $invoiceRepository->findYears();
-
-        $currentDate = new \DateTime($data['activeYear'].($data['activeMonth'] < 10 ? '0' : '').$data['activeMonth'].'01');
-        $data['daysCount'] = $currentDate->format('t');
-
-        $data['days'] = [];
-        for ($i = 1; $i <= $data['daysCount']; $i++) {
-            $data['days'][] = [
-
-            ];
-        }
-
-        return $this->render('page/report.html.twig', $data);
+        return $this->render('page/dashboard.html.twig', $viewData);
     }
 }

@@ -56,6 +56,11 @@ class Person
      */
     private $company;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isInvoicingDefault;
+
     public function __toString(): string
     {
         return $this->getCivilityName() . ' ' . $this->getFirstname(). ' ' . $this->getLastname();
@@ -154,6 +159,18 @@ class Person
     public function setCompany(?Company $company): self
     {
         $this->company = $company;
+
+        return $this;
+    }
+
+    public function getIsInvoicingDefault(): ?bool
+    {
+        return $this->isInvoicingDefault;
+    }
+
+    public function setIsInvoicingDefault(bool $isInvoicingDefault): self
+    {
+        $this->isInvoicingDefault = $isInvoicingDefault;
 
         return $this;
     }

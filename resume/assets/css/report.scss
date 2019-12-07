@@ -1,15 +1,145 @@
 @import "flexbox";
 @import "variables";
 
-
 #report {
+  @import "common";
 
+  label {margin: 0;}
+
+  form {
+    width: 100%;
+    padding: 0;
+    background: transparent;
+  }
+
+  .navigation{
+    padding: 10px;
+    margin: -20px -20px 20px -20px;
+    background: $secondaryColor;
+
+    ul {
+      display: block;
+      text-align: center;
+
+      a {
+        padding: 5px 10px;
+
+        :hover, &:active, &.active {
+          color: $thirdColor;
+          background: #fff;
+        }
+      }
+    }
+  }
+
+  .th, .day{
+    width: 14.28%;
+    display: inline-block;
+  }
+
+  .th{
+    font-weight: bold;
+    text-align: center;
+    padding: 0 5px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .days, .tr, .day label {
+    @include flexbox();
+    @include align-items(center);
+    @include flex-wrap(wrap);
+  }
+
+  .days, .tr {
+    @include justify-content(flex-start);
+    @include flex-direction(row wrap);
+
+    .day {
+
+      height: 80px;
+
+      &.day-active {
+        background: $secondaryColor;
+      }
+      input[type=checkbox] {
+        display: none;
+      }
+      label {
+        @include justify-content(center);
+        @include flex-direction(column);
+
+        width: 100%;
+        height: 100%;
+
+        input, select {display: none;}
+      }
+      input[type=checkbox]:checked + label {
+        background: rgba(56,142,60,0.36);
+
+        input[type=number], select {
+          display: block;
+        }
+
+        input[type=number] {
+          display: block;
+          background: transparent;
+          border: none;
+          width: 100%;
+          text-align: center;
+          font-size: 30px;
+          line-height: 30px;
+          max-width: 80px;
+
+          margin: 0 auto;
+        }
+      }
+      input[type=number] + div {
+        display: none;
+      }
+    }
+  }
+
+  .invoice{
+    padding: 20px;
+    text-align: center;
+
+    label {
+      font-weight: bold;
+      margin-right: 20px;
+    }
+
+    select {
+      padding: 4px;
+    }
+  }
 
   @media (max-width: $screen-lg) {
-
+    .day input[type=number]{
+      font-size: 24px !important;
+      line-height: 24px !important;
+    }
   }
 
   @media (max-width: $screen-xs) {
+    .day input[type=number]{
+      font-size: 14px !important;
+      line-height: 14px !important;
+    }
+  }
+}
 
+
+.footer_actions {
+  padding: 20px;
+  text-align: center;
+
+  button {
+    padding: 6px 14px;
+    background: transparent;
+    border: 1px solid $primaryColor;
+    color: $primaryColor;
+    font-weight: bold;
   }
 }

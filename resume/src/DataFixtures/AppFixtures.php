@@ -9,6 +9,7 @@ use App\Entity\Experience;
 use App\Entity\Hobby;
 use App\Entity\Invoice;
 use App\Entity\Link;
+use App\Entity\Person;
 use App\Entity\Skill;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -35,6 +36,11 @@ class AppFixtures extends Fixture
      */
     private $experiences;
 
+    /**
+     * @var Person[]
+     */
+    private $persons;
+
     public function load(ObjectManager $manager)
     {
         $this->manager = $manager;
@@ -46,6 +52,7 @@ class AppFixtures extends Fixture
 
         $this->loadSkills();
         $this->loadCompanies();
+        $this->loadPersons();
         $this->loadExperience();
         $this->loadInvoices();
 
@@ -283,18 +290,21 @@ class AppFixtures extends Fixture
 
         $company = new Company();
         $company->setName('Eleusis Solution');
+        $company->setDisplayName('Eleusis');
         $company->setCity('Nice');
         $this->manager->persist($company);
         $this->companies['eleusis'] = $company;
 
         $company = new Company();
         $company->setName('ACL Informatique');
+        $company->setDisplayName('ACL');
         $company->setCity('Villeneuve-Loubet');
         $this->manager->persist($company);
         $this->companies['acl'] = $company;
 
         $company = new Company();
         $company->setName('e-Toxic');
+        $company->setDisplayName('Etoxic');
         $company->setCity('Villeneuve-Loubet');
         $this->manager->persist($company);
         $this->companies['etoxic'] = $company;
@@ -331,24 +341,28 @@ class AppFixtures extends Fixture
 
         $company = new Company();
         $company->setName('Jessica Rolland');
+        $company->setDisplayName('GTL');
         $company->setCity('Lyon');
         $this->manager->persist($company);
         $this->companies['girlstakelyon'] = $company;
 
         $company = new Company();
         $company->setName('Leidgens Groupe');
+        $company->setDisplayName('Leidgens');
         $company->setCity('Lyon');
         $this->manager->persist($company);
         $this->companies['leidgens'] = $company;
 
         $company = new Company();
         $company->setName('Pretty Cool');
+        $company->setDisplayName('Pretty');
         $company->setCity('Lyon');
         $this->manager->persist($company);
         $this->companies['prettycool'] = $company;
 
         $company = new Company();
         $company->setName('Guillaume Ribot');
+        $company->setDisplayName('Ribot');
         $company->setCity('Paris');
         $this->manager->persist($company);
         $this->companies['ribot'] = $company;
@@ -361,8 +375,9 @@ class AppFixtures extends Fixture
 
         $company = new Company();
         $company->setName('Ar Developpement');
+        $company->setDisplayName('Ar');
         $company->setCity('Lyon');
-        $company->setContractor($this->companies['cospirit']);
+        $this->companies['cospirit']->addClient($company);;
         $this->manager->persist($company);
         $this->companies['ar'] = $company;
 
@@ -392,12 +407,13 @@ class AppFixtures extends Fixture
 
         $company = new Company();
         $company->setName('Helfrich');
-        $company->setContractor($this->companies['spyrit']);
+        $this->companies['spyrit']->addClient($company);;
         $this->manager->persist($company);
         $this->companies['helfrich'] = $company;
 
         $company = new Company();
         $company->setName('La compagnie hyperactive');
+        $company->setDisplayName('Hyperactive');
         $company->setCity('Paris');
         $this->manager->persist($company);
         $this->companies['hyperactive'] = $company;
@@ -410,6 +426,7 @@ class AppFixtures extends Fixture
 
         $company = new Company();
         $company->setName('CS Systemes D\'information');
+        $company->setDisplayName('CS');
         $company->setCity('Lyon');
         $this->manager->persist($company);
         $this->companies['cs'] = $company;
@@ -422,13 +439,15 @@ class AppFixtures extends Fixture
 
         $company = new Company();
         $company->setName('EDF Septen');
+        $company->setDisplayName('EDF');
         $company->setCity('Villeurbanne');
         $this->manager->persist($company);
-        $company->setContractor($this->companies['cs']);
+        $this->companies['cs']->addClient($company);;
         $this->companies['edf-septen'] = $company;
 
         $company = new Company();
         $company->setName('Apollo SSC');
+        $company->setDisplayName('Apollo');
         $company->setCity('Lyon');
         $this->manager->persist($company);
         $this->companies['apollo'] = $company;
@@ -437,7 +456,7 @@ class AppFixtures extends Fixture
         $company->setName('Cegid');
         $company->setCity('Lyon');
         $this->manager->persist($company);
-        $company->setContractor($this->companies['apollo']);
+        $this->companies['apollo']->addClient($company);;
         $this->companies['cegid'] = $company;
 
         $company = new Company();
@@ -450,7 +469,7 @@ class AppFixtures extends Fixture
         $company->setName('Ucly');
         $company->setCity('Lyon');
         $this->manager->persist($company);
-        $company->setContractor($this->companies['aleysia']);
+        $this->companies['aleysia']->addClient($company);;
         $this->companies['ucly'] = $company;
 
         $company = new Company();
@@ -463,22 +482,36 @@ class AppFixtures extends Fixture
 
         $company = new Company();
         $company->setName('Acte Media');
+        $company->setDisplayName('ActeMedia');
         $company->setCity('Bron');
         $this->manager->persist($company);
-        $company->setContractor($this->companies['bewizyu']);
+        $this->companies['bewizyu']->addClient($company);;
         $this->companies['actemedia'] = $company;
 
         $company = new Company();
         $company->setName('Marquetis');
         $this->manager->persist($company);
-        $company->setContractor($this->companies['actemedia']);
+        $this->companies['actemedia']->addClient($company);;
         $this->companies['marquetis'] = $company;
 
         $company = new Company();
         $company->setName('La Poste');
         $this->manager->persist($company);
-        $company->setContractor($this->companies['marquetis']);
+        $this->companies['marquetis']->addClient($company);;
         $this->companies['laposte'] = $company;
+    }
+
+    private function loadPersons()
+    {
+        $person = new Person();
+        $person->setCivility(Person::CIVILITY_H);
+        $person->setFirstname('Antonin');
+        $person->setLastname('L\'ecolier');
+        $person->setPhones(['0769435380']);
+        $person->setEmail('alecolier@bewizyu.com');
+        $person->setCompany($this->companies['bewizyu']);
+        $person->setIsInvoicingDefault(true);
+        $this->manager->persist($person);
     }
 
     private function loadExperience()
@@ -610,6 +643,7 @@ class AppFixtures extends Fixture
         $experience = new Experience();
         $experience->setTitle('Développeur Web');
         $experience->setCompany($this->companies['ar']);
+        $experience->setClient($this->companies['cospirit']);
         $experience->setDateBegin(new \DateTime('2015-08-01 00:00:00'));
         $experience->setDateEnd(new \DateTime('2016-04-01 00:00:00'));
         $experience->setDescription('Intégration dans une équipe de 4 développeurs pour le soutien dans le développement d’une application de gestion de support de communication. Abstraction complexe de l\'architecture du projet, avec plusieurs projets qui communique entre eux (API, Assets, Front, Core).');
@@ -668,6 +702,7 @@ class AppFixtures extends Fixture
         $experience = new Experience();
         $experience->setTitle('Développeur Web');
         $experience->setCompany($this->companies['helfrich']);
+        $experience->setClient($this->companies['spyrit']);
         $experience->setDateBegin(new \DateTime('2016-12-01 00:00:00'));
         $experience->setDateEnd(new \DateTime('2017-05-01 00:00:00'));
         $experience->setDescription('Développement de fonctionnalités Back et/ou Front sur un projet de plateforme de gestion de comité d\'entreprise. Le projet a plus d\'un an, avec la participation de 2 autres entreprises travaillant à distance, à destination d\'un client final qui revendra la solution en mode SAS. L\'équipe est constitué de 4 développeur(e)s. La gestion de projet est en mode agile, avec des sprints en 2 ou 3 semaines.');
@@ -698,6 +733,7 @@ class AppFixtures extends Fixture
         $experience = new Experience();
         $experience->setTitle('Développeur Web');
         $experience->setCompany($this->companies['edf-septen']);
+        $experience->setClient($this->companies['cs']);
         $experience->setDateBegin(new \DateTime('2017-09-01 00:00:00'));
         $experience->setDateEnd(new \DateTime('2017-10-01 00:00:00'));
         $experience->setDescription('Développement d\'un POC, coté front, pour la gestion des données lié à la sûreté des centrales nucléaires. L\'équipe est constitué d\'un autre développeur, JAVA, qui s\'est occupé de faire l\'API REST et la gestion de projet fait par une ESN, qui a fait appel à nous. Analyse des besoins techniques et fonctionnels fait en amont avec le client final.');
@@ -727,6 +763,7 @@ class AppFixtures extends Fixture
         $experience = new Experience();
         $experience->setTitle('Développeur Web');
         $experience->setCompany($this->companies['helfrich']);
+        $experience->setClient($this->companies['spyrit']);
         $experience->setDateBegin(new \DateTime('2017-12-01 00:00:00'));
         $experience->setDateEnd(new \DateTime('2018-01-01 00:00:00'));
         $experience->setDescription('Développement de fonctionnalités Back et/ou Front sur un projet de plateforme de gestion de comité d\'entreprise. Le projet a plus d\'un an, avec la participation de 2 autres entreprises travaillant à distance, à destination d\'un client final qui revendra la solution en mode SAS. L\'équipe est constitué de 4 développeur(e)s. La gestion de projet est en mode agile, avec des sprints en 2 ou 3 semaines.');
@@ -756,6 +793,7 @@ class AppFixtures extends Fixture
         $experience = new Experience();
         $experience->setTitle('Développeur Web');
         $experience->setCompany($this->companies['cegid']);
+        $experience->setClient($this->companies['apollo']);
         $experience->setDateBegin(new \DateTime('2018-05-01 00:00:00'));
         $experience->setDateEnd(new \DateTime('2019-02-01 00:00:00'));
         $experience->setDescription('Développement d\'une application de gestion RH, POC sur les 3 premier mois, puis d\'un MVP sur la suite. Le projet avait commencé depuis seulement 1 mois, avec une équipe de 3 développeurs (uniquement back), puis s\'est agrandit à une équipe de 8 développeurs (6 back et 2 autres front).');
@@ -770,6 +808,7 @@ class AppFixtures extends Fixture
         $experience = new Experience();
         $experience->setTitle('Développeur Web');
         $experience->setCompany($this->companies['ucly']);
+        $experience->setClient($this->companies['aleysia']);
         $experience->setDateBegin(new \DateTime('2019-04-01 00:00:00'));
         $experience->setDateEnd(new \DateTime('2019-05-01 00:00:00'));
         $experience->setDescription('Soutien dans une équipe de 3 développeurs. Ajout de nouvelle fonctionnalité dans le site d\'inscription.');
@@ -784,6 +823,7 @@ class AppFixtures extends Fixture
         $experience = new Experience();
         $experience->setTitle('Développeur Web');
         $experience->setCompany($this->companies['laposte']);
+        $experience->setClient($this->companies['bewizyu']);
         $experience->setDateBegin(new \DateTime('2019-06-01 00:00:00'));
         $experience->setDateEnd(null);
         $experience->setDescription('Ajout de fonctionnalité sur une application de gestion existante');

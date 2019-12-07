@@ -34,6 +34,7 @@ Company: Entreprise
 Companies: Entreprises
 Location: Localisation
 Client: Client
+Clients: Clients
 Contractor: Prestataire
 Display name: Nom personnalisé
 Address: Adresse
@@ -50,6 +51,7 @@ Firstname: Prénom
 Lastname: Nom
 Email: Email
 Phones: Téléphones
+Is invoicing default: Gère la facturation
 
 Invoice: Facture
 Invoices: Factures
@@ -80,6 +82,10 @@ Payment: Paiement
 Pdf: Pdf
 30 days end of month: 30 jours fin du mois
 Validate: Valider
+Due interval: Intervalle de paiement
+
+Activities: Journées
+Activity: Journée
 
 Hobby: Loisir
 Hobbies: Loisirs
@@ -94,6 +100,9 @@ Type: Type
 Level: Niveau
 Parent: Parent
 Children: Enfants
+
+Send: Envoyer
+Message: Message
 
 Date: Date
 Year: Année
@@ -121,17 +130,18 @@ Friday: Vendredi
 Saturday: Samedi
 Sunday: Dimanche
 
-
 Home: Acceuil
 Dashboard: Tableau de bord
 Report: Rapport d'activité
 Resume: CV
+Export: Export
 
 Annual income: CA de l'année
 Quarterly income: CA du trimestre
 Days remaining before taxes: Jours restant avant TVA
 Quarterly taxes: TVA du trimestre
 Days remaining: Jours restant
+Worked days: Jours travaillés
 Revenues by years: CA par années
 Revenues by quarter: CA par trimestre
 Days by month: Journées par mois
