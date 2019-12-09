@@ -39,7 +39,7 @@ class ReportService
             $currentDate->add(new DateInterval('P1D'));
         }
 
-        foreach ($activities as $activity) {
+        /*foreach ($activities as $activity) {
             $date = $activity->getDate()->format('Ymd');
 
             if (isset($activitiesData[$date])) {
@@ -58,7 +58,7 @@ class ReportService
                 'date' => null,
                 'value' => null
             ];
-        }
+        }*/
 
         return $activitiesData;
     }

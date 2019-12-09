@@ -221,6 +221,8 @@ class ReportController extends EasyAdminController
             'firstWeek' => $currentDate->format('W')
         ];
 
+        dump($viewData['reportData']);
+
         return $this->render('page/report_pdf.html.twig', $viewData);
     }
 }

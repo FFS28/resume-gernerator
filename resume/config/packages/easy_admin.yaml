@@ -128,6 +128,7 @@ easy_admin:
         actions:
           - { name: 'pdf', target: '_blank', label: 'Pdf', icon: 'file-pdf', css_class: 'btn btn-secondary'}
           - { name: 'validate', label: 'Validate', icon: 'check', css_class: 'btn btn-secondary'}
+          - { name: 'send', label: 'Send', icon: 'envelope', css_class: 'btn btn-danger'}
       list:
         fields:
           - number

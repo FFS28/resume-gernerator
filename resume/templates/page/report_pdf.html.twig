@@ -16,11 +16,11 @@
     <div id="report_pdf">
         <h1>Rapport mensuel d'activité</h1>
         <div class="informations">
-            <div class="name">Nom et prénom : {{ name }}</div>
-            <div class="job">Fonction : Développeur Web</div>
-            <div class="company">Société : {{ company.name }}</div>
-            <div class="month">Mois : {{ month }}</div>
-            <div class="year">Année : {{ year }}</div>
+            <div class="company"><label>Société :</label> {{ company.name }}</div>
+            <div class="name"><label>Nom et prénom :</label> {{ name }}</div>
+            <div class="job"><label>Fonction :</label> Développeur Web</div>
+            <div class="month"><label>Mois :</label> {{ month }}</div>
+            <div class="year"><label>Année :</label> {{ year }}</div>
         </div>
         <div class="days">
             <div class="dayName day-0">{{ 'Week' | trans }}</div>
@@ -40,7 +40,7 @@
                         </div>
                     {% endif %}
                     {% if day.selected and day.value > 0 %}
-                        <div class="day day-active day-{{ day.date | date('N') }}{% if day.value > 0 %}day-value{% endif %}">
+                        <div class="day day-active day-{{ day.date | date('N') }} {% if day.value > 0 %}day-value{% endif %}">
                             {% set daysCount = daysCount + day.value %}
                             <span class="num">{{ day.date | date('j') }}</span>
                             <span class="value">{{ day.value }}</span>
@@ -58,7 +58,7 @@
                 {% endif %}
             {% endfor %}
         </div>
-        <div class="total">Total en jours : {{ daysCount }}</div>
+        <div class="total"><label>Total en jours :</label> <span>{{ daysCount }}</span></div>
         <div class="visa">
             <div>Visa client : </div>
             <div>Visa collaborateur : </div>

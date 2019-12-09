@@ -17,6 +17,7 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class IndexController extends AbstractController
 {
@@ -30,6 +31,7 @@ class IndexController extends AbstractController
      * @param HobbyRepository $hobbyRepository
      * @param LinkRepository $linkRepository
      * @param MailerInterface $mailer
+     * @param TranslatorInterface $translator
      * @return Response
      * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
      */
@@ -41,7 +43,8 @@ class IndexController extends AbstractController
         EducationRepository $educationRepository,
         HobbyRepository $hobbyRepository,
         LinkRepository $linkRepository,
-        MailerInterface $mailer
+        MailerInterface $mailer,
+        TranslatorInterface $translator
     ) {
         $form = $this->createForm(ContactFormType::class);
         $form->handleRequest($request);
@@ -119,7 +122,7 @@ class IndexController extends AbstractController
                 ->from($this->getParameter('MAILER_FROM'))
                 ->to($this->getParameter('MAILER_FROM'))
                 ->replyTo($data['email'])
-                ->subject($this->getParameter('MAILER_SUBJECT') . ' New message')
+                ->subject($this->getParameter('MAILER_SUBJECT') . ' ' . $translator->trans('New message'))
                 ->text($data['message']);
 
             $mailer->send($email);
