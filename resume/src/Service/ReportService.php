@@ -27,7 +27,8 @@ class ReportService
             ];
         }
 
-        for ($i = 1; $i <= $currentDate->format('t'); $i++) {
+        $emptyDays = $currentDate->format('t');
+        for ($i = 1; $i <= $emptyDays; $i++) {
             $date = $currentDate->format('Ymd');
 
             $activitiesData[$date] = [
@@ -39,7 +40,7 @@ class ReportService
             $currentDate->add(new DateInterval('P1D'));
         }
 
-        /*foreach ($activities as $activity) {
+        foreach ($activities as $activity) {
             $date = $activity->getDate()->format('Ymd');
 
             if (isset($activitiesData[$date])) {
@@ -58,7 +59,7 @@ class ReportService
                 'date' => null,
                 'value' => null
             ];
-        }*/
+        }
 
         return $activitiesData;
     }

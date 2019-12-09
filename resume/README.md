@@ -8,9 +8,8 @@
     - x Visualiser, éditer (par calendrier) ou exporter le CRA
     - x Calcul automatique du total avec le tjm + nbj
     - x Modification automatique du status si date de réglement
-    - Ajout de la signature au compte rendu
+    - x Envoi d'une facture
     - Création facture TVA automatique si dépassement plafond
-    - Envoi d'une facture
     - Envoi d'un compte rendu
     - Export du livre des recettes (CSV)
     

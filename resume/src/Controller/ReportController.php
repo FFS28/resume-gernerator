@@ -84,11 +84,13 @@ class ReportController extends EasyAdminController
 
         $viewData['invoices'] = $invoiceRepository->getByDate($currentDate);
 
-        $activities = $activityRepository->findByDate($currentDate);
-        $viewData['companyActivities'] = $viewData['activeCompany'] ? $activityRepository->findByCompanyAndDate($viewData['activeCompany'], $currentDate) : null;
+        $viewData['companyActivities'] =
+            $viewData['activeCompany']
+                ? $activityRepository->findByCompanyAndDate($viewData['activeCompany'], $currentDate)
+                : $activityRepository->findByDate($currentDate);
 
         $form = $this->createForm(MonthActivitiesType::class, null, [
-            'activities' => $activities,
+            'activities' => $viewData['companyActivities'],
             'currentDate' => clone $currentDate,
             'company' => $viewData['activeCompany']
         ]);
@@ -220,8 +222,6 @@ class ReportController extends EasyAdminController
             'reportData' => $reportService->generateMonth(clone $currentDate, $activities),
             'firstWeek' => $currentDate->format('W')
         ];
-
-        dump($viewData['reportData']);
 
         return $this->render('page/report_pdf.html.twig', $viewData);
     }

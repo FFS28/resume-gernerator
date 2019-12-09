@@ -8,6 +8,7 @@ use App\Service\InvoiceService;
 use Doctrine\ORM\EntityManager;
 use http\Client\Request;
 use Konekt\PdfInvoice\InvoicePrinter;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\RequestInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -84,21 +85,26 @@ class InvoiceController extends EasyAdminController
         $entity = $this->em->getRepository(Invoice::class)->find($id);
 
         if ($entity->getFilename() && $entity->getCompany()->getEmail()) {
+            $this->invoiceService->createPdf($entity);
 
             $email = (new Email())
                 ->from($this->getParameter('MAILER_FROM'))
                 ->to($this->getParameter('MAILER_FROM'))
-                //->to($entity->getCompany()->getEmail())
+                ->to($entity->getCompany()->getEmail())
                 ->subject($this->getParameter('MAILER_SUBJECT') . ' ' .
-                    $this->translator->trans('Invoice') . ' n° ' . $entity->getNumber())
-                ->text('')
+                    $this->translator->trans('Invoice') . ' n°' . $entity->getNumber())
+                ->text($this->renderView(
+                    'email/invoice.txt.twig',
+                    ['invoice' => $entity]
+                ))
                 ->attachFromPath(
                     $this->getParameter('PDF_DIRECTORY').$entity->getFilename(),
-                    'invoice-'.$entity->getNumber());
+                    'invoice-jeremy-achain-'.$entity->getNumber());
 
             $this->mailer->send($email);
-        }
 
-        return $this->redirectToReferrer();
+            return $this->redirectToReferrer();
+        }
+        throw new \Exception('Email not found');
     }
 }

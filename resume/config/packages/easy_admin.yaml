@@ -145,6 +145,7 @@ easy_admin:
         actions:
           - { name: 'pdf', target: '_blank', label: 'Pdf'}
           - { name: 'validate', label: 'Validate'}
+          - { name: 'send', label: 'Send'}
     Activities:
       class: App\Entity\Activity
       form:
@@ -161,6 +162,14 @@ easy_admin:
           - company
           - value
           - date
+        filters:
+            #- company
+            #- { property: company, mapped: false, type: 'App\Form\Filter\EntityFilterType', type_options: {class: 'App\Entity\Company'} }
+            - { property: 'company', type: 'EasyCorp\Bundle\EasyAdminBundle\Form\Type\EasyAdminAutocompleteType', type_options: { class: 'App\Entity\Company' } }
+            - { property: dateYear, mapped: false, type: 'App\Form\Filter\DateYearFilterType', type_options: {data: 'date'} }
+            - { property: dateMonth, mapped: false, type: 'App\Form\Filter\DateMonthFilterType', type_options: {data: 'date'} }
+        batch_actions:
+          - delete
     Experiences:
       class: App\Entity\Experience
       form:
