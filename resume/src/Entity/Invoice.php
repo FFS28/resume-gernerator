@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use App\Validator\InvoiceTax;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\InvoiceRepository")
@@ -129,10 +130,9 @@ class Invoice
         $this->tjm = self::TJM_DEFAULT;
         $this->createdAt = new \DateTime();
         $this->object = "Prestation de développement web - " . (new \DateTime())->format('Y-m');
-        $this->setNumber((new \DateTime())->format('Y-m-'));
+        $this->setNumber((new \DateTime())->format(Invoice::NUMBER_DATE_FORMAT));
         $this->setPayedBy(self::PAYEDBY_TRANSFERT);
         $this->status = self::STATUS_DRAFT;
-        $this->totalTax = 0;
         $this->dueInterval = 'P1M';
         $this->activities = new ArrayCollection();
     }

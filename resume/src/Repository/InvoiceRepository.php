@@ -243,7 +243,7 @@ class InvoiceRepository extends ServiceEntityRepository
         return intval($query->getQuery()->getSingleScalarResult());
     }
 
-    public function remainingDaysBeforeTvaLimit(): float
+    public function remainingDaysBeforeTaxLimit(): float
     {
         $remainingRevenues = Invoice::LIMIT_AE_TVA - $this->getSalesRevenuesBy((new \DateTime('now'))->format('Y'));
 
@@ -257,14 +257,14 @@ class InvoiceRepository extends ServiceEntityRepository
         return $remainingRevenues < 0 ? 0 : $remainingRevenues / Invoice::TJM_DEFAULT;
     }
 
-    public function isOutOfTvaLimit(): bool
+    public function isOutOfTaxLimit($newInvoiceAmount = 0): bool
     {
-        return $this->getSalesRevenuesBy((new \DateTime('now'))->format('Y')) >= Invoice::LIMIT_AE_TVA;
+        return ($this->getSalesRevenuesBy() + $newInvoiceAmount) >= Invoice::LIMIT_AE_TVA;
     }
 
-    public function isOutOfLimit(): bool
+    public function isOutOfLimit($newInvoiceAmount = 0): bool
     {
-        return $this->getSalesRevenuesBy((new \DateTime('now'))->format('Y')) >= Invoice::LIMIT_AE;
+        return ($this->getSalesRevenuesBy() + $newInvoiceAmount) >= Invoice::LIMIT_AE;
     }
 
     // /**

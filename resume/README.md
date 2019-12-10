@@ -9,14 +9,15 @@
     - x Calcul automatique du total avec le tjm + nbj
     - x Modification automatique du status si date de réglement
     - x Envoi d'une facture
-    - Création facture TVA automatique si dépassement plafond
-    - Envoi d'un compte rendu
-    - Export du livre des recettes (CSV)
+    - x Création facture TVA automatique si dépassement plafond
     
 - Dashboard
-    - Alert automatique en cas de dépassement des plafonds
-    - Alertes déclaration TVA / URSSAF / IMPOTS
     - x Liste des factures non réglés
+    - Export du livre des recettes (CSV)
+    - Alertes déclaration TVA / URSSAF / IMPOTS
+
+- Rapport
+    - Envoi d'un compte rendu
 
 - Experiences
     - Visualisation en timeline
@@ -26,6 +27,9 @@
     
 - Attributs
     - Possibilité d'ajouter un message personnalité en bannière
+    
+- Purchase
+    - Déduire la TVA des achats
     
 ### Migration to Symfony 5
 

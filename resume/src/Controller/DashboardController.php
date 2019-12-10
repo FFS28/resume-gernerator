@@ -82,7 +82,7 @@ class DashboardController extends EasyAdminController
         $viewData['currentRevenuesOnQuarter'] = $invoiceRepository->getSalesRevenuesBy($viewData['currentYear'], $viewData['currentQuarter']);
         $viewData['dayCount'] = $invoiceRepository->getDaysCountByYear($viewData['activeYear']);
 
-        $viewData['remainingDaysBeforeTvaLimit'] = $invoiceRepository->remainingDaysBeforeTvaLimit();
+        $viewData['remainingDaysBeforeTaxLimit'] = $invoiceRepository->remainingDaysBeforeTaxLimit();
         $viewData['remainingDaysBeforeLimit'] = $invoiceRepository->remainingDaysBeforeLimit();
         $viewData['currentTaxesOnQuarter'] = $invoiceRepository->getSalesTaxesBy($viewData['activeYear'], $viewData['activeQuarter']);
 

@@ -77,7 +77,6 @@ h4{
 
   #name{
     .name, .job{
-      margin: 10px 0;
       display: block;
     }
     .name{
@@ -89,6 +88,7 @@ h4{
       font-size: 30px;
       font-weight: normal;
       padding-left: 40px;
+      margin-top: 10px;
     }
 
     white-space: nowrap;
@@ -274,7 +274,6 @@ form{
     }
 
     #name{
-      margin:10px 0;
       text-align: right;
       width: 320px;
     }
