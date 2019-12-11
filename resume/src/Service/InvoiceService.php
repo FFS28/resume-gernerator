@@ -3,8 +3,11 @@
 namespace App\Service;
 
 use App\Entity\Invoice;
+use App\Repository\InvoiceRepository;
 use DateInterval;
 use Konekt\PdfInvoice\InvoicePrinter;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class InvoiceService
 {
@@ -17,6 +20,15 @@ class InvoiceService
     public $companyStatut;
     public $companyTva;
 
+    /** @var InvoiceRepository */
+    private $invoiceRepository;
+
+    /** @var SerializerInterface */
+    private $serializer;
+
+    /** @var TranslatorInterface */
+    private $translator;
+
     public function __construct(
         string $pdfFileDirectory,
         string $companyName,
@@ -25,7 +37,10 @@ class InvoiceService
         string $companySiret,
         string $companyApe,
         string $companyStatut,
-        string $companyTva
+        string $companyTva,
+        InvoiceRepository $invoiceRepository,
+        SerializerInterface $serializer,
+        TranslatorInterface $translator
     )
     {
         $this->pdfFileDirectory = $pdfFileDirectory;
@@ -36,6 +51,9 @@ class InvoiceService
         $this->companyApe = $companyApe;
         $this->companyStatut = $companyStatut;
         $this->companyTva = $companyTva;
+        $this->invoiceRepository = $invoiceRepository;
+        $this->serializer = $serializer;
+        $this->translator = $translator;
     }
 
     private function encode(?string $string): string
@@ -150,7 +168,7 @@ class InvoiceService
 
     public function generateInvoicesBook(): string
     {
-        /*$invoices = $this->invoiceRepository->findAll();
+        $invoices = $this->invoiceRepository->findAll();
 
         $columns = ["Date d'encaissement",
             "Référence de la facture",
@@ -169,14 +187,16 @@ class InvoiceService
                 $columns[4] => $invoice->getTotalHt(),
                 $columns[5] => $this->translator->trans($invoice->getPayedByName())
             ];
-        }*/
+        }
 
         $filename = $this->pdfFileDirectory.'livre-recettes.csv';
 
-        /*file_put_contents(
+        file_put_contents(
             $filename,
-            $serializer->encode($dataCsv, 'csv')
-        );*/
+            $this->serializer->encode($dataCsv, 'csv', [
+                'csv_delimiter' => ';'
+            ])
+        );
 
         return $filename;
     }

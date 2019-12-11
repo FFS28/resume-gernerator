@@ -120,7 +120,7 @@ class InvoiceController extends EasyAdminController
     /**
      * @Route("/admin/invoice/csv", name="invoices_csv")
      */
-    public function csv(SerializerInterface $serializer)
+    public function csv()
     {
         $filename = $this->invoiceService->generateInvoicesBook();
 

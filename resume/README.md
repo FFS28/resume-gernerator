@@ -13,7 +13,7 @@
     
 - Dashboard
     - x Liste des factures non réglés
-    - Export du livre des recettes (CSV)
+    - x Export du livre des recettes (CSV)
     - Alertes déclaration TVA / URSSAF / IMPOTS
 
 - Rapport

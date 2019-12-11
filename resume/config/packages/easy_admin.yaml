@@ -27,6 +27,8 @@ easy_admin:
         - Hobbies
         - Educations
         - Links
+        - { label: 'Other' }
+        - { label: 'Invoices book', url: '/admin/invoice/csv' }
   formats:
     date: 'd/m/Y'
   list:
@@ -237,9 +239,9 @@ easy_admin:
       class: App\Entity\Attribute
       form:
         fields:
-          - icon
           - slug
-          - value
+          - { property: 'value', type: 'textarea' }
+          - icon
           - weight
       list:
         fields:
