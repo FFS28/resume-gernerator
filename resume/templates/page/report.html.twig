@@ -93,7 +93,7 @@
             </a>
             {% set clients = activeCompany.clients ? activeCompany.clients : [activeCompany] %}
             {% for client in clients %}
-                <a name="" class="btn text-danger" title="" href="{{ url('report_export', {'year': activeYear, 'month': activeMonth, 'slug': client.slug}) }}" target="_self">
+                <a name="" class="btn text-danger" title="" href="{{ url('report_export', {'year': activeYear, 'month': activeMonth, 'slug': client.slug}) }}" target="_blank">
                     <i class="fa fa-file"></i>
                     {{ 'Export' | trans }} {{ client }}
                 </a>

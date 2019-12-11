@@ -22,6 +22,7 @@ use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -83,11 +84,13 @@ class ReportController extends EasyAdminController
 
         $viewData['invoices'] = $invoiceRepository->getByDate($currentDate);
 
-        $activities = $activityRepository->findByDate($currentDate);
-        $viewData['companyActivities'] = $viewData['activeCompany'] ? $activityRepository->findByCompanyAndDate($viewData['activeCompany'], $currentDate) : null;
+        $viewData['companyActivities'] =
+            $viewData['activeCompany']
+                ? $activityRepository->findByCompanyAndDate($viewData['activeCompany'], $currentDate)
+                : $activityRepository->findByDate($currentDate);
 
         $form = $this->createForm(MonthActivitiesType::class, null, [
-            'activities' => $activities,
+            'activities' => $viewData['companyActivities'],
             'currentDate' => clone $currentDate,
             'company' => $viewData['activeCompany']
         ]);
@@ -125,14 +128,18 @@ class ReportController extends EasyAdminController
         return $this->render('page/report.html.twig', $viewData);
     }
 
+    /**
+     * @param ActivityRepository $activityRepository
+     * @param Company $company
+     * @param int $year
+     * @param int $month
+     * @return array
+     * @throws Exception
+     */
     private function getActivities(ActivityRepository $activityRepository, Company $company, int $year, int $month)
     {
         $currentDate = new \DateTime($year . ($month < 10 ? '0' : '') . $month . '01');
         $activities = $activityRepository->findByCompanyAndDate($company, $currentDate);
-
-        if (count($activities) == 0) {
-            throw new NotNullConstraintViolationException();
-        }
 
         return [$currentDate, $activities];
     }
@@ -146,9 +153,9 @@ class ReportController extends EasyAdminController
      * @param int $year
      * @param int $month
      * @param Company $company
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      * @throws NonUniqueResultException
-     * @throws NotNullConstraintViolationException
+     * @throws Exception
      */
     public function invoice(
         ActivityRepository $activityRepository,
@@ -190,7 +197,7 @@ class ReportController extends EasyAdminController
      * @param int $month
      * @param Company $company
      * @return Response
-     * @throws NotNullConstraintViolationException
+     * @throws Exception
      */
     public function export(
         ActivityRepository $activityRepository,
@@ -212,10 +219,9 @@ class ReportController extends EasyAdminController
             'name' => $this->getParameter('COMPANY_NAME'),
             'month' => $translator->trans($currentDate->format('F')),
             'year' => $currentDate->format('Y'),
-            'reportData' => $reportService->generateMonth($currentDate, $activities)
+            'reportData' => $reportService->generateMonth(clone $currentDate, $activities),
+            'firstWeek' => $currentDate->format('W')
         ];
-
-        dump($viewData);
 
         return $this->render('page/report_pdf.html.twig', $viewData);
     }

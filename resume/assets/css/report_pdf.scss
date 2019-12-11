@@ -1,14 +1,109 @@
 @import "flexbox";
 @import "variables";
 
+*{
+  box-sizing: border-box;
+}
+
+html, body{
+  width: 100%;
+  display: block;
+  position: relative;
+  padding: 0;
+  margin: 0;
+
+  font-family: Verdana, Geneva, DejaVuSans, sans-serif;
+  background-color: #fff;
+}
+
 #report_pdf {
   @import "common";
+  padding: 20px;
+
+  .informations{
+    div, label {
+      display: inline-block;
+    }
+
+    label {
+      width: 150px;
+      font-weight: bold;
+    }
+    .company{
+      width: 100%;
+    }
+    .name, .job, .month, .year{
+      width: 50%;
+
+    }
+  }
+
+  .total{
+    label {
+      margin-right: 20px;
+    }
+    span {
+      font-weight: bold;
+    }
+  }
+
+  .visa{
+    margin-top: 20px;
+    & > div{
+      display:inline-block;
+      width: 50%;
+    }
+  }
 
   .days {
+    margin: 20px 0;
+    border: 1px solid #000;
+
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: 80px repeat(7, 1fr);
     grid-template-rows: repeat(6, 1fr);
-    grid-column-gap: 0px;
-    grid-row-gap: 0px;
+    grid-column-gap: 0;
+    grid-row-gap: 0;
+
+    .dayName{
+      background: #e5e6f0;
+    }
+
+    .day {
+      &.day-active{
+        background: #f5f5f5;
+      }
+      &.day-0{
+        background: #fdbfa8;
+      }
+      &.day-6, &.day-7{
+        background: #fdbfa8;
+      }
+      &.day-value{
+        background: #e9e2c0;
+      }
+    }
+
+    .day, .dayName{
+      min-height: 40px;
+      position: relative;
+      border: 0.5px solid #000;
+
+      @include flexbox();
+      @include align-items(center);
+      @include flex-wrap(wrap);
+      @include justify-content(center);
+      @include flex-direction(column);
+
+      .num {
+        position: absolute;
+        top: 0;
+        left: 0;
+        padding: 2px;
+        font-size: 12px;
+        border-right: 1px solid #000;
+        border-bottom: 1px solid #000;
+      }
+    }
   }
 }

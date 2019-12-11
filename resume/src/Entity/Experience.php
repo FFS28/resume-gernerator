@@ -79,9 +79,14 @@ class Experience
 
     public function __toString(): string
     {
-        return $this->getTitle() . ' ' .
-            $this->getCompany() . ' ' .
+        $str = $this->getCompany() . ' ' .
             $this->getDateBegin()->format('m/Y');
+
+        if ($this->getDateEnd()) {
+            $str .= ' ' . $this->getDateEnd()->format('m/Y');
+        }
+
+        return $str;
     }
 
     public function __construct()

@@ -32,6 +32,12 @@
     {% endif %}
     <div itemscope itemtype="http://schema.org/Person">
         <div id="head" class="text-center {% if isPdf %}html-pdf{% endif %}">
+            {% if attributes['message'] is defined and attributes['message'] and not isPdf %}
+                <div id="message" class="hidden-print">
+                    <button onclick="document.getElementById('message').remove()">&times;</button>
+                    {{ attributes['message'].value | raw }}
+                </div>
+            {% endif %}
             <div id="me">
                 {% if attributes['quote'] is defined and not isPdf %}
                     <div id="quote" class="hidden-print">
@@ -117,7 +123,7 @@
                         <span>{% if experience.dateEnd %}
                                 {{ experience.dateEnd | date('F') | trans }} {{ experience.dateEnd | date('Y') }}
                             {% else %}
-                                {{ 'in progress' | trans }}
+                                {{ 'today' | trans }}
                             {% endif %}</span>
                     </div>
                     <h4 class="title">

@@ -124,6 +124,12 @@ class AppFixtures extends Fixture
         $attribute->setValue('Temps partiel (4/5 max)');
         $attribute->setWeight(10);
         $this->manager->persist($attribute);
+
+        $attribute = new Attribute();
+        $attribute->setSlug('sirent');
+        $attribute->setValue('525 230 207 00033');
+        $attribute->setWeight(0);
+        $this->manager->persist($attribute);
     }
 
     private function loadEducations()

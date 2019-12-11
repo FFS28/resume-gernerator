@@ -41,9 +41,9 @@
             </div>
             <div class="card card-4">
                 <div class="card-content">
-                    {% if currentYear == activeYear and remainingDaysBeforeTvaLimit > 0 %}
+                    {% if currentYear == activeYear and remainingDaysBeforeTaxLimit > 0 %}
                         <h4>{{ 'Days remaining before taxes' | trans }}</h4>
-                        <span>{{ remainingDaysBeforeTvaLimit }}</span>
+                        <span>{{ remainingDaysBeforeTaxLimit }}</span>
                     {% else %}
                         <h4>{{ 'Quarterly taxes' | trans }}</h4>
                         <span>{{ currentTaxesOnQuarter | number_format(0, ',', ' ') }}</span>
@@ -115,7 +115,10 @@
 {% endblock %}
 
 {% block content_footer %}
-
+    <a name="" class="btn text-primary" title="" href="{{ url('invoices_csv') }}" target="_self">
+        <i class="fa fa-file"></i>
+        {{ 'Invoices book' | trans }}
+    </a>
 {% endblock %}
 
 {% block body_javascript %}

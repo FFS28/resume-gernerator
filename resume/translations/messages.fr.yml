@@ -29,6 +29,7 @@ On homepage: Page d'accueil
 Options: Options
 Invoicing: Facturation
 in progress: en cours
+today: aujourd'hui
 
 Company: Entreprise
 Companies: Entreprises
@@ -52,6 +53,8 @@ Lastname: Nom
 Email: Email
 Phones: Téléphones
 Is invoicing default: Gère la facturation
+M: M
+Mme: Mme
 
 Invoice: Facture
 Invoices: Factures
@@ -60,7 +63,7 @@ Transfert: Virement
 Tjm: TJM
 Object: Objet
 Total ht: Total HT
-Total tax: Total TAX
+Total tax: Total TVA
 Created at: Créé le
 Created at year: Créé l'année
 Created at quarter: Créé le trimestre
@@ -83,6 +86,8 @@ Pdf: Pdf
 30 days end of month: 30 jours fin du mois
 Validate: Valider
 Due interval: Intervalle de paiement
+Calculated: Calculé
+Invoices book: Livre des recettes
 
 Activities: Journées
 Activity: Journée
@@ -107,6 +112,7 @@ Message: Message
 Date: Date
 Year: Année
 Trimestre: Trimestre
+Week: Semaine
 Month: Mois
 Day: Journée
 Days: Journées
@@ -135,6 +141,7 @@ Dashboard: Tableau de bord
 Report: Rapport d'activité
 Resume: CV
 Export: Export
+Other: Autre
 
 Annual income: CA de l'année
 Quarterly income: CA du trimestre
