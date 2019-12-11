@@ -11,6 +11,7 @@ easy_admin:
         - 'build/css/bootstrap-datepicker.css'
         - 'build/css/dashboard.css'
         - 'build/css/report.css'
+        - 'build/css/timeline.css'
     menu:
         - { label: 'Home', url: '/' }
         - { label: 'Dashboard', url: '/admin/dashboard', default: true }
@@ -29,6 +30,7 @@ easy_admin:
         - Links
         - { label: 'Other' }
         - { label: 'Invoices book', url: '/admin/invoice/csv' }
+        - { label: 'Timeline', url: '/admin/timeline' }
   formats:
     date: 'd/m/Y'
   list:

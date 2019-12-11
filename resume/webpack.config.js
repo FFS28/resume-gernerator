@@ -42,6 +42,7 @@ Encore
     .addStyleEntry('css/dashboard', './assets/css/dashboard.scss')
     .addStyleEntry('css/report', './assets/css/report.scss')
     .addStyleEntry('css/report_pdf', './assets/css/report_pdf.scss')
+    .addStyleEntry('css/timeline', './assets/css/timeline.scss')
 
     // uncomment if you use TypeScript
     //.enableTypeScriptLoader()

@@ -1,0 +1,21 @@
+@import "flexbox";
+@import "variables";
+
+#timeline {
+  @import "common";
+
+  .row {
+    display: grid;
+    grid-template-columns: 40px repeat(12, 1fr);
+    grid-template-rows: repeat(1, 1fr);
+    grid-column-gap: 2px;
+    grid-row-gap: 0;
+
+    .month{
+      background: #eee;
+    }
+    .month-value {
+      background: #ddd;
+    }
+  }
+}

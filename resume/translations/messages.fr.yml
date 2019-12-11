@@ -136,13 +136,6 @@ Friday: Vendredi
 Saturday: Samedi
 Sunday: Dimanche
 
-Home: Acceuil
-Dashboard: Tableau de bord
-Report: Rapport d'activité
-Resume: CV
-Export: Export
-Other: Autre
-
 Annual income: CA de l'année
 Quarterly income: CA du trimestre
 Days remaining before taxes: Jours restant avant TVA
@@ -154,3 +147,12 @@ Revenues by quarter: CA par trimestre
 Days by month: Journées par mois
 Unpayed invoices: Factures en cours
 Current experiences: Missions en cours
+
+Home: Acceuil
+Dashboard: Tableau de bord
+Report: Rapport d'activité
+Resume: CV
+Export: Export
+Other: Autre
+New message: Nouveau message
+Timeline: Timeline

@@ -2,7 +2,7 @@
 
 ### Features
 
-- Factures
+- Facture
     - x Création des pdf
     - x Valider une facture (modifier statut + date paiement)
     - x Visualiser, éditer (par calendrier) ou exporter le CRA
@@ -10,6 +10,9 @@
     - x Modification automatique du status si date de réglement
     - x Envoi d'une facture
     - x Création facture TVA automatique si dépassement plafond
+    
+- Company
+    - Gestion de prospect
     
 - Dashboard
     - x Liste des factures non réglés
@@ -26,7 +29,7 @@
     - Liste les clients et les prestataires pour chaque entreprise
     
 - Attributs
-    - Possibilité d'ajouter un message personnalité en bannière
+    - x Possibilité d'ajouter un message personnalité en bannière
     
 - Purchase
     - Déduire la TVA des achats
