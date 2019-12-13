@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -57,8 +59,30 @@ class Declaration
         self::TYPE_IMPOT => 'Impot',
     ];
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Invoice", mappedBy="declaration")
+     */
+    private $invoices;
+
     const NON_COMMERCIALE = 0.22;
     const CFP = 0.2;
+
+    public function __construct()
+    {
+        $this->invoices = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        $str = $this->getTypeName().' '.$this->getYear();
+        if ($this->getMonth()) {
+            $str .= '/' . $this->getMonth();
+        } elseif ($this->getQuarter()) {
+            $str .= ' T' . $this->getQuarter();
+        }
+
+        return $str;
+    }
 
     /**
      * @return int[]
@@ -188,6 +212,11 @@ class Declaration
         return $this;
     }
 
+    public function getRate(): float
+    {
+        return round($this->getTax() * 100 / $this->getRevenue(), 2);
+    }
+
     public function getType(): ?string
     {
         return $this->type;
@@ -210,5 +239,36 @@ class Declaration
         }
 
         return static::$typeName[$this->type];
+    }
+
+    /**
+     * @return Collection|Invoice[]
+     */
+    public function getInvoices(): Collection
+    {
+        return $this->invoices;
+    }
+
+    public function addInvoice(Invoice $invoice): self
+    {
+        if (!$this->invoices->contains($invoice)) {
+            $this->invoices[] = $invoice;
+            $invoice->setDeclaration($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInvoice(Invoice $invoice): self
+    {
+        if ($this->invoices->contains($invoice)) {
+            $this->invoices->removeElement($invoice);
+            // set the owning side to null (unless already changed)
+            if ($invoice->getDeclaration() === $this) {
+                $invoice->setDeclaration(null);
+            }
+        }
+
+        return $this;
     }
 }

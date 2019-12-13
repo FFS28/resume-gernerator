@@ -17,6 +17,7 @@ easy_admin:
         - { label: 'Report', url: '/admin/report' }
         - { label: 'Invoicing' }
         - { entity: 'Invoices', default: true}
+        - Declarations
         - Activities
         - Companies
         - Persons
@@ -127,6 +128,8 @@ easy_admin:
                 Waiting: 'waiting',
                 Payed: 'payed',
               } } }
+          - { type: 'group', columns: 4, label: '' }
+          - declaration
           - { type: 'group', columns: 12, label: 'Report' }
           - { property: activities, label: '', type: embedded_list }
         actions:
@@ -154,6 +157,27 @@ easy_admin:
           - { name: 'pdf', target: '_blank', label: 'Pdf'}
           - { name: 'validate', label: 'Validate'}
           - { name: 'send', label: 'Send'}
+    Declarations:
+      class: App\Entity\Declaration
+      form:
+        fields:
+          - type
+          - revenue
+          - tax
+          - year
+          - quarter
+          - month
+          - { property: invoices, label: '', type: embedded_list }
+      list:
+        fields:
+          - type
+          - revenue
+          - { property: 'revenue', format: '%.0f' }
+          - { property: 'tax', format: '%.0f' }
+          - { property: 'rate', format: '%.2f' }
+          - { property: 'year', format: '%.0f' }
+          - quarter
+          - month
     Activities:
       class: App\Entity\Activity
       form:

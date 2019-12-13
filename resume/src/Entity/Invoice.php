@@ -121,6 +121,11 @@ class Invoice
      */
     private $activities;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Declaration", inversedBy="invoices")
+     */
+    private $declaration;
+
     const TJM_DEFAULT = 400;
     const LIMIT_AE_TVA = 33200;
     const LIMIT_AE = 70000;
@@ -418,6 +423,19 @@ class Invoice
                 $activity->setInvoice(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDeclaration(): ?Declaration
+    {
+        return $this->declaration;
+    }
+
+    public function setDeclaration(?Declaration $declaration): self
+    {
+        $this->declaration = $declaration;
+        $declaration->addInvoice($this);
 
         return $this;
     }

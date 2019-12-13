@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Attribute;
 use App\Entity\Company;
+use App\Entity\Declaration;
 use App\Entity\Education;
 use App\Entity\Experience;
 use App\Entity\Hobby;
@@ -41,6 +42,11 @@ class AppFixtures extends Fixture
      */
     private $persons;
 
+    /**
+     * @var Declaration[]
+     */
+    private $declarations;
+
     public function load(ObjectManager $manager)
     {
         $this->manager = $manager;
@@ -54,6 +60,7 @@ class AppFixtures extends Fixture
         $this->loadCompanies();
         $this->loadPersons();
         $this->loadExperience();
+        $this->loadDeclarations();
         $this->loadInvoices();
 
         $this->manager->flush();
@@ -869,6 +876,7 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(1500);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $invoice->setDeclaration($this->declarations['2019T2']);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -882,6 +890,7 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(3000);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $invoice->setDeclaration($this->declarations['2019T2']);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -895,6 +904,7 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(600);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $invoice->setDeclaration($this->declarations['2019T2']);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -908,6 +918,7 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(600);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $invoice->setDeclaration($this->declarations['2019T2']);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -920,6 +931,7 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(450);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $invoice->setDeclaration($this->declarations['2019T2']);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -933,6 +945,7 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(150);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $invoice->setDeclaration($this->declarations['2019T2']);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -946,6 +959,7 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(150);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $invoice->setDeclaration($this->declarations['2019T2']);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -958,6 +972,7 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(200);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $invoice->setDeclaration($this->declarations['2019T2']);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1669,6 +1684,135 @@ class AppFixtures extends Fixture
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_WAITING);
         $this->manager->persist($invoice);
+    }
+
+    public function loadDeclarations()
+    {
+        $declaration = new Declaration();
+        $declaration->setType(Declaration::TYPE_SOCIAL);
+        $declaration->setRevenue(6650);
+        $declaration->setTax(545);
+        $declaration->setYear(2015);
+        $declaration->setQuarter(2);
+        $this->manager->persist($declaration);
+        $this->declarations['2015T2'] = $declaration;
+
+        $declaration = new Declaration();
+        $declaration->setType(Declaration::TYPE_SOCIAL);
+        $declaration->setRevenue(9300);
+        $declaration->setTax(763);
+        $declaration->setYear(2015);
+        $declaration->setQuarter(3);
+        $this->manager->persist($declaration);
+        $this->declarations['2015T3'] = $declaration;
+
+        $declaration = new Declaration();
+        $declaration->setType(Declaration::TYPE_SOCIAL);
+        $declaration->setRevenue(6000);
+        $declaration->setTax(492);
+        $declaration->setYear(2015);
+        $declaration->setQuarter(4);
+        $this->manager->persist($declaration);
+        $this->declarations['2015T4'] = $declaration;
+
+        $declaration = new Declaration();
+        $declaration->setType(Declaration::TYPE_SOCIAL);
+        $declaration->setRevenue(300);
+        $declaration->setTax(25);
+        $declaration->setYear(2016);
+        $declaration->setQuarter(1);
+        $this->manager->persist($declaration);
+        $this->declarations['2016T1'] = $declaration;
+
+        $declaration = new Declaration();
+        $declaration->setType(Declaration::TYPE_SOCIAL);
+        $declaration->setRevenue(9300);
+        $declaration->setTax(1294);
+        $declaration->setYear(2016);
+        $declaration->setQuarter(2);
+        $this->manager->persist($declaration);
+        $this->declarations['2016T2'] = $declaration;
+
+        $declaration = new Declaration();
+        $declaration->setType(Declaration::TYPE_SOCIAL);
+        $declaration->setRevenue(10200);
+        $declaration->setTax(1417);
+        $declaration->setYear(2016);
+        $declaration->setQuarter(3);
+        $this->manager->persist($declaration);
+        $this->declarations['2016T3'] = $declaration;
+
+        $declaration = new Declaration();
+        $declaration->setType(Declaration::TYPE_SOCIAL);
+        $declaration->setRevenue(9800);
+        $declaration->setTax(1363);
+        $declaration->setYear(2016);
+        $declaration->setQuarter(4);
+        $this->manager->persist($declaration);
+        $this->declarations['2016T4'] = $declaration;
+
+        $declaration = new Declaration();
+        $declaration->setType(Declaration::TYPE_SOCIAL);
+        $declaration->setRevenue(8000);
+        $declaration->setTax(1096);
+        $declaration->setYear(2017);
+        $declaration->setQuarter(1);
+        $this->manager->persist($declaration);
+        $this->declarations['2017T1'] = $declaration;
+
+        $declaration = new Declaration();
+        $declaration->setType(Declaration::TYPE_SOCIAL);
+        $declaration->setRevenue(8800);
+        $declaration->setTax(1699);
+        $declaration->setYear(2017);
+        $declaration->setQuarter(2);
+        $this->manager->persist($declaration);
+        $this->declarations['2017T2'] = $declaration;
+
+        $declaration = new Declaration();
+        $declaration->setType(Declaration::TYPE_SOCIAL);
+        $declaration->setRevenue(2700);
+        $declaration->setTax(520);
+        $declaration->setYear(2017);
+        $declaration->setQuarter(3);
+        $this->manager->persist($declaration);
+        $this->declarations['2017T3'] = $declaration;
+
+        $declaration = new Declaration();
+        $declaration->setType(Declaration::TYPE_SOCIAL);
+        $declaration->setRevenue(13240);
+        $declaration->setTax(2555);
+        $declaration->setYear(2017);
+        $declaration->setQuarter(4);
+        $this->manager->persist($declaration);
+        $this->declarations['2017T4'] = $declaration;
+
+        $declaration = new Declaration();
+        $declaration->setType(Declaration::TYPE_SOCIAL);
+        $declaration->setRevenue(9000);
+        $declaration->setTax(1988);
+        $declaration->setYear(2019);
+        $declaration->setQuarter(1);
+        $this->manager->persist($declaration);
+        $this->declarations['2019T1'] = $declaration;
+
+        $declaration = new Declaration();
+        $declaration->setType(Declaration::TYPE_SOCIAL);
+        $declaration->setRevenue(7800);
+        $declaration->setTax(1732);
+        $declaration->setYear(2019);
+        $declaration->setQuarter(2);
+        $this->manager->persist($declaration);
+        $this->declarations['2019T2'] = $declaration;
+
+        $declaration = new Declaration();
+        $declaration->setType(Declaration::TYPE_SOCIAL);
+        $declaration->setRevenue(11000);
+        $declaration->setTax(2442);
+        $declaration->setYear(2019);
+        $declaration->setQuarter(3);
+        $this->manager->persist($declaration);
+        $this->declarations['2019T3'] = $declaration;
     }
 }
 
