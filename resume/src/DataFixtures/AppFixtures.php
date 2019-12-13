@@ -67,30 +67,35 @@ class AppFixtures extends Fixture
         $attribute->setSlug('name');
         $attribute->setValue('Jérémy ACHAIN');
         $attribute->setWeight(0);
+        $attribute->setIsListable(false);
         $this->manager->persist($attribute);
 
         $attribute = new Attribute();
         $attribute->setSlug('job');
         $attribute->setValue('Développeur Web');
         $attribute->setWeight(0);
+        $attribute->setIsListable(false);
         $this->manager->persist($attribute);
 
         $attribute = new Attribute();
         $attribute->setSlug('quote');
         $attribute->setValue('Programming is a creative art form based in logic. Every programmer is different');
         $attribute->setWeight(0);
+        $attribute->setIsListable(false);
         $this->manager->persist($attribute);
 
         $attribute = new Attribute();
         $attribute->setSlug('subtitle');
         $attribute->setValue('Développeur Web Freelance spécialisé Symfony et Angular');
         $attribute->setWeight(0);
+        $attribute->setIsListable(false);
         $this->manager->persist($attribute);
 
         $attribute = new Attribute();
         $attribute->setSlug('description');
         $attribute->setValue('Jérémy Achain, Développeur Web Freelance spécialisé PHP / Symfony et JS / Angular sur Lyon');
         $attribute->setWeight(0);
+        $attribute->setIsListable(false);
         $this->manager->persist($attribute);
 
         // Facultatif
@@ -99,36 +104,42 @@ class AppFixtures extends Fixture
         $attribute->setSlug('location');
         $attribute->setValue('Lyon, France');
         $attribute->setWeight(50);
+        $attribute->setIsListable(true);
         $this->manager->persist($attribute);
 
         $attribute = new Attribute();
         $attribute->setSlug('status');
         $attribute->setValue('Freelance');
         $attribute->setWeight(40);
+        $attribute->setIsListable(true);
         $this->manager->persist($attribute);
 
         $attribute = new Attribute();
         $attribute->setSlug('tjm');
         $attribute->setValue('TJM: 400€');
         $attribute->setWeight(30);
+        $attribute->setIsListable(true);
         $this->manager->persist($attribute);
 
         $attribute = new Attribute();
         $attribute->setSlug('duration');
         $attribute->setValue('3 mois renouvelables ou moins');
         $attribute->setWeight(20);
+        $attribute->setIsListable(true);
         $this->manager->persist($attribute);
 
         $attribute = new Attribute();
         $attribute->setSlug('time');
         $attribute->setValue('Temps partiel (4/5 max)');
         $attribute->setWeight(10);
+        $attribute->setIsListable(true);
         $this->manager->persist($attribute);
 
         $attribute = new Attribute();
-        $attribute->setSlug('sirent');
+        $attribute->setSlug('siret');
         $attribute->setValue('525 230 207 00033');
         $attribute->setWeight(0);
+        $attribute->setIsListable(false);
         $this->manager->persist($attribute);
     }
 

@@ -5,6 +5,7 @@ namespace App\Controller;
 use AlterPHP\EasyAdminExtensionBundle\Controller\EasyAdminController;
 use App\Entity\Activity;
 use App\Entity\Company;
+use App\Entity\Declaration;
 use App\Entity\Invoice;
 use App\Form\Type\ActivityType;
 use App\Form\Type\MonthActivitiesType;
@@ -121,6 +122,7 @@ class DashboardController extends EasyAdminController
 
         $viewData['unpayedInvoices'] = $invoiceRepository->findInvoicesBy(null, null, false);
         $viewData['currentExperiences'] = $experienceRepository->getCurrents();
+        $viewData['nextQuarterDueDate'] = Declaration::getNextQuarterDueDate();
 
         return $this->render('page/dashboard.html.twig', $viewData);
     }

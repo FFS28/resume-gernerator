@@ -39,7 +39,7 @@
                     <span>{{ activeRevenuesOnQuarter | number_format(0, ',', ' ') }}</span>
                 </div>
             </div>
-            <div class="card card-4">
+            {#<div class="card card-4">
                 <div class="card-content">
                     {% if currentYear == activeYear and remainingDaysBeforeTaxLimit > 0 %}
                         <h4>{{ 'Days remaining before taxes' | trans }}</h4>
@@ -48,6 +48,14 @@
                         <h4>{{ 'Quarterly taxes' | trans }}</h4>
                         <span>{{ currentTaxesOnQuarter | number_format(0, ',', ' ') }}</span>
                     {% endif %}
+                </div>
+            </div>#}
+            <div class="card card-4 {% if nextQuarterDueDate[3] %}card-danger{% endif %}">
+                <div class="card-content card">
+                    <h4>{{ 'Next declaration' | trans }}</h4>
+                    <span style="font-size: 24px">
+                        {{ nextQuarterDueDate[1] | date('d') }}-{{ nextQuarterDueDate[2] | date('d') }} /{{ nextQuarterDueDate[1] | date('m/Y') }}
+                    </span>
                 </div>
             </div>
             <div class="card card-4">
@@ -91,7 +99,7 @@
                             <a href="{{ url('easyadmin', {entity: 'Invoices', action: 'show', id: invoice.id}) }}">
                                 {{ invoice.company }} -
                                 {{ invoice }} -
-                                {{ invoice.createdAt | date('m/d/Y') }} -
+                                {{ invoice.createdAt | date('d/m/Y') }} -
                                 {{ invoice.totalHt | number_format(0, ',', ' ') }}€
                             </a>
                         {% endfor %}

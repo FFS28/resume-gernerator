@@ -20,7 +20,7 @@
     - Envoi d'un compte rendu
 
 - Experiences
-    - Visualisation en timeline
+    - x Visualisation en timeline
     
 - Entreprises
     - Liste les clients et les prestataires pour chaque entreprise

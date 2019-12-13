@@ -243,10 +243,12 @@ easy_admin:
           - { property: 'value', type: 'textarea' }
           - icon
           - weight
+          - isListable
       list:
         fields:
           - slug
           - value
+          - isListable
           - weight
     Hobbies:
       class: App\Entity\Hobby
