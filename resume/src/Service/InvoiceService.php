@@ -2,9 +2,12 @@
 
 namespace App\Service;
 
+use App\Entity\Company;
 use App\Entity\Invoice;
+use App\Repository\ExperienceRepository;
 use App\Repository\InvoiceRepository;
 use DateInterval;
+use Doctrine\ORM\EntityManagerInterface;
 use Konekt\PdfInvoice\InvoicePrinter;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -20,8 +23,17 @@ class InvoiceService
     public $companyStatut;
     public $companyTva;
 
+    /** @var EntityManagerInterface */
+    private $entityManager;
+
     /** @var InvoiceRepository */
     private $invoiceRepository;
+
+    /** @var ExperienceRepository */
+    private $experienceRepository;
+
+    /** @var DeclarationService */
+    private $declarationService;
 
     /** @var SerializerInterface */
     private $serializer;
@@ -38,7 +50,10 @@ class InvoiceService
         string $companyApe,
         string $companyStatut,
         string $companyTva,
+        EntityManagerInterface $entityManager,
         InvoiceRepository $invoiceRepository,
+        ExperienceRepository $experienceRepository,
+        DeclarationService $declarationService,
         SerializerInterface $serializer,
         TranslatorInterface $translator
     )
@@ -51,7 +66,12 @@ class InvoiceService
         $this->companyApe = $companyApe;
         $this->companyStatut = $companyStatut;
         $this->companyTva = $companyTva;
+
+        $this->entityManager = $entityManager;
         $this->invoiceRepository = $invoiceRepository;
+        $this->experienceRepository = $experienceRepository;
+        $this->declarationService = $declarationService;
+
         $this->serializer = $serializer;
         $this->translator = $translator;
     }
@@ -199,5 +219,32 @@ class InvoiceService
         );
 
         return $filename;
+    }
+
+    /**
+     * @param \DateTime $currentDate
+     * @param Company $company
+     * @param array $activities
+     * @return Invoice
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function createByActivities(\DateTime $currentDate, Company $company, array $activities): Invoice
+    {
+        $number = $this->invoiceRepository->getNewInvoiceNumber($currentDate);
+
+        $invoice = new Invoice();
+        $invoice->setNumber($number);
+        $invoice->setCompany($company);
+        $invoice->importActivities($activities);
+
+        $experiences = $this->experienceRepository->findByDate($currentDate);
+        if ($experiences && count($experiences) == 1) {
+            $invoice->setExperience($experiences[0]);
+        }
+
+        $this->entityManager->persist($invoice);
+        $this->entityManager->flush();
+
+        return $invoice;
     }
 }

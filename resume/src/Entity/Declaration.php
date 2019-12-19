@@ -60,16 +60,35 @@ class Declaration
     ];
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Invoice", mappedBy="declaration")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Period", inversedBy="declarations")
      */
-    private $invoices;
+    private $period;
 
-    const NON_COMMERCIALE = 0.22;
-    const CFP = 0.2;
+    const SOCIAL_NON_COMMERCIALE = 0.22;
+    const SOCIAL_CFP = 0.02;
+
+    const STATUS_WAITING = 'waiting';
+    const STATUS_PAYED = 'payed';
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true))
+     */
+    private $status;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $payedAt;
+
+    /** @var array user friendly named type */
+    protected static $statusName = [
+        self::STATUS_WAITING => 'Waiting',
+        self::STATUS_PAYED => 'Payed',
+    ];
 
     public function __construct()
     {
-        $this->invoices = new ArrayCollection();
+        $this->setStatus(self::STATUS_WAITING);
     }
 
     public function __toString()
@@ -82,69 +101,6 @@ class Declaration
         }
 
         return $str;
-    }
-
-    /**
-     * @return int[]
-     */
-    public static function getDueQuarterMonth()
-    {
-        return [
-            4,
-            7,
-            10,
-            1
-        ];
-    }
-
-    public static function getAccountingYear(\DateTime $date): int
-    {
-        // @TODO Faux !!! A faire : si 04/06/2019 => 2019, si 12/01/2020 => 2019
-        return intval($date->format('Y'));
-    }
-
-    /**
-     * @param \DateTime $date
-     * @return array
-     * @throws \Exception
-     */
-    public static function getDueQuarterDatesBy(\DateTime $date): array
-    {
-        $dueDatesMonth = self::getDueQuarterMonth();
-        $dueDates = [];
-
-        foreach ($dueDatesMonth as $index => $dueDateMonth) {
-            $dueDateBegin = new \DateTime(self::getAccountingYear($date).'-'.($dueDateMonth < 10 ? '0' : '').$dueDateMonth.'-01');
-            if ($index == 3) {
-                $dueDateBegin->add(new \DateInterval('P1Y'));
-            }
-
-            $dueDates[] = [
-                $index + 1,
-                clone $dueDateBegin,
-                $dueDateBegin->add(new \DateInterval('P'.(intval($dueDateBegin->format('t')) - 1).'D'))
-            ];
-        }
-
-        return $dueDates;
-    }
-
-    /**
-     * @return array
-     * @throws \Exception
-     */
-    public static function getNextQuarterDueDate(): array
-    {
-        $currentDate = new \DateTime();
-        $dueDates = self::getDueQuarterDatesBy($currentDate);
-
-        foreach ($dueDates as $index => $dueDate)
-        {
-            if ($currentDate < $dueDate[2]) {
-                $dueDate[] = $currentDate > $dueDate[1] && $currentDate < $dueDate[2];
-                return $dueDate;
-            }
-        }
     }
 
     public function getId(): ?int
@@ -214,7 +170,9 @@ class Declaration
 
     public function getRate(): float
     {
-        return round($this->getTax() * 100 / $this->getRevenue(), 2);
+        return $this->getRevenue() > 0
+            ? round($this->getTax() * 100 / $this->getRevenue(), 2)
+            : 0;
     }
 
     public function getType(): ?string
@@ -241,34 +199,67 @@ class Declaration
         return static::$typeName[$this->type];
     }
 
+    public function getPeriod(): ?Period
+    {
+        return $this->period;
+    }
+
+    public function setPeriod(?Period $period): self
+    {
+        $this->period = $period;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
     /**
-     * @return Collection|Invoice[]
+     * @return string
      */
-    public function getInvoices(): Collection
+    public function getStatusName()
     {
-        return $this->invoices;
+        if (!isset(static::$statusName[$this->status])) {
+            return null;
+        }
+
+        return static::$statusName[$this->status];
     }
 
-    public function addInvoice(Invoice $invoice): self
+    public function getPayedAt(): ?\DateTimeInterface
     {
-        if (!$this->invoices->contains($invoice)) {
-            $this->invoices[] = $invoice;
-            $invoice->setDeclaration($this);
-        }
+        return $this->payedAt;
+    }
+
+    public function setPayedAt(?\DateTimeInterface $payedAt): self
+    {
+        $this->payedAt = $payedAt;
 
         return $this;
     }
 
-    public function removeInvoice(Invoice $invoice): self
+    /**
+     * @return Invoice[]
+     */
+    public function getInvoices(): array
     {
-        if ($this->invoices->contains($invoice)) {
-            $this->invoices->removeElement($invoice);
-            // set the owning side to null (unless already changed)
-            if ($invoice->getDeclaration() === $this) {
-                $invoice->setDeclaration(null);
-            }
-        }
+        return $this->getPeriod()
+            ? $this->getPeriod()->getInvoices()->toArray()
+            : [];
+    }
 
+    public function setInvoices(?array $invoices)
+    {
         return $this;
     }
+
 }

@@ -147,27 +147,27 @@ class InvoiceRepository extends ServiceEntityRepository
      * @param bool $isPayed
      * @return Invoice[]
      */
-    public function getSalesRevenuesGroupBy(string $groupBy, int $year = null, int $quarter = null, $isPayed = null): array
+    public function getSalesRevenuesGroupBy(string $groupBy, int $year = null, int $quarter = null, $isPayed = true): array
     {
         $query = $this->createQueryBuilder('i')
             ->select('SUM(i.totalHt) total');
 
         switch ($groupBy) {
             case 'month':
-                $query->addSelect('ToChar(i.createdAt, \'MM\') AS month')
+                $query->addSelect('ToChar(i.payedAt, \'MM\') AS month')
                     ->orderBy('month')
                     ->groupBy('month');
                 break;
 
             case 'quarter':
-                $query->addSelect('ToChar(i.createdAt, \'Q\') AS quarter')
+                $query->addSelect('ToChar(i.payedAt, \'Q\') AS quarter')
                     ->orderBy('quarter')
                     ->groupBy('quarter');
                 break;
 
             case 'year':
             default:
-                $query->addSelect('ToChar(i.createdAt, \'YYYY\') AS year')
+                $query->addSelect('ToChar(i.payedAt, \'YYYY\') AS year')
                     ->orderBy('year')
                     ->groupBy('year');
                 break;

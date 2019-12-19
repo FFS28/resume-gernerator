@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Declaration;
+use App\Entity\Invoice;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -17,6 +18,24 @@ class DeclarationRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Declaration::class);
+    }
+
+    public function getByInvoice(Invoice $invoice, string $type)
+    {
+        $query = $this->createQueryBuilder('d')
+            ->where('d.type = :type')
+            ->setParameter('type', $type)
+            ->andWhere('d.year = :year')
+            ->setParameter('year', $invoice->getPayedAtYear())
+        ;
+
+        if ($type === Declaration::TYPE_SOCIAL) {
+            $query->andWhere('d.quarter = :quarter')
+                ->setParameter('quarter', $invoice->getPayedAtQuarter());
+        }
+
+        return $query->getQuery()
+            ->getOneOrNullResult();
     }
 
     // /**

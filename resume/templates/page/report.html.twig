@@ -35,7 +35,7 @@
                 <ul>
                     {% for invoice in invoices %}
                         <li>
-                            <a href="{{ url('easyadmin', {entity: 'Invoices', action: 'show', id: invoice.id}) }}">
+                            <a href="{{ url('easyadmin', {entity: 'Invoice', action: 'show', id: invoice.id}) }}">
                                 {{ invoice.company }} - {{ invoice }}
                             </a>
                         </li>

@@ -63,6 +63,7 @@ Check: Chèque
 Transfert: Virement
 Tjm: TJM
 Object: Objet
+Total: Total
 Total ht: Total HT
 Total tax: Total TVA
 Created at: Créé le
@@ -117,6 +118,10 @@ Impot: Impôt
 Next declaration: Prochaine déclaration
 Quarter: Trimestre
 Rate: Taux
+Recalculate: Recalculer
+
+Period: Période
+Periods: Périodes
 
 Date: Date
 Year: Année
@@ -165,3 +170,4 @@ Export: Export
 Other: Autre
 Send: Envoyer
 Message: Message
+Actions: Actions

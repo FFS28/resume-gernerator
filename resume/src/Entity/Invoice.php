@@ -122,9 +122,9 @@ class Invoice
     private $activities;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Declaration", inversedBy="invoices")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Period", inversedBy="invoices")
      */
-    private $declaration;
+    private $period;
 
     const TJM_DEFAULT = 400;
     const LIMIT_AE_TVA = 33200;
@@ -349,7 +349,7 @@ class Invoice
         return $this->status;
     }
 
-    public function setStatus(string $status): self
+    public function setStatus(?string $status): self
     {
         $this->status = $status;
 
@@ -427,15 +427,14 @@ class Invoice
         return $this;
     }
 
-    public function getDeclaration(): ?Declaration
+    public function getPeriod(): ?Period
     {
-        return $this->declaration;
+        return $this->period;
     }
 
-    public function setDeclaration(?Declaration $declaration): self
+    public function setPeriod(?Period $period): self
     {
-        $this->declaration = $declaration;
-        $declaration->addInvoice($this);
+        $this->period = $period;
 
         return $this;
     }
