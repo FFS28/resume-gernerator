@@ -29,9 +29,9 @@ easy_admin:
         - { entity: 'Person', label: 'Persons', icon: 'users' }
 
         - { label: 'Resume' }
-        - { entity: 'Experience', label: 'Experiences', icon: 'address-card' }
+        - { entity: 'Experience', label: 'Experiences', icon: 'map-marker-alt' }
         - { entity: 'Skill', label: 'Skills', icon: 'fill-drip' }
-        - { entity: 'Attribute', label: 'Attributes', icon: 'cogs' }
+        - { entity: 'Attribute', label: 'Attributes', icon: 'address-card' }
         - { entity: 'Hobby', label: 'Hobbies', icon: 'chess' }
         - { entity: 'Education', label: 'Educations', icon: 'graduation-cap'  }
         - { entity: 'Link', label: 'Links', icon: 'link' }
@@ -41,7 +41,7 @@ easy_admin:
   formats:
     date: 'd/m/Y'
   list:
-    max_results: 100
+    max_results: 30
   entities:
     Company:
       class: App\Entity\Company
@@ -67,6 +67,7 @@ easy_admin:
           - { property: 'clients', type: 'array' }
           - contractor
           - { property: 'persons', type: 'array' }
+        max_results: 20
     Person:
       class: App\Entity\Person
       form:
@@ -156,7 +157,7 @@ easy_admin:
           - daysCount
           - createdAt
           - payedAt
-          - { property: 'period.declarations', type: 'array', label: 'Declarations' }
+          - { property: 'socialDeclaration', label: 'Declarations' }
         filters:
           - company
           - { property: status, type: 'App\Form\Filter\InvoiceStatusFilterType' }
@@ -221,6 +222,8 @@ easy_admin:
         actions:
           - { name: 'calculate', label: 'Recalculate'}
           - { name: 'validate', label: 'Validate'}
+    Period:
+      class: App\Entity\Period
     Activity:
       class: App\Entity\Activity
       form:
@@ -238,9 +241,7 @@ easy_admin:
           - value
           - date
         filters:
-            #- company
-            #- { property: company, mapped: false, type: 'App\Form\Filter\EntityFilterType', type_options: {class: 'App\Entity\Company'} }
-            - { property: 'company', type: 'EasyCorp\Bundle\EasyAdminBundle\Form\Type\EasyAdminAutocompleteType', type_options: { class: 'App\Entity\Company' } }
+            - { property: company, type: 'EasyCorp\Bundle\EasyAdminBundle\Form\Type\EasyAdminAutocompleteType', type_options: { class: 'App\Entity\Company' } }
             - { property: dateYear, mapped: false, type: 'App\Form\Filter\DateYearFilterType', type_options: {data: 'date'} }
             - { property: dateMonth, mapped: false, type: 'App\Form\Filter\DateMonthFilterType', type_options: {data: 'date'} }
         batch_actions:

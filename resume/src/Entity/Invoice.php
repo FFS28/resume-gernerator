@@ -438,4 +438,18 @@ class Invoice
 
         return $this;
     }
+
+    public function getSocialDeclaration(): ?Declaration
+    {
+        if ($this->getPeriod()) {
+            $declarations = $this->getPeriod()->getDeclarations();
+            foreach ($declarations as $declaration) {
+                if ($declaration->getType() === Declaration::TYPE_SOCIAL) {
+                    return $declaration;
+                }
+            }
+        }
+
+        return null;
+    }
 }

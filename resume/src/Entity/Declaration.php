@@ -65,7 +65,7 @@ class Declaration
     private $period;
 
     const SOCIAL_NON_COMMERCIALE = 0.22;
-    const SOCIAL_CFP = 0.02;
+    const SOCIAL_CFP = 0.002;
 
     const STATUS_WAITING = 'waiting';
     const STATUS_PAYED = 'payed';
@@ -252,9 +252,18 @@ class Declaration
      */
     public function getInvoices(): array
     {
-        return $this->getPeriod()
-            ? $this->getPeriod()->getInvoices()->toArray()
-            : [];
+        $period = $this->getPeriod();
+        $periodsQuarter = $period->getPeriodsQuarter();
+
+        if (count($periodsQuarter)) {
+            $invoices = [];
+            foreach ($periodsQuarter as $period) {
+                $invoices = array_merge($invoices, $period->getInvoices()->toArray());
+            }
+            return $invoices;
+        }
+
+        return $this->getPeriod()->getInvoices()->toArray();
     }
 
     public function setInvoices(?array $invoices)

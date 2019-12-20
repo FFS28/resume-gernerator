@@ -1798,12 +1798,12 @@ class AppFixtures extends Fixture
         $invoice->setExperience($this->experiences['201906']);
         $invoice->setTjm(400);
         $invoice->setCreatedAt(new \DateTime('2019-11-08 00:00:00'));
-        $invoice->setPayedAt(null);
+        $invoice->setPayedAt(new \DateTime('2019-12-20 00:00:00'));
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(2400);
         $invoice->setTotalTax(480);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
-        $invoice->setStatus(Invoice::STATUS_WAITING);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
         $this->periods[2019]->addInvoice($invoice);
         $this->periods['2019-4']->addInvoice($invoice);
         $this->manager->persist($invoice);
