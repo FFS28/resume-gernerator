@@ -15,5 +15,5 @@ framework:
     php_errors:
         log: true
 
-    templating:
-        engines: ['twig', 'php']
+    #templating:
+    #    engines: ['twig', 'php']

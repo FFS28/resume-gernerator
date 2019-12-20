@@ -2,7 +2,7 @@ security:
     encoders:
         App\Entity\User:
             algorithm: auto
-        FOS\UserBundle\Model\UserInterface: bcrypt
+        #FOS\UserBundle\Model\UserInterface: bcrypt
 
     role_hierarchy:
         ROLE_ADMIN:       ROLE_USER
@@ -14,8 +14,8 @@ security:
             entity:
                 class: App\Entity\User
                 property: email
-        fos_userbundle:
-            id: fos_user.user_provider.username_email
+        #fos_userbundle:
+        #s    id: fos_user.user_provider.username_email
 
     firewalls:
         dev:
@@ -24,7 +24,8 @@ security:
         main:
             pattern: ^/
             form_login:
-                provider: fos_userbundle
+                #provider: fos_userbundle
+                provider: app_user_provider
                 csrf_token_generator: security.csrf.token_manager
                 # if you are using Symfony < 2.8, use the following config instead:
                 # csrf_provider: form.csrf_provider

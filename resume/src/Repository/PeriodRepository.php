@@ -3,25 +3,25 @@
 namespace App\Repository;
 
 use App\Entity\Activity;
-use App\Entity\Person;
+use App\Entity\Period;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method Person|null find($id, $lockMode = null, $lockVersion = null)
- * @method Person|null findOneBy(array $criteria, array $orderBy = null)
- * @method Person[]    findAll()
- * @method Person[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Period|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Period|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Period[]    findAll()
+ * @method Period[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class PersonRepository extends ServiceEntityRepository
+class PeriodRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Person::class);
+        parent::__construct($registry, Period::class);
     }
 
     // /**
-    //  * @return Person[] Returns an array of Person objects
+    //  * @return Period[] Returns an array of Period objects
     //  */
     /*
     public function findByExampleField($value)
@@ -38,7 +38,7 @@ class PersonRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Person
+    public function findOneBySomeField($value): ?Period
     {
         return $this->createQueryBuilder('p')
             ->andWhere('p.exampleField = :val')
