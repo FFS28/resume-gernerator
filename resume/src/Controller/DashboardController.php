@@ -5,12 +5,15 @@ namespace App\Controller;
 use AlterPHP\EasyAdminExtensionBundle\Controller\EasyAdminController;
 use App\Entity\Activity;
 use App\Entity\Company;
+use App\Entity\Declaration;
 use App\Entity\Invoice;
 use App\Form\Type\ActivityType;
 use App\Form\Type\MonthActivitiesType;
 use App\Repository\ActivityRepository;
 use App\Repository\ExperienceRepository;
 use App\Repository\InvoiceRepository;
+use App\Repository\PeriodRepository;
+use App\Service\DeclarationService;
 use DateInterval;
 use DateTime;
 use Doctrine\ORM\EntityManager;
@@ -28,11 +31,12 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class DashboardController extends EasyAdminController
 {
     /**
-     * @param int $year
-     * @param int $quarter
      * @param InvoiceRepository $invoiceRepository
      * @param ExperienceRepository $experienceRepository
+     * @param DeclarationService $declarationService
      * @param TranslatorInterface $translator
+     * @param int $year
+     * @param int $quarter
      * @return Response
      * @throws NoResultException
      * @throws NonUniqueResultException
@@ -41,34 +45,11 @@ class DashboardController extends EasyAdminController
     public function index(
         InvoiceRepository $invoiceRepository,
         ExperienceRepository $experienceRepository,
+        DeclarationService $declarationService,
         TranslatorInterface $translator,
         int $year = 0, int $quarter = 0
     ) {
         $viewData = [];
-
-        /**
-         * Informations
-         *
-         * - Chiffre d'affaire de l'année
-         * - Chiffre d'affaire du trimestre sur l'année
-         *
-         * Alertes
-         *
-         * - Combien de jours puis-je facturer avant de dépasser le plafond de TVA ?
-         * - Combien de jours puis-je facturer avant le plafond final ?
-         *
-         * Statistiques
-         *
-         * - Chiffre d'affaire par année
-         * - Chiffre d'affaire par trimestre sur l'année
-         * - Nombre de jours par mois sur l'année
-         *
-         * Listes
-         *
-         * - Factures en cours
-         * - Expérience en cours
-         * - Clients en cours
-         */
 
         $viewData['currentYear'] = intval((new DateTime())->format('Y'));
         $viewData['currentQuarter'] = ceil((new DateTime())->format('n') / 3);
@@ -92,7 +73,7 @@ class DashboardController extends EasyAdminController
             array_map(function($item) {return intval($item['total']);}, $revenuesByYears)
         );
 
-        $revenuesByQuarters = $invoiceRepository->getSalesRevenuesGroupBy('quarter', $viewData['activeYear']);
+        $revenuesByQuarters = $invoiceRepository->getSalesRevenuesGroupBy('quarter', $viewData['activeYear'], null, true);
         $viewData['revenuesByQuarters'] = array_combine(
             array_map(function($item) {return 'T'.$item['quarter'];}, $revenuesByQuarters),
             array_map(function($item) {return intval($item['total']);}, $revenuesByQuarters)
@@ -116,11 +97,14 @@ class DashboardController extends EasyAdminController
 
         $viewData['colorsByQuarters'] = [];
         foreach ($viewData['revenuesByQuarters'] as $quarter => $item) {
-            $viewData['colorsByQuarters'][] = $quarter[1] == $viewData['activeQuarter'] ? 'rgba(56, 142, 60, 0.6)' : 'rgba(0, 0, 0, 0.1)';
+            if (isset($quarter[1])) {
+                $viewData['colorsByQuarters'][] = $quarter[1] == $viewData['activeQuarter'] ? 'rgba(56, 142, 60, 0.6)' : 'rgba(0, 0, 0, 0.1)';
+            }
         }
 
         $viewData['unpayedInvoices'] = $invoiceRepository->findInvoicesBy(null, null, false);
         $viewData['currentExperiences'] = $experienceRepository->getCurrents();
+        $viewData['nextQuarterDueDate'] = $declarationService->getNextQuarterDueDate();
 
         return $this->render('page/dashboard.html.twig', $viewData);
     }

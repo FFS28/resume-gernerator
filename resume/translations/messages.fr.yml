@@ -8,6 +8,7 @@ Icon: Icone
 Value: Valeur
 Weight: Poids
 Age: '{age} ans'
+Is listable: est listable
 
 Education: Formation
 Educations: Formations
@@ -62,6 +63,7 @@ Check: Chèque
 Transfert: Virement
 Tjm: TJM
 Object: Objet
+Total: Total
 Total ht: Total HT
 Total tax: Total TVA
 Created at: Créé le
@@ -106,8 +108,20 @@ Level: Niveau
 Parent: Parent
 Children: Enfants
 
-Send: Envoyer
-Message: Message
+Declaration: Déclaration
+Declarations: Déclarations
+Tax: Charges
+Revenue: Chiffre d'affaire
+Tva: TVA
+Social: Social
+Impot: Impôt
+Next declaration: Prochaine déclaration
+Quarter: Trimestre
+Rate: Taux
+Recalculate: Recalculer
+
+Period: Période
+Periods: Périodes
 
 Date: Date
 Year: Année
@@ -136,13 +150,6 @@ Friday: Vendredi
 Saturday: Samedi
 Sunday: Dimanche
 
-Home: Acceuil
-Dashboard: Tableau de bord
-Report: Rapport d'activité
-Resume: CV
-Export: Export
-Other: Autre
-
 Annual income: CA de l'année
 Quarterly income: CA du trimestre
 Days remaining before taxes: Jours restant avant TVA
@@ -154,3 +161,13 @@ Revenues by quarter: CA par trimestre
 Days by month: Journées par mois
 Unpayed invoices: Factures en cours
 Current experiences: Missions en cours
+
+Home: Acceuil
+Dashboard: Tableau de bord
+Report: Rapport d'activité
+Resume: CV
+Export: Export
+Other: Autre
+Send: Envoyer
+Message: Message
+Actions: Actions

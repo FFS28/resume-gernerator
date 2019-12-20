@@ -53,4 +53,6 @@ crons:
         # everyday at 5AM
         spec: 0 5 * * *
         cmd: |
-            croncape symfony snapshot:create --no-wait
+            if [ "$SYMFONY_BRANCH" = master ]; then
+                croncape symfony snapshot:create --no-wait
+            fi

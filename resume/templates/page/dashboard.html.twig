@@ -39,7 +39,7 @@
                     <span>{{ activeRevenuesOnQuarter | number_format(0, ',', ' ') }}</span>
                 </div>
             </div>
-            <div class="card card-4">
+            {#<div class="card card-4">
                 <div class="card-content">
                     {% if currentYear == activeYear and remainingDaysBeforeTaxLimit > 0 %}
                         <h4>{{ 'Days remaining before taxes' | trans }}</h4>
@@ -48,6 +48,14 @@
                         <h4>{{ 'Quarterly taxes' | trans }}</h4>
                         <span>{{ currentTaxesOnQuarter | number_format(0, ',', ' ') }}</span>
                     {% endif %}
+                </div>
+            </div>#}
+            <div class="card card-4 {% if nextQuarterDueDate[3] %}card-danger{% endif %}">
+                <div class="card-content card">
+                    <h4>{{ 'Declaration' | trans }}</h4>
+                    <span style="font-size: 24px">
+                        {{ nextQuarterDueDate[1] | date('d') }}-{{ nextQuarterDueDate[2] | date('d') }} / {{ nextQuarterDueDate[1] | date('m') }}
+                    </span>
                 </div>
             </div>
             <div class="card card-4">
@@ -88,10 +96,10 @@
                     <h4>{{ 'Unpayed invoices' | trans }}</h4>
                     <div>
                         {% for invoice in unpayedInvoices %}
-                            <a href="{{ url('easyadmin', {entity: 'Invoices', action: 'show', id: invoice.id}) }}">
+                            <a href="{{ url('easyadmin', {entity: 'Invoice', action: 'show', id: invoice.id}) }}">
                                 {{ invoice.company }} -
                                 {{ invoice }} -
-                                {{ invoice.createdAt | date('m/d/Y') }} -
+                                {{ invoice.createdAt | date('d/m/Y') }} -
                                 {{ invoice.totalHt | number_format(0, ',', ' ') }}€
                             </a>
                         {% endfor %}
@@ -103,7 +111,7 @@
                     <h4>{{ 'Current experiences' | trans }}</h4>
                     <div>
                         {% for experience in currentExperiences %}
-                            <a href="{{ url('easyadmin', {entity: 'Experiences', action: 'show', id: experience.id}) }}">
+                            <a href="{{ url('easyadmin', {entity: 'Experience', action: 'show', id: experience.id}) }}">
                                 {{ experience }}
                             </a>
                         {% endfor %}

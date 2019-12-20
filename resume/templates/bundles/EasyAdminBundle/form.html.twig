@@ -1,0 +1,39 @@
+{% block _declaration_array_with_total_row %}
+    <div class="embedded-list">
+        <table class="table table-sm datagrid">
+            <thead>
+                <tr>
+                    <th><span>{{ 'Company' | trans }}</span></th>
+                    <th><span>{{ 'Payed at' | trans }}</span></th>
+                    <th><span style="text-align: right">{{ 'Total ht' | trans }}</span></th>
+                    <th><span style="text-align: right">{{ 'Actions' | trans }}</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% set total = 0 %}
+                {% for invoice in form.vars.value %}
+                    <tr>
+                        <td>{{ invoice.company }}</td>
+                        <td>{{ invoice.payedAt | date('d/m/Y') }}</td>
+                        <td style="text-align: right">{{ invoice.totalHt | number_format(0, ',', ' ') }}</td>
+                        <td class="actions">
+                            <a name="edit" class=" action-edit" title=""
+                               href="{{ url('easyadmin', {entity: 'Invoice', action: 'show', id: invoice.id}) }}"
+                               target="_self">
+                                {{ 'action.show' | trans}}
+                            </a>
+                        </td>
+                    </tr>
+                    {% set total = total + invoice.totalHt %}
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th style="text-align: right;" colspan="2">{{ 'Total' | trans }} :</th>
+                    <td style="text-align: right;">{{ total | number_format(0, ',', ' ') }}</td>
+                    <th></th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+{% endblock %}

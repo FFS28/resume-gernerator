@@ -2,10 +2,9 @@
 
 namespace App\Repository;
 
-use App\Entity\Activity;
 use App\Entity\Period;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
  * @method Period|null find($id, $lockMode = null, $lockVersion = null)

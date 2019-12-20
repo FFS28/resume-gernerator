@@ -12,6 +12,7 @@ use App\Form\Type\MonthActivitiesType;
 use App\Repository\ActivityRepository;
 use App\Repository\ExperienceRepository;
 use App\Repository\InvoiceRepository;
+use App\Service\InvoiceService;
 use App\Service\ReportService;
 use DateInterval;
 use DateTime;
@@ -145,44 +146,26 @@ class ReportController extends EasyAdminController
     }
 
     /**
-     * @Route("/admin/report/{year<\d+>}/{month<\d+>}/{slug}/invoice", name="report_invoice")
      * @param ActivityRepository $activityRepository
-     * @param InvoiceRepository $invoiceRepository
-     * @param ExperienceRepository $experienceRepository
-     * @param EntityManagerInterface $entityManager
+     * @param InvoiceService $invoiceService
      * @param int $year
      * @param int $month
      * @param Company $company
      * @return RedirectResponse
      * @throws NonUniqueResultException
-     * @throws Exception
+     * @Route("/admin/report/{year<\d+>}/{month<\d+>}/{slug}/invoice", name="report_invoice")
      */
     public function invoice(
         ActivityRepository $activityRepository,
-        InvoiceRepository $invoiceRepository,
-        ExperienceRepository $experienceRepository,
-        EntityManagerInterface $entityManager,
+        InvoiceService $invoiceService,
         int $year, int $month, Company $company
     )
     {
         list($currentDate, $activities) = $this->getActivities($activityRepository, $company, $year, $month);
 
-        $number = $invoiceRepository->getNewInvoiceNumber($currentDate);
+        $invoice = $invoiceService->createByActivities($currentDate, $company, $activities);
 
-        $invoice = new Invoice();
-        $invoice->setNumber($number);
-        $invoice->setCompany($company);
-        $invoice->importActivities($activities);
-
-        $experiences = $experienceRepository->findByDate($currentDate);
-        if ($experiences && count($experiences) == 1) {
-            $invoice->setExperience($experiences[0]);
-        }
-
-        $entityManager->persist($invoice);
-        $entityManager->flush();
-
-        return $this->redirectToRoute('easyadmin', ['entity'=> 'Invoices', 'action'=> 'show', 'id'=> $invoice->getId()]);
+        return $this->redirectToRoute('easyadmin', ['entity'=> 'Invoice', 'action'=> 'edit', 'id'=> $invoice->getId()]);
     }
 
 

@@ -38,6 +38,16 @@ class Attribute
      */
     private $weight;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isListable;
+
+    public function __construct()
+    {
+        $this->isListable = false;
+    }
+
     public function __toString(): string
     {
         return $this->getSlug();
@@ -92,6 +102,18 @@ class Attribute
     public function setWeight(int $weight): self
     {
         $this->weight = $weight;
+
+        return $this;
+    }
+
+    public function getIsListable(): ?bool
+    {
+        return $this->isListable;
+    }
+
+    public function setIsListable(bool $isListable): self
+    {
+        $this->isListable = $isListable;
 
         return $this;
     }

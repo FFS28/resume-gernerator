@@ -327,12 +327,33 @@ form{
 }
 
 @media (max-width: 767px) {
+  #me #name .job{
+    padding-left: 0;
+  }
   .hidden-xs {
     display: none !important;
   }
   form {
     padding-right: 20px;
     padding-left: 20px;
+  }
+  #experiences, #educations{
+    .ul{
+      padding-left: 0;
+      padding-right: 0;
+
+      .li{
+        width: 100% !important;
+        min-width: auto !important;
+      }
+    }
+  }
+}
+
+@media (max-width: 500px) {
+  #experiences .ul .li, #educations .ul .li, form, #attributes, h2, #links .ul{
+    padding-left: 10px;
+    padding-right: 10px;
   }
 }
 

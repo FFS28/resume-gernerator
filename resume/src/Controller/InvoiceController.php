@@ -5,6 +5,7 @@ namespace App\Controller;
 use AlterPHP\EasyAdminExtensionBundle\Controller\EasyAdminController;
 use App\Entity\Invoice;
 use App\Repository\InvoiceRepository;
+use App\Service\DeclarationService;
 use App\Service\InvoiceService;
 use Doctrine\ORM\EntityManager;
 use http\Client\Request;
@@ -30,6 +31,9 @@ class InvoiceController extends EasyAdminController
     /** @var InvoiceService */
     private $invoiceService;
 
+    /** @var DeclarationService */
+    private $declarationService;
+
     /** @var MailerInterface */
     private $mailer;
 
@@ -38,11 +42,13 @@ class InvoiceController extends EasyAdminController
 
     public function __construct(InvoiceRepository $invoiceRepository,
                                 InvoiceService $invoiceService,
+                                DeclarationService $declarationService,
                                 MailerInterface $mailer,
                                 TranslatorInterface $translator)
     {
         $this->invoiceRepository = $invoiceRepository;
         $this->invoiceService = $invoiceService;
+        $this->declarationService = $declarationService;
         $this->mailer = $mailer;
         $this->translator = $translator;
     }
@@ -83,6 +89,8 @@ class InvoiceController extends EasyAdminController
 
         $this->em->flush();
 
+        $this->declarationService->attachInvoice($entity);
+
         return $this->redirectToReferrer();
     }
 
@@ -97,8 +105,10 @@ class InvoiceController extends EasyAdminController
 
             $email = (new Email())
                 ->from($this->getParameter('MAILER_FROM'))
-                ->to($this->getParameter('MAILER_FROM'))
-                ->to($entity->getCompany()->getEmail())
+                ->to($this->getParameter('APP_ENV') == 'prod'
+                    ? $entity->getCompany()->getEmail()
+                    : $this->getParameter('MAILER_FROM')
+                )
                 ->subject($this->getParameter('MAILER_SUBJECT') . ' ' .
                     $this->translator->trans('Invoice') . ' n°' . $entity->getNumber())
                 ->text($this->renderView(
@@ -141,12 +151,15 @@ class InvoiceController extends EasyAdminController
      */
     protected function persistEntity($entity){
         $this->calculTotalHt($entity);
+        $this->declarationService->attachInvoice($entity);
 
         $isOutOfTaxLimit = $this->invoiceRepository->isOutOfTaxLimit($entity->getTotalHt());
 
         if ($isOutOfTaxLimit) {
             $entity->setTotalTax($entity->getTotalHt() * Invoice::TAX_MULTIPLIER);
         }
+
+        parent::persistEntity($entity);
     }
 
     /**
@@ -154,5 +167,8 @@ class InvoiceController extends EasyAdminController
      */
     protected function updateEntity($entity){
         $this->calculTotalHt($entity);
+        $this->declarationService->attachInvoice($entity);
+
+        parent::updateEntity($entity);
     }
 }

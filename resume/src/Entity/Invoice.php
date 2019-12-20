@@ -121,6 +121,11 @@ class Invoice
      */
     private $activities;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Period", inversedBy="invoices")
+     */
+    private $period;
+
     const TJM_DEFAULT = 400;
     const LIMIT_AE_TVA = 33200;
     const LIMIT_AE = 70000;
@@ -344,7 +349,7 @@ class Invoice
         return $this->status;
     }
 
-    public function setStatus(string $status): self
+    public function setStatus(?string $status): self
     {
         $this->status = $status;
 
@@ -418,6 +423,18 @@ class Invoice
                 $activity->setInvoice(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPeriod(): ?Period
+    {
+        return $this->period;
+    }
+
+    public function setPeriod(?Period $period): self
+    {
+        $this->period = $period;
 
         return $this;
     }

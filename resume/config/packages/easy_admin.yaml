@@ -1,301 +1,370 @@
-#easy_admin:
-#  site_name: 'Admin'
-#  design:
-#    assets:
-#      js:
-#        - 'build/js/bootstrap-datepicker.js'
-#        - 'build/js/bootstrap-datepicker.fr.js'
-#        - 'build/js/app.js'
-#        - 'build/runtime.js'
-#      css:
-#        - 'build/css/bootstrap-datepicker.css'
-#        - 'build/css/dashboard.css'
-#        - 'build/css/report.css'
-#    menu:
-#        - { label: 'Home', url: '/' }
-#        - { label: 'Dashboard', url: '/admin/dashboard', default: true }
-#        - { label: 'Report', url: '/admin/report' }
-#        - { label: 'Invoicing' }
-#        - { entity: 'Invoices', default: true}
-#        - Activities
-#        - Companies
-#        - Persons
-#        - { label: 'Resume' }
-#        - Experiences
-#        - Skills
-#        - Attributes
-#        - Hobbies
-#        - Educations
-#        - Links
-#        - { label: 'Other' }
-#        - { label: 'Invoices book', url: '/admin/invoice/csv' }
-#  formats:
-#    date: 'd/m/Y'
-#  list:
-#    max_results: 100
-#  entities:
-#    Companies:
-#      class: App\Entity\Company
-#      form:
-#        fields:
-#          - { type: 'group', columns: 3, label: 'Principal' }
-#          - name
-#          - displayName
-#          - { property: 'displayName', label: 'Display name' }
-#          - { type: 'group', columns: 3, label: 'Hierarchy' }
-#          - { property: 'clients', type: 'easyadmin_autocomplete', type_options: { class: 'App\Entity\Company', attr: { create: true } } }
-#          - { property: 'contractor', type: 'easyadmin_autocomplete', type_options: { class: 'App\Entity\Company', attr: { create: true } } }
-#          - { property: 'persons', type: 'easyadmin_autocomplete', type_options: { class: 'App\Entity\Person', attr: { create: true } } }
-#          - { type: 'group', columns: 6, label: 'Address' }
-#          - street
-#          - postalCode
-#          - city
-#          - { type: 'group', columns: 12, label: 'Invoices' }
-#          - { property: invoices, label: '', type: embedded_list }
-#      list:
-#        fields:
-#          - displayName
-#          - { property: 'clients', type: 'array' }
-#          - contractor
-#          - { property: 'persons', type: 'array' }
-#    Persons:
-#      class: App\Entity\Person
-#      form:
-#        fields:
-#          - company
-#          - { property: 'civility',
-#              type: 'choice', type_options: {
-#              choices: {
-#                M: 'h',
-#                Mme: 'f',
-#              }
-#            } }
-#          - firstname
-#          - lastname
-#          - email
-#          - phones
-#          - isInvoicingDefault
-#      list:
-#        fields:
-#          - company
-#          - civility
-#          - firstname
-#          - lastname
-#          - email
-#          - phones
-#    Invoices:
-#      class: App\Entity\Invoice
-#      controller: App\Controller\InvoiceController
-#      form:
-#        fields:
-#          - { type: 'group', columns: 2 }
-#          - number
-#          - { type: 'group', columns: 4 }
-#          - object
-#          - { type: 'group', columns: 3 }
-#          - { property: 'company', type: 'easyadmin_autocomplete', type_options: { class: 'App\Entity\Company', attr: { create: true } } }
-#          - { type: 'group', columns: 3 }
-#          - { property: 'experience', type: 'easyadmin_autocomplete', type_options: { class: 'App\Entity\Experience', attr: { create: true } } }
-#          - { type: 'group', columns: 2, label: 'Invoicing' }
-#          - { property: 'daysCount', type: 'number'}
-#          - tjm
-#          - { type: 'group', columns: 2, label: 'Calculated' }
-#          - totalHt
-#          - totalTax
-#          - { type: 'group', columns: 2, label: 'Date' }
-#          - { property: 'createdAt',
-#              type_options: {
-#                widget: 'single_text', format: 'dd/MM/yyyy',
-#                attr: {data-provide: 'datepicker', data-date-format: 'dd/mm/yyyy', data-date-language: 'fr'}
-#              } }
-#          - { property: 'payedAt',
-#              type_options: {
-#                widget: 'single_text', format: 'dd/MM/yyyy',
-#                attr: {data-provide: 'datepicker', data-date-format: 'dd/mm/yyyy', data-date-language: 'fr'}
-#              } }
-#          - { type: 'group', columns: 2, label: 'Payment' }
-#          - { property: 'payedBy',
-#                type: 'choice', type_options: {
-#              choices: {
-#                Check: 'check',
-#                Transfert: 'transfert',
-#              } } }
-#          - { property: 'status',
-#              type: 'choice', type_options: {
-#              choices: {
-#                Draft: 'draft',
-#                Waiting: 'waiting',
-#                Payed: 'payed',
-#              } } }
-#          - { type: 'group', columns: 12, label: 'Report' }
-#          - { property: activities, label: '', type: embedded_list }
-#        actions:
-#          - { name: 'pdf', target: '_blank', label: 'Pdf', icon: 'file-pdf', css_class: 'btn btn-secondary'}
-#          - { name: 'validate', label: 'Validate', icon: 'check', css_class: 'btn btn-secondary'}
-#      show:
-#        actions:
-#          - { name: 'pdf', target: '_blank', label: 'Pdf', icon: 'file-pdf', css_class: 'btn btn-secondary'}
-#          - { name: 'validate', label: 'Validate', icon: 'check', css_class: 'btn btn-secondary'}
-#          - { name: 'send', label: 'Send', icon: 'envelope', css_class: 'btn btn-danger'}
-#      list:
-#        fields:
-#          - number
-#          - company
-#          - experience
-#          - { property: 'totalHt', format: '%.0f' }
-#          - daysCount
-#          - createdAt
-#        filters:
-#          - company
-#          - { property: status, type: 'App\Form\Filter\InvoiceStatusFilterType' }
-#          - { property: createdAtYear, mapped: false, type: 'App\Form\Filter\DateYearFilterType', type_options: {data: 'createdAt'} }
-#          - { property: createdAtQuarter, mapped: false, type: 'App\Form\Filter\DateQuarterFilterType', type_options: {data: 'createdAt'} }
-#        actions:
-#          - { name: 'pdf', target: '_blank', label: 'Pdf'}
-#          - { name: 'validate', label: 'Validate'}
-#          - { name: 'send', label: 'Send'}
-#    Activities:
-#      class: App\Entity\Activity
-#      form:
-#        fields:
-#          - company
-#          - value
-#          - { property: 'date',
-#              type_options: {
-#                widget: 'single_text', format: 'dd/MM/yyyy',
-#                attr: {data-provide: 'datepicker', data-date-format: 'dd/mm/yyyy', data-date-language: 'fr'}
-#              } }
-#      list:
-#        fields:
-#          - company
-#          - value
-#          - date
-#        filters:
-#            #- company
-#            #- { property: company, mapped: false, type: 'App\Form\Filter\EntityFilterType', type_options: {class: 'App\Entity\Company'} }
-#            - { property: 'company', type: 'EasyCorp\Bundle\EasyAdminBundle\Form\Type\EasyAdminAutocompleteType', type_options: { class: 'App\Entity\Company' } }
-#            - { property: dateYear, mapped: false, type: 'App\Form\Filter\DateYearFilterType', type_options: {data: 'date'} }
-#            - { property: dateMonth, mapped: false, type: 'App\Form\Filter\DateMonthFilterType', type_options: {data: 'date'} }
-#        batch_actions:
-#          - delete
-#    Experiences:
-#      class: App\Entity\Experience
-#      form:
-#        fields:
-#          - { type: 'group', columns: 4, label: 'Principal' }
-#          - title
-#          - description
-#          - { property: 'company', type: 'easyadmin_autocomplete', type_options: { class: 'App\Entity\Company', attr: { create: true } } }
-#          - { property: 'client', type: 'easyadmin_autocomplete', type_options: { class: 'App\Entity\Company', attr: { create: true } } }
-#          - { type: 'group', columns: 4, label: 'Date' }
-#          - { property: 'dateBegin',
-#              type_options: {
-#                widget: 'single_text', format: 'dd/MM/yyyy',
-#                attr: {data-provide: 'datepicker', data-date-format: 'dd/mm/yyyy', data-date-language: 'fr'}
-#              } }
-#          - { property: 'dateEnd',
-#              type_options: {
-#                widget: 'single_text', format: 'dd/MM/yyyy',
-#                attr: {data-provide: 'datepicker', data-date-format: 'dd/mm/yyyy', data-date-language: 'fr'}
-#              } }
-#          - { type: 'group', columns: 4, label: 'Options' }
-#          - { property: 'skills', type: 'easyadmin_autocomplete', type_options: { class: 'App\Entity\Skill', attr: { create: true } } }
-#          - isFreelance
-#          - onSite
-#          - onHomepage
-#      list:
-#        fields:
-#          - company
-#          - client
-#          - dateBegin
-#          - dateEnd
-#          - onHomepage
-#    Skills:
-#      class: App\Entity\Skill
-#      form:
-#        fields:
-#          - name
-#          - { property: 'type',
-#              type: 'choice', type_options: {
-#              choices: {
-#                Software: 'software',
-#                Framework: 'framework',
-#                Platform: 'platform',
-#                Language: 'language',
-#                OS: 'os',
-#              } } }
-#          - { property: 'level', type_options: {attr: {min: 0, max: 10 } } }
-#          - { property: 'parent', type: 'easyadmin_autocomplete', type_options: { class: 'App\Entity\Skill', attr: { create: true } } }
-#          - onHomepage
-#          - experiences
-#      list:
-#        fields:
-#          - name
-#          - { property: 'typeName', label: 'Type' }
-#          - level
-#          - parent
-#          - onHomepage
-#    Attributes:
-#      class: App\Entity\Attribute
-#      form:
-#        fields:
-#          - slug
-#          - { property: 'value', type: 'textarea' }
-#          - icon
-#          - weight
-#      list:
-#        fields:
-#          - slug
-#          - value
-#          - weight
-#    Hobbies:
-#      class: App\Entity\Hobby
-#      form:
-#        fields:
-#          - name
-#      list:
-#        fields:
-#          - name
-#        sort: ['name', 'DESC']
-#    Links:
-#      class: App\Entity\Link
-#      form:
-#        fields:
-#          - icon
-#          - name
-#          - url
-#      list:
-#        fields:
-#          - name
-#          - { property: 'url', type: 'url' }
-#        sort: ['name', 'DESC']
-#    Educations:
-#      class: App\Entity\Education
-#      form:
-#        fields:
-#          - name
-#          - school
-#          - details
-#          - location
-#          - level
-#          - { property: 'dateBegin',
-#              type_options: {
-#                widget: 'single_text', format: 'dd/MM/yyyy',
-#                attr: {data-provide: 'datepicker', data-date-format: 'dd/mm/yyyy', data-date-language: 'fr'}
-#              } }
-#          - { property: 'dateEnd',
-#              type_options: {
-#                widget: 'single_text', format: 'dd/MM/yyyy',
-#                attr: {data-provide: 'datepicker', data-date-format: 'dd/mm/yyyy', data-date-language: 'fr'}
-#              } }
-#      list:
-#        fields:
-#          - name
-#          - school
-#          - location
-#          - level
-#          - dateBegin
-#          - dateEnd
-#
-#easy_admin_extension:
-#  minimum_role: ROLE_ADMIN
+easy_admin:
+  site_name: 'Admin'
+  design:
+    assets:
+      js:
+        - 'build/js/bootstrap-datepicker.js'
+        - 'build/js/bootstrap-datepicker.fr.js'
+        - 'build/js/app.js'
+        - 'build/runtime.js'
+      css:
+        - 'build/css/bootstrap-datepicker.css'
+        - 'build/css/admin.css'
+        - 'build/css/dashboard.css'
+        - 'build/css/report.css'
+    form_theme:
+      - '@EasyAdmin/form/bootstrap_4.html.twig'
+      - 'bundles/EasyAdminBundle/form.html.twig'
+    menu:
+        - { label: 'Home', url: '/', icon: 'home' }
+
+        - { label: 'Dashboard', url: '/admin/dashboard', icon: 'chart-bar', default: true }
+        - { label: 'Report', url: '/admin/report', icon: 'calendar-alt' }
+
+        - { label: 'Invoicing' }
+        - { entity: 'Invoice', label: 'Invoices', icon: 'coins' }
+        - { entity: 'Declaration', label: 'Declarations', icon: 'landmark' }
+        - { entity: 'Activity', label: 'Activities', icon: 'calendar-check' }
+        - { entity: 'Company', label: 'Companies', icon: 'building' }
+        - { entity: 'Person', label: 'Persons', icon: 'users' }
+
+        - { label: 'Resume' }
+        - { entity: 'Experience', label: 'Experiences', icon: 'address-card' }
+        - { entity: 'Skill', label: 'Skills', icon: 'fill-drip' }
+        - { entity: 'Attribute', label: 'Attributes', icon: 'cogs' }
+        - { entity: 'Hobby', label: 'Hobbies', icon: 'chess' }
+        - { entity: 'Education', label: 'Educations', icon: 'graduation-cap'  }
+        - { entity: 'Link', label: 'Links', icon: 'link' }
+
+        - { label: 'Other' }
+        - { label: 'Invoices book', url: '/admin/invoice/csv', icon: 'file-excel' }
+  formats:
+    date: 'd/m/Y'
+  list:
+    max_results: 100
+  entities:
+    Company:
+      class: App\Entity\Company
+      form:
+        fields:
+          - { type: 'group', columns: 3, label: 'Principal' }
+          - name
+          - displayName
+          - { property: 'displayName', label: 'Display name' }
+          - { type: 'group', columns: 3, label: 'Hierarchy' }
+          - { property: 'clients', type: 'easyadmin_autocomplete', type_options: { class: 'App\Entity\Company', attr: { create: true } } }
+          - { property: 'contractor', type: 'easyadmin_autocomplete', type_options: { class: 'App\Entity\Company', attr: { create: true } } }
+          - { property: 'persons', type: 'easyadmin_autocomplete', type_options: { class: 'App\Entity\Person', attr: { create: true } } }
+          - { type: 'group', columns: 6, label: 'Address' }
+          - street
+          - postalCode
+          - city
+          - { type: 'group', columns: 12, label: 'Invoices' }
+          - { property: invoices, label: '', type: embedded_list }
+      list:
+        fields:
+          - displayName
+          - { property: 'clients', type: 'array' }
+          - contractor
+          - { property: 'persons', type: 'array' }
+    Person:
+      class: App\Entity\Person
+      form:
+        fields:
+          - company
+          - { property: 'civility',
+              type: 'choice', type_options: {
+              choices: {
+                M: 'h',
+                Mme: 'f',
+              }
+            } }
+          - firstname
+          - lastname
+          - email
+          - phones
+          - isInvoicingDefault
+      list:
+        fields:
+          - company
+          - civility
+          - firstname
+          - lastname
+          - email
+          - phones
+    Invoice:
+      class: App\Entity\Invoice
+      controller: App\Controller\InvoiceController
+      form:
+        fields:
+          - { type: 'group', columns: 2 }
+          - number
+          - { type: 'group', columns: 4 }
+          - object
+          - { type: 'group', columns: 3 }
+          - { property: 'company', type: 'easyadmin_autocomplete', type_options: { class: 'App\Entity\Company', attr: { create: true } } }
+          - { type: 'group', columns: 3 }
+          - { property: 'experience', type: 'easyadmin_autocomplete', type_options: { class: 'App\Entity\Experience', attr: { create: true } } }
+          - { type: 'group', columns: 2, label: 'Invoicing' }
+          - { property: 'daysCount', type: 'number'}
+          - tjm
+          - { type: 'group', columns: 2, label: 'Calculated' }
+          - totalHt
+          - totalTax
+          - { type: 'group', columns: 2, label: 'Date' }
+          - { property: 'createdAt',
+              type_options: {
+                widget: 'single_text', format: 'dd/MM/yyyy',
+                attr: {data-provide: 'datepicker', data-date-format: 'dd/mm/yyyy', data-date-language: 'fr'}
+              } }
+          - { type: 'group', columns: 10, label: 'Payment' }
+          - { property: 'payedBy',
+                type: 'choice', type_options: {
+              choices: {
+                Check: 'check',
+                Transfert: 'transfert',
+              } } }
+          - { property: 'payedAt',
+              type_options: {
+                widget: 'single_text', format: 'dd/MM/yyyy',
+                attr: {data-provide: 'datepicker', data-date-format: 'dd/mm/yyyy', data-date-language: 'fr'}
+              } }
+          - { property: 'status',
+              type: 'choice', type_options: {
+              choices: {
+                Draft: 'draft',
+                Waiting: 'waiting',
+                Payed: 'payed',
+              } } }
+          - period
+          - { type: 'group', columns: 12, label: 'Report' }
+          - { property: activities, label: '', type: embedded_list }
+        actions:
+          - { name: 'pdf', target: '_blank', label: 'Pdf', icon: 'file-pdf', css_class: 'btn btn-secondary'}
+          - { name: 'validate', label: 'Validate', icon: 'check', css_class: 'btn btn-secondary'}
+      show:
+        actions:
+          - { name: 'pdf', target: '_blank', label: 'Pdf', icon: 'file-pdf', css_class: 'btn btn-secondary'}
+          - { name: 'validate', label: 'Validate', icon: 'check', css_class: 'btn btn-secondary'}
+          - { name: 'send', label: 'Send', icon: 'envelope', css_class: 'btn btn-danger'}
+      list:
+        fields:
+          - number
+          - company
+          - experience
+          - { property: 'totalHt', format: '%.0f' }
+          - daysCount
+          - createdAt
+          - payedAt
+          - { property: 'period.declarations', type: 'array', label: 'Declarations' }
+        filters:
+          - company
+          - { property: status, type: 'App\Form\Filter\InvoiceStatusFilterType' }
+          - { property: createdAtYear, mapped: false, type: 'App\Form\Filter\DateYearFilterType', type_options: {data: 'createdAt'} }
+          - { property: createdAtQuarter, mapped: false, type: 'App\Form\Filter\DateQuarterFilterType', type_options: {data: 'createdAt'} }
+          - { property: payedAtYear, mapped: false, type: 'App\Form\Filter\DateYearFilterType', type_options: {data: 'payedAt'} }
+          - { property: payedAtQuarter, mapped: false, type: 'App\Form\Filter\DateQuarterFilterType', type_options: {data: 'payedAt'} }
+        actions:
+          - { name: 'pdf', target: '_blank', label: 'Pdf'}
+          - { name: 'validate', label: 'Validate'}
+          - { name: 'send', label: 'Send'}
+        collapse_actions: true
+    Declaration:
+      class: App\Entity\Declaration
+      controller: App\Controller\DeclarationController
+      form:
+        fields:
+          - { type: 'group', columns: 2, label: '' }
+          - { property: 'type',
+              type: 'choice', type_options: {
+              choices: {
+                Tva: 'tva',
+                Social: 'social',
+                Impot: 'impot',
+              } } }
+          - { type: 'group', columns: 2, label: '' }
+          - year
+          - { type: 'group', columns: 2, label: '' }
+          - quarter
+          - { type: 'group', columns: 2, label: '' }
+          - revenue
+          - { type: 'group', columns: 2, label: '' }
+          - tax
+          - { type: 'group', columns: 2, label: '' }
+          - { property: 'status',
+            type: 'choice', type_options: {
+              choices: {
+                Waiting: 'waiting',
+                Payed: 'payed',
+              } } }
+          - { type: 'group', columns: 2, label: '' }
+          - { property: 'payedAt',
+              type_options: {
+                widget: 'single_text', format: 'dd/MM/yyyy',
+                attr: {data-provide: 'datepicker', data-date-format: 'dd/mm/yyyy', data-date-language: 'fr'}
+              } }
+          - { type: 'group', columns: 12, label: 'Invoices' }
+          - { property: invoices, label: '', mapped: false, type_options: { block_name: 'array_with_total' } }
+        actions:
+          - { name: 'calculate', label: 'Recalculate', icon: 'calculator', css_class: 'btn btn-secondary'}
+          - { name: 'validate', label: 'Validate', icon: 'check', css_class: 'btn btn-secondary'}
+      list:
+        fields:
+          - type
+          - revenue
+          - { property: 'revenue', format: '%.0f' }
+          - { property: 'tax', format: '%.0f' }
+          - { property: 'rate', format: '%.2f' }
+          - { property: 'year', format: '%.0f' }
+          - quarter
+          - status
+        actions:
+          - { name: 'calculate', label: 'Recalculate'}
+          - { name: 'validate', label: 'Validate'}
+    Activity:
+      class: App\Entity\Activity
+      form:
+        fields:
+          - company
+          - value
+          - { property: 'date',
+              type_options: {
+                widget: 'single_text', format: 'dd/MM/yyyy',
+                attr: {data-provide: 'datepicker', data-date-format: 'dd/mm/yyyy', data-date-language: 'fr'}
+              } }
+      list:
+        fields:
+          - company
+          - value
+          - date
+        filters:
+            #- company
+            #- { property: company, mapped: false, type: 'App\Form\Filter\EntityFilterType', type_options: {class: 'App\Entity\Company'} }
+            - { property: 'company', type: 'EasyCorp\Bundle\EasyAdminBundle\Form\Type\EasyAdminAutocompleteType', type_options: { class: 'App\Entity\Company' } }
+            - { property: dateYear, mapped: false, type: 'App\Form\Filter\DateYearFilterType', type_options: {data: 'date'} }
+            - { property: dateMonth, mapped: false, type: 'App\Form\Filter\DateMonthFilterType', type_options: {data: 'date'} }
+        batch_actions:
+          - delete
+    Experience:
+      class: App\Entity\Experience
+      form:
+        fields:
+          - { type: 'group', columns: 4, label: 'Principal' }
+          - title
+          - description
+          - { property: 'company', type: 'easyadmin_autocomplete', type_options: { class: 'App\Entity\Company', attr: { create: true } } }
+          - { property: 'client', type: 'easyadmin_autocomplete', type_options: { class: 'App\Entity\Company', attr: { create: true } } }
+          - { type: 'group', columns: 4, label: 'Date' }
+          - { property: 'dateBegin',
+              type_options: {
+                widget: 'single_text', format: 'dd/MM/yyyy',
+                attr: {data-provide: 'datepicker', data-date-format: 'dd/mm/yyyy', data-date-language: 'fr'}
+              } }
+          - { property: 'dateEnd',
+              type_options: {
+                widget: 'single_text', format: 'dd/MM/yyyy',
+                attr: {data-provide: 'datepicker', data-date-format: 'dd/mm/yyyy', data-date-language: 'fr'}
+              } }
+          - { type: 'group', columns: 4, label: 'Options' }
+          - { property: 'skills', type: 'easyadmin_autocomplete', type_options: { class: 'App\Entity\Skill', attr: { create: true } } }
+          - isFreelance
+          - onSite
+          - onHomepage
+      list:
+        fields:
+          - company
+          - client
+          - dateBegin
+          - dateEnd
+          - onHomepage
+    Skill:
+      class: App\Entity\Skill
+      form:
+        fields:
+          - name
+          - { property: 'type',
+              type: 'choice', type_options: {
+              choices: {
+                Software: 'software',
+                Framework: 'framework',
+                Platform: 'platform',
+                Language: 'language',
+                OS: 'os',
+              } } }
+          - { property: 'level', type_options: {attr: {min: 0, max: 10 } } }
+          - { property: 'parent', type: 'easyadmin_autocomplete', type_options: { class: 'App\Entity\Skill', attr: { create: true } } }
+          - onHomepage
+          - experiences
+      list:
+        fields:
+          - name
+          - { property: 'typeName', label: 'Type' }
+          - level
+          - parent
+          - onHomepage
+    Attribute:
+      class: App\Entity\Attribute
+      form:
+        fields:
+          - slug
+          - { property: 'value', type: 'textarea' }
+          - icon
+          - weight
+          - isListable
+      list:
+        fields:
+          - slug
+          - value
+          - isListable
+          - weight
+    Hobby:
+      class: App\Entity\Hobby
+      form:
+        fields:
+          - name
+      list:
+        fields:
+          - name
+        sort: ['name', 'DESC']
+    Link:
+      class: App\Entity\Link
+      form:
+        fields:
+          - icon
+          - name
+          - url
+      list:
+        fields:
+          - name
+          - { property: 'url', type: 'url' }
+        sort: ['name', 'DESC']
+    Education:
+      class: App\Entity\Education
+      form:
+        fields:
+          - name
+          - school
+          - details
+          - location
+          - level
+          - { property: 'dateBegin',
+              type_options: {
+                widget: 'single_text', format: 'dd/MM/yyyy',
+                attr: {data-provide: 'datepicker', data-date-format: 'dd/mm/yyyy', data-date-language: 'fr'}
+              } }
+          - { property: 'dateEnd',
+              type_options: {
+                widget: 'single_text', format: 'dd/MM/yyyy',
+                attr: {data-provide: 'datepicker', data-date-format: 'dd/mm/yyyy', data-date-language: 'fr'}
+              } }
+      list:
+        fields:
+          - name
+          - school
+          - location
+          - level
+          - dateBegin
+          - dateEnd
+
+easy_admin_extension:
+  minimum_role: ROLE_ADMIN

@@ -19,10 +19,15 @@ class AttributeRepository extends ServiceEntityRepository
         parent::__construct($registry, Attribute::class);
     }
 
-    public function findAllIndexedBy($attribute)
+    public function findAllIndexedBy($attribute, $isListable)
     {
-        return $this->createQueryBuilder('a')
-            ->indexBy('a', 'a.' . $attribute)
+        $query = $this->createQueryBuilder('a');
+
+        $query->where('a.isListable = :isListable')
+            ->setParameter('isListable', $isListable);
+
+         return $query->indexBy('a', 'a.' . $attribute)
+            ->orderBy('a.weight', 'DESC')
             ->getQuery()
             ->getResult();
     }
