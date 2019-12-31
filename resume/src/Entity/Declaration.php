@@ -201,6 +201,22 @@ class Declaration
         return static::$typeName[$this->type];
     }
 
+    /**
+     * @return array<string>
+     */
+    public static function getAvailableType()
+    {
+        return array_keys(static::$typeName);
+    }
+
+    /**
+     * @return array<string>
+     */
+    public static function getTypeList()
+    {
+        return array_flip(static::$typeName);
+    }
+
     public function getPeriod(): ?Period
     {
         return $this->period;
@@ -235,6 +251,22 @@ class Declaration
         }
 
         return static::$statusName[$this->status];
+    }
+
+    /**
+     * @return array<string>
+     */
+    public static function getAvailableStatus()
+    {
+        return array_keys(static::$statusName);
+    }
+
+    /**
+     * @return array<string>
+     */
+    public static function getStatusList()
+    {
+        return array_flip(static::$statusName);
     }
 
     public function getPayedAt(): ?\DateTimeInterface

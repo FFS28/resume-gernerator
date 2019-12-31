@@ -147,23 +147,36 @@ class ReportController extends EasyAdminController
 
     /**
      * @param ActivityRepository $activityRepository
+     * @param InvoiceRepository $invoiceRepository
      * @param InvoiceService $invoiceService
+     * @param EntityManagerInterface $entityManager
      * @param int $year
      * @param int $month
      * @param Company $company
      * @return RedirectResponse
-     * @throws NonUniqueResultException
+     * @throws Exception
      * @Route("/admin/report/{year<\d+>}/{month<\d+>}/{slug}/invoice", name="report_invoice")
      */
     public function invoice(
         ActivityRepository $activityRepository,
+        InvoiceRepository $invoiceRepository,
         InvoiceService $invoiceService,
+        EntityManagerInterface $entityManager,
         int $year, int $month, Company $company
     )
     {
         list($currentDate, $activities) = $this->getActivities($activityRepository, $company, $year, $month);
+        $invoices = $invoiceRepository->getByDate($currentDate);
+        $invoice = null;
 
-        $invoice = $invoiceService->createByActivities($currentDate, $company, $activities);
+        if (count($invoices) == 1 && $invoices[0]->getCompany() === $company) {
+            $invoice = $invoices[0];
+            $invoice->importActivities($activities);
+            $entityManager->flush();
+        } else {
+            //$invoice = $invoiceService->createByActivities($currentDate, $company, $activities);
+        }
+
 
         return $this->redirectToRoute('easyadmin', ['entity'=> 'Invoice', 'action'=> 'edit', 'id'=> $invoice->getId()]);
     }

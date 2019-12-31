@@ -4,6 +4,7 @@
             <thead>
                 <tr>
                     <th><span>{{ 'Company' | trans }}</span></th>
+                    <th><span>{{ 'Number' | trans }}</span></th>
                     <th><span>{{ 'Payed at' | trans }}</span></th>
                     <th><span style="text-align: right">{{ 'Total ht' | trans }}</span></th>
                     <th><span style="text-align: right">{{ 'Total tax' | trans }}</span></th>
@@ -16,6 +17,7 @@
                 {% for invoice in form.vars.value %}
                     <tr>
                         <td>{{ invoice.company }}</td>
+                        <td>{{ invoice.number }}</td>
                         <td>{{ invoice.payedAt | date('d/m/Y') }}</td>
                         <td style="text-align: right">{{ invoice.totalHt | number_format(0, ',', ' ') }}</td>
                         <td style="text-align: right">{{ invoice.totalTax | number_format(0, ',', ' ') }}</td>
@@ -33,7 +35,7 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <th style="text-align: right;" colspan="2">{{ 'Total' | trans }} :</th>
+                    <th style="text-align: right;" colspan="3">{{ 'Total' | trans }} :</th>
                     <th style="text-align: right;">{{ totalHt | number_format(0, ',', ' ') }}</th>
                     <th style="text-align: right;">{{ totalTax | number_format(0, ',', ' ') }}</th>
                     <th></th>

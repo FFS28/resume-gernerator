@@ -276,6 +276,15 @@ class Invoice
             : null;
     }
 
+    public function setDaysCount(int $daysCount): self
+    {
+        dump($daysCount);
+        exit;
+        $this->setTotalHt($this->getTjm() * $daysCount);
+        $this->setTotalTax($this->totalHt * Invoice::TAX_MULTIPLIER);
+        return $this;
+    }
+
     public function getTotalTax(): ?string
     {
         return $this->totalTax;

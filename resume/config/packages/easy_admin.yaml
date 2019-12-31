@@ -222,6 +222,11 @@ easy_admin:
         actions:
           - { name: 'calculate', label: 'Recalculate'}
           - { name: 'validate', label: 'Validate'}
+        filters:
+          - { property: status, type: 'App\Form\Filter\DeclarationStatusFilterType' }
+          - { property: type, type: 'App\Form\Filter\DeclarationTypeFilterType' }
+          - year
+          - quarter
     Period:
       class: App\Entity\Period
     Activity:
@@ -235,13 +240,16 @@ easy_admin:
                 widget: 'single_text', format: 'dd/MM/yyyy',
                 attr: {data-provide: 'datepicker', data-date-format: 'dd/mm/yyyy', data-date-language: 'fr'}
               } }
+          - invoice
       list:
         fields:
           - company
           - value
           - date
+          - invoice
         filters:
-            - { property: company, type: 'EasyCorp\Bundle\EasyAdminBundle\Form\Type\EasyAdminAutocompleteType', type_options: { class: 'App\Entity\Company' } }
+            - company
+            - invoice
             - { property: dateYear, mapped: false, type: 'App\Form\Filter\DateYearFilterType', type_options: {data: 'date'} }
             - { property: dateMonth, mapped: false, type: 'App\Form\Filter\DateMonthFilterType', type_options: {data: 'date'} }
         batch_actions:
