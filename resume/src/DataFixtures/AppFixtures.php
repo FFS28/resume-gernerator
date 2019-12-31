@@ -1807,6 +1807,22 @@ class AppFixtures extends Fixture
         $this->periods[2019]->addInvoice($invoice);
         $this->periods['2019-4']->addInvoice($invoice);
         $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201911-1');
+        $invoice->setCompany($this->companies['bewizyu']);
+        $invoice->setExperience($this->experiences['201906']);
+        $invoice->setTjm(400);
+        $invoice->setCreatedAt(new \DateTime('2019-12-20 00:00:00'));
+        $invoice->setPayedAt(null);
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(4400);
+        $invoice->setTotalTax(880);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_WAITING);
+        $this->periods[2019]->addInvoice($invoice);
+        $this->periods['2019-4']->addInvoice($invoice);
+        $this->manager->persist($invoice);
     }
 
     public function loadPeriods()

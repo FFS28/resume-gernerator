@@ -67,6 +67,8 @@ class Declaration
     const SOCIAL_NON_COMMERCIALE = 0.22;
     const SOCIAL_CFP = 0.002;
 
+    const IMPOT_ABATTEMENT = 0.34;
+
     const STATUS_WAITING = 'waiting';
     const STATUS_PAYED = 'payed';
 
