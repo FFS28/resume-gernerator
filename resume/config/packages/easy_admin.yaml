@@ -59,12 +59,14 @@ easy_admin:
           - street
           - postalCode
           - city
+          - { type: 'group', columns: 12, label: 'Experiences' }
+          - { property: experiences, label: '', type: embedded_list }
           - { type: 'group', columns: 12, label: 'Invoices' }
           - { property: invoices, label: '', type: embedded_list }
       list:
         fields:
           - displayName
-          - { property: 'clients', type: 'array' }
+          - { property: 'client', type: 'association', targetEntity: 'App\Entity\Company', associationType: !php/const Doctrine\ORM\Mapping\ClassMetadataInfo::MANY_TO_ONE }
           - contractor
           - { property: 'persons', type: 'array' }
         max_results: 20
@@ -75,10 +77,7 @@ easy_admin:
           - company
           - { property: 'civility',
               type: 'choice', type_options: {
-              choices: {
-                M: 'h',
-                Mme: 'f',
-              }
+              choices: !php/const App\Entity\Person::CIVILITIES
             } }
           - firstname
           - lastname
@@ -88,7 +87,7 @@ easy_admin:
       list:
         fields:
           - company
-          - civility
+          - { property: civilityName, label: 'Civility' }
           - firstname
           - lastname
           - email
@@ -121,10 +120,7 @@ easy_admin:
           - { type: 'group', columns: 10, label: 'Payment' }
           - { property: 'payedBy',
                 type: 'choice', type_options: {
-              choices: {
-                Check: 'check',
-                Transfert: 'transfert',
-              } } }
+              choices: !php/const App\Entity\Invoice::PAYED_BYS } }
           - { property: 'payedAt',
               type_options: {
                 widget: 'single_text', format: 'dd/MM/yyyy',
@@ -132,11 +128,7 @@ easy_admin:
               } }
           - { property: 'status',
               type: 'choice', type_options: {
-              choices: {
-                Draft: 'draft',
-                Waiting: 'waiting',
-                Payed: 'payed',
-              } } }
+              choices: !php/const App\Entity\Invoice::STATUES } }
           - period
           - { type: 'group', columns: 12, label: 'Report' }
           - { property: activities, label: '', type: embedded_list }
@@ -178,11 +170,7 @@ easy_admin:
           - { type: 'group', columns: 2, label: '' }
           - { property: 'type',
               type: 'choice', type_options: {
-              choices: {
-                Tva: 'tva',
-                Social: 'social',
-                Impot: 'impot',
-              } } }
+              choices: !php/const App\Entity\Declaration::TYPES } }
           - { type: 'group', columns: 2, label: '' }
           - year
           - { type: 'group', columns: 2, label: '' }
@@ -194,10 +182,7 @@ easy_admin:
           - { type: 'group', columns: 2, label: '' }
           - { property: 'status',
             type: 'choice', type_options: {
-              choices: {
-                Waiting: 'waiting',
-                Payed: 'payed',
-              } } }
+              choices: !php/const App\Entity\Declaration::STATUSES } }
           - { type: 'group', columns: 2, label: '' }
           - { property: 'payedAt',
               type_options: {
@@ -293,13 +278,7 @@ easy_admin:
           - name
           - { property: 'type',
               type: 'choice', type_options: {
-              choices: {
-                Software: 'software',
-                Framework: 'framework',
-                Platform: 'platform',
-                Language: 'language',
-                OS: 'os',
-              } } }
+              choices: !php/const App\Entity\Skill::TYPES } }
           - { property: 'level', type_options: {attr: {min: 0, max: 10 } } }
           - { property: 'parent', type: 'easyadmin_autocomplete', type_options: { class: 'App\Entity\Skill', attr: { create: true } } }
           - onHomepage

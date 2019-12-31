@@ -16,7 +16,7 @@ class DeclarationTypeFilterType extends FilterType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'choices' => Declaration::getTypeList(),
+            'choices' => Declaration::TYPES,
         ]);
     }
 

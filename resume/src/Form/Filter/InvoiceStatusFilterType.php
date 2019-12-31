@@ -15,7 +15,7 @@ class InvoiceStatusFilterType extends FilterType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'choices' => Invoice::getStatusList(),
+            'choices' => Invoice::STATUES,
         ]);
     }
 

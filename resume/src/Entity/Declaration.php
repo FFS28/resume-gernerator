@@ -53,10 +53,10 @@ class Declaration
     const TYPE_IMPOT = "impot";
 
     /** @var array user friendly named type */
-    protected static $typeName = [
-        self::TYPE_TVA => 'TVA',
-        self::TYPE_SOCIAL => 'Social',
-        self::TYPE_IMPOT => 'Impot',
+    const TYPES = [
+        'TVA' => self::TYPE_TVA,
+        'Social' => self::TYPE_SOCIAL,
+        'Impot' => self::TYPE_IMPOT,
     ];
 
     /**
@@ -83,9 +83,9 @@ class Declaration
     private $payedAt;
 
     /** @var array user friendly named type */
-    protected static $statusName = [
-        self::STATUS_WAITING => 'Waiting',
-        self::STATUS_PAYED => 'Payed',
+    const STATUSES = [
+        'Waiting' => self::STATUS_WAITING,
+        'Payed' => self::STATUS_PAYED,
     ];
 
     public function __construct()
@@ -194,27 +194,12 @@ class Declaration
      */
     public function getTypeName()
     {
-        if (!isset(static::$typeName[$this->type])) {
+        $typeName = array_flip(self::TYPES);
+        if (!isset($typeName[$this->type])) {
             return null;
         }
 
-        return static::$typeName[$this->type];
-    }
-
-    /**
-     * @return array<string>
-     */
-    public static function getAvailableType()
-    {
-        return array_keys(static::$typeName);
-    }
-
-    /**
-     * @return array<string>
-     */
-    public static function getTypeList()
-    {
-        return array_flip(static::$typeName);
+        return $typeName[$this->type];
     }
 
     public function getPeriod(): ?Period
@@ -246,27 +231,12 @@ class Declaration
      */
     public function getStatusName()
     {
-        if (!isset(static::$statusName[$this->status])) {
+        $statusName = array_flip(self::STATUSES);
+        if (!isset($statusName[$this->status])) {
             return null;
         }
 
-        return static::$statusName[$this->status];
-    }
-
-    /**
-     * @return array<string>
-     */
-    public static function getAvailableStatus()
-    {
-        return array_keys(static::$statusName);
-    }
-
-    /**
-     * @return array<string>
-     */
-    public static function getStatusList()
-    {
-        return array_flip(static::$statusName);
+        return $statusName[$this->status];
     }
 
     public function getPayedAt(): ?\DateTimeInterface
@@ -287,6 +257,10 @@ class Declaration
     public function getInvoices(): array
     {
         $period = $this->getPeriod();
+        if (!$period) {
+            return [];
+        }
+
         $periodsQuarter = $period->getPeriodsQuarter();
 
         if (count($periodsQuarter)) {

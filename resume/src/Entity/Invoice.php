@@ -83,9 +83,9 @@ class Invoice
     const PAYEDBY_TRANSFERT = "transfert";
 
     /** @var array user friendly named type */
-    protected static $payedByName = [
-        self::PAYEDBY_CHECK => 'Check',
-        self::PAYEDBY_TRANSFERT => 'Transfert',
+    const PAYED_BYS = [
+        'Check' => self::PAYEDBY_CHECK,
+        'Transfert' => self::PAYEDBY_TRANSFERT,
     ];
 
     const STATUS_DRAFT = 'draft';
@@ -98,10 +98,10 @@ class Invoice
     private $status;
 
     /** @var array user friendly named type */
-    protected static $statusName = [
-        self::STATUS_DRAFT => 'Draft',
-        self::STATUS_WAITING => 'Waiting',
-        self::STATUS_PAYED => 'Payed',
+    const STATUES = [
+        'Draft' => self::STATUS_DRAFT,
+        'Waiting' => self::STATUS_WAITING,
+        'Payed' => self::STATUS_PAYED,
     ];
 
     const DUE_INTERVAL_1M = 'P1M';
@@ -112,8 +112,8 @@ class Invoice
     private $dueInterval;
 
     /** @var array user friendly named type */
-    protected static $dueIntervalName = [
-        self::DUE_INTERVAL_1M => '30 days end of month',
+    const DUE_INTERVALES = [
+        '30 days end of month' => self::DUE_INTERVAL_1M,
     ];
 
     /**
@@ -278,8 +278,6 @@ class Invoice
 
     public function setDaysCount(int $daysCount): self
     {
-        dump($daysCount);
-        exit;
         $this->setTotalHt($this->getTjm() * $daysCount);
         $this->setTotalTax($this->totalHt * Invoice::TAX_MULTIPLIER);
         return $this;
@@ -338,19 +336,12 @@ class Invoice
      */
     public function getPayedByName()
     {
-        if (!isset(static::$payedByName[$this->payedBy])) {
+        $payedByName = array_flip(self::PAYED_BYS);
+        if (!isset($payedByName[$this->payedBy])) {
             return null;
         }
 
-        return static::$payedByName[$this->payedBy];
-    }
-
-    /**
-     * @return array<string>
-     */
-    public static function getAvailablePayedBy()
-    {
-        return array_keys(static::$payedByName);
+        return $payedByName[$this->payedBy];
     }
 
     public function getStatus(): ?string
@@ -370,27 +361,12 @@ class Invoice
      */
     public function getStatusName()
     {
-        if (!isset(static::$statusName[$this->status])) {
+        $statusName = array_flip(self::STATUES);
+        if (!isset($statusName[$this->status])) {
             return null;
         }
 
-        return static::$statusName[$this->status];
-    }
-
-    /**
-     * @return array<string>
-     */
-    public static function getAvailableStatus()
-    {
-        return array_keys(static::$statusName);
-    }
-
-    /**
-     * @return array<string>
-     */
-    public static function getStatusList()
-    {
-        return array_flip(static::$statusName);
+        return $statusName[$this->status];
     }
 
     public function getDueInterval(): ?string

@@ -24,9 +24,11 @@
     
 - Entreprises
     - Liste les clients et les prestataires pour chaque entreprise
+    - Possibilité d'envoyer un mail à une entreprise
+    - Type d'entreprise
     
 - Attributs
-    - Possibilité d'ajouter un message personnalité en bannière
+    - x Possibilité d'ajouter un message personnalité en bannière
     
 - Purchase
     - Déduire la TVA des achats

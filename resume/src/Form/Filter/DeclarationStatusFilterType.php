@@ -16,7 +16,7 @@ class DeclarationStatusFilterType extends FilterType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'choices' => Declaration::getStatusList(),
+            'choices' => Declaration::STATUSES,
         ]);
     }
 
