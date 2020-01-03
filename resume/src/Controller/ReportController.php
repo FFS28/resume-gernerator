@@ -58,9 +58,13 @@ class ReportController extends EasyAdminController
     )
     {
         $viewData = [];
-        $viewData['activeYear'] = $year ? $year : (new DateTime())->format('Y');
-        $viewData['activeMonth'] = $month ? $month : (new DateTime())->format('m');
+        $viewData['activeYear'] = intval($year ? $year : (new DateTime())->format('Y'));
+        $viewData['activeMonth'] = intval($month ? $month : (new DateTime())->format('m'));
         $viewData['years'] = $invoiceRepository->findYears();
+
+        if (!in_array($viewData['activeYear'], $viewData['years'])) {
+            $viewData['years'][] = $viewData['activeYear'];
+        }
 
         $currentDate = new DateTime($viewData['activeYear'] . ($viewData['activeMonth'] < 10 ? '0' : '') . $viewData['activeMonth'] . '01');
         $viewData['daysCount'] = $currentDate->format('t');
