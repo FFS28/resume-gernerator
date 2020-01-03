@@ -2009,11 +2009,11 @@ class AppFixtures extends Fixture
 
         $declaration = new Declaration();
         $declaration->setType(Declaration::TYPE_SOCIAL);
-        $declaration->setRevenue(0);
-        $declaration->setTax(0);
+        $declaration->setRevenue(12000);
+        $declaration->setTax(2664);
         $declaration->setYear(2019);
         $declaration->setQuarter(4);
-        $declaration->setStatus(Declaration::STATUS_WAITING);
+        $declaration->setStatus(Declaration::STATUS_PAYED);
         $this->manager->persist($declaration);
         $this->declarations['2019T4'] = $declaration;
         $this->periods['2019-4']->addDeclaration($declaration);
