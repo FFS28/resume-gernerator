@@ -1809,7 +1809,7 @@ class AppFixtures extends Fixture
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
-        $invoice->setNumber('201911-1');
+        $invoice->setNumber('201912-1');
         $invoice->setCompany($this->companies['bewizyu']);
         $invoice->setExperience($this->experiences['201906']);
         $invoice->setTjm(400);
