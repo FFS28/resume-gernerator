@@ -8,6 +8,7 @@ Icon: Icone
 Value: Valeur
 Weight: Poids
 Age: '{age} ans'
+Is listable: est listable
 
 Education: Formation
 Educations: Formations
@@ -44,6 +45,7 @@ Postal code: Code postal
 City: Ville
 Principal: Principal
 Hierarchy: Hierarchie
+Last experience: Dernière expérience
 
 Person: Personne
 Persons: Personnes
@@ -62,6 +64,7 @@ Check: Chèque
 Transfert: Virement
 Tjm: TJM
 Object: Objet
+Total: Total
 Total ht: Total HT
 Total tax: Total TVA
 Created at: Créé le
@@ -100,14 +103,31 @@ Links: Liens
 Url: URL
 
 Skill: Compétence
-Skills: Compétence
+Skills: Compétences
 Type: Type
 Level: Niveau
 Parent: Parent
 Children: Enfants
+Software: Logiciel
+Framework: Framework
+Platform: Platforme
+Language: Langage
+OS: OS
 
-Send: Envoyer
-Message: Message
+Declaration: Déclaration
+Declarations: Déclarations
+Tax: Charges
+Revenue: Chiffre d'affaire
+Tva: TVA
+Social: Social
+Impot: Impôt
+Next declaration: Prochaine déclaration
+Quarter: Trimestre
+Rate: Taux
+Recalculate: Recalculer
+
+Period: Période
+Periods: Périodes
 
 Date: Date
 Year: Année
@@ -154,5 +174,6 @@ Report: Rapport d'activité
 Resume: CV
 Export: Export
 Other: Autre
-New message: Nouveau message
-Timeline: Timeline
+Send: Envoyer
+Message: Message
+Actions: Actions

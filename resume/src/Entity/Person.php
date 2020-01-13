@@ -25,9 +25,9 @@ class Person
     const CIVILITY_F    = "f";
 
     /** @var array user friendly named type */
-    protected static $civilityName = [
-        self::CIVILITY_H => 'M',
-        self::CIVILITY_F => 'Mme',
+    const CIVILITIES = [
+        'M' => self::CIVILITY_H ,
+        'Mme' => self::CIVILITY_F,
     ];
 
     /**
@@ -88,19 +88,12 @@ class Person
      */
     public function getCivilityName()
     {
-        if (!isset(static::$civilityName[$this->civility])) {
+        $civilityNames = array_flip(self::CIVILITIES);
+        if (!isset($civilityNames[$this->civility])) {
             return null;
         }
 
-        return static::$civilityName[$this->civility];
-    }
-
-    /**
-     * @return array<string>
-     */
-    public static function getAvailableCivility()
-    {
-        return array_keys(static::$civilityName);
+        return $civilityNames[$this->civility];
     }
 
     public function getFirstname(): ?string

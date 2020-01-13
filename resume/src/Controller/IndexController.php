@@ -51,8 +51,8 @@ class IndexController extends AbstractController
 
         $experiencesFilter = $request->query->get('all') ? [] : ['onHomepage' => true];
         $data = [
-            'attributes' => $attributeRepository->findAllIndexedBy('slug'),
-            'attributes_exclude' => ['name', 'quote', 'job', 'subtitle', 'description', 'siret', 'message'],
+            'attributes' => $attributeRepository->findAllIndexedBy('slug', false),
+            'attributes_listable' => $attributeRepository->findAllIndexedBy('slug', true),
             'skills' => $skillRepository->findBy(['onHomepage' => true], ['level' => 'DESC']),
             'experiences' => $experienceRepository->findBy($experiencesFilter, ['dateBegin' => 'DESC']),
             'educations' => $educationRepository->findBy([], ['dateBegin' => 'DESC']),

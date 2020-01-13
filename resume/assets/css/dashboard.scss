@@ -35,6 +35,11 @@
         @include align-items(flex-start);
       }
 
+      &.card-danger{
+        background: #cd3c63 !important;
+        color: #fff;
+      }
+
       display: block;
       border: none;
 

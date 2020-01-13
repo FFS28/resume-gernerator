@@ -70,14 +70,12 @@
                         <span itemprop="addressLocality">{{ attributes['city'].value }}</span>
                     </span>
                 {% endif %}
-                {% for attribute in attributes %}
-                    {% if attribute.slug not in attributes_exclude %}
-                        <span class="li separator hidden-xs"><i class="fas fa-circle"></i></span>
-                        <span class="li">
-                            {% if attribute.icon %}<i class="icon {{ attribute.icon }}"></i>{% endif %}
-                            <span>{{ attribute.value }}</span>
-                        </span>
-                    {% endif %}
+                {% for attribute in attributes_listable %}
+                    <span class="li separator hidden-xs"><i class="fas fa-circle"></i></span>
+                    <span class="li">
+                        {% if attribute.icon %}<i class="icon {{ attribute.icon }}"></i>{% endif %}
+                        <span>{{ attribute.value }}</span>
+                    </span>
                 {% endfor %}
             </div>
         </div>

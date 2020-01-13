@@ -4,11 +4,13 @@ namespace App\DataFixtures;
 
 use App\Entity\Attribute;
 use App\Entity\Company;
+use App\Entity\Declaration;
 use App\Entity\Education;
 use App\Entity\Experience;
 use App\Entity\Hobby;
 use App\Entity\Invoice;
 use App\Entity\Link;
+use App\Entity\Period;
 use App\Entity\Person;
 use App\Entity\Skill;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -41,6 +43,16 @@ class AppFixtures extends Fixture
      */
     private $persons;
 
+    /**
+     * @var Declaration[]
+     */
+    private $declarations;
+
+    /**
+     * @var Period[]
+     */
+    private $periods;
+
     public function load(ObjectManager $manager)
     {
         $this->manager = $manager;
@@ -54,6 +66,8 @@ class AppFixtures extends Fixture
         $this->loadCompanies();
         $this->loadPersons();
         $this->loadExperience();
+        $this->loadPeriods();
+        $this->loadDeclarations();
         $this->loadInvoices();
 
         $this->manager->flush();
@@ -67,30 +81,35 @@ class AppFixtures extends Fixture
         $attribute->setSlug('name');
         $attribute->setValue('Jérémy ACHAIN');
         $attribute->setWeight(0);
+        $attribute->setIsListable(false);
         $this->manager->persist($attribute);
 
         $attribute = new Attribute();
         $attribute->setSlug('job');
         $attribute->setValue('Développeur Web');
         $attribute->setWeight(0);
+        $attribute->setIsListable(false);
         $this->manager->persist($attribute);
 
         $attribute = new Attribute();
         $attribute->setSlug('quote');
         $attribute->setValue('Programming is a creative art form based in logic. Every programmer is different');
         $attribute->setWeight(0);
+        $attribute->setIsListable(false);
         $this->manager->persist($attribute);
 
         $attribute = new Attribute();
         $attribute->setSlug('subtitle');
         $attribute->setValue('Développeur Web Freelance spécialisé Symfony et Angular');
         $attribute->setWeight(0);
+        $attribute->setIsListable(false);
         $this->manager->persist($attribute);
 
         $attribute = new Attribute();
         $attribute->setSlug('description');
         $attribute->setValue('Jérémy Achain, Développeur Web Freelance spécialisé PHP / Symfony et JS / Angular sur Lyon');
         $attribute->setWeight(0);
+        $attribute->setIsListable(false);
         $this->manager->persist($attribute);
 
         // Facultatif
@@ -99,36 +118,42 @@ class AppFixtures extends Fixture
         $attribute->setSlug('location');
         $attribute->setValue('Lyon, France');
         $attribute->setWeight(50);
+        $attribute->setIsListable(true);
         $this->manager->persist($attribute);
 
         $attribute = new Attribute();
         $attribute->setSlug('status');
         $attribute->setValue('Freelance');
         $attribute->setWeight(40);
+        $attribute->setIsListable(true);
         $this->manager->persist($attribute);
 
         $attribute = new Attribute();
         $attribute->setSlug('tjm');
         $attribute->setValue('TJM: 400€');
         $attribute->setWeight(30);
+        $attribute->setIsListable(true);
         $this->manager->persist($attribute);
 
         $attribute = new Attribute();
         $attribute->setSlug('duration');
         $attribute->setValue('3 mois renouvelables ou moins');
         $attribute->setWeight(20);
+        $attribute->setIsListable(true);
         $this->manager->persist($attribute);
 
         $attribute = new Attribute();
         $attribute->setSlug('time');
         $attribute->setValue('Temps partiel (4/5 max)');
         $attribute->setWeight(10);
+        $attribute->setIsListable(true);
         $this->manager->persist($attribute);
 
         $attribute = new Attribute();
-        $attribute->setSlug('sirent');
+        $attribute->setSlug('siret');
         $attribute->setValue('525 230 207 00033');
         $attribute->setWeight(0);
+        $attribute->setIsListable(false);
         $this->manager->persist($attribute);
     }
 
@@ -858,6 +883,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(1500);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2015]->addInvoice($invoice);
+        $this->periods['2015-2']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -871,6 +898,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(3000);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2015]->addInvoice($invoice);
+        $this->periods['2015-2']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -884,6 +913,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(600);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2015]->addInvoice($invoice);
+        $this->periods['2015-2']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -897,6 +928,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(600);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2015]->addInvoice($invoice);
+        $this->periods['2015-2']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -909,6 +942,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(450);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2015]->addInvoice($invoice);
+        $this->periods['2015-2']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -922,6 +957,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(150);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2015]->addInvoice($invoice);
+        $this->periods['2015-2']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -935,6 +972,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(150);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2015]->addInvoice($invoice);
+        $this->periods['2015-2']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -947,6 +986,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(200);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2015]->addInvoice($invoice);
+        $this->periods['2015-2']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -960,6 +1001,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(2100);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2015]->addInvoice($invoice);
+        $this->periods['2015-3']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -973,6 +1016,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(7200);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2015]->addInvoice($invoice);
+        $this->periods['2015-3']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -986,6 +1031,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(6000);
         $invoice->setPayedBy(Invoice::PAYEDBY_CHECK);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2015]->addInvoice($invoice);
+        $this->periods['2015-4']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         // 2016
@@ -1000,6 +1047,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(100);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2016]->addInvoice($invoice);
+        $this->periods['2016-1']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1012,6 +1061,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(-100);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2016]->addInvoice($invoice);
+        $this->periods['2016-1']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1024,6 +1075,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(300);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2016]->addInvoice($invoice);
+        $this->periods['2016-1']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1037,6 +1090,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(4200);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2016]->addInvoice($invoice);
+        $this->periods['2016-2']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1050,6 +1105,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(3000);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2016]->addInvoice($invoice);
+        $this->periods['2016-2']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1063,6 +1120,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(600);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2016]->addInvoice($invoice);
+        $this->periods['2016-2']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1076,6 +1135,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(5100);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2016]->addInvoice($invoice);
+        $this->periods['2016-2']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1089,6 +1150,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(-3000);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2016]->addInvoice($invoice);
+        $this->periods['2016-2']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1102,6 +1165,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(-600);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2016]->addInvoice($invoice);
+        $this->periods['2016-2']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1115,6 +1180,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(300);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2016]->addInvoice($invoice);
+        $this->periods['2016-3']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1128,6 +1195,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(-300);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2016]->addInvoice($invoice);
+        $this->periods['2016-3']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1141,6 +1210,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(900);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2016]->addInvoice($invoice);
+        $this->periods['2016-3']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1154,6 +1225,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(300);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2016]->addInvoice($invoice);
+        $this->periods['2016-3']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1167,6 +1240,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(9000);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2016]->addInvoice($invoice);
+        $this->periods['2016-3']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1180,6 +1255,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(2100);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2016]->addInvoice($invoice);
+        $this->periods['2016-4']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1193,6 +1270,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(2100);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2016]->addInvoice($invoice);
+        $this->periods['2016-4']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1206,6 +1285,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(5600);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2016]->addInvoice($invoice);
+        $this->periods['2016-4']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         // 2017
@@ -1221,6 +1302,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(800);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2017]->addInvoice($invoice);
+        $this->periods['2017-1']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1234,6 +1317,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(2800);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2017]->addInvoice($invoice);
+        $this->periods['2017-1']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1247,6 +1332,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(4400);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2017]->addInvoice($invoice);
+        $this->periods['2017-1']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1260,6 +1347,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(800);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2017]->addInvoice($invoice);
+        $this->periods['2017-2']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1273,6 +1362,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(2800);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2017]->addInvoice($invoice);
+        $this->periods['2017-2']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1286,6 +1377,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(2000);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2017]->addInvoice($invoice);
+        $this->periods['2017-2']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1299,6 +1392,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(1600);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2017]->addInvoice($invoice);
+        $this->periods['2017-2']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1312,6 +1407,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(1600);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2017]->addInvoice($invoice);
+        $this->periods['2017-2']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1325,6 +1422,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(2700);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2017]->addInvoice($invoice);
+        $this->periods['2017-3']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1338,6 +1437,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(3300);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2017]->addInvoice($invoice);
+        $this->periods['2017-4']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1351,6 +1452,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(3300);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2017]->addInvoice($invoice);
+        $this->periods['2017-4']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1364,6 +1467,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(2640);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2017]->addInvoice($invoice);
+        $this->periods['2017-4']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1377,6 +1482,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(4000);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2017]->addInvoice($invoice);
+        $this->periods['2017-4']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         // 2018
@@ -1392,6 +1499,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(6300);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2018]->addInvoice($invoice);
+        $this->periods['2018-1']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1405,6 +1514,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(3600);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2018]->addInvoice($invoice);
+        $this->periods['2018-1']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1418,6 +1529,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(6000);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2018]->addInvoice($invoice);
+        $this->periods['2018-2']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1431,6 +1544,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(7000);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2018]->addInvoice($invoice);
+        $this->periods['2018-2']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1444,6 +1559,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(8200);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2018]->addInvoice($invoice);
+        $this->periods['2018-2']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1457,6 +1574,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(5800);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2018]->addInvoice($invoice);
+        $this->periods['2018-3']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1470,6 +1589,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(6400);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2018]->addInvoice($invoice);
+        $this->periods['2018-3']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1483,6 +1604,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(6800);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2018]->addInvoice($invoice);
+        $this->periods['2018-4']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1496,6 +1619,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(6000);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2018]->addInvoice($invoice);
+        $this->periods['2018-4']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1509,6 +1634,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(-400);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2018]->addInvoice($invoice);
+        $this->periods['2018-4']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1522,6 +1649,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(4800);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2018]->addInvoice($invoice);
+        $this->periods['2018-4']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         // 2019
@@ -1537,6 +1666,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(5000);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2019]->addInvoice($invoice);
+        $this->periods['2019-1']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1550,6 +1681,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(4000);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2019]->addInvoice($invoice);
+        $this->periods['2019-1']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1563,6 +1696,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(4200);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2019]->addInvoice($invoice);
+        $this->periods['2019-2']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1576,6 +1711,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(1800);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2019]->addInvoice($invoice);
+        $this->periods['2019-2']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1589,6 +1726,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(1800);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2019]->addInvoice($invoice);
+        $this->periods['2019-2']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1602,6 +1741,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(6000);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2019]->addInvoice($invoice);
+        $this->periods['2019-3']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1615,6 +1756,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalHt(5000);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2019]->addInvoice($invoice);
+        $this->periods['2019-3']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1629,6 +1772,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalTax(1080);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2019]->addInvoice($invoice);
+        $this->periods['2019-4']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1643,6 +1788,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalTax(840);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2019]->addInvoice($invoice);
+        $this->periods['2019-4']->addInvoice($invoice);
         $this->manager->persist($invoice);
 
         $invoice = new Invoice();
@@ -1651,13 +1798,225 @@ class AppFixtures extends Fixture
         $invoice->setExperience($this->experiences['201906']);
         $invoice->setTjm(400);
         $invoice->setCreatedAt(new \DateTime('2019-11-08 00:00:00'));
-        $invoice->setPayedAt(null);
+        $invoice->setPayedAt(new \DateTime('2019-12-20 00:00:00'));
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(2400);
         $invoice->setTotalTax(480);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
-        $invoice->setStatus(Invoice::STATUS_WAITING);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2019]->addInvoice($invoice);
+        $this->periods['2019-4']->addInvoice($invoice);
         $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201912-1');
+        $invoice->setCompany($this->companies['bewizyu']);
+        $invoice->setExperience($this->experiences['201906']);
+        $invoice->setTjm(400);
+        $invoice->setCreatedAt(new \DateTime('2019-12-20 00:00:00'));
+        $invoice->setPayedAt(null);
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(4400);
+        $invoice->setTotalTax(880);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_WAITING);
+        $this->periods[2019]->addInvoice($invoice);
+        $this->periods['2019-4']->addInvoice($invoice);
+        $this->manager->persist($invoice);
+    }
+
+    public function loadPeriods()
+    {
+        for ($y = 2015; $y <= 2050; $y++)
+        {
+            $periodYear = new Period();
+            $periodYear->setYear($y);
+
+            for ($q = 1; $q <= 4; $q++)
+            {
+                $periodQuarter = new Period();
+                $periodQuarter->setYear($y);
+                $periodQuarter->setQuarter($q);
+
+                $periodYear->addPeriodQuarter($periodQuarter);
+
+                $this->manager->persist($periodQuarter);
+
+                $this->periods[$y.'-'.$q] = $periodQuarter;
+            }
+
+            $this->periods[$y] = $periodYear;
+            $this->manager->persist($periodYear);
+        }
+
+    }
+
+    public function loadDeclarations()
+    {
+        $declaration = new Declaration();
+        $declaration->setType(Declaration::TYPE_SOCIAL);
+        $declaration->setRevenue(6650);
+        $declaration->setTax(545);
+        $declaration->setYear(2015);
+        $declaration->setQuarter(2);
+        $declaration->setStatus(Declaration::STATUS_PAYED);
+        $this->manager->persist($declaration);
+        $this->declarations['2015T2'] = $declaration;
+        $this->periods['2015-2']->addDeclaration($declaration);
+
+        $declaration = new Declaration();
+        $declaration->setType(Declaration::TYPE_SOCIAL);
+        $declaration->setRevenue(9300);
+        $declaration->setTax(763);
+        $declaration->setYear(2015);
+        $declaration->setQuarter(3);
+        $declaration->setStatus(Declaration::STATUS_PAYED);
+        $this->manager->persist($declaration);
+        $this->declarations['2015T3'] = $declaration;
+        $this->periods['2015-3']->addDeclaration($declaration);
+
+        $declaration = new Declaration();
+        $declaration->setType(Declaration::TYPE_SOCIAL);
+        $declaration->setRevenue(6000);
+        $declaration->setTax(492);
+        $declaration->setYear(2015);
+        $declaration->setQuarter(4);
+        $declaration->setStatus(Declaration::STATUS_PAYED);
+        $this->manager->persist($declaration);
+        $this->declarations['2015T4'] = $declaration;
+        $this->periods['2015-4']->addDeclaration($declaration);
+
+        $declaration = new Declaration();
+        $declaration->setType(Declaration::TYPE_SOCIAL);
+        $declaration->setRevenue(300);
+        $declaration->setTax(25);
+        $declaration->setYear(2016);
+        $declaration->setQuarter(1);
+        $declaration->setStatus(Declaration::STATUS_PAYED);
+        $this->manager->persist($declaration);
+        $this->declarations['2016T1'] = $declaration;
+        $this->periods['2016-1']->addDeclaration($declaration);
+
+        $declaration = new Declaration();
+        $declaration->setType(Declaration::TYPE_SOCIAL);
+        $declaration->setRevenue(9300);
+        $declaration->setTax(1294);
+        $declaration->setYear(2016);
+        $declaration->setQuarter(2);
+        $declaration->setStatus(Declaration::STATUS_PAYED);
+        $this->manager->persist($declaration);
+        $this->declarations['2016T2'] = $declaration;
+        $this->periods['2016-2']->addDeclaration($declaration);
+
+        $declaration = new Declaration();
+        $declaration->setType(Declaration::TYPE_SOCIAL);
+        $declaration->setRevenue(10200);
+        $declaration->setTax(1417);
+        $declaration->setYear(2016);
+        $declaration->setQuarter(3);
+        $declaration->setStatus(Declaration::STATUS_PAYED);
+        $this->manager->persist($declaration);
+        $this->declarations['2016T3'] = $declaration;
+        $this->periods['2016-3']->addDeclaration($declaration);
+
+        $declaration = new Declaration();
+        $declaration->setType(Declaration::TYPE_SOCIAL);
+        $declaration->setRevenue(9800);
+        $declaration->setTax(1363);
+        $declaration->setYear(2016);
+        $declaration->setQuarter(4);
+        $declaration->setStatus(Declaration::STATUS_PAYED);
+        $this->manager->persist($declaration);
+        $this->declarations['2016T4'] = $declaration;
+        $this->periods['2016-4']->addDeclaration($declaration);
+
+        $declaration = new Declaration();
+        $declaration->setType(Declaration::TYPE_SOCIAL);
+        $declaration->setRevenue(8000);
+        $declaration->setTax(1096);
+        $declaration->setYear(2017);
+        $declaration->setQuarter(1);
+        $declaration->setStatus(Declaration::STATUS_PAYED);
+        $this->manager->persist($declaration);
+        $this->declarations['2017T1'] = $declaration;
+        $this->periods['2017-1']->addDeclaration($declaration);
+
+        $declaration = new Declaration();
+        $declaration->setType(Declaration::TYPE_SOCIAL);
+        $declaration->setRevenue(8800);
+        $declaration->setTax(1699);
+        $declaration->setYear(2017);
+        $declaration->setQuarter(2);
+        $declaration->setStatus(Declaration::STATUS_PAYED);
+        $this->manager->persist($declaration);
+        $this->declarations['2017T2'] = $declaration;
+        $this->periods['2017-2']->addDeclaration($declaration);
+
+        $declaration = new Declaration();
+        $declaration->setType(Declaration::TYPE_SOCIAL);
+        $declaration->setRevenue(2700);
+        $declaration->setTax(520);
+        $declaration->setYear(2017);
+        $declaration->setQuarter(3);
+        $declaration->setStatus(Declaration::STATUS_PAYED);
+        $this->manager->persist($declaration);
+        $this->declarations['2017T3'] = $declaration;
+        $this->periods['2017-3']->addDeclaration($declaration);
+
+        $declaration = new Declaration();
+        $declaration->setType(Declaration::TYPE_SOCIAL);
+        $declaration->setRevenue(13240);
+        $declaration->setTax(2555);
+        $declaration->setYear(2017);
+        $declaration->setQuarter(4);
+        $declaration->setStatus(Declaration::STATUS_PAYED);
+        $this->manager->persist($declaration);
+        $this->declarations['2017T4'] = $declaration;
+        $this->periods['2017-4']->addDeclaration($declaration);
+
+        $declaration = new Declaration();
+        $declaration->setType(Declaration::TYPE_SOCIAL);
+        $declaration->setRevenue(9000);
+        $declaration->setTax(1988);
+        $declaration->setYear(2019);
+        $declaration->setQuarter(1);
+        $declaration->setStatus(Declaration::STATUS_PAYED);
+        $this->manager->persist($declaration);
+        $this->declarations['2019T1'] = $declaration;
+        $this->periods['2019-1']->addDeclaration($declaration);
+
+        $declaration = new Declaration();
+        $declaration->setType(Declaration::TYPE_SOCIAL);
+        $declaration->setRevenue(7800);
+        $declaration->setTax(1732);
+        $declaration->setYear(2019);
+        $declaration->setQuarter(2);
+        $declaration->setStatus(Declaration::STATUS_PAYED);
+        $this->manager->persist($declaration);
+        $this->declarations['2019T2'] = $declaration;
+        $this->periods['2019-2']->addDeclaration($declaration);
+
+        $declaration = new Declaration();
+        $declaration->setType(Declaration::TYPE_SOCIAL);
+        $declaration->setRevenue(11000);
+        $declaration->setTax(2442);
+        $declaration->setYear(2019);
+        $declaration->setQuarter(3);
+        $declaration->setStatus(Declaration::STATUS_PAYED);
+        $this->manager->persist($declaration);
+        $this->declarations['2019T3'] = $declaration;
+        $this->periods['2019-3']->addDeclaration($declaration);
+
+        $declaration = new Declaration();
+        $declaration->setType(Declaration::TYPE_SOCIAL);
+        $declaration->setRevenue(12000);
+        $declaration->setTax(2664);
+        $declaration->setYear(2019);
+        $declaration->setQuarter(4);
+        $declaration->setStatus(Declaration::STATUS_PAYED);
+        $this->manager->persist($declaration);
+        $this->declarations['2019T4'] = $declaration;
+        $this->periods['2019-4']->addDeclaration($declaration);
     }
 }
 

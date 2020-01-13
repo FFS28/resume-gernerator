@@ -23,10 +23,12 @@
     - Envoi d'un compte rendu
 
 - Experiences
-    - Visualisation en timeline
+    - x Visualisation en timeline
     
 - Entreprises
     - Liste les clients et les prestataires pour chaque entreprise
+    - Possibilité d'envoyer un mail à une entreprise
+    - Type d'entreprise
     
 - Attributs
     - x Possibilité d'ajouter un message personnalité en bannière

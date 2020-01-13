@@ -51,6 +51,17 @@ relationships:
 crons:
     snapshot:
         # everyday at 5AM
-        spec: 0 5 * * *
+        spec: '0 5 * * *'
         cmd: |
-            croncape symfony snapshot:create --no-wait
+            if [ "$SYMFONY_BRANCH" = master ]; then
+                croncape symfony env:snapshot:create --no-wait
+            fi
+
+    renewcert:
+        # Force a redeploy at 10 am (UTC) on the 1st and 15th of every month.
+        # for the master branch, aka production
+        spec: '0 10 1,15 * *'
+        cmd: |
+            if [ "$SYMFONY_BRANCH" = master ]; then
+                croncape symfony redeploy --no-wait
+            fi

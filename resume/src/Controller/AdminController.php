@@ -5,6 +5,7 @@ namespace App\Controller;
 use AlterPHP\EasyAdminExtensionBundle\Controller\EasyAdminController;
 use App\Entity\Attribute;
 use App\Entity\Company;
+use App\Entity\Declaration;
 use App\Entity\Education;
 use App\Entity\Experience;
 use App\Entity\Hobby;
@@ -59,6 +60,12 @@ class AdminController extends EasyAdminController
             case Skill::class:
                 $queryBuilder->addOrderBy('entity.onHomepage', 'DESC');
                 $queryBuilder->addOrderBy('entity.name', 'DESC');
+                break;
+
+            case Declaration::class:
+                $queryBuilder->addOrderBy('entity.year', 'DESC');
+                $queryBuilder->addOrderBy('entity.quarter', 'DESC');
+                $queryBuilder->addOrderBy('entity.month', 'DESC');
                 break;
 
             default:

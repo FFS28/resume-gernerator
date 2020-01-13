@@ -12,6 +12,7 @@ use App\Form\Type\MonthActivitiesType;
 use App\Repository\ActivityRepository;
 use App\Repository\ExperienceRepository;
 use App\Repository\InvoiceRepository;
+use App\Service\InvoiceService;
 use App\Service\ReportService;
 use DateInterval;
 use DateTime;
@@ -57,9 +58,13 @@ class ReportController extends EasyAdminController
     )
     {
         $viewData = [];
-        $viewData['activeYear'] = $year ? $year : (new DateTime())->format('Y');
-        $viewData['activeMonth'] = $month ? $month : (new DateTime())->format('m');
+        $viewData['activeYear'] = intval($year ? $year : (new DateTime())->format('Y'));
+        $viewData['activeMonth'] = intval($month ? $month : (new DateTime())->format('m'));
         $viewData['years'] = $invoiceRepository->findYears();
+
+        if (!in_array($viewData['activeYear'], $viewData['years'])) {
+            $viewData['years'][] = $viewData['activeYear'];
+        }
 
         $currentDate = new DateTime($viewData['activeYear'] . ($viewData['activeMonth'] < 10 ? '0' : '') . $viewData['activeMonth'] . '01');
         $viewData['daysCount'] = $currentDate->format('t');
@@ -145,44 +150,39 @@ class ReportController extends EasyAdminController
     }
 
     /**
-     * @Route("/admin/report/{year<\d+>}/{month<\d+>}/{slug}/invoice", name="report_invoice")
      * @param ActivityRepository $activityRepository
      * @param InvoiceRepository $invoiceRepository
-     * @param ExperienceRepository $experienceRepository
+     * @param InvoiceService $invoiceService
      * @param EntityManagerInterface $entityManager
      * @param int $year
      * @param int $month
      * @param Company $company
      * @return RedirectResponse
-     * @throws NonUniqueResultException
      * @throws Exception
+     * @Route("/admin/report/{year<\d+>}/{month<\d+>}/{slug}/invoice", name="report_invoice")
      */
     public function invoice(
         ActivityRepository $activityRepository,
         InvoiceRepository $invoiceRepository,
-        ExperienceRepository $experienceRepository,
+        InvoiceService $invoiceService,
         EntityManagerInterface $entityManager,
         int $year, int $month, Company $company
     )
     {
         list($currentDate, $activities) = $this->getActivities($activityRepository, $company, $year, $month);
+        $invoices = $invoiceRepository->getByDate($currentDate);
+        $invoice = null;
 
-        $number = $invoiceRepository->getNewInvoiceNumber($currentDate);
-
-        $invoice = new Invoice();
-        $invoice->setNumber($number);
-        $invoice->setCompany($company);
-        $invoice->importActivities($activities);
-
-        $experiences = $experienceRepository->findByDate($currentDate);
-        if ($experiences && count($experiences) == 1) {
-            $invoice->setExperience($experiences[0]);
+        if (count($invoices) == 1 && $invoices[0]->getCompany() === $company) {
+            $invoice = $invoices[0];
+            $invoice->importActivities($activities);
+            $entityManager->flush();
+        } else {
+            //$invoice = $invoiceService->createByActivities($currentDate, $company, $activities);
         }
 
-        $entityManager->persist($invoice);
-        $entityManager->flush();
 
-        return $this->redirectToRoute('easyadmin', ['entity'=> 'Invoices', 'action'=> 'show', 'id'=> $invoice->getId()]);
+        return $this->redirectToRoute('easyadmin', ['entity'=> 'Invoice', 'action'=> 'edit', 'id'=> $invoice->getId()]);
     }
 
 
