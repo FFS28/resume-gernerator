@@ -265,7 +265,8 @@ form{
   top: 0;
   left: 0;
   width: 100%;
-  padding: 14px 40px;
+  padding: 13px 55px;
+  min-height: 46px;
   background: #555;
   color: #eee;
   text-align: center;
@@ -348,6 +349,9 @@ form{
       }
     }
   }
+  #attributes {
+    justify-content: space-between;
+  }
 }
 
 @media (max-width: 500px) {
@@ -429,6 +433,7 @@ form{
   h2 {
     padding-top: 20px;
     text-align: left;
+    padding-left: 10px;
   }
   .ul {
     padding-left: 0;
@@ -437,6 +442,9 @@ form{
   #me #name{
     &, div {
       text-align: center;
+    }
+    .job{
+      padding-left: 0;
     }
   }
   &#skills {

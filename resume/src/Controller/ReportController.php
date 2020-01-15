@@ -58,9 +58,13 @@ class ReportController extends EasyAdminController
     )
     {
         $viewData = [];
-        $viewData['activeYear'] = $year ? $year : (new DateTime())->format('Y');
-        $viewData['activeMonth'] = $month ? $month : (new DateTime())->format('m');
+        $viewData['activeYear'] = intval($year ? $year : (new DateTime())->format('Y'));
+        $viewData['activeMonth'] = intval($month ? $month : (new DateTime())->format('m'));
         $viewData['years'] = $invoiceRepository->findYears();
+
+        if (!in_array($viewData['activeYear'], $viewData['years'])) {
+            $viewData['years'][] = $viewData['activeYear'];
+        }
 
         $currentDate = new DateTime($viewData['activeYear'] . ($viewData['activeMonth'] < 10 ? '0' : '') . $viewData['activeMonth'] . '01');
         $viewData['daysCount'] = $currentDate->format('t');
@@ -147,23 +151,36 @@ class ReportController extends EasyAdminController
 
     /**
      * @param ActivityRepository $activityRepository
+     * @param InvoiceRepository $invoiceRepository
      * @param InvoiceService $invoiceService
+     * @param EntityManagerInterface $entityManager
      * @param int $year
      * @param int $month
      * @param Company $company
      * @return RedirectResponse
-     * @throws NonUniqueResultException
+     * @throws Exception
      * @Route("/admin/report/{year<\d+>}/{month<\d+>}/{slug}/invoice", name="report_invoice")
      */
     public function invoice(
         ActivityRepository $activityRepository,
+        InvoiceRepository $invoiceRepository,
         InvoiceService $invoiceService,
+        EntityManagerInterface $entityManager,
         int $year, int $month, Company $company
     )
     {
         list($currentDate, $activities) = $this->getActivities($activityRepository, $company, $year, $month);
+        $invoices = $invoiceRepository->getByDate($currentDate);
+        $invoice = null;
 
-        $invoice = $invoiceService->createByActivities($currentDate, $company, $activities);
+        if (count($invoices) == 1 && $invoices[0]->getCompany() === $company) {
+            $invoice = $invoices[0];
+            $invoice->importActivities($activities);
+            $entityManager->flush();
+        } else {
+            //$invoice = $invoiceService->createByActivities($currentDate, $company, $activities);
+        }
+
 
         return $this->redirectToRoute('easyadmin', ['entity'=> 'Invoice', 'action'=> 'edit', 'id'=> $invoice->getId()]);
     }
@@ -203,7 +220,8 @@ class ReportController extends EasyAdminController
             'month' => $translator->trans($currentDate->format('F')),
             'year' => $currentDate->format('Y'),
             'reportData' => $reportService->generateMonth(clone $currentDate, $activities),
-            'firstWeek' => $currentDate->format('W')
+            'firstWeek' => $currentDate->format('W'),
+            'filename' => 'report-' . $company->getSlug() . '-' . $currentDate->format('Y') . '-' . $currentDate->format('m') . '.pdf'
         ];
 
         return $this->render('page/report_pdf.html.twig', $viewData);

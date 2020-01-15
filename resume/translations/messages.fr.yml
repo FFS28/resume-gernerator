@@ -45,6 +45,7 @@ Postal code: Code postal
 City: Ville
 Principal: Principal
 Hierarchy: Hierarchie
+Last experience: Dernière expérience
 
 Person: Personne
 Persons: Personnes
@@ -102,11 +103,16 @@ Links: Liens
 Url: URL
 
 Skill: Compétence
-Skills: Compétence
+Skills: Compétences
 Type: Type
 Level: Niveau
 Parent: Parent
 Children: Enfants
+Software: Logiciel
+Framework: Framework
+Platform: Platforme
+Language: Langage
+OS: OS
 
 Declaration: Déclaration
 Declarations: Déclarations

@@ -635,7 +635,7 @@ class AppFixtures extends Fixture
         $experience->setDescription('Développement d\'un backoffice de gestion de contenu avec API pour accéder au contenu via des applications mobiles. Seul développeur encadré par le seul développeur de l\'entreprise, qui a la charge du développement des applications mobiles.');
         $experience->setIsFreelance(false);
         $experience->setOnSite(true);
-        $experience->setOnHomepage(true);
+        $experience->setOnHomepage(false);
         $experience->addSkill($this->skills['symfony']);
         $experience->addSkill($this->skills['angular']);
         $this->manager->persist($experience);
@@ -1798,10 +1798,26 @@ class AppFixtures extends Fixture
         $invoice->setExperience($this->experiences['201906']);
         $invoice->setTjm(400);
         $invoice->setCreatedAt(new \DateTime('2019-11-08 00:00:00'));
-        $invoice->setPayedAt(null);
+        $invoice->setPayedAt(new \DateTime('2019-12-20 00:00:00'));
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(2400);
         $invoice->setTotalTax(480);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_PAYED);
+        $this->periods[2019]->addInvoice($invoice);
+        $this->periods['2019-4']->addInvoice($invoice);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('201912-1');
+        $invoice->setCompany($this->companies['bewizyu']);
+        $invoice->setExperience($this->experiences['201906']);
+        $invoice->setTjm(400);
+        $invoice->setCreatedAt(new \DateTime('2019-12-20 00:00:00'));
+        $invoice->setPayedAt(null);
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setTotalHt(4400);
+        $invoice->setTotalTax(880);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_WAITING);
         $this->periods[2019]->addInvoice($invoice);
@@ -1993,11 +2009,11 @@ class AppFixtures extends Fixture
 
         $declaration = new Declaration();
         $declaration->setType(Declaration::TYPE_SOCIAL);
-        $declaration->setRevenue(0);
-        $declaration->setTax(0);
+        $declaration->setRevenue(12000);
+        $declaration->setTax(2664);
         $declaration->setYear(2019);
         $declaration->setQuarter(4);
-        $declaration->setStatus(Declaration::STATUS_WAITING);
+        $declaration->setStatus(Declaration::STATUS_PAYED);
         $this->manager->persist($declaration);
         $this->declarations['2019T4'] = $declaration;
         $this->periods['2019-4']->addDeclaration($declaration);

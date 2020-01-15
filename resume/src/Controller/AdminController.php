@@ -49,7 +49,7 @@ class AdminController extends EasyAdminController
                 break;
 
             case Experience::class:
-                $queryBuilder->addOrderBy('entity.onHomepage', 'DESC');
+                //$queryBuilder->addOrderBy('entity.onHomepage', 'DESC');
                 $queryBuilder->addOrderBy('entity.dateBegin', 'DESC');
                 break;
 

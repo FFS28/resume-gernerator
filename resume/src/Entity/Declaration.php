@@ -53,10 +53,10 @@ class Declaration
     const TYPE_IMPOT = "impot";
 
     /** @var array user friendly named type */
-    protected static $typeName = [
-        self::TYPE_TVA => 'TVA',
-        self::TYPE_SOCIAL => 'Social',
-        self::TYPE_IMPOT => 'Impot',
+    const TYPES = [
+        'TVA' => self::TYPE_TVA,
+        'Social' => self::TYPE_SOCIAL,
+        'Impot' => self::TYPE_IMPOT,
     ];
 
     /**
@@ -65,7 +65,9 @@ class Declaration
     private $period;
 
     const SOCIAL_NON_COMMERCIALE = 0.22;
-    const SOCIAL_CFP = 0.02;
+    const SOCIAL_CFP = 0.002;
+
+    const IMPOT_ABATTEMENT = 0.34;
 
     const STATUS_WAITING = 'waiting';
     const STATUS_PAYED = 'payed';
@@ -81,9 +83,9 @@ class Declaration
     private $payedAt;
 
     /** @var array user friendly named type */
-    protected static $statusName = [
-        self::STATUS_WAITING => 'Waiting',
-        self::STATUS_PAYED => 'Payed',
+    const STATUSES = [
+        'Waiting' => self::STATUS_WAITING,
+        'Payed' => self::STATUS_PAYED,
     ];
 
     public function __construct()
@@ -192,11 +194,12 @@ class Declaration
      */
     public function getTypeName()
     {
-        if (!isset(static::$typeName[$this->type])) {
+        $typeName = array_flip(self::TYPES);
+        if (!isset($typeName[$this->type])) {
             return null;
         }
 
-        return static::$typeName[$this->type];
+        return $typeName[$this->type];
     }
 
     public function getPeriod(): ?Period
@@ -228,11 +231,12 @@ class Declaration
      */
     public function getStatusName()
     {
-        if (!isset(static::$statusName[$this->status])) {
+        $statusName = array_flip(self::STATUSES);
+        if (!isset($statusName[$this->status])) {
             return null;
         }
 
-        return static::$statusName[$this->status];
+        return $statusName[$this->status];
     }
 
     public function getPayedAt(): ?\DateTimeInterface
@@ -252,9 +256,22 @@ class Declaration
      */
     public function getInvoices(): array
     {
-        return $this->getPeriod()
-            ? $this->getPeriod()->getInvoices()->toArray()
-            : [];
+        $period = $this->getPeriod();
+        if (!$period) {
+            return [];
+        }
+
+        $periodsQuarter = $period->getPeriodsQuarter();
+
+        if (count($periodsQuarter)) {
+            $invoices = [];
+            foreach ($periodsQuarter as $period) {
+                $invoices = array_merge($invoices, $period->getInvoices()->toArray());
+            }
+            return $invoices;
+        }
+
+        return $this->getPeriod()->getInvoices()->toArray();
     }
 
     public function setInvoices(?array $invoices)

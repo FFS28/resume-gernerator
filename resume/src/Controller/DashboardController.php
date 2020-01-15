@@ -57,6 +57,10 @@ class DashboardController extends EasyAdminController
         $viewData['activeQuarter'] = $quarter ? $quarter : $viewData['currentQuarter'];
         $viewData['years'] = $invoiceRepository->findYears();
 
+        if (!in_array($viewData['currentYear'], $viewData['years'])) {
+            $viewData['years'][] = $viewData['currentYear'];
+        }
+
         $viewData['activeRevenuesOnYear'] = $invoiceRepository->getSalesRevenuesBy($viewData['activeYear']);
         $viewData['activeRevenuesOnQuarter'] = $invoiceRepository->getSalesRevenuesBy($viewData['activeYear'], $viewData['activeQuarter']);
         $viewData['currentRevenuesOnYear'] = $invoiceRepository->getSalesRevenuesBy($viewData['currentYear']);

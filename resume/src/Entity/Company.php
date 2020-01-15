@@ -133,6 +133,15 @@ class Company
         return $this->experiences;
     }
 
+    /**
+     * @return Experience
+     */
+    public function getLastExperience()
+    {
+        $count = count($this->getExperiences());
+        return $count > 1 ? $this->experiences[$count - 1] : null;
+    }
+
     public function addExperience(Experience $experience): self
     {
         if (!$this->experiences->contains($experience)) {
@@ -349,6 +358,14 @@ class Company
     public function getClients(): Collection
     {
         return $this->clients;
+    }
+
+    /**
+     * @return Company
+     */
+    public function getClient()
+    {
+        return count($this->clients) == 1 ? $this->clients[0] : null;
     }
 
     public function addClient(self $client): self

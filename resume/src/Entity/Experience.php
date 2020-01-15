@@ -98,7 +98,6 @@ class Experience
         $this->dateBegin = new \DateTime();
         $this->title = "Développeur Web";
         $this->invoices = new ArrayCollection();
-        $this->activities = new ArrayCollection();
     }
 
     public function getId()
@@ -138,18 +137,6 @@ class Experience
     public function setOnSite(bool $onSite): self
     {
         $this->onSite = $onSite;
-
-        return $this;
-    }
-
-    public function getOnFreelance(): ?bool
-    {
-        return $this->onFreelance;
-    }
-
-    public function setOnFreelance(bool $onFreelance): self
-    {
-        $this->onFreelance = $onFreelance;
 
         return $this;
     }
@@ -266,37 +253,6 @@ class Experience
             // set the owning side to null (unless already changed)
             if ($invoice->getExperience() === $this) {
                 $invoice->setExperience(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Activity[]
-     */
-    public function getActivities(): Collection
-    {
-        return $this->activities;
-    }
-
-    public function addActivity(Activity $activity): self
-    {
-        if (!$this->activities->contains($activity)) {
-            $this->activities[] = $activity;
-            $activity->setExperience($this);
-        }
-
-        return $this;
-    }
-
-    public function removeActivity(Activity $activity): self
-    {
-        if ($this->activities->contains($activity)) {
-            $this->activities->removeElement($activity);
-            // set the owning side to null (unless already changed)
-            if ($activity->getExperience() === $this) {
-                $activity->setExperience(null);
             }
         }
 

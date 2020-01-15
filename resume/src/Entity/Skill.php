@@ -42,12 +42,12 @@ class Skill
     const TYPE_OS  = "os";
 
     /** @var array user friendly named type */
-    protected static $typeName = [
-        self::TYPE_SOFTWARE => 'Software',
-        self::TYPE_FRAMEWORK => 'Framework',
-        self::TYPE_PLATFORM  => 'Platform',
-        self::TYPE_LANGUAGE    => 'Language',
-        self::TYPE_OS  => 'OS',
+    const TYPES = [
+        'Software' => self::TYPE_SOFTWARE,
+        'Framework' => self::TYPE_FRAMEWORK,
+        'Platform' => self::TYPE_PLATFORM,
+        'Language' => self::TYPE_LANGUAGE,
+        'OS' => self::TYPE_OS,
     ];
 
     public function __toString(): string
@@ -60,19 +60,12 @@ class Skill
      */
     public function getTypeName()
     {
-        if (!isset(static::$typeName[$this->type])) {
+        $typeName = array_flip(self::TYPES);
+        if (!isset($typeName[$this->type])) {
             return null;
         }
 
-        return static::$typeName[$this->type];
-    }
-
-    /**
-     * @return array<string>
-     */
-    public static function getAvailableTypes()
-    {
-        return array_keys(static::$typeName);
+        return $typeName[$this->type];
     }
 
     /**
