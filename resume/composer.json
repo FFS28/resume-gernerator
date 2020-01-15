@@ -8,6 +8,7 @@
         "alterphp/easyadmin-extension-bundle": "^3.0",
         "doctrine/doctrine-fixtures-bundle": "^3.3",
         "easycorp/easyadmin-bundle": "^2.3",
+        "isometriks/spam-bundle": "^1.0",
         "konekt/pdf-invoice": "^1.5",
         "sensio/framework-extra-bundle": "^5.5",
         "symfony/cache": "5.0.*",
