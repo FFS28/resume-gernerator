@@ -27,7 +27,7 @@
                 let worker = html2pdf().set({
                     margin: [0.2, 0.1, 0.2, 0.1],
                     filename: '{{ filename }}',
-                    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+                    jsPDF: { unit: 'in', orientation: 'portrait' },
                     pagebreak: { before: ['#educations'], after: [], avoid: ['.li'] }
                 }).from(element).save().then(function() {
                     setTimeout(function(){
@@ -140,7 +140,7 @@
                             {% endif %}</span>
                     </div>
                     <h4 class="title">
-                        <span>{{ experience.title }}</span> / <span>{{ experience.company }}</span>
+                        <span>{{ experience.title }}</span> / <span>{{ experience.company.name }}</span>
                     </h4>
                     <div class="description">{{ experience.description | nl2br }}</div>
                     <div class="badges">
