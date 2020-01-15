@@ -433,6 +433,7 @@ form{
   h2 {
     padding-top: 20px;
     text-align: left;
+    padding-left: 10px;
   }
   .ul {
     padding-left: 0;
@@ -441,6 +442,9 @@ form{
   #me #name{
     &, div {
       text-align: center;
+    }
+    .job{
+      padding-left: 0;
     }
   }
   &#skills {

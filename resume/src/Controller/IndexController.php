@@ -60,11 +60,12 @@ class IndexController extends AbstractController
             'links' => $linkRepository->findAll(),
             'css' => '',
             'isPdf' => $request->query->get('pdf') ? true : false,
-            'contactForm' => $form->createView()
+            'contactForm' => $form->createView(),
+            'filename' => 'jeremy-achain-cv.pdf'
         ];
 
         if ($data['isPdf']) {
-            $pdfFilename = 'jeremy-achain-cv.pdf';
+            $pdfFilename = $data['filename'];
             $html =  $this->renderView('page/index.html.twig', $data);
             $pdf = null;
 
