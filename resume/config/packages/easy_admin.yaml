@@ -311,4 +311,4 @@ easy_admin:
           - dateEnd
 
 easy_admin_extension:
-  #minimum_role: ROLE_ADMIN
+  minimum_role: ROLE_ADMIN

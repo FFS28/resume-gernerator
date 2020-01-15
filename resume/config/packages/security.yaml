@@ -1,8 +1,7 @@
 security:
     encoders:
         App\Entity\User:
-            algorithm: auto
-        #FOS\UserBundle\Model\UserInterface: bcrypt
+            algorithm: bcrypt
 
     role_hierarchy:
         ROLE_ADMIN:       ROLE_USER
@@ -14,8 +13,6 @@ security:
             entity:
                 class: App\Entity\User
                 property: email
-        #fos_userbundle:
-        #s    id: fos_user.user_provider.username_email
 
     firewalls:
         dev:
@@ -23,20 +20,22 @@ security:
             security: false
         main:
             pattern: ^/
+            provider: app_user_provider
             form_login:
-                #provider: fos_userbundle
-                provider: app_user_provider
-                csrf_token_generator: security.csrf.token_manager
-                # if you are using Symfony < 2.8, use the following config instead:
-                # csrf_provider: form.csrf_provider
-
-            logout:       true
-            anonymous:    true
+                login_path: login
+                check_path: login
+                #csrf_token_generator: security.csrf.token_manager
+                username_parameter: "login[_username]"
+                password_parameter: "login[_password]"
+                default_target_path: /admin
+                use_referer: true
+            logout:
+                path:  /logout
+                target: /
+            anonymous: ~
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        #- { path: ^/admin/, role: ROLE_ADMIN }
+        - { path: ^/admin/, role: ROLE_ADMIN }
