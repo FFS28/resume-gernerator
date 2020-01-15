@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b01f70051d2e1ee62894fefe97fb7aab",
+    "content-hash": "2af8086de8248ba55a41cebb82880df8",
     "packages": [
         {
             "name": "alterphp/easyadmin-extension-bundle",
@@ -1360,44 +1360,118 @@
             "time": "2020-01-05T14:11:20+00:00"
         },
         {
-            "name": "isometriks/spam-bundle",
-            "version": "v1.0.2",
+            "name": "gregwar/captcha",
+            "version": "v1.1.7",
             "source": {
                 "type": "git",
-                "url": "https://github.com/isometriks/IsometriksSpamBundle.git",
-                "reference": "cc0bc9dd640419b98eb881bb3cbc6b3142f0ef93"
+                "url": "https://github.com/Gregwar/Captcha.git",
+                "reference": "cf953dd79748406e0292cea8c565399681e4d345"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/isometriks/IsometriksSpamBundle/zipball/cc0bc9dd640419b98eb881bb3cbc6b3142f0ef93",
-                "reference": "cc0bc9dd640419b98eb881bb3cbc6b3142f0ef93",
+                "url": "https://api.github.com/repos/Gregwar/Captcha/zipball/cf953dd79748406e0292cea8c565399681e4d345",
+                "reference": "cf953dd79748406e0292cea8c565399681e4d345",
                 "shasum": ""
             },
-            "type": "library",
+            "require": {
+                "ext-gd": "*",
+                "ext-mbstring": "*",
+                "php": ">=5.3.0",
+                "symfony/finder": "*"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.4"
+            },
+            "type": "captcha",
             "autoload": {
                 "psr-4": {
-                    "Isometriks\\Bundle\\SpamBundle\\": ""
+                    "Gregwar\\": "src/Gregwar"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
             "authors": [
                 {
-                    "name": "Craig Blanchette",
-                    "email": "craig.blanchette@gmail.com",
-                    "homepage": "http://isometriks.com"
+                    "name": "Grégoire Passault",
+                    "email": "g.passault@gmail.com",
+                    "homepage": "http://www.gregwar.com/"
                 },
                 {
-                    "name": "Patrik Pacin",
-                    "email": "github@exploit.cz",
-                    "homepage": "https://exploit.cz"
+                    "name": "Jeremy Livingston",
+                    "email": "jeremy.j.livingston@gmail.com"
                 }
             ],
-            "description": "Provides spam protection for Symfony3 forms",
+            "description": "Captcha generator",
+            "homepage": "https://github.com/Gregwar/Captcha",
             "keywords": [
-                "spam",
-                "symfony3"
+                "bot",
+                "captcha",
+                "spam"
             ],
-            "time": "2019-01-24T06:51:02+00:00"
+            "time": "2018-08-17T22:57:28+00:00"
+        },
+        {
+            "name": "gregwar/captcha-bundle",
+            "version": "v2.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Gregwar/CaptchaBundle.git",
+                "reference": "d4475118d080e764c5cddec766b0cd0b12813bef"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Gregwar/CaptchaBundle/zipball/d4475118d080e764c5cddec766b0cd0b12813bef",
+                "reference": "d4475118d080e764c5cddec766b0cd0b12813bef",
+                "shasum": ""
+            },
+            "require": {
+                "ext-gd": "*",
+                "gregwar/captcha": "~1.1",
+                "php": "^7.1.3",
+                "symfony/form": "~4.0|~5.0",
+                "symfony/framework-bundle": "~4.0|~5.0",
+                "symfony/translation": "~4.0|^5.0",
+                "twig/twig": "^2.10|^3.0"
+            },
+            "require-dev": {
+                "symplify/easy-coding-standard": "^6.1"
+            },
+            "type": "captcha-bundle",
+            "autoload": {
+                "psr-4": {
+                    "Gregwar\\CaptchaBundle\\": "/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Grégoire Passault",
+                    "email": "g.passault@gmail.com",
+                    "homepage": "http://www.gregwar.com/"
+                },
+                {
+                    "name": "Jeremy Livingston",
+                    "email": "jeremy.j.livingston@gmail.com"
+                }
+            ],
+            "description": "Captcha bundle",
+            "homepage": "https://github.com/Gregwar/CaptchaBundle",
+            "keywords": [
+                "Symfony2",
+                "bot",
+                "captcha",
+                "code",
+                "security",
+                "spam",
+                "symfony",
+                "visual"
+            ],
+            "time": "2020-01-14T10:15:40+00:00"
         },
         {
             "name": "jdorn/sql-formatter",

@@ -20,8 +20,11 @@
     "egulias/email-validator": {
         "version": "2.1.12"
     },
-    "isometriks/spam-bundle": {
-        "version": "v1.0.2"
+    "gregwar/captcha": {
+        "version": "v1.1.7"
+    },
+    "gregwar/captcha-bundle": {
+        "version": "v2.1.1"
     },
     "konekt/pdf-invoice": {
         "version": "1.5.0"
