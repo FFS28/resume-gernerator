@@ -44,6 +44,17 @@ class DeclarationController extends EasyAdminController
         return $this->redirectToReferrer();
     }
 
+    public function assignAction()
+    {
+        $id = $this->request->query->get('id');
+        /** @var Declaration $entity */
+        $entity = $this->em->getRepository(Declaration::class)->find($id);
+
+        $this->declarationService->assign($entity);
+
+        return $this->redirectToReferrer();
+    }
+
     public function validateAction()
     {
         $id = $this->request->query->get('id');

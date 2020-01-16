@@ -153,19 +153,21 @@ easy_admin:
       controller: App\Controller\DeclarationController
       form:
         fields:
-          - { type: 'group', columns: 1, label: '' }
+          - { type: 'group', columns: 3, label: '' }
           - { property: 'type', type: 'choice', type_options: { choices: !php/const App\Entity\Declaration::TYPES } }
-          - { type: 'group', columns: 1, label: '' }
+          - { type: 'group', columns: 3, label: '' }
+          - period
+          - { type: 'group', columns: 3, label: '' }
           - year
-          - { type: 'group', columns: 1, label: '' }
+          - { type: 'group', columns: 3, label: '' }
           - quarter
-          - { type: 'group', columns: 2, label: '' }
+          - { type: 'group', columns: 3, label: '' }
           - revenue
-          - { type: 'group', columns: 2, label: '' }
+          - { type: 'group', columns: 3, label: '' }
           - tax
-          - { type: 'group', columns: 2, label: '' }
+          - { type: 'group', columns: 3, label: '' }
           - { property: 'status', type: 'choice', type_options: { choices: !php/const App\Entity\Declaration::STATUSES } }
-          - { type: 'group', columns: 2, label: '' }
+          - { type: 'group', columns: 3, label: '' }
           - { property: 'payedAt', type_options: { widget: 'single_text', html5: false, format: 'dd/MM/yyyy', attr: { data-provide: 'datepicker', data-date-format: 'dd/mm/yyyy', data-date-language: 'fr' } } }
           - { type: 'group', columns: 12, label: 'Invoices' }
           - { property: invoices, label: '', mapped: false, type_options: { block_name: 'array_with_total' } }
