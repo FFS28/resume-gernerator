@@ -38,6 +38,13 @@
                 });
             };
         </script>
+    {% elseif isSubmittedWithErrors %}
+        <script type='text/javascript'>
+            window.onload = function() {
+                let element = document.getElementById('contact_form');
+                location.hash = "#contact_form";
+            }
+        </script>
     {% endif %}
 {% endblock %}
 
@@ -187,7 +194,7 @@
     {% if not isPdf %}
         <a id="" class="hidden-print" href="{{ url('index', {'pdf' : true}) }}"></a>
         {% if contactForm is defined %}
-            <div class="hidden-print">
+            <div class="hidden-print" id="contact">
                 {{ form(contactForm) }}
             </div>
         {% endif %}

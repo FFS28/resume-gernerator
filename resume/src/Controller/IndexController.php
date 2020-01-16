@@ -131,6 +131,8 @@ class IndexController extends AbstractController
             return $this->redirectToRoute('index');
         }
 
+        $data['isSubmittedWithErrors'] = $form->isSubmitted() && !$form->isValid();
+
         return $this->render('page/index.html.twig', $data);
     }
 }
