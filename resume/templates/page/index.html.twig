@@ -38,6 +38,13 @@
                 });
             };
         </script>
+    {% elseif isSubmittedWithErrors %}
+        <script type='text/javascript'>
+            window.onload = function() {
+                let element = document.getElementById('contact_form');
+                location.hash = "#contact_form";
+            }
+        </script>
     {% endif %}
 {% endblock %}
 
