@@ -362,6 +362,12 @@ form{
     padding-right: 10px;
   }
 }
+@media (max-width: 600px) {
+  #attributes{
+    display: block;
+    text-align: center;
+  }
+}
 
 .date{
   font-size: 14px;
