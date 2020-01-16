@@ -35,10 +35,3 @@
     
 - Purchase
     - Déduire la TVA des achats
-    
-### Migration to Symfony 5
-
-## En attente de mise à jour
-
-- alterphp/easyadmin-extension-bundle
-- stof/doctrine-extensions-bundle
