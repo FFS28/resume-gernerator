@@ -2,10 +2,9 @@
 
 namespace App\Repository;
 
-use App\Entity\Activity;
 use App\Entity\Experience;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * @method Experience|null find($id, $lockMode = null, $lockVersion = null)
@@ -15,7 +14,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ExperienceRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Experience::class);
     }

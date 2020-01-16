@@ -22,8 +22,10 @@
     {% block stylesheets %}{% endblock %}
 </head>
 <body id="body">
-{% block body %}{% endblock %}
-{% block foot %}{% endblock %}
-{% block javascripts %}{% endblock %}
+{% spaceless %}
+    {% block body %}{% endblock %}
+    {% block foot %}{% endblock %}
+    {% block javascripts %}{% endblock %}
+{% endspaceless %}
 </body>
 </html>
