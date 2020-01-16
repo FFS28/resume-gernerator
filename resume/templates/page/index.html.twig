@@ -61,12 +61,12 @@
         <div id="head" class="text-center {% if isPdf %}html-pdf{% endif %}">
             {% if messageSended %}
                 <div id="message" class="hidden-print">
-                    <a href="{{ url('index') }}">&times;</a>
+                    <a class="close" href="{{ url('index') }}">&times;</a>
                     {{ 'Message sended' | trans }}
                 </div>
             {% elseif attributes['message'] is defined and attributes['message'].value and not isPdf %}
                 <div id="message" class="hidden-print">
-                    <button onclick="document.getElementById('message').remove()">&times;</button>
+                    <button class="close" onclick="document.getElementById('message').remove()">&times;</button>
                     {{ attributes['message'].value | raw }}
                 </div>
             {% endif %}
