@@ -155,6 +155,13 @@ class AppFixtures extends Fixture
         $attribute->setWeight(0);
         $attribute->setIsListable(false);
         $this->manager->persist($attribute);
+
+        $attribute = new Attribute();
+        $attribute->setSlug('message');
+        $attribute->setValue('');
+        $attribute->setWeight(0);
+        $attribute->setIsListable(false);
+        $this->manager->persist($attribute);
     }
 
     private function loadEducations()
@@ -635,7 +642,7 @@ class AppFixtures extends Fixture
         $experience->setDescription('Développement d\'un backoffice de gestion de contenu avec API pour accéder au contenu via des applications mobiles. Seul développeur encadré par le seul développeur de l\'entreprise, qui a la charge du développement des applications mobiles.');
         $experience->setIsFreelance(false);
         $experience->setOnSite(true);
-        $experience->setOnHomepage(true);
+        $experience->setOnHomepage(false);
         $experience->addSkill($this->skills['symfony']);
         $experience->addSkill($this->skills['angular']);
         $this->manager->persist($experience);

@@ -2,34 +2,32 @@
     "type": "project",
     "license": "proprietary",
     "require": {
-        "php": "^7.1.3",
+        "php": "^7.2.5",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "alterphp/easyadmin-extension-bundle": "^2.1",
-        "doctrine/doctrine-fixtures-bundle": "^3.2",
+        "alterphp/easyadmin-extension-bundle": "^3.0",
+        "doctrine/doctrine-fixtures-bundle": "^3.3",
         "easycorp/easyadmin-bundle": "^2.3",
-        "friendsofsymfony/user-bundle": "^2.1",
-        "isometriks/spam-bundle": "^1.0",
-        "konekt/pdf-invoice": "^1.4",
+        "gregwar/captcha-bundle": "^2.1",
+        "konekt/pdf-invoice": "^1.5",
         "sensio/framework-extra-bundle": "^5.5",
-        "stof/doctrine-extensions-bundle": "^1.3",
-        "symfony/cache": "4.3.*",
-        "symfony/console": "4.3.*",
-        "symfony/dotenv": "4.3.*",
+        "symfony/cache": "5.0.*",
+        "symfony/console": "5.0.*",
+        "symfony/dotenv": "5.0.*",
         "symfony/flex": "^1.3.1",
-        "symfony/framework-bundle": "4.3.*",
-        "symfony/google-mailer": "4.3.*",
-        "symfony/mailer": "4.3.*",
-        "symfony/serializer": "4.3.*",
-        "symfony/swiftmailer-bundle": "^3.3",
+        "symfony/framework-bundle": "5.0.*",
+        "symfony/google-mailer": "5.0.*",
+        "symfony/mailer": "5.0.*",
+        "symfony/security-bundle": "5.0.*",
+        "symfony/serializer": "5.0.*",
+        "symfony/templating": "5.0.*",
         "symfony/twig-pack": "^1.0",
         "symfony/webpack-encore-bundle": "^1.7",
-        "symfony/yaml": "4.3.*"
+        "symfony/yaml": "5.0.*"
     },
     "require-dev": {
         "symfony/maker-bundle": "^1.14",
-        "symfony/profiler-pack": "^1.0",
-        "symfony/web-server-bundle": "4.3.*"
+        "symfony/profiler-pack": "^1.0"
     },
     "config": {
         "preferred-install": {
@@ -51,6 +49,7 @@
         "paragonie/random_compat": "2.*",
         "symfony/polyfill-ctype": "*",
         "symfony/polyfill-iconv": "*",
+        "symfony/polyfill-php72": "*",
         "symfony/polyfill-php71": "*",
         "symfony/polyfill-php70": "*",
         "symfony/polyfill-php56": "*"
@@ -73,7 +72,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "4.3.*"
+            "require": "5.0.*"
         }
     }
 }

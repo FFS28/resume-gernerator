@@ -220,7 +220,8 @@ class ReportController extends EasyAdminController
             'month' => $translator->trans($currentDate->format('F')),
             'year' => $currentDate->format('Y'),
             'reportData' => $reportService->generateMonth(clone $currentDate, $activities),
-            'firstWeek' => $currentDate->format('W')
+            'firstWeek' => $currentDate->format('W'),
+            'filename' => 'report-' . $company->getSlug() . '-' . $currentDate->format('Y') . '-' . $currentDate->format('m') . '.pdf'
         ];
 
         return $this->render('page/report_pdf.html.twig', $viewData);

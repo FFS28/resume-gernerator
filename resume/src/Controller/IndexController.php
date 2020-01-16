@@ -60,11 +60,13 @@ class IndexController extends AbstractController
             'links' => $linkRepository->findAll(),
             'css' => '',
             'isPdf' => $request->query->get('pdf') ? true : false,
-            'contactForm' => $form->createView()
+            'contactForm' => $form->createView(),
+            'filename' => 'jeremy-achain-cv.pdf',
+            'messageSended' => $request->get('messageSended')
         ];
 
         if ($data['isPdf']) {
-            $pdfFilename = 'jeremy-achain-cv.pdf';
+            $pdfFilename = $data['filename'];
             $html =  $this->renderView('page/index.html.twig', $data);
             $pdf = null;
 
@@ -127,8 +129,10 @@ class IndexController extends AbstractController
 
             $mailer->send($email);
 
-            return $this->redirectToRoute('index');
+            return $this->redirectToRoute('index', ['messageSended' => true]);
         }
+
+        $data['isSubmittedWithErrors'] = $form->isSubmitted() && !$form->isValid();
 
         return $this->render('page/index.html.twig', $data);
     }

@@ -7,8 +7,23 @@
 {% endblock %}
 
 {% block javascripts %}
+    <script type='text/javascript' src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
     <script type='text/javascript'>
-        window.print();
+        window.onload = function() {
+            let element = document.getElementById('body');
+            let worker = html2pdf().set({
+                margin: [0.2, 0.1, 0.2, 0.1],
+                filename: '{{ filename }}',
+                jsPDF: { unit: 'in', orientation: 'landscape' },
+                pagebreak: { before: [], after: [], avoid: [] }
+            }).from(element).save().then(function() {
+                setTimeout(function(){
+                    window.close();
+                }, 1000);
+            }, function() {
+                window.print();
+            });
+        };
     </script>
 {% endblock %}
 
