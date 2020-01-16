@@ -182,8 +182,7 @@ easy_admin:
           - { property: 'revenue', format: '%.0f' }
           - { property: 'tax', format: '%.0f' }
           - { property: 'rate', format: '%.2f' }
-          - { property: 'year', format: '%.0f' }
-          - quarter
+          - period
           - status
         actions:
           - { name: 'calculate', label: 'Recalculate'}
