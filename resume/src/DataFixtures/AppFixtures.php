@@ -155,6 +155,13 @@ class AppFixtures extends Fixture
         $attribute->setWeight(0);
         $attribute->setIsListable(false);
         $this->manager->persist($attribute);
+
+        $attribute = new Attribute();
+        $attribute->setSlug('message');
+        $attribute->setValue('');
+        $attribute->setWeight(0);
+        $attribute->setIsListable(false);
+        $this->manager->persist($attribute);
     }
 
     private function loadEducations()

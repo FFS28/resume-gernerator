@@ -61,7 +61,8 @@ class IndexController extends AbstractController
             'css' => '',
             'isPdf' => $request->query->get('pdf') ? true : false,
             'contactForm' => $form->createView(),
-            'filename' => 'jeremy-achain-cv.pdf'
+            'filename' => 'jeremy-achain-cv.pdf',
+            'messageSended' => $request->get('messageSended')
         ];
 
         if ($data['isPdf']) {
@@ -128,7 +129,7 @@ class IndexController extends AbstractController
 
             $mailer->send($email);
 
-            return $this->redirectToRoute('index');
+            return $this->redirectToRoute('index', ['messageSended' => true]);
         }
 
         $data['isSubmittedWithErrors'] = $form->isSubmitted() && !$form->isValid();

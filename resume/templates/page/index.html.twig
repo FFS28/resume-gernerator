@@ -41,8 +41,13 @@
     {% elseif isSubmittedWithErrors %}
         <script type='text/javascript'>
             window.onload = function() {
-                let element = document.getElementById('contact_form');
                 location.hash = "#contact_form";
+            }
+        </script>
+    {% elseif messageSended %}
+        <script type='text/javascript'>
+            window.onload = function() {
+                location.hash = "#body";
             }
         </script>
     {% endif %}
@@ -54,7 +59,12 @@
     {% endif %}
     <div itemscope itemtype="http://schema.org/Person">
         <div id="head" class="text-center {% if isPdf %}html-pdf{% endif %}">
-            {% if attributes['message'] is defined and attributes['message'] and not isPdf %}
+            {% if messageSended %}
+                <div id="message" class="hidden-print">
+                    <a href="{{ url('index') }}">&times;</a>
+                    {{ 'Message sended' | trans }}
+                </div>
+            {% elseif attributes['message'] is defined and attributes['message'].value and not isPdf %}
                 <div id="message" class="hidden-print">
                     <button onclick="document.getElementById('message').remove()">&times;</button>
                     {{ attributes['message'].value | raw }}

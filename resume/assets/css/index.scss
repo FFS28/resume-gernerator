@@ -278,7 +278,7 @@ form{
     color: #eee;
   }
 
-  button {
+  button, a {
     background: transparent;
     border: 0;
 
@@ -288,6 +288,8 @@ form{
 
     font-size: 36px;
     padding: 2px 10px;
+
+    text-decoration: none;
   }
 }
 #message + #me {
