@@ -2,10 +2,10 @@
 
 namespace App\Entity;
 
-use App\Helper\StringHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
@@ -32,6 +32,7 @@ class Skill
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
+     * @Gedmo\Slug(fields={"name"})
      */
     private $slug;
 
@@ -123,7 +124,6 @@ class Skill
     public function setName(string $name): self
     {
         $this->name = $name;
-        $this->setSlug(StringHelper::slugify($name));
 
         return $this;
     }
