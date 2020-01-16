@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Entity\Declaration;
 use App\Entity\Invoice;
 use App\Repository\DeclarationRepository;
+use App\Repository\InvoiceRepository;
 use App\Repository\PeriodRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -19,15 +20,20 @@ class DeclarationService
     /** @var PeriodRepository */
     private $periodRepository;
 
+    /** @var InvoiceRepository */
+    private $invoiceRepository;
+
     public function __construct(
         EntityManagerInterface $entityManager,
         DeclarationRepository $declarationRepository,
-        PeriodRepository $periodRepository
+        PeriodRepository $periodRepository,
+        InvoiceRepository $invoiceRepository
     )
     {
         $this->entityManager = $entityManager;
         $this->declarationRepository = $declarationRepository;
         $this->periodRepository = $periodRepository;
+        $this->invoiceRepository = $invoiceRepository;
     }
 
     /**
@@ -197,5 +203,20 @@ class DeclarationService
         }
 
         $this->entityManager->flush();
+    }
+
+    public function assign(Declaration $declaration)
+    {
+        $invoices = [];
+
+        if ($declaration->getQuarter()) {
+            $invoices = $this->invoiceRepository->findInvoicesBy($declaration->getYear(), $declaration->getQuarter(), true);
+        } else {
+            $invoices = $this->invoiceRepository->findInvoicesBy($declaration->getYear(), null, true);
+        }
+
+        foreach ($invoices as $invoice) {
+
+        }
     }
 }
