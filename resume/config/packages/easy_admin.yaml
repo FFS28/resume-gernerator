@@ -135,6 +135,7 @@ easy_admin:
           - daysCount
           - createdAt
           - payedAt
+          - period
           - { property: 'socialDeclaration', label: 'Declarations' }
         filters:
           - company
