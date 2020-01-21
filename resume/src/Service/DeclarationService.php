@@ -205,18 +205,22 @@ class DeclarationService
         $this->entityManager->flush();
     }
 
-    public function assign(Declaration $declaration)
+    /**
+     * Envoi un mail si la date de fin de déclaration approche
+     * @return array
+     * @throws \Exception
+     */
+    public function getNotifications()
     {
-        $invoices = [];
+        $date = new \DateTime();
+        $messages = [];
 
-        if ($declaration->getQuarter()) {
-            $invoices = $this->invoiceRepository->findInvoicesBy($declaration->getYear(), $declaration->getQuarter(), true);
-        } else {
-            $invoices = $this->invoiceRepository->findInvoicesBy($declaration->getYear(), null, true);
+        list($quarterDueDate, $quarterDueDateBegin, $quarterDueDateEnd, $quarterDueueDateIsActive) = $this->getNextQuarterDueDate();
+        if ($quarterDueueDateIsActive) {
+            $messages[] = 'Déclaration en cours du T'.$quarterDueDate.' à faire entre' .
+                ' le '. $quarterDueDateBegin->format('d/m/Y') . ' et le ' . $quarterDueDateEnd->format('d/m/Y');
         }
 
-        foreach ($invoices as $invoice) {
-
-        }
+        return $messages;
     }
 }
