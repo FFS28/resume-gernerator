@@ -247,4 +247,28 @@ class InvoiceService
 
         return $invoice;
     }
+
+    /**
+     * Envoi d'un mail si la date d'échéance d'une facture approche et qu'elle n'est toujours pas indiqué comme payé
+     * @return array
+     * @throws \Exception
+     */
+    public function getNotifications()
+    {
+        $date = new \DateTime();
+        $notifications = [];
+
+        $unpayedInvoices = $this->invoiceRepository->findInvoicesBy(null, null, false);
+
+        if (count($unpayedInvoices) > 0) {
+            foreach ($unpayedInvoices as $invoice) {
+                if ($invoice->getDueDate() && $invoice->getDueDate() < $date) {
+                    $notifications[] = 'Facture ' .$invoice->getNumber().
+                        ' de '.$invoice->getTotalTtc().'€ TTC à encaisser depuis le ' . $invoice->getDueDate()->format('d/m/Y');
+                }
+            }
+        }
+
+        return $notifications;
+    }
 }

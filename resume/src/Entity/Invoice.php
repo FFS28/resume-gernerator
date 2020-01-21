@@ -381,6 +381,13 @@ class Invoice
         return $this;
     }
 
+    public function getDueDate(): \DateTime
+    {
+        if (!$this->getCreatedAt() || !$this->getDueInterval()) return null;
+
+        return (clone $this->getCreatedAt())->add(new \DateInterval($this->getDueInterval()));
+    }
+
     /**
      * @return Collection|Activity[]
      */

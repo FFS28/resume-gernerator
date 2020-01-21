@@ -63,4 +63,15 @@ class ReportService
 
         return $activitiesData;
     }
+
+    /**
+     * Envoi d'un mail à la fin du mois si une mission est en cours pour penser à envoyer un CRA
+     * @return array
+     */
+    public function getNotifications()
+    {
+        $notifications = [];
+
+        return $notifications;
+    }
 }
