@@ -19,7 +19,7 @@ class ContactCompaniesType extends AbstractType
     {
         $builder
             ->add('companies', EasyAdminAutocompleteType::class, [
-                'entry_type' => Company::class,
+                'class' => Company::class,
                 'required' => true
             ])
             ->add('subject', TextType::class, ['required' => true])
@@ -30,6 +30,6 @@ class ContactCompaniesType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults();
+        $resolver->setDefaults([]);
     }
 }

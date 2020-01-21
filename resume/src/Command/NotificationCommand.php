@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Service\CompanyService;
 use App\Service\DeclarationService;
 use App\Service\InvoiceService;
 use App\Service\ReportService;
@@ -29,6 +30,7 @@ class NotificationCommand extends Command
     protected $declarationService;
     protected $invoiceService;
     protected $reportService;
+    protected $companyService;
 
     public function __construct(
         string $name = null,
@@ -38,7 +40,8 @@ class NotificationCommand extends Command
         TranslatorInterface $translator,
         DeclarationService $declarationService,
         InvoiceService $invoiceService,
-        ReportService $reportService
+        ReportService $reportService,
+        CompanyService $companyService
     ) {
         parent::__construct($name);
         $this->params = $params;
@@ -48,6 +51,7 @@ class NotificationCommand extends Command
         $this->declarationService = $declarationService;
         $this->invoiceService = $invoiceService;
         $this->reportService = $reportService;
+        $this->companyService = $companyService;
     }
 
     protected function configure()
@@ -66,7 +70,8 @@ class NotificationCommand extends Command
         $notifications = array_merge(
             $this->invoiceService->getNotifications(),
             $this->declarationService->getNotifications(),
-            $this->reportService->getNotifications()
+            $this->reportService->getNotifications(),
+            $this->companyService->getNotifications()
         );
 
         if (count($notifications) > 0) {

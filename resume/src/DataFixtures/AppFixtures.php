@@ -323,6 +323,7 @@ class AppFixtures extends Fixture
         $company = new Company();
         $company->setName('NETexcom');
         $company->setCity('Monaco');
+        $company->setType(Company::TYPE_ARCHIVE);
         $this->manager->persist($company);
         $this->companies['netexcom'] = $company;
 
@@ -330,6 +331,7 @@ class AppFixtures extends Fixture
         $company->setName('Eleusis Solution');
         $company->setDisplayName('Eleusis');
         $company->setCity('Nice');
+        $company->setType(Company::TYPE_ARCHIVE);
         $this->manager->persist($company);
         $this->companies['eleusis'] = $company;
 
@@ -337,6 +339,7 @@ class AppFixtures extends Fixture
         $company->setName('ACL Informatique');
         $company->setDisplayName('ACL');
         $company->setCity('Villeneuve-Loubet');
+        $company->setType(Company::TYPE_ARCHIVE);
         $this->manager->persist($company);
         $this->companies['acl'] = $company;
 
@@ -344,36 +347,42 @@ class AppFixtures extends Fixture
         $company->setName('e-Toxic');
         $company->setDisplayName('Etoxic');
         $company->setCity('Villeneuve-Loubet');
+        $company->setType(Company::TYPE_ARCHIVE);
         $this->manager->persist($company);
         $this->companies['etoxic'] = $company;
 
         $company = new Company();
         $company->setName('Qwant');
         $company->setCity('Nice');
+        $company->setType(Company::TYPE_ARCHIVE);
         $this->manager->persist($company);
         $this->companies['qwant'] = $company;
 
         $company = new Company();
         $company->setName('Audivox');
         $company->setCity('Lyon');
+        $company->setType(Company::TYPE_ARCHIVE);
         $this->manager->persist($company);
         $this->companies['audivox'] = $company;
 
         $company = new Company();
         $company->setName('Audiovisit');
         $company->setCity('Lyon');
+        $company->setType(Company::TYPE_ARCHIVE);
         $this->manager->persist($company);
         $this->companies['audiovisit'] = $company;
 
         $company = new Company();
         $company->setName('Opusline');
         $company->setCity('Paris');
+        $company->setType(Company::TYPE_ARCHIVE);
         $this->manager->persist($company);
         $this->companies['opusline'] = $company;
 
         $company = new Company();
         $company->setName('Talkspirit');
         $company->setCity('Paris');
+        $company->setType(Company::TYPE_ARCHIVE);
         $this->manager->persist($company);
         $this->companies['talkspirit'] = $company;
 
@@ -381,6 +390,7 @@ class AppFixtures extends Fixture
         $company->setName('Jessica Rolland');
         $company->setDisplayName('GTL');
         $company->setCity('Lyon');
+        $company->setType(Company::TYPE_ARCHIVE);
         $this->manager->persist($company);
         $this->companies['girlstakelyon'] = $company;
 
@@ -388,6 +398,7 @@ class AppFixtures extends Fixture
         $company->setName('Leidgens Groupe');
         $company->setDisplayName('Leidgens');
         $company->setCity('Lyon');
+        $company->setType(Company::TYPE_ARCHIVE);
         $this->manager->persist($company);
         $this->companies['leidgens'] = $company;
 
@@ -395,6 +406,7 @@ class AppFixtures extends Fixture
         $company->setName('Pretty Cool');
         $company->setDisplayName('Pretty');
         $company->setCity('Lyon');
+        $company->setType(Company::TYPE_ARCHIVE);
         $this->manager->persist($company);
         $this->companies['prettycool'] = $company;
 
@@ -402,12 +414,14 @@ class AppFixtures extends Fixture
         $company->setName('Guillaume Ribot');
         $company->setDisplayName('Ribot');
         $company->setCity('Paris');
+        $company->setType(Company::TYPE_ARCHIVE);
         $this->manager->persist($company);
         $this->companies['ribot'] = $company;
 
         $company = new Company();
         $company->setName('CoSpirit');
         $company->setCity('Lyon');
+        $company->setType(Company::TYPE_CLIENT);
         $this->manager->persist($company);
         $this->companies['cospirit'] = $company;
 
@@ -415,6 +429,7 @@ class AppFixtures extends Fixture
         $company->setName('Ar Developpement');
         $company->setDisplayName('Ar');
         $company->setCity('Lyon');
+        $company->setType(Company::TYPE_CLIENT);
         $this->companies['cospirit']->addClient($company);;
         $this->manager->persist($company);
         $this->companies['ar'] = $company;
@@ -422,29 +437,34 @@ class AppFixtures extends Fixture
         $company = new Company();
         $company->setName('Altima');
         $company->setCity('Lyon');
+        $company->setType(Company::TYPE_ARCHIVE);
         $this->manager->persist($company);
         $this->companies['altima'] = $company;
 
         $company = new Company();
         $company->setName('Obiz');
         $company->setCity('Lyon');
+        $company->setType(Company::TYPE_CLIENT);
         $this->manager->persist($company);
         $this->companies['obiz'] = $company;
 
         $company = new Company();
         $company->setName('Agixis');
         $company->setCity('Lyon');
+        $company->setType(Company::TYPE_CLIENT);
         $this->manager->persist($company);
         $this->companies['agixis'] = $company;
 
         $company = new Company();
         $company->setName('Spyrit');
         $company->setCity('Viroflay');
+        $company->setType(Company::TYPE_CLIENT);
         $this->manager->persist($company);
         $this->companies['spyrit'] = $company;
 
         $company = new Company();
         $company->setName('Helfrich');
+        $company->setType(Company::TYPE_COMPANY);
         $this->companies['spyrit']->addClient($company);;
         $this->manager->persist($company);
         $this->companies['helfrich'] = $company;
@@ -453,12 +473,14 @@ class AppFixtures extends Fixture
         $company->setName('La compagnie hyperactive');
         $company->setDisplayName('Hyperactive');
         $company->setCity('Paris');
+        $company->setType(Company::TYPE_CLIENT);
         $this->manager->persist($company);
         $this->companies['hyperactive'] = $company;
 
         $company = new Company();
         $company->setName('Drakona');
         $company->setCity('Lyon');
+        $company->setType(Company::TYPE_CLIENT);
         $this->manager->persist($company);
         $this->companies['drakona'] = $company;
 
@@ -466,12 +488,14 @@ class AppFixtures extends Fixture
         $company->setName('CS Systemes D\'information');
         $company->setDisplayName('CS');
         $company->setCity('Lyon');
+        $company->setType(Company::TYPE_ESN);
         $this->manager->persist($company);
         $this->companies['cs'] = $company;
 
         $company = new Company();
         $company->setName('Inpact');
         $company->setCity('Lyon');
+        $company->setType(Company::TYPE_CLIENT);
         $this->manager->persist($company);
         $this->companies['inpact'] = $company;
 
@@ -479,6 +503,7 @@ class AppFixtures extends Fixture
         $company->setName('EDF Septen');
         $company->setDisplayName('EDF');
         $company->setCity('Villeurbanne');
+        $company->setType(Company::TYPE_COMPANY);
         $this->manager->persist($company);
         $this->companies['cs']->addClient($company);;
         $this->companies['edf-septen'] = $company;
@@ -487,12 +512,14 @@ class AppFixtures extends Fixture
         $company->setName('Apollo SSC');
         $company->setDisplayName('Apollo');
         $company->setCity('Lyon');
+        $company->setType(Company::TYPE_ESN);
         $this->manager->persist($company);
         $this->companies['apollo'] = $company;
 
         $company = new Company();
         $company->setName('Cegid');
         $company->setCity('Lyon');
+        $company->setType(Company::TYPE_COMPANY);
         $this->manager->persist($company);
         $this->companies['apollo']->addClient($company);;
         $this->companies['cegid'] = $company;
@@ -500,12 +527,14 @@ class AppFixtures extends Fixture
         $company = new Company();
         $company->setName('Aleysia');
         $company->setCity('Lyon');
+        $company->setType(Company::TYPE_ESN);
         $this->manager->persist($company);
         $this->companies['aleysia'] = $company;
 
         $company = new Company();
         $company->setName('Ucly');
         $company->setCity('Lyon');
+        $company->setType(Company::TYPE_COMPANY);
         $this->manager->persist($company);
         $this->companies['aleysia']->addClient($company);;
         $this->companies['ucly'] = $company;
@@ -515,6 +544,7 @@ class AppFixtures extends Fixture
         $company->setStreet('16 quai Ernest Renaud');
         $company->setPostalCode('44100');
         $company->setCity('Nantes');
+        $company->setType(Company::TYPE_ESN);
         $this->manager->persist($company);
         $this->companies['bewizyu'] = $company;
 
@@ -522,18 +552,21 @@ class AppFixtures extends Fixture
         $company->setName('Acte Media');
         $company->setDisplayName('ActeMedia');
         $company->setCity('Bron');
+        $company->setType(Company::TYPE_COMPANY);
         $this->manager->persist($company);
         $this->companies['bewizyu']->addClient($company);;
         $this->companies['actemedia'] = $company;
 
         $company = new Company();
         $company->setName('Marquetis');
+        $company->setType(Company::TYPE_COMPANY);
         $this->manager->persist($company);
         $this->companies['actemedia']->addClient($company);;
         $this->companies['marquetis'] = $company;
 
         $company = new Company();
         $company->setName('La Poste');
+        $company->setType(Company::TYPE_COMPANY);
         $this->manager->persist($company);
         $this->companies['marquetis']->addClient($company);;
         $this->companies['laposte'] = $company;
@@ -1827,8 +1860,8 @@ class AppFixtures extends Fixture
         $invoice->setTotalTax(880);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_WAITING);
-        $this->periods[2019]->addInvoice($invoice);
-        $this->periods['2019-4']->addInvoice($invoice);
+        $this->periods[2020]->addInvoice($invoice);
+        $this->periods['2020-1']->addInvoice($invoice);
         $this->manager->persist($invoice);
     }
 
@@ -1868,7 +1901,6 @@ class AppFixtures extends Fixture
         $declaration->setQuarter(2);
         $declaration->setStatus(Declaration::STATUS_PAYED);
         $this->manager->persist($declaration);
-        $this->declarations['2015T2'] = $declaration;
         $this->periods['2015-2']->addDeclaration($declaration);
 
         $declaration = new Declaration();
@@ -1879,7 +1911,6 @@ class AppFixtures extends Fixture
         $declaration->setQuarter(3);
         $declaration->setStatus(Declaration::STATUS_PAYED);
         $this->manager->persist($declaration);
-        $this->declarations['2015T3'] = $declaration;
         $this->periods['2015-3']->addDeclaration($declaration);
 
         $declaration = new Declaration();
@@ -1890,7 +1921,6 @@ class AppFixtures extends Fixture
         $declaration->setQuarter(4);
         $declaration->setStatus(Declaration::STATUS_PAYED);
         $this->manager->persist($declaration);
-        $this->declarations['2015T4'] = $declaration;
         $this->periods['2015-4']->addDeclaration($declaration);
 
         $declaration = new Declaration();
@@ -1901,7 +1931,6 @@ class AppFixtures extends Fixture
         $declaration->setQuarter(1);
         $declaration->setStatus(Declaration::STATUS_PAYED);
         $this->manager->persist($declaration);
-        $this->declarations['2016T1'] = $declaration;
         $this->periods['2016-1']->addDeclaration($declaration);
 
         $declaration = new Declaration();
@@ -1912,7 +1941,6 @@ class AppFixtures extends Fixture
         $declaration->setQuarter(2);
         $declaration->setStatus(Declaration::STATUS_PAYED);
         $this->manager->persist($declaration);
-        $this->declarations['2016T2'] = $declaration;
         $this->periods['2016-2']->addDeclaration($declaration);
 
         $declaration = new Declaration();
@@ -1923,7 +1951,6 @@ class AppFixtures extends Fixture
         $declaration->setQuarter(3);
         $declaration->setStatus(Declaration::STATUS_PAYED);
         $this->manager->persist($declaration);
-        $this->declarations['2016T3'] = $declaration;
         $this->periods['2016-3']->addDeclaration($declaration);
 
         $declaration = new Declaration();
@@ -1934,7 +1961,6 @@ class AppFixtures extends Fixture
         $declaration->setQuarter(4);
         $declaration->setStatus(Declaration::STATUS_PAYED);
         $this->manager->persist($declaration);
-        $this->declarations['2016T4'] = $declaration;
         $this->periods['2016-4']->addDeclaration($declaration);
 
         $declaration = new Declaration();
@@ -1945,7 +1971,6 @@ class AppFixtures extends Fixture
         $declaration->setQuarter(1);
         $declaration->setStatus(Declaration::STATUS_PAYED);
         $this->manager->persist($declaration);
-        $this->declarations['2017T1'] = $declaration;
         $this->periods['2017-1']->addDeclaration($declaration);
 
         $declaration = new Declaration();
@@ -1956,7 +1981,6 @@ class AppFixtures extends Fixture
         $declaration->setQuarter(2);
         $declaration->setStatus(Declaration::STATUS_PAYED);
         $this->manager->persist($declaration);
-        $this->declarations['2017T2'] = $declaration;
         $this->periods['2017-2']->addDeclaration($declaration);
 
         $declaration = new Declaration();
@@ -1967,7 +1991,6 @@ class AppFixtures extends Fixture
         $declaration->setQuarter(3);
         $declaration->setStatus(Declaration::STATUS_PAYED);
         $this->manager->persist($declaration);
-        $this->declarations['2017T3'] = $declaration;
         $this->periods['2017-3']->addDeclaration($declaration);
 
         $declaration = new Declaration();
@@ -1978,7 +2001,6 @@ class AppFixtures extends Fixture
         $declaration->setQuarter(4);
         $declaration->setStatus(Declaration::STATUS_PAYED);
         $this->manager->persist($declaration);
-        $this->declarations['2017T4'] = $declaration;
         $this->periods['2017-4']->addDeclaration($declaration);
 
         $declaration = new Declaration();
@@ -1989,7 +2011,6 @@ class AppFixtures extends Fixture
         $declaration->setQuarter(1);
         $declaration->setStatus(Declaration::STATUS_PAYED);
         $this->manager->persist($declaration);
-        $this->declarations['2019T1'] = $declaration;
         $this->periods['2019-1']->addDeclaration($declaration);
 
         $declaration = new Declaration();
@@ -2000,7 +2021,6 @@ class AppFixtures extends Fixture
         $declaration->setQuarter(2);
         $declaration->setStatus(Declaration::STATUS_PAYED);
         $this->manager->persist($declaration);
-        $this->declarations['2019T2'] = $declaration;
         $this->periods['2019-2']->addDeclaration($declaration);
 
         $declaration = new Declaration();
@@ -2011,7 +2031,6 @@ class AppFixtures extends Fixture
         $declaration->setQuarter(3);
         $declaration->setStatus(Declaration::STATUS_PAYED);
         $this->manager->persist($declaration);
-        $this->declarations['2019T3'] = $declaration;
         $this->periods['2019-3']->addDeclaration($declaration);
 
         $declaration = new Declaration();
@@ -2022,8 +2041,25 @@ class AppFixtures extends Fixture
         $declaration->setQuarter(4);
         $declaration->setStatus(Declaration::STATUS_PAYED);
         $this->manager->persist($declaration);
-        $this->declarations['2019T4'] = $declaration;
         $this->periods['2019-4']->addDeclaration($declaration);
+
+        $declaration = new Declaration();
+        $declaration->setType(Declaration::TYPE_TVA);
+        $declaration->setRevenue(2400);
+        $declaration->setTax(2400);
+        $declaration->setYear(2019);
+        $declaration->setStatus(Declaration::STATUS_WAITING);
+        $this->manager->persist($declaration);
+        $this->periods['2019']->addDeclaration($declaration);
+
+        $declaration = new Declaration();
+        $declaration->setType(Declaration::TYPE_IMPOT);
+        $declaration->setRevenue(39800);
+        $declaration->setTax(0);
+        $declaration->setYear(2019);
+        $declaration->setStatus(Declaration::STATUS_WAITING);
+        $this->manager->persist($declaration);
+        $this->periods['2019']->addDeclaration($declaration);
     }
 }
 

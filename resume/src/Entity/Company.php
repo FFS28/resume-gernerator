@@ -62,6 +62,26 @@ class Company
     private $city;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $type;
+
+    const TYPE_CLIENT    = "client";
+    const TYPE_PROSPECT = "prospect";
+    const TYPE_ARCHIVE = "archive";
+    const TYPE_ESN = "esn";
+    const TYPE_COMPANY = "company";
+
+    /** @var array user friendly named type */
+    const TYPES = [
+        'Client' => self::TYPE_CLIENT,
+        'Prospect' => self::TYPE_PROSPECT,
+        'Archive' => self::TYPE_ARCHIVE,
+        'ESN' => self::TYPE_ESN,
+        'Company' => self::TYPE_COMPANY,
+    ];
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Person", mappedBy="company", cascade={"persist"})
      */
     private $persons;
@@ -80,6 +100,11 @@ class Company
      * @ORM\OneToMany(targetEntity="App\Entity\Company", mappedBy="contractor")
      */
     private $clients;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $notes;
 
     public function __construct()
     {
@@ -123,6 +148,31 @@ class Company
         $this->slug = $slug;
 
         return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTypeName()
+    {
+        $typeName = array_flip(self::TYPES);
+        if (!isset($typeName[$this->type])) {
+            return null;
+        }
+
+        return $typeName[$this->type];
     }
 
     /**
@@ -387,6 +437,18 @@ class Company
                 $client->setContractor(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getNotes(): ?string
+    {
+        return $this->notes;
+    }
+
+    public function setNotes(?string $notes): self
+    {
+        $this->notes = $notes;
 
         return $this;
     }

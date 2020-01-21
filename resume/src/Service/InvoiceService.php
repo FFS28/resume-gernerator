@@ -56,8 +56,7 @@ class InvoiceService
         DeclarationService $declarationService,
         SerializerInterface $serializer,
         TranslatorInterface $translator
-    )
-    {
+    ) {
         $this->pdfFileDirectory = $pdfFileDirectory;
         $this->companyName = $companyName;
         $this->companyStreet = $companyStreet;

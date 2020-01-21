@@ -34,7 +34,7 @@ class Declaration
     private $month;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2)
+     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
      */
     private $revenue;
 
