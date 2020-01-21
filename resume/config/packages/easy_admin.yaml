@@ -45,30 +45,35 @@ easy_admin:
   entities:
     Company:
       class: App\Entity\Company
+      controller: App\Controller\CompanyController
       form:
         fields:
           - { type: 'group', columns: 3, label: 'Principal' }
           - name
-          - displayName
           - { property: 'displayName', label: 'Display name' }
+          - { property: 'type', type: 'choice', type_options: { choices: !php/const App\Entity\Company::TYPES } }
           - { type: 'group', columns: 3, label: 'Hierarchy' }
           - { property: 'clients', type: 'easyadmin_autocomplete', type_options: { class: 'App\Entity\Company', attr: { create: true } } }
           - { property: 'contractor', type: 'easyadmin_autocomplete', type_options: { class: 'App\Entity\Company', attr: { create: true } } }
           - { property: 'persons', type: 'easyadmin_autocomplete', type_options: { class: 'App\Entity\Person', attr: { create: true } } }
-          - { type: 'group', columns: 6, label: 'Address' }
+          - { type: 'group', columns: 3, label: 'Address' }
           - street
           - postalCode
           - city
+          - { type: 'group', columns: 3, label: 'Notes' }
+          - notes
           - { type: 'group', columns: 12, label: 'Experiences' }
           - { property: experiences, label: '', type: embedded_list }
           - { type: 'group', columns: 12, label: 'Invoices' }
           - { property: invoices, label: '', type: embedded_list }
       list:
         fields:
-          - displayName
+          - { property: 'displayName', label: 'Name' }
+          - { property: 'typeName', label: 'Type' }
           - { property: 'client', type: 'association', targetEntity: 'App\Entity\Company', associationType: !php/const Doctrine\ORM\Mapping\ClassMetadataInfo::MANY_TO_ONE }
           - contractor
           - { property: 'persons', type: 'array' }
+          - notes
         max_results: 20
     Person:
       class: App\Entity\Person
