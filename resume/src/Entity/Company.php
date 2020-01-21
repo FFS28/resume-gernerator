@@ -78,7 +78,7 @@ class Company
         'Prospect' => self::TYPE_PROSPECT,
         'Archive' => self::TYPE_ARCHIVE,
         'ESN' => self::TYPE_ESN,
-        'Entreprise' => self::TYPE_COMPANY,
+        'Company' => self::TYPE_COMPANY,
     ];
 
     /**
