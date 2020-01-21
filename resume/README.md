@@ -7,7 +7,6 @@
     
 - Entreprises
     - Possibilité d'envoyer un mail à une entreprise
-    - Lister les interactions
     
 - Purchase
     - Déduire la TVA des achats
