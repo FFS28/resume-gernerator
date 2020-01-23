@@ -2048,7 +2048,8 @@ class AppFixtures extends Fixture
         $declaration->setRevenue(2400);
         $declaration->setTax(2400);
         $declaration->setYear(2019);
-        $declaration->setStatus(Declaration::STATUS_WAITING);
+        $declaration->setQuarter(4);
+        $declaration->setStatus(Declaration::STATUS_PAYED);
         $this->manager->persist($declaration);
         $this->periods['2019']->addDeclaration($declaration);
 
