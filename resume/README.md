@@ -18,7 +18,7 @@
         - ne pas notifier si elles existent et sont payé
         - les créer si elles n'existent pas
     - TVA
-        - Ajouter les dates : décembre, juillet et mai (à vérifier)
+        - Ajouter les dates (à vérifier) : décembre, juillet (accomptes) et mai (régularisation)
         - Ajouter les notifications
     - Impots
         - Ajouter les dates
