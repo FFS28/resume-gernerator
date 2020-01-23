@@ -19,21 +19,6 @@ class Declaration
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $year;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $quarter;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $month;
-
-    /**
      * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
      */
     private $revenue;
@@ -95,11 +80,14 @@ class Declaration
 
     public function __toString()
     {
-        $str = $this->getTypeName().' '.$this->getYear();
-        if ($this->getMonth()) {
-            $str .= '/' . $this->getMonth();
-        } elseif ($this->getQuarter()) {
-            $str .= ' T' . $this->getQuarter();
+        $str = $this->getTypeName().' ';
+        $period = $this->getPeriod();
+
+        if ($period->getYear()) {
+            $str .= '/' . $period->getYear();
+        }
+        if ($period->getQuarter()) {
+            $str .= ' T' . $period->getQuarter();
         }
 
         return $str;
@@ -108,42 +96,6 @@ class Declaration
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getYear(): ?int
-    {
-        return $this->year;
-    }
-
-    public function setYear(int $year): self
-    {
-        $this->year = $year;
-
-        return $this;
-    }
-
-    public function getQuarter(): ?int
-    {
-        return $this->quarter;
-    }
-
-    public function setQuarter(?int $quarter): self
-    {
-        $this->quarter = $quarter;
-
-        return $this;
-    }
-
-    public function getMonth(): ?int
-    {
-        return $this->month;
-    }
-
-    public function setMonth(?int $month): self
-    {
-        $this->month = $month;
-
-        return $this;
     }
 
     public function getRevenue(): ?string

@@ -1897,8 +1897,6 @@ class AppFixtures extends Fixture
         $declaration->setType(Declaration::TYPE_SOCIAL);
         $declaration->setRevenue(6650);
         $declaration->setTax(545);
-        $declaration->setYear(2015);
-        $declaration->setQuarter(2);
         $declaration->setStatus(Declaration::STATUS_PAYED);
         $this->manager->persist($declaration);
         $this->periods['2015-2']->addDeclaration($declaration);
@@ -1907,8 +1905,6 @@ class AppFixtures extends Fixture
         $declaration->setType(Declaration::TYPE_SOCIAL);
         $declaration->setRevenue(9300);
         $declaration->setTax(763);
-        $declaration->setYear(2015);
-        $declaration->setQuarter(3);
         $declaration->setStatus(Declaration::STATUS_PAYED);
         $this->manager->persist($declaration);
         $this->periods['2015-3']->addDeclaration($declaration);
@@ -1917,8 +1913,6 @@ class AppFixtures extends Fixture
         $declaration->setType(Declaration::TYPE_SOCIAL);
         $declaration->setRevenue(6000);
         $declaration->setTax(492);
-        $declaration->setYear(2015);
-        $declaration->setQuarter(4);
         $declaration->setStatus(Declaration::STATUS_PAYED);
         $this->manager->persist($declaration);
         $this->periods['2015-4']->addDeclaration($declaration);
@@ -1927,8 +1921,6 @@ class AppFixtures extends Fixture
         $declaration->setType(Declaration::TYPE_SOCIAL);
         $declaration->setRevenue(300);
         $declaration->setTax(25);
-        $declaration->setYear(2016);
-        $declaration->setQuarter(1);
         $declaration->setStatus(Declaration::STATUS_PAYED);
         $this->manager->persist($declaration);
         $this->periods['2016-1']->addDeclaration($declaration);
@@ -1937,8 +1929,6 @@ class AppFixtures extends Fixture
         $declaration->setType(Declaration::TYPE_SOCIAL);
         $declaration->setRevenue(9300);
         $declaration->setTax(1294);
-        $declaration->setYear(2016);
-        $declaration->setQuarter(2);
         $declaration->setStatus(Declaration::STATUS_PAYED);
         $this->manager->persist($declaration);
         $this->periods['2016-2']->addDeclaration($declaration);
@@ -1947,8 +1937,6 @@ class AppFixtures extends Fixture
         $declaration->setType(Declaration::TYPE_SOCIAL);
         $declaration->setRevenue(10200);
         $declaration->setTax(1417);
-        $declaration->setYear(2016);
-        $declaration->setQuarter(3);
         $declaration->setStatus(Declaration::STATUS_PAYED);
         $this->manager->persist($declaration);
         $this->periods['2016-3']->addDeclaration($declaration);
@@ -1957,8 +1945,6 @@ class AppFixtures extends Fixture
         $declaration->setType(Declaration::TYPE_SOCIAL);
         $declaration->setRevenue(9800);
         $declaration->setTax(1363);
-        $declaration->setYear(2016);
-        $declaration->setQuarter(4);
         $declaration->setStatus(Declaration::STATUS_PAYED);
         $this->manager->persist($declaration);
         $this->periods['2016-4']->addDeclaration($declaration);
@@ -1967,8 +1953,6 @@ class AppFixtures extends Fixture
         $declaration->setType(Declaration::TYPE_SOCIAL);
         $declaration->setRevenue(8000);
         $declaration->setTax(1096);
-        $declaration->setYear(2017);
-        $declaration->setQuarter(1);
         $declaration->setStatus(Declaration::STATUS_PAYED);
         $this->manager->persist($declaration);
         $this->periods['2017-1']->addDeclaration($declaration);
@@ -1977,8 +1961,6 @@ class AppFixtures extends Fixture
         $declaration->setType(Declaration::TYPE_SOCIAL);
         $declaration->setRevenue(8800);
         $declaration->setTax(1699);
-        $declaration->setYear(2017);
-        $declaration->setQuarter(2);
         $declaration->setStatus(Declaration::STATUS_PAYED);
         $this->manager->persist($declaration);
         $this->periods['2017-2']->addDeclaration($declaration);
@@ -1987,8 +1969,6 @@ class AppFixtures extends Fixture
         $declaration->setType(Declaration::TYPE_SOCIAL);
         $declaration->setRevenue(2700);
         $declaration->setTax(520);
-        $declaration->setYear(2017);
-        $declaration->setQuarter(3);
         $declaration->setStatus(Declaration::STATUS_PAYED);
         $this->manager->persist($declaration);
         $this->periods['2017-3']->addDeclaration($declaration);
@@ -1997,8 +1977,6 @@ class AppFixtures extends Fixture
         $declaration->setType(Declaration::TYPE_SOCIAL);
         $declaration->setRevenue(13240);
         $declaration->setTax(2555);
-        $declaration->setYear(2017);
-        $declaration->setQuarter(4);
         $declaration->setStatus(Declaration::STATUS_PAYED);
         $this->manager->persist($declaration);
         $this->periods['2017-4']->addDeclaration($declaration);
@@ -2007,8 +1985,6 @@ class AppFixtures extends Fixture
         $declaration->setType(Declaration::TYPE_SOCIAL);
         $declaration->setRevenue(9000);
         $declaration->setTax(1988);
-        $declaration->setYear(2019);
-        $declaration->setQuarter(1);
         $declaration->setStatus(Declaration::STATUS_PAYED);
         $this->manager->persist($declaration);
         $this->periods['2019-1']->addDeclaration($declaration);
@@ -2017,8 +1993,6 @@ class AppFixtures extends Fixture
         $declaration->setType(Declaration::TYPE_SOCIAL);
         $declaration->setRevenue(7800);
         $declaration->setTax(1732);
-        $declaration->setYear(2019);
-        $declaration->setQuarter(2);
         $declaration->setStatus(Declaration::STATUS_PAYED);
         $this->manager->persist($declaration);
         $this->periods['2019-2']->addDeclaration($declaration);
@@ -2027,8 +2001,6 @@ class AppFixtures extends Fixture
         $declaration->setType(Declaration::TYPE_SOCIAL);
         $declaration->setRevenue(11000);
         $declaration->setTax(2442);
-        $declaration->setYear(2019);
-        $declaration->setQuarter(3);
         $declaration->setStatus(Declaration::STATUS_PAYED);
         $this->manager->persist($declaration);
         $this->periods['2019-3']->addDeclaration($declaration);
@@ -2037,18 +2009,14 @@ class AppFixtures extends Fixture
         $declaration->setType(Declaration::TYPE_SOCIAL);
         $declaration->setRevenue(12000);
         $declaration->setTax(2664);
-        $declaration->setYear(2019);
-        $declaration->setQuarter(4);
         $declaration->setStatus(Declaration::STATUS_PAYED);
         $this->manager->persist($declaration);
         $this->periods['2019-4']->addDeclaration($declaration);
 
         $declaration = new Declaration();
         $declaration->setType(Declaration::TYPE_TVA);
-        $declaration->setRevenue(2400);
+        $declaration->setRevenue(12000);
         $declaration->setTax(2400);
-        $declaration->setYear(2019);
-        $declaration->setQuarter(4);
         $declaration->setStatus(Declaration::STATUS_PAYED);
         $this->manager->persist($declaration);
         $this->periods['2019']->addDeclaration($declaration);
@@ -2057,7 +2025,6 @@ class AppFixtures extends Fixture
         $declaration->setType(Declaration::TYPE_IMPOT);
         $declaration->setRevenue(39800);
         $declaration->setTax(0);
-        $declaration->setYear(2019);
         $declaration->setStatus(Declaration::STATUS_WAITING);
         $this->manager->persist($declaration);
         $this->periods['2019']->addDeclaration($declaration);

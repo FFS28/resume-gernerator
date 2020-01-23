@@ -164,10 +164,6 @@ easy_admin:
           - { type: 'group', columns: 3, label: '' }
           - period
           - { type: 'group', columns: 3, label: '' }
-          - year
-          - { type: 'group', columns: 3, label: '' }
-          - quarter
-          - { type: 'group', columns: 3, label: '' }
           - revenue
           - { type: 'group', columns: 3, label: '' }
           - tax
@@ -195,8 +191,7 @@ easy_admin:
         filters:
           - { property: status, type: 'App\Form\Filter\DeclarationStatusFilterType' }
           - { property: type, type: 'App\Form\Filter\DeclarationTypeFilterType' }
-          - year
-          - quarter
+          - period
     Period:
       class: App\Entity\Period
     Activity:

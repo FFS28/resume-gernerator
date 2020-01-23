@@ -20,18 +20,24 @@ class DeclarationRepository extends ServiceEntityRepository
         parent::__construct($registry, Declaration::class);
     }
 
-    public function getByInvoice(Invoice $invoice, string $type)
+    public function getByInvoice(string $type, Invoice $invoice)
+    {
+        return $this->getByDate($type, $invoice->getPayedAtYear(), $invoice->getPayedAtQuarter());
+    }
+
+    public function getByDate($type, int $year, int $quarter = 0)
     {
         $query = $this->createQueryBuilder('d')
             ->where('d.type = :type')
+            ->join('d.period', 'p')
             ->setParameter('type', $type)
-            ->andWhere('d.year = :year')
-            ->setParameter('year', $invoice->getPayedAtYear())
+            ->andWhere('p.year = :year')
+            ->setParameter('year', $year)
         ;
 
         if ($type === Declaration::TYPE_SOCIAL) {
-            $query->andWhere('d.quarter = :quarter')
-                ->setParameter('quarter', $invoice->getPayedAtQuarter());
+            $query->andWhere('p.quarter = :quarter')
+                ->setParameter('quarter', $quarter);
         }
 
         return $query->getQuery()

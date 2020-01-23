@@ -9,14 +9,9 @@
     - Possibilité d'envoyer un mail à une entreprise
     
 - Déclarations
-    - Notifications pour paiement TVA 
-    - Calcul automatique à la création d'une déclaration
-    - Au moment de l'envoi des notifications, vérifier si il y a des déclarations en cours,
+    - Gerer les entre 2 périodes
 
 - Notifications
-    - Verifier s'il y a des déclarations en cours
-        - ne pas notifier si elles existent et sont payé
-        - les créer si elles n'existent pas
     - TVA
         - Ajouter les dates (à vérifier) : décembre, juillet (accomptes) et mai (régularisation)
         - Ajouter les notifications

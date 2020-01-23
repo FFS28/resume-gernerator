@@ -49,7 +49,7 @@ relationships:
     database: "db_resume:postgresql"
 
 crons:
-    check:
+    notifications:
         # every monday at 9 AM
         spec: '0 9 * * 1'
         cmd: |

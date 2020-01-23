@@ -67,4 +67,19 @@ class DeclarationController extends EasyAdminController
 
         return $this->redirectToReferrer();
     }
+
+    /**
+     * @param Declaration $entity
+     */
+    protected function persistEntity($entity){
+        parent::persistEntity($entity);
+        $this->declarationService->calculate($entity);
+    }
+
+    /**
+     * @param Declaration $entity
+     */
+    protected function updateEntity($entity){
+        parent::updateEntity($entity);
+    }
 }
