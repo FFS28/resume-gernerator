@@ -75,12 +75,27 @@ class DeclarationService
         return $year;
     }
 
+    public function isDueSocialMonth(\DateTime $date)
+    {
+        $dueDatesMonth = $this->getDueSocialMonth();
+
+        foreach ($dueDatesMonth as $index => $dueDateMonth) {
+            $isDueSocialMonth = intval($date->format('m')) ===  $dueDateMonth;
+
+            if ($isDueSocialMonth) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * @param \DateTime $date
      * @return array
      * @throws \Exception
      */
-    public function getDueQuarterDatesBy(\DateTime $date): array
+    public function getDueSocialDatesBy(\DateTime $date): array
     {
         $dueDatesMonth = $this->getDueSocialMonth();
         $dueDates = [];
@@ -108,7 +123,7 @@ class DeclarationService
     public function getNextQuarterDueDate(): array
     {
         $currentDate = new \DateTime();
-        $dueDates = $this->getDueQuarterDatesBy($currentDate);
+        $dueDates = $this->getDueSocialDatesBy($currentDate);
 
         foreach ($dueDates as $index => $dueDate)
         {
