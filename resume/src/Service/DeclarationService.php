@@ -75,8 +75,9 @@ class DeclarationService
         return $year;
     }
 
-    public function isDueSocialMonth(\DateTime $date)
+    public function isDueSocialMonth()
     {
+        $date = new \DateTime();
         $dueDatesMonth = $this->getDueSocialMonth();
 
         foreach ($dueDatesMonth as $index => $dueDateMonth) {
@@ -177,77 +178,49 @@ class DeclarationService
         $this->entityManager->flush();
     }
 
-    public function attachInvoice(Invoice $invoice)
-    {
-        if (!$invoice->getPayedAt()) {
-            return ;
-        }
-
-        // @TODO Refacto
-        /*list ($annualyPeriod, $quarterlyPeriod, $shiftedQuarterlyPeriod)
-            = $this->getPeriod($invoice->getPayedAtYear(), $invoice->getPayedAtQuarter());
-
-        $invoice->setPeriod($quarterlyPeriod);
-
-        $this->generateDeclarations($annualyPeriod, $quarterlyPeriod, $shiftedQuarterlyPeriod);*/
-    }
-
     /**
-     * @param $year
-     * @param $quarter
      * @return Period[]
-     *
-    public function getPeriod($year, $quarter)
+     * @throws \Exception
+     */
+    public function getCurrentPeriod()
     {
+        $date = new \DateTime();
+
         $annualyPeriod = $this->periodRepository->findOneBy([
-            'year' => $year
+            'year' => $date->format('Y')
         ]);
         $quarterlyPeriod = $this->periodRepository->findOneBy([
-            'year' => $year,
-            'quarter' => $quarter
-        ]);
-        $shiftedQuarterlyPeriod = $this->periodRepository->findOneBy([
-            'year' => $year - 1,
-            'quarter' => $quarter
+            'year' => $date->format('Y'),
+            'quarter' => ceil(intval($date->format('n')) / 3)
         ]);
 
-        return [$annualyPeriod, $quarterlyPeriod, $shiftedQuarterlyPeriod];
-    }*/
+        return [];
+    }
+
 
     /**
-     * @param Period $annualyPeriod
-     * @param Period $quarterlyPeriod
-     * @return Declaration[]
-     *
-    public function generateDeclarations(Period $annualyPeriod, Period $quarterlyPeriod, Period $shiftedQuarterlyPeriod)
+     * @return Period[]
+     * @throws \Exception
+     */
+    public function getPreviousPeriod()
     {
-        $return = [];
+        $date = new \DateTime();
 
-        $declarationImpot = $this->declarationRepository->getByDate(Declaration::TYPE_IMPOT, $annualyPeriod->getYear());
+        $annualyPeriod = $this->periodRepository->findOneBy([
+            'year' => intval($date->format('Y')) - 1
+        ]);
+        $quarterlyPeriod = $this->periodRepository->findOneBy([
+            'year' => $date->format('Y'),
+            'quarter' => ceil(intval($date->format('n')) / 3)
+        ]);
 
-        if (!$declarationImpot) {
-            $declarationImpot = new Declaration();
-            $declarationImpot->setType(Declaration::TYPE_IMPOT);
-            $declarationImpot->setRevenue(0);
-            $declarationImpot->setTax(0);
-            $declarationImpot->setPeriod($annualyPeriod);
+        return [];
+    }
 
-            $this->entityManager->persist($declarationImpot);
-        }
-        $return[] = $declarationImpot;
-
-        $declarationTva = $this->declarationRepository->getByDate(Declaration::TYPE_TVA, $annualyPeriod->getYear());
-
-        if (!$declarationTva) {
-            $declarationTva = new Declaration();
-            $declarationTva->setType(Declaration::TYPE_TVA);
-            $declarationTva->setRevenue(0);
-            $declarationTva->setTax(0);
-            $declarationTva->setPeriod($annualyPeriod);
-
-            $this->entityManager->persist($declarationTva);
-        }
-        $return[] = $declarationTva;
+    public function getSocialDeclarations($forceCurrent = false)
+    {
+        list ($annualyPeriod, $quarterlyPeriod)
+            = $this->isDueSocialMonth() && !$forceCurrent ? $this->getPreviousPeriod() : $this->getCurrentPeriod();
 
         $declarationSocial = $this->declarationRepository->getByDate(
             Declaration::TYPE_SOCIAL,
@@ -260,37 +233,55 @@ class DeclarationService
             $declarationSocial->setType(Declaration::TYPE_SOCIAL);
             $declarationSocial->setRevenue(0);
             $declarationSocial->setTax(0);
-            $declarationSocial->setPeriod($shiftedQuarterlyPeriod);
+            $declarationSocial->setPeriod($quarterlyPeriod);
 
             $this->entityManager->persist($declarationSocial);
         }
-        $return[] = $declarationSocial;
-
-        $shiftedDeclarationSocial = $this->declarationRepository->getByDate(
-            Declaration::TYPE_SOCIAL,
-            $shiftedQuarterlyPeriod->getYear(),
-            $shiftedQuarterlyPeriod->getQuarter()
-        );
-
-        if (!$shiftedDeclarationSocial) {
-            $shiftedDeclarationSocial = new Declaration();
-            $shiftedDeclarationSocial->setType(Declaration::TYPE_SOCIAL);
-            $shiftedDeclarationSocial->setRevenue(0);
-            $shiftedDeclarationSocial->setTax(0);
-            $shiftedDeclarationSocial->setPeriod($shiftedQuarterlyPeriod);
-
-            $this->entityManager->persist($shiftedDeclarationSocial);
-        }
-        $return[] = $shiftedDeclarationSocial;
 
         $this->entityManager->flush();
-        
-        return $return;
-    }*/
+    }
+
+    public function getTvaDeclarations($forceCurrent = false)
+    {
+        list ($annualyPeriod) = $this->getCurrentPeriod();
+
+        $declarationTva = $this->declarationRepository->getByDate(Declaration::TYPE_TVA, $annualyPeriod->getYear());
+
+        if (!$declarationTva) {
+            $declarationTva = new Declaration();
+            $declarationTva->setType(Declaration::TYPE_TVA);
+            $declarationTva->setRevenue(0);
+            $declarationTva->setTax(0);
+            $declarationTva->setPeriod($annualyPeriod);
+
+            $this->entityManager->persist($declarationTva);
+        }
+
+        $this->entityManager->flush();
+    }
+
+    public function getImpotDeclarations($forceCurrent = false)
+    {
+        list ($annualyPeriod) = $this->getCurrentPeriod();
+
+        $declarationImpot = $this->declarationRepository->getByDate(Declaration::TYPE_IMPOT, $annualyPeriod->getYear());
+
+        if (!$declarationImpot) {
+            $declarationImpot = new Declaration();
+            $declarationImpot->setType(Declaration::TYPE_IMPOT);
+            $declarationImpot->setRevenue(0);
+            $declarationImpot->setTax(0);
+            $declarationImpot->setPeriod($annualyPeriod);
+
+            $this->entityManager->persist($declarationImpot);
+        }
+
+        $this->entityManager->flush();
+    }
 
     /**
      * Envoi un mail si la date de fin de déclaration approche
-     * @return array
+     * @return string[]
      * @throws \Exception
      */
     public function getNotifications()
@@ -298,19 +289,18 @@ class DeclarationService
         $date = new \DateTime();
         $messages = [];
 
-
         /** @var int $quarterDueDate */
         /** @var \DateTime $quarterDueDateBegin */
         /** @var \DateTime $quarterDueDateEnd */
         /** @var bool $quarterDueueDateIsActive */
-        /*list(
+        list(
             $quarterDueDate,
             $quarterDueDateBegin,
             $quarterDueDateEnd,
             $quarterDueueDateIsActive
         ) = $this->getNextQuarterDueDate();
 
-        list ($annualyPeriod, $quarterlyPeriod, $shiftedQuarterlyPeriod)
+        /*list ($annualyPeriod, $quarterlyPeriod, $shiftedQuarterlyPeriod)
             = $this->getPeriod($quarterDueDateBegin->format('Y'), $quarterDueDate);
 
         list($declarationImpot, $declarationTva, $declarationSocial, $shiftedDeclarationSocial)

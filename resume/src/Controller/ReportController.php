@@ -178,9 +178,8 @@ class ReportController extends EasyAdminController
             $invoice->importActivities($activities);
             $entityManager->flush();
         } else {
-            //$invoice = $invoiceService->createByActivities($currentDate, $company, $activities);
+            $invoice = $invoiceService->createByActivities($currentDate, $company, $activities);
         }
-
 
         return $this->redirectToRoute('easyadmin', ['entity'=> 'Invoice', 'action'=> 'edit', 'id'=> $invoice->getId()]);
     }

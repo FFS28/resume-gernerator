@@ -126,6 +126,11 @@ class Invoice
      */
     private $period;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $daysCount;
+
     const TJM_DEFAULT = 400;
     const LIMIT_AE_TVA = 33200;
     const LIMIT_AE = 70000;
@@ -154,7 +159,7 @@ class Invoice
             $dayCount += $activity->getValue();
         }
 
-        $this->setTotalHt($dayCount * $this->getTjm());
+        $this->setDaysCount($dayCount);
     }
 
     public function getFilename(): string
@@ -257,29 +262,13 @@ class Invoice
         return $this->totalHt;
     }
 
-    public function getTotalTtc(): ?string
-    {
-        return $this->totalHt + $this->getTotalTax();
-    }
-
     public function setTotalHt(string $totalHt): self
     {
         $this->totalHt = $totalHt;
+        if (!$this->getDaysCount()) {
+            $this->setDaysCount($this->getTotalHt() / $this->getTjm());
+        }
 
-        return $this;
-    }
-
-    public function getDaysCount(): ?float
-    {
-        return $this->getTjm() && $this->getTjm() !== null && $this->getTjm() > 0
-            ? $this->getTotalHt() / $this->getTjm()
-            : null;
-    }
-
-    public function setDaysCount(int $daysCount): self
-    {
-        $this->setTotalHt($this->getTjm() * $daysCount);
-        $this->setTotalTax($this->totalHt * Invoice::TAX_MULTIPLIER);
         return $this;
     }
 
@@ -293,6 +282,11 @@ class Invoice
         $this->totalTax = $totalTax;
 
         return $this;
+    }
+
+    public function getTotalTtc(): ?string
+    {
+        return $this->getTotalHt() + $this->getTotalTax();
     }
 
     public function getObject(): ?string
@@ -443,5 +437,20 @@ class Invoice
         }
 
         return null;
+    }
+
+    public function getDaysCount(): ?int
+    {
+        return $this->daysCount;
+    }
+
+    public function setDaysCount(?int $daysCount): self
+    {
+        $this->daysCount = $daysCount;
+        if (!$this->getTotalHt()) {
+            $this->setTotalHt($this->getDaysCount() * $this->getTjm());
+        }
+
+        return $this;
     }
 }

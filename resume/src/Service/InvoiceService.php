@@ -220,6 +220,28 @@ class InvoiceService
         return $filename;
     }
 
+    public function calculTva(Invoice $invoice)
+    {
+        $isOutOfTaxLimit = $this->invoiceRepository->isOutOfTaxLimit($invoice->getTotalHt());
+
+        if ($isOutOfTaxLimit) {
+            $invoice->setTotalTax($invoice->getTotalHt() * Invoice::TAX_MULTIPLIER);
+        }
+    }
+
+    public function calculTotalHt(Invoice $invoice)
+    {
+        $invoice->setTotalHt($invoice->getTjm() * $invoice->getDaysCount());
+    }
+
+    public function updatePeriod(Invoice $invoice)
+    {
+        if ($invoice->getPayedAt()) {
+            list ($annualyPeriod, $quarterlyPeriod) = $this->declarationService->getCurrentPeriod();
+            $invoice->setPeriod($quarterlyPeriod);
+        }
+    }
+
     /**
      * @param \DateTime $currentDate
      * @param Company $company
@@ -240,6 +262,8 @@ class InvoiceService
         if ($experiences && count($experiences) == 1) {
             $invoice->setExperience($experiences[0]);
         }
+
+        $this->calculTva($invoice);
 
         $this->entityManager->persist($invoice);
         $this->entityManager->flush();

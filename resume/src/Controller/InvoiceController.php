@@ -86,10 +86,10 @@ class InvoiceController extends EasyAdminController
 
         $entity->setStatus(Invoice::STATUS_PAYED);
         $entity->setPayedAt(new \DateTime('now'));
+        $this->updatePeriod($entity);
 
         $this->em->flush();
 
-        $this->declarationService->attachInvoice($entity);
 
         return $this->redirectToReferrer();
     }
@@ -141,33 +141,26 @@ class InvoiceController extends EasyAdminController
         );
     }
 
-    private function calculTotalHt(Invoice $invoice)
-    {
-        $invoice->setTotalHt($invoice->getTjm() * $invoice->getDaysCount());
-    }
-
     /**
      * @param Invoice $entity
+     * @throws \Exception
      */
     protected function persistEntity($entity){
-        $this->calculTotalHt($entity);
-        $this->declarationService->attachInvoice($entity);
-
-        $isOutOfTaxLimit = $this->invoiceRepository->isOutOfTaxLimit($entity->getTotalHt());
-
-        if ($isOutOfTaxLimit) {
-            $entity->setTotalTax($entity->getTotalHt() * Invoice::TAX_MULTIPLIER);
-        }
+        $this->invoiceService->calculTotalHt($entity);
+        $this->invoiceService->calculTva($entity);
+        $this->invoiceService->updatePeriod($entity);
 
         parent::persistEntity($entity);
     }
 
     /**
      * @param Invoice $entity
+     * @throws \Exception
      */
     protected function updateEntity($entity){
-        $this->calculTotalHt($entity);
-        $this->declarationService->attachInvoice($entity);
+        $this->invoiceService->calculTotalHt($entity);
+        $this->invoiceService->calculTva($entity);
+        $this->invoiceService->updatePeriod($entity);
 
         parent::updateEntity($entity);
     }
