@@ -84,12 +84,14 @@ class InvoiceController extends EasyAdminController
         /** @var Invoice $entity */
         $entity = $this->em->getRepository(Invoice::class)->find($id);
 
-        $entity->setStatus(Invoice::STATUS_PAYED);
-        $entity->setPayedAt(new \DateTime('now'));
+        if ($entity->isEditable()) {
+            $entity->setStatus(Invoice::STATUS_PAYED);
+            $entity->setPayedAt(new \DateTime('now'));
+            $this->invoiceService->updatePeriod($entity);
 
-        $this->em->flush();
+            $this->em->flush();
+        }
 
-        $this->declarationService->attachInvoice($entity);
 
         return $this->redirectToReferrer();
     }
@@ -126,6 +128,19 @@ class InvoiceController extends EasyAdminController
         throw new \Exception('Email not found');
     }
 
+    protected function deleteAction(){
+        $id = $this->request->query->get('id');
+        /** @var Invoice $entity */
+        $entity = $this->em->getRepository(Invoice::class)->find($id);
+
+        if ($entity->getStatus() === Invoice::STATUS_DRAFT) {
+            return parent::deleteAction();
+        }
+
+        return $this->redirectToReferrer();
+    }
+
+
 
     /**
      * @Route("/admin/invoice/csv", name="invoices_csv")
@@ -141,33 +156,28 @@ class InvoiceController extends EasyAdminController
         );
     }
 
-    private function calculTotalHt(Invoice $invoice)
-    {
-        $invoice->setTotalHt($invoice->getTjm() * $invoice->getDaysCount());
-    }
-
     /**
      * @param Invoice $entity
+     * @throws \Exception
      */
     protected function persistEntity($entity){
-        $this->calculTotalHt($entity);
-        $this->declarationService->attachInvoice($entity);
-
-        $isOutOfTaxLimit = $this->invoiceRepository->isOutOfTaxLimit($entity->getTotalHt());
-
-        if ($isOutOfTaxLimit) {
-            $entity->setTotalTax($entity->getTotalHt() * Invoice::TAX_MULTIPLIER);
-        }
+        $this->invoiceService->calculTotalHt($entity);
+        $this->invoiceService->calculTva($entity);
+        $this->invoiceService->updatePeriod($entity);
 
         parent::persistEntity($entity);
     }
 
     /**
      * @param Invoice $entity
+     * @throws \Exception
      */
     protected function updateEntity($entity){
-        $this->calculTotalHt($entity);
-        $this->declarationService->attachInvoice($entity);
+        if ($entity->isEditable()) {
+            $this->invoiceService->calculTotalHt($entity);
+            $this->invoiceService->calculTva($entity);
+            $this->invoiceService->updatePeriod($entity);
+        }
 
         parent::updateEntity($entity);
     }

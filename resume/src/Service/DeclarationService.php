@@ -4,10 +4,12 @@ namespace App\Service;
 
 use App\Entity\Declaration;
 use App\Entity\Invoice;
+use App\Entity\Period;
 use App\Repository\DeclarationRepository;
 use App\Repository\InvoiceRepository;
 use App\Repository\PeriodRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use function Sodium\add;
 
 class DeclarationService
 {
@@ -39,7 +41,7 @@ class DeclarationService
     /**
      * @return int[]
      */
-    public function getDueQuarterMonth()
+    public function getDueSocialMonth()
     {
         return [
             4,
@@ -49,9 +51,21 @@ class DeclarationService
         ];
     }
 
+    /**
+     * @return int[]
+     */
+    public function getDueTvaMonth()
+    {
+        return [
+            7,
+            12,
+            5
+        ];
+    }
+
     public function getAccountingYear(\DateTime $date): int
     {
-        $lastMonth = $this->getDueQuarterMonth()[3];
+        $lastMonth = $this->getDueSocialMonth()[3];
         $year = intval($date->format('Y'));
         $month = intval($date->format('m'));
 
@@ -62,14 +76,30 @@ class DeclarationService
         return $year;
     }
 
+    public function isDueSocialMonth()
+    {
+        $date = new \DateTime();
+        $dueDatesMonth = $this->getDueSocialMonth();
+
+        foreach ($dueDatesMonth as $index => $dueDateMonth) {
+            $isDueSocialMonth = intval($date->format('m')) ===  $dueDateMonth;
+
+            if ($isDueSocialMonth) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * @param \DateTime $date
      * @return array
      * @throws \Exception
      */
-    public function getDueQuarterDatesBy(\DateTime $date): array
+    public function getDueSocialDatesBy(\DateTime $date): array
     {
-        $dueDatesMonth = $this->getDueQuarterMonth();
+        $dueDatesMonth = $this->getDueSocialMonth();
         $dueDates = [];
 
         foreach ($dueDatesMonth as $index => $dueDateMonth) {
@@ -95,7 +125,7 @@ class DeclarationService
     public function getNextQuarterDueDate(): array
     {
         $currentDate = new \DateTime();
-        $dueDates = $this->getDueQuarterDatesBy($currentDate);
+        $dueDates = $this->getDueSocialDatesBy($currentDate);
 
         foreach ($dueDates as $index => $dueDate)
         {
@@ -104,68 +134,8 @@ class DeclarationService
                 return $dueDate;
             }
         }
-    }
 
-    public function attachInvoice(Invoice $invoice)
-    {
-        if (!$invoice->getPayedAt()) {
-            return ;
-        }
-
-        $annualyPeriod = $this->periodRepository->findOneBy([
-            'year' => $invoice->getPayedAtYear()
-        ]);
-        $quarterlyPeriod = $this->periodRepository->findOneBy([
-            'year' => $invoice->getPayedAtYear(),
-            'quarter' => $invoice->getPayedAtQuarter()
-        ]);
-
-        $invoice->setPeriod($quarterlyPeriod);
-
-        /** @var Declaration $declaration */
-        $declaration = $this->declarationRepository->getByInvoice($invoice, Declaration::TYPE_SOCIAL);
-
-        if (!$declaration) {
-            $declaration = new Declaration();
-            $declaration->setType(Declaration::TYPE_SOCIAL);
-            $declaration->setYear($invoice->getPayedAtYear());
-            $declaration->setQuarter($invoice->getPayedAtQuarter());
-            $declaration->setRevenue(0);
-            $declaration->setTax(0);
-            $declaration->setPeriod($quarterlyPeriod);
-
-            $this->entityManager->persist($declaration);
-        }
-
-        /** @var Declaration $declaration */
-        $declaration = $this->declarationRepository->getByInvoice($invoice, Declaration::TYPE_TVA);
-
-        if (!$declaration) {
-            $declaration = new Declaration();
-            $declaration->setType(Declaration::TYPE_TVA);
-            $declaration->setYear($invoice->getPayedAtYear());
-            $declaration->setRevenue(0);
-            $declaration->setTax(0);
-            $declaration->setPeriod($annualyPeriod);
-
-            $this->entityManager->persist($declaration);
-        }
-
-        /** @var Declaration $declaration */
-        $declaration = $this->declarationRepository->getByInvoice($invoice, Declaration::TYPE_IMPOT);
-
-        if (!$declaration) {
-            $declaration = new Declaration();
-            $declaration->setType(Declaration::TYPE_IMPOT);
-            $declaration->setYear($invoice->getPayedAtYear());
-            $declaration->setRevenue(0);
-            $declaration->setTax(0);
-            $declaration->setPeriod($annualyPeriod);
-
-            $this->entityManager->persist($declaration);
-        }
-
-        $this->entityManager->flush();
+        return [];
     }
 
     public function calculate(Declaration $declaration)
@@ -175,6 +145,7 @@ class DeclarationService
         }
 
         $revenues = 0;
+        $tva = 0;
         foreach ($declaration->getInvoices() as $invoice) {
             switch ($declaration->getType()) {
                 case Declaration::TYPE_IMPOT:
@@ -183,7 +154,10 @@ class DeclarationService
                     break;
 
                 case Declaration::TYPE_TVA:
-                    $revenues += $invoice->getTotalTax();
+                    if ($invoice->getTotalTax()) {
+                        $revenues += $invoice->getTotalHt();
+                        $tva += $invoice->getTotalTax();
+                    }
                     break;
 
             }
@@ -198,7 +172,7 @@ class DeclarationService
                 break;
 
             case Declaration::TYPE_TVA:
-                $declaration->setTax($revenues);
+                $declaration->setTax($tva);
                 break;
         }
 
@@ -206,8 +180,111 @@ class DeclarationService
     }
 
     /**
+     * @param \DateTime $date
+     * @return Period[]
+     * @throws \Exception
+     */
+    public function getCurrentPeriod($date = null)
+    {
+        if (!$date) {
+            $date = new \DateTime();
+        }
+
+        $year = intval($date->format('Y'));
+
+        $annualyPeriod = $this->periodRepository->findOneBy([
+            'year' => $year
+        ]);
+        $quarterlyPeriod = $this->periodRepository->findOneBy([
+            'year' => $year,
+            'quarter' => ceil(intval($date->format('n')) / 3)
+        ]);
+
+        return [$annualyPeriod, $quarterlyPeriod];
+    }
+
+
+    /**
+     * @return Period[]
+     * @throws \Exception
+     */
+    public function getPreviousPeriod()
+    {
+        $date = (new \DateTime())->sub(new \DateInterval('P1M'));
+        return $this->getCurrentPeriod($date);
+    }
+
+    public function getSocialDeclarations($forceCurrent = false)
+    {
+        list ($annualyPeriod, $quarterlyPeriod)
+            = $this->isDueSocialMonth() && !$forceCurrent ? $this->getPreviousPeriod() : $this->getCurrentPeriod();
+
+        $declarationSocial = $this->declarationRepository->getByDate(
+            Declaration::TYPE_SOCIAL,
+            $quarterlyPeriod->getYear(),
+            $quarterlyPeriod->getQuarter()
+        );
+
+        if (!$declarationSocial) {
+            $declarationSocial = new Declaration();
+            $declarationSocial->setType(Declaration::TYPE_SOCIAL);
+            $declarationSocial->setRevenue(0);
+            $declarationSocial->setTax(0);
+            $declarationSocial->setPeriod($quarterlyPeriod);
+
+            $this->entityManager->persist($declarationSocial);
+        }
+
+        $this->entityManager->flush();
+
+        return $declarationSocial;
+    }
+
+    public function getTvaDeclarations($forceCurrent = false)
+    {
+        list ($annualyPeriod) = $this->getCurrentPeriod();
+
+        $declarationTva = $this->declarationRepository->getByDate(Declaration::TYPE_TVA, $annualyPeriod->getYear());
+
+        if (!$declarationTva) {
+            $declarationTva = new Declaration();
+            $declarationTva->setType(Declaration::TYPE_TVA);
+            $declarationTva->setRevenue(0);
+            $declarationTva->setTax(0);
+            $declarationTva->setPeriod($annualyPeriod);
+
+            $this->entityManager->persist($declarationTva);
+        }
+
+        $this->entityManager->flush();
+
+        return $declarationTva;
+    }
+
+    public function getImpotDeclarations($forceCurrent = false)
+    {
+        list ($annualyPeriod) = $this->getCurrentPeriod();
+
+        $declarationImpot = $this->declarationRepository->getByDate(Declaration::TYPE_IMPOT, $annualyPeriod->getYear());
+
+        if (!$declarationImpot) {
+            $declarationImpot = new Declaration();
+            $declarationImpot->setType(Declaration::TYPE_IMPOT);
+            $declarationImpot->setRevenue(0);
+            $declarationImpot->setTax(0);
+            $declarationImpot->setPeriod($annualyPeriod);
+
+            $this->entityManager->persist($declarationImpot);
+        }
+
+        $this->entityManager->flush();
+
+        return $declarationImpot;
+    }
+
+    /**
      * Envoi un mail si la date de fin de déclaration approche
-     * @return array
+     * @return string[]
      * @throws \Exception
      */
     public function getNotifications()
@@ -215,8 +292,22 @@ class DeclarationService
         $date = new \DateTime();
         $messages = [];
 
-        list($quarterDueDate, $quarterDueDateBegin, $quarterDueDateEnd, $quarterDueueDateIsActive) = $this->getNextQuarterDueDate();
-        if ($quarterDueueDateIsActive) {
+        /** @var int $quarterDueDate */
+        /** @var \DateTime $quarterDueDateBegin */
+        /** @var \DateTime $quarterDueDateEnd */
+        /** @var bool $quarterDueueDateIsActive */
+        list(
+            $quarterDueDate,
+            $quarterDueDateBegin,
+            $quarterDueDateEnd,
+            $quarterDueueDateIsActive
+        ) = $this->getNextQuarterDueDate();
+
+        $declarationSocial = $this->getSocialDeclarations();
+        $declarationImpot = $this->getImpotDeclarations();
+        $declarationTva = $this->getTvaDeclarations();
+
+        if ($quarterDueueDateIsActive && $declarationSocial->getStatus() !== Declaration::STATUS_PAYED) {
             $messages[] = 'Déclaration en cours du T'.$quarterDueDate.' à faire entre' .
                 ' le '. $quarterDueDateBegin->format('d/m/Y') . ' et le ' . $quarterDueDateEnd->format('d/m/Y');
         }
