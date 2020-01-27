@@ -147,6 +147,11 @@ class Invoice
         $this->activities = new ArrayCollection();
     }
 
+    public function isEditable(): bool
+    {
+        return !$this->getPayedAt() && $this->getStatus() === self::STATUS_DRAFT;
+    }
+
     /**
      * @param Activity[] $activities
      */

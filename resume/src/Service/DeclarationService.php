@@ -9,6 +9,7 @@ use App\Repository\DeclarationRepository;
 use App\Repository\InvoiceRepository;
 use App\Repository\PeriodRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use function Sodium\add;
 
 class DeclarationService
 {
@@ -179,22 +180,27 @@ class DeclarationService
     }
 
     /**
+     * @param \DateTime $date
      * @return Period[]
      * @throws \Exception
      */
-    public function getCurrentPeriod()
+    public function getCurrentPeriod($date = null)
     {
-        $date = new \DateTime();
+        if (!$date) {
+            $date = new \DateTime();
+        }
+
+        $year = intval($date->format('Y'));
 
         $annualyPeriod = $this->periodRepository->findOneBy([
-            'year' => $date->format('Y')
+            'year' => $year
         ]);
         $quarterlyPeriod = $this->periodRepository->findOneBy([
-            'year' => $date->format('Y'),
+            'year' => $year,
             'quarter' => ceil(intval($date->format('n')) / 3)
         ]);
 
-        return [];
+        return [$annualyPeriod, $quarterlyPeriod];
     }
 
 
@@ -204,17 +210,8 @@ class DeclarationService
      */
     public function getPreviousPeriod()
     {
-        $date = new \DateTime();
-
-        $annualyPeriod = $this->periodRepository->findOneBy([
-            'year' => intval($date->format('Y')) - 1
-        ]);
-        $quarterlyPeriod = $this->periodRepository->findOneBy([
-            'year' => $date->format('Y'),
-            'quarter' => ceil(intval($date->format('n')) / 3)
-        ]);
-
-        return [];
+        $date = (new \DateTime())->sub(new \DateInterval('P1M'));
+        return $this->getCurrentPeriod($date);
     }
 
     public function getSocialDeclarations($forceCurrent = false)
@@ -239,6 +236,8 @@ class DeclarationService
         }
 
         $this->entityManager->flush();
+
+        return $declarationSocial;
     }
 
     public function getTvaDeclarations($forceCurrent = false)
@@ -258,6 +257,8 @@ class DeclarationService
         }
 
         $this->entityManager->flush();
+
+        return $declarationTva;
     }
 
     public function getImpotDeclarations($forceCurrent = false)
@@ -277,6 +278,8 @@ class DeclarationService
         }
 
         $this->entityManager->flush();
+
+        return $declarationImpot;
     }
 
     /**
@@ -300,16 +303,14 @@ class DeclarationService
             $quarterDueueDateIsActive
         ) = $this->getNextQuarterDueDate();
 
-        /*list ($annualyPeriod, $quarterlyPeriod, $shiftedQuarterlyPeriod)
-            = $this->getPeriod($quarterDueDateBegin->format('Y'), $quarterDueDate);
-
-        list($declarationImpot, $declarationTva, $declarationSocial, $shiftedDeclarationSocial)
-            = $this->generateDeclarations($annualyPeriod, $quarterlyPeriod, $shiftedQuarterlyPeriod);
+        $declarationSocial = $this->getSocialDeclarations();
+        $declarationImpot = $this->getImpotDeclarations();
+        $declarationTva = $this->getTvaDeclarations();
 
         if ($quarterDueueDateIsActive && $declarationSocial->getStatus() !== Declaration::STATUS_PAYED) {
             $messages[] = 'Déclaration en cours du T'.$quarterDueDate.' à faire entre' .
                 ' le '. $quarterDueDateBegin->format('d/m/Y') . ' et le ' . $quarterDueDateEnd->format('d/m/Y');
-        }*/
+        }
 
         return $messages;
     }

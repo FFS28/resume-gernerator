@@ -84,7 +84,7 @@ class Declaration
         $period = $this->getPeriod();
 
         if ($period->getYear()) {
-            $str .= '/' . $period->getYear();
+            $str .= $period->getYear();
         }
         if ($period->getQuarter()) {
             $str .= ' T' . $period->getQuarter();

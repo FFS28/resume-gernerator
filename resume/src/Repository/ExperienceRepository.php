@@ -22,11 +22,21 @@ class ExperienceRepository extends ServiceEntityRepository
 
     /**
      * @return Experience[]
+     * @throws \Exception
      */
     public function getCurrents(): array
     {
-        $query = $this->createQueryBuilder('e')
-            ->where('e.dateEnd IS NULL');
+        $query = $this->createQueryBuilder('e');
+
+        $query
+            ->orWhere(
+                $query->expr()->orX(
+                    $query->expr()->isNull('e.dateEnd'),
+                    $query->expr()->gte('e.dateEnd', ':date')
+                )
+            )
+            ->setParameter('date', (new \DateTime())->format('Y-m-d'));
+        ;
 
         return $query->getQuery()->getResult();
     }

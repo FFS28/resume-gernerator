@@ -236,10 +236,8 @@ class InvoiceService
 
     public function updatePeriod(Invoice $invoice)
     {
-        if ($invoice->getPayedAt()) {
-            list ($annualyPeriod, $quarterlyPeriod) = $this->declarationService->getCurrentPeriod();
-            $invoice->setPeriod($quarterlyPeriod);
-        }
+        list ($annualyPeriod, $quarterlyPeriod) = $this->declarationService->getCurrentPeriod();
+        $invoice->setPeriod($quarterlyPeriod);
     }
 
     /**

@@ -84,11 +84,13 @@ class InvoiceController extends EasyAdminController
         /** @var Invoice $entity */
         $entity = $this->em->getRepository(Invoice::class)->find($id);
 
-        $entity->setStatus(Invoice::STATUS_PAYED);
-        $entity->setPayedAt(new \DateTime('now'));
-        $this->updatePeriod($entity);
+        if ($entity->isEditable()) {
+            $entity->setStatus(Invoice::STATUS_PAYED);
+            $entity->setPayedAt(new \DateTime('now'));
+            $this->invoiceService->updatePeriod($entity);
 
-        $this->em->flush();
+            $this->em->flush();
+        }
 
 
         return $this->redirectToReferrer();
@@ -126,6 +128,19 @@ class InvoiceController extends EasyAdminController
         throw new \Exception('Email not found');
     }
 
+    protected function deleteAction(){
+        $id = $this->request->query->get('id');
+        /** @var Invoice $entity */
+        $entity = $this->em->getRepository(Invoice::class)->find($id);
+
+        if ($entity->getStatus() === Invoice::STATUS_DRAFT) {
+            return parent::deleteAction();
+        }
+
+        return $this->redirectToReferrer();
+    }
+
+
 
     /**
      * @Route("/admin/invoice/csv", name="invoices_csv")
@@ -158,9 +173,11 @@ class InvoiceController extends EasyAdminController
      * @throws \Exception
      */
     protected function updateEntity($entity){
-        $this->invoiceService->calculTotalHt($entity);
-        $this->invoiceService->calculTva($entity);
-        $this->invoiceService->updatePeriod($entity);
+        if ($entity->isEditable()) {
+            $this->invoiceService->calculTotalHt($entity);
+            $this->invoiceService->calculTva($entity);
+            $this->invoiceService->updatePeriod($entity);
+        }
 
         parent::updateEntity($entity);
     }

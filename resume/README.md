@@ -9,7 +9,6 @@
     - Possibilité d'envoyer un mail à une entreprise
     
 - Déclarations
-    - Gerer les entre 2 périodes
     - Rentrer dans les fixtures les impots 2016 et 2017 (voir montant à mettre à jour suite à la régularisation)
 
 - Notifications

@@ -158,7 +158,7 @@ class AppFixtures extends Fixture
 
         $attribute = new Attribute();
         $attribute->setSlug('message');
-        $attribute->setValue('');
+        $attribute->setValue('Appel des travailleuses et travailleurs du numérique pour une autre réforme des retraites <a href="https://onestla.tech/" target="_blank">OnEstLa.Tech ✊</a>');
         $attribute->setWeight(0);
         $attribute->setIsListable(false);
         $this->manager->persist($attribute);
@@ -224,11 +224,11 @@ class AppFixtures extends Fixture
         $link->setUrl('http://www.viadeo.com/p/002tx09f455dgvf');
         $this->manager->persist($link);
 
-        $link = new Link();
+        /*$link = new Link();
         $link->setName('Hopwork');
         $link->setIcon('fas fa-wifi');
         $link->setUrl('https://www.hopwork.fr/profile/jeremyachain');
-        $this->manager->persist($link);
+        $this->manager->persist($link);*/
 
         $link = new Link();
         $link->setName('Github');
@@ -896,7 +896,7 @@ class AppFixtures extends Fixture
         $experience->setCompany($this->companies['laposte']);
         $experience->setClient($this->companies['bewizyu']);
         $experience->setDateBegin(new \DateTime('2019-06-01 00:00:00'));
-        $experience->setDateEnd(null);
+        $experience->setDateEnd(new \DateTime('2020-02-29 00:00:00'));
         $experience->setDescription('Ajout de fonctionnalité sur une application de gestion existante');
         $experience->setIsFreelance(true);
         $experience->setOnSite(true);
@@ -2017,7 +2017,7 @@ class AppFixtures extends Fixture
         $declaration->setType(Declaration::TYPE_TVA);
         $declaration->setRevenue(12000);
         $declaration->setTax(2400);
-        $declaration->setStatus(Declaration::STATUS_PAYED);
+        $declaration->setStatus(Declaration::STATUS_WAITING);
         $this->manager->persist($declaration);
         $this->periods['2019']->addDeclaration($declaration);
 

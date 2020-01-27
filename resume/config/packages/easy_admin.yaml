@@ -74,6 +74,8 @@ easy_admin:
           - contractor
           - { property: 'persons', type: 'array' }
           - notes
+        filters:
+          - { property: type, type: 'App\Form\Filter\CompanyTypeFilterType' }
         max_results: 20
     Person:
       class: App\Entity\Person
