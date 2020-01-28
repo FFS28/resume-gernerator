@@ -21,3 +21,7 @@
 
 - Purchase
     - Déduire la TVA des achats
+
+- General
+    - Documentation
+    - Tests
