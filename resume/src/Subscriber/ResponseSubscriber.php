@@ -28,8 +28,7 @@ class ResponseSubscriber implements EventSubscriberInterface
     {
         $response = $event->getResponse();
 
-        $response->headers->set("Content-Security-Policy", "default-src 'self' 'unsafe-inline';"
-            . "script-src 'self' 'unsafe-inline'");
+        $response->headers->set("Content-Security-Policy", "script-src 'self' 'unsafe-inline'");
         $response->headers->set("X-Frame-Options", 'deny');
         $response->headers->set("X-XSS-Protection", '1; mode=block');
         $response->headers->set("X-Content-Type-Options", 'nosniff');
