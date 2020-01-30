@@ -27,7 +27,6 @@ class CompanyService
     }
 
     /**
-     * Envoi un mail si la date de fin de déclaration approche
      * @return array
      * @throws \Exception
      */

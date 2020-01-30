@@ -9,6 +9,7 @@ use DateInterval;
 class ReportService
 {
     /**
+     * Génère le tableau à partir d'un date donné
      * @param \DateTime $currentDate
      * @param array $activities
      * @param null $company
