@@ -38,13 +38,13 @@ html, body{
 html, body, a{
   color: #333;
 }
-.ul{
+ul{
   margin: 0;
   padding: 10px 40px 20px;
   display: block;
   width: 100%;
 }
-.li {
+li {
   list-style: none;
   display: inline-block;
 }
@@ -140,7 +140,7 @@ h4{
   @include align-items(center);
   @include flex-wrap(wrap);
 
-  .li {
+  li {
 
     &:not(.separator) {
       margin: 0 20px;
@@ -159,7 +159,7 @@ h4{
 }
 
 #skills {
-  .li {
+  li {
     margin: 0 40px;
     padding: 20px 0;
 
@@ -178,48 +178,48 @@ h4{
 
 #experiences, #educations {
   &:not(.html-pdf) {
-    .ul {
+    ul {
       @include inline-flex();
       @include flex-flow(row wrap);
       @include align-items(flex-start);
       @include justify-content(space-between);
 
-      .li{
+      li{
         width: 50%;
         min-width: 400px;
       }
     }
   }
 
-  .ul {
-    .li {
+  ul {
+    li {
       display: block;
       text-align: left;
       padding: 20px 40px;
     }
   }
 
-  .li {
+  li {
     page-break-inside: avoid;
   }
 }
 
 #hobbies {
   padding-bottom: 40px;
-  .ul {
+  ul {
     padding: 0 10px 10px;
   }
 }
 
 #links {
   padding: 60px 0 20px;
-  .ul {
+  ul {
     @include inline-flex();
     @include flex-flow(row wrap);
     @include align-items(flex-start);
     @include justify-content(center);
 
-    .li {
+    li {
       margin: 0 20px;
     }
   }
@@ -341,11 +341,11 @@ form{
     padding-left: 20px;
   }
   #experiences, #educations{
-    .ul{
+    ul{
       padding-left: 0;
       padding-right: 0;
 
-      .li{
+      li{
         width: 100% !important;
         min-width: auto !important;
       }
@@ -357,7 +357,7 @@ form{
 }
 
 @media (max-width: 500px) {
-  #experiences .ul .li, #educations .ul .li, form, #attributes, h2, #links .ul{
+  #experiences ul li, #educations ul li, form, #attributes, h2, #links ul{
     padding-left: 10px;
     padding-right: 10px;
   }
@@ -443,7 +443,7 @@ form{
     text-align: left;
     padding-left: 10px;
   }
-  .ul {
+  ul {
     padding-left: 0;
     padding-right: 0;
   }
@@ -458,11 +458,11 @@ form{
   &#skills {
     display: none;
   }
-  #attributes .li:not(.separator) {
+  #attributes li:not(.separator) {
     margin: 0 10px;
     font-size: 12px;
   }
-  &#experiences .ul .li, &#educations .ul .li {
+  &#experiences ul li, &#educations ul li {
     padding: 20px 10px;
   }
   #me, #attributes, &.section {
