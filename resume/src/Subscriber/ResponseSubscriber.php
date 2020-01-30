@@ -27,10 +27,12 @@ class ResponseSubscriber implements EventSubscriberInterface
     public function onResponse(ResponseEvent $event)
     {
         $response = $event->getResponse();
+        $request = $event->getRequest();
 
-        $response->headers->set("Content-Security-Policy", "script-src 'self' 'unsafe-inline'");
+        $response->headers->set("Content-Security-Policy", "script-src 'self' " . $request->getSchemeAndHttpHost());
         $response->headers->set("X-Frame-Options", 'deny');
         $response->headers->set("X-XSS-Protection", '1; mode=block');
         $response->headers->set("X-Content-Type-Options", 'nosniff');
+        $response->setVary('Accept-Encoding');
     }
 }
