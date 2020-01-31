@@ -380,11 +380,16 @@ class Invoice
         return $this;
     }
 
-    public function getDueDate(): \DateTime
+    public function getDueAt(): \DateTime
     {
         if (!$this->getCreatedAt() || !$this->getDueInterval()) return null;
 
-        return (clone $this->getCreatedAt())->add(new \DateInterval($this->getDueInterval()));
+        $createdAt = $this->getCreatedAt();
+        $lastDayOfMonth = new \DateTime($createdAt->format('Y-m-t'));
+        $firstDayOfNextMonth = (clone $lastDayOfMonth)->add(new \DateInterval('P1D'));
+        $lastDayOfNextMonth = new \DateTime($firstDayOfNextMonth->format('Y-m-t'));
+
+        return $lastDayOfNextMonth;
     }
 
     /**
