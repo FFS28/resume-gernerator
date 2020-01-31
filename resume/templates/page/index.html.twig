@@ -21,6 +21,7 @@
 {% block javascripts %}
     {% if isPdf %}
         <script type='text/javascript' src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
+        {#<script src="{{ asset('build/js/html2pdf.bundle.js') }}"></script>#}
         <script type='text/javascript'>
             window.onload = function() {
                 let element = document.getElementById('body');
