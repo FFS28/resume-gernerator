@@ -29,7 +29,9 @@ class ResponseSubscriber implements EventSubscriberInterface
         $response = $event->getResponse();
         $request = $event->getRequest();
 
-        $response->headers->set("Content-Security-Policy", "script-src 'self' " . $request->getSchemeAndHttpHost());
+        if (substr($request->getRequestUri(), 0, 6) !== '/admin') {
+            $response->headers->set("Content-Security-Policy", "script-src 'self' " . $request->getSchemeAndHttpHost());
+        }
         $response->headers->set("X-Frame-Options", 'deny');
         $response->headers->set("X-XSS-Protection", '1; mode=block');
         $response->headers->set("X-Content-Type-Options", 'nosniff');

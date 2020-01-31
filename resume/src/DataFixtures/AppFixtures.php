@@ -1968,7 +1968,7 @@ class AppFixtures extends Fixture
         $invoice->setCreatedAt(new \DateTime('2020-01-31 00:00:00'));
         $invoice->setPayedAt(null);
         $invoice->setObject('Prestation de développement web');
-        $invoice->setDaysCount(4000);
+        $invoice->setDaysCount(10);
         $invoice->setTotalTax(800);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_WAITING);
