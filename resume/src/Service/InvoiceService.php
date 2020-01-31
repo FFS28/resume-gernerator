@@ -172,7 +172,8 @@ class InvoiceService
             return file_get_contents($this->pdfFileDirectory.$invoice->getFilename());
         }
 
-        $this->createPdf($invoice)->render($this->pdfFileDirectory.$invoice->getFilename(), 'F');
+        $pdf = $this->createPdf($invoice);
+        $pdf->render($this->pdfFileDirectory.$invoice->getFilename(), 'F');
 
         return file_get_contents($this->pdfFileDirectory.$invoice->getFilename());
     }

@@ -111,6 +111,7 @@ class InvoiceController extends EasyAdminController
                     ? $entity->getCompany()->getEmail()
                     : $this->getParameter('MAILER_FROM')
                 )
+                ->addCc($this->getParameter('MAILER_FROM'))
                 ->subject($this->getParameter('MAILER_SUBJECT') . ' ' .
                     $this->translator->trans('Invoice') . ' n°' . $entity->getNumber())
                 ->text($this->renderView(
