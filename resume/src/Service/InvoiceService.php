@@ -92,7 +92,7 @@ class InvoiceService
         $pdfInvoice->setNumberFormat(',', ' ');
         $pdfInvoice->setReference($invoice->getNumber());   // Reference
         $pdfInvoice->setDate($invoice->getCreatedAt()->format('d/m/Y'));   //Billing Date
-        $pdfInvoice->setDue($invoice->getCreatedAt()->add(new DateInterval('P1M'))->format('t/m/Y'));   //Billing Date
+        $pdfInvoice->setDue($invoice->getDueAt()->format('d/m/Y'));   //Billing Date
 
         $pdfInvoice->setFrom([
             StringHelper::encode($this->companyName),
@@ -294,9 +294,9 @@ class InvoiceService
 
         if (count($unpayedInvoices) > 0) {
             foreach ($unpayedInvoices as $invoice) {
-                if ($invoice->getDueDate() && $invoice->getDueDate() < $date) {
+                if ($invoice->getDueAt() && $invoice->getDueAt() < $date) {
                     $notifications[] = 'Facture ' .$invoice->getNumber().
-                        ' de '.$invoice->getTotalTtc().'€ TTC à encaisser depuis le ' . $invoice->getDueDate()->format('d/m/Y');
+                        ' de '.$invoice->getTotalTtc().'€ TTC à encaisser depuis le ' . $invoice->getDueAt()->format('d/m/Y');
                 }
             }
         }
