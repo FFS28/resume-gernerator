@@ -26,7 +26,6 @@ class InvoiceTaxValidator extends ConstraintValidator
             return;
         }
 
-        // TODO: implement the validation here
         $this->context->buildViolation($isOutOfTaxLimt ? $constraint->message_fill : $constraint->message_empty)
             ->setParameter('{{ value }}', $value)
             ->addViolation();

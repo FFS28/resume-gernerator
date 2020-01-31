@@ -57,6 +57,10 @@
         & > span, h4 + span {
           font-weight: bold;
         }
+
+        & > div > a{
+          display: block;
+        }
       }
 
       &.card-h .card-content {

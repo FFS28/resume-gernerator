@@ -65,7 +65,7 @@ class AppFixtures extends Fixture
         $this->loadSkills();
         $this->loadCompanies();
         $this->loadPersons();
-        $this->loadExperience();
+        $this->loadExperiences();
         $this->loadPeriods();
         $this->loadDeclarations();
         $this->loadInvoices();
@@ -257,6 +257,38 @@ class AppFixtures extends Fixture
         $this->skills['symfony'] = $skill;
 
         $skill = new Skill();
+        $skill->setName('Symfony 2');
+        $skill->setOnHomepage(false);
+        $skill->setParent($this->skills['symfony']);
+        $skill->setType(Skill::TYPE_VERSION);
+        $this->manager->persist($skill);
+        $this->skills['symfony-2'] = $skill;
+
+        $skill = new Skill();
+        $skill->setName('Symfony 3');
+        $skill->setOnHomepage(false);
+        $skill->setParent($this->skills['symfony']);
+        $skill->setType(Skill::TYPE_VERSION);
+        $this->manager->persist($skill);
+        $this->skills['symfony-3'] = $skill;
+
+        $skill = new Skill();
+        $skill->setName('Symfony 4');
+        $skill->setOnHomepage(false);
+        $skill->setParent($this->skills['symfony']);
+        $skill->setType(Skill::TYPE_VERSION);
+        $this->manager->persist($skill);
+        $this->skills['symfony-4'] = $skill;
+
+        $skill = new Skill();
+        $skill->setName('Symfony 5');
+        $skill->setOnHomepage(false);
+        $skill->setParent($this->skills['symfony']);
+        $skill->setType(Skill::TYPE_VERSION);
+        $this->manager->persist($skill);
+        $this->skills['symfony-5'] = $skill;
+
+        $skill = new Skill();
         $skill->setName('CodeIgniter');
         $skill->setLevel(9);
         $skill->setOnHomepage(false);
@@ -281,6 +313,70 @@ class AppFixtures extends Fixture
         $skill->setType(Skill::TYPE_FRAMEWORK);
         $this->manager->persist($skill);
         $this->skills['angular'] = $skill;
+
+        $skill = new Skill();
+        $skill->setName('Angular 1');
+        $skill->setOnHomepage(false);
+        $skill->setParent($this->skills['angular']);
+        $skill->setType(Skill::TYPE_VERSION);
+        $this->manager->persist($skill);
+        $this->skills['angular-1'] = $skill;
+
+        $skill = new Skill();
+        $skill->setName('Angular 2');
+        $skill->setOnHomepage(false);
+        $skill->setParent($this->skills['angular']);
+        $skill->setType(Skill::TYPE_VERSION);
+        $this->manager->persist($skill);
+        $this->skills['angular-2'] = $skill;
+
+        $skill = new Skill();
+        $skill->setName('Angular 3');
+        $skill->setOnHomepage(false);
+        $skill->setParent($this->skills['angular']);
+        $skill->setType(Skill::TYPE_VERSION);
+        $this->manager->persist($skill);
+        $this->skills['angular-3'] = $skill;
+
+        $skill = new Skill();
+        $skill->setName('Angular 4');
+        $skill->setOnHomepage(false);
+        $skill->setParent($this->skills['angular']);
+        $skill->setType(Skill::TYPE_VERSION);
+        $this->manager->persist($skill);
+        $this->skills['angular-4'] = $skill;
+
+        $skill = new Skill();
+        $skill->setName('Angular 5');
+        $skill->setOnHomepage(false);
+        $skill->setParent($this->skills['angular']);
+        $skill->setType(Skill::TYPE_VERSION);
+        $this->manager->persist($skill);
+        $this->skills['angular-5'] = $skill;
+
+        $skill = new Skill();
+        $skill->setName('Angular 6');
+        $skill->setOnHomepage(false);
+        $skill->setParent($this->skills['angular']);
+        $skill->setType(Skill::TYPE_VERSION);
+        $this->manager->persist($skill);
+        $this->skills['angular-6'] = $skill;
+
+        $skill = new Skill();
+        $skill->setName('Angular 7');
+        $skill->setOnHomepage(false);
+        $skill->setParent($this->skills['angular']);
+        $skill->setType(Skill::TYPE_VERSION);
+        $this->manager->persist($skill);
+        $this->skills['angular-7'] = $skill;
+
+        $skill = new Skill();
+        $skill->setName('Angular 8');
+        $skill->setOnHomepage(false);
+        $skill->setParent($this->skills['angular']);
+        $skill->setType(Skill::TYPE_VERSION);
+        $this->manager->persist($skill);
+        $this->skills['angular-8'] = $skill;
 
         $skill = new Skill();
         $skill->setName('NodeJS');
@@ -585,7 +681,7 @@ class AppFixtures extends Fixture
         $this->manager->persist($person);
     }
 
-    private function loadExperience()
+    private function loadExperiences()
     {
         // Salarié
 
@@ -663,8 +759,8 @@ class AppFixtures extends Fixture
         $experience->setIsFreelance(false);
         $experience->setOnSite(true);
         $experience->setOnHomepage(true);
-        $experience->addSkill($this->skills['symfony']);
-        $experience->addSkill($this->skills['angular']);
+        $experience->addSkill($this->skills['symfony-2']);
+        $experience->addSkill($this->skills['angular-1']);
         $this->manager->persist($experience);
 
         $experience = new Experience();
@@ -676,8 +772,8 @@ class AppFixtures extends Fixture
         $experience->setIsFreelance(false);
         $experience->setOnSite(true);
         $experience->setOnHomepage(false);
-        $experience->addSkill($this->skills['symfony']);
-        $experience->addSkill($this->skills['angular']);
+        $experience->addSkill($this->skills['symfony-2']);
+        $experience->addSkill($this->skills['angular-1']);
         $this->manager->persist($experience);
         $this->experiences['201502'] = $experience;
 
@@ -692,7 +788,7 @@ class AppFixtures extends Fixture
         $experience->setIsFreelance(true);
         $experience->setOnSite(false);
         $experience->setOnHomepage(false);
-        $experience->addSkill($this->skills['angular']);
+        $experience->addSkill($this->skills['angular-1']);
         $experience->addSkill($this->skills['git']);
         $this->manager->persist($experience);
         $this->experiences['201504'] = $experience;
@@ -706,8 +802,8 @@ class AppFixtures extends Fixture
         $experience->setIsFreelance(true);
         $experience->setOnSite(false);
         $experience->setOnHomepage(false);
-        $experience->addSkill($this->skills['symfony']);
-        $experience->addSkill($this->skills['angular']);
+        $experience->addSkill($this->skills['symfony-2']);
+        $experience->addSkill($this->skills['angular-1']);
         $this->manager->persist($experience);
         $this->experiences['201505'] = $experience;
 
@@ -721,8 +817,8 @@ class AppFixtures extends Fixture
         $experience->setIsFreelance(true);
         $experience->setOnSite(true);
         $experience->setOnHomepage(true);
-        $experience->addSkill($this->skills['symfony']);
-        $experience->addSkill($this->skills['angular']);
+        $experience->addSkill($this->skills['symfony-2']);
+        $experience->addSkill($this->skills['angular-2']);
         $experience->addSkill($this->skills['git']);
         $this->manager->persist($experience);
         $this->experiences['201508'] = $experience;
@@ -736,7 +832,7 @@ class AppFixtures extends Fixture
         $experience->setIsFreelance(true);
         $experience->setOnSite(true);
         $experience->setOnHomepage(false);
-        $experience->addSkill($this->skills['symfony']);
+        $experience->addSkill($this->skills['symfony-3']);
         $experience->addSkill($this->skills['nodejs']);
         $experience->addSkill($this->skills['js']);
         $this->manager->persist($experience);
@@ -751,8 +847,8 @@ class AppFixtures extends Fixture
         $experience->setIsFreelance(true);
         $experience->setOnSite(true);
         $experience->setOnHomepage(true);
-        $experience->addSkill($this->skills['symfony']);
-        $experience->addSkill($this->skills['angular']);
+        $experience->addSkill($this->skills['symfony-3']);
+        $experience->addSkill($this->skills['angular-2']);
         $experience->addSkill($this->skills['git']);
         $this->manager->persist($experience);
         $this->experiences['201607'] = $experience;
@@ -766,7 +862,7 @@ class AppFixtures extends Fixture
         $experience->setIsFreelance(true);
         $experience->setOnSite(true);
         $experience->setOnHomepage(false);
-        $experience->addSkill($this->skills['angular']);
+        $experience->addSkill($this->skills['angular-2']);
         $this->manager->persist($experience);
         $this->experiences['201611'] = $experience;
 
@@ -780,8 +876,8 @@ class AppFixtures extends Fixture
         $experience->setIsFreelance(true);
         $experience->setOnSite(false);
         $experience->setOnHomepage(true);
-        $experience->addSkill($this->skills['symfony']);
-        $experience->addSkill($this->skills['angular']);
+        $experience->addSkill($this->skills['symfony-3']);
+        $experience->addSkill($this->skills['angular-2']);
         $experience->addSkill($this->skills['git']);
         $this->manager->persist($experience);
         $this->experiences['201612'] = $experience;
@@ -795,7 +891,7 @@ class AppFixtures extends Fixture
         $experience->setIsFreelance(true);
         $experience->setOnSite(false);
         $experience->setOnHomepage(false);
-        $experience->addSkill($this->skills['symfony']);
+        $experience->addSkill($this->skills['symfony-3']);
         $experience->addSkill($this->skills['jquery']);
         $experience->addSkill($this->skills['git']);
         $this->manager->persist($experience);
@@ -811,7 +907,7 @@ class AppFixtures extends Fixture
         $experience->setIsFreelance(true);
         $experience->setOnSite(true);
         $experience->setOnHomepage(true);
-        $experience->addSkill($this->skills['angular']);
+        $experience->addSkill($this->skills['angular-3']);
         $experience->addSkill($this->skills['git']);
         $this->manager->persist($experience);
         $this->experiences['201709'] = $experience;
@@ -825,8 +921,8 @@ class AppFixtures extends Fixture
         $experience->setIsFreelance(true);
         $experience->setOnSite(true);
         $experience->setOnHomepage(false);
-        $experience->addSkill($this->skills['symfony']);
-        $experience->addSkill($this->skills['angular']);
+        $experience->addSkill($this->skills['symfony-3']);
+        $experience->addSkill($this->skills['angular-3']);
         $experience->addSkill($this->skills['git']);
         $this->manager->persist($experience);
         $this->experiences['201711'] = $experience;
@@ -841,8 +937,8 @@ class AppFixtures extends Fixture
         $experience->setIsFreelance(true);
         $experience->setOnSite(false);
         $experience->setOnHomepage(true);
-        $experience->addSkill($this->skills['symfony']);
-        $experience->addSkill($this->skills['angular']);
+        $experience->addSkill($this->skills['symfony-3']);
+        $experience->addSkill($this->skills['angular-4']);
         $experience->addSkill($this->skills['git']);
         $this->manager->persist($experience);
         $this->experiences['201712'] = $experience;
@@ -852,11 +948,11 @@ class AppFixtures extends Fixture
         $experience->setCompany($this->companies['drakona']);
         $experience->setDateBegin(new \DateTime('2018-04-01 00:00:00'));
         $experience->setDateEnd(new \DateTime('2018-04-01 00:00:00'));
-        $experience->setDescription('Développement d\'un outil de gestion et d\'import de donnée.');
+        $experience->setDescription('Développement d\'un outil de gestion et d\'import de donnée. Travail en autonomie.');
         $experience->setIsFreelance(true);
         $experience->setOnSite(true);
         $experience->setOnHomepage(false);
-        $experience->addSkill($this->skills['symfony']);
+        $experience->addSkill($this->skills['symfony-3']);
         $experience->addSkill($this->skills['git']);
         $this->manager->persist($experience);
         $this->experiences['201804'] = $experience;
@@ -867,11 +963,11 @@ class AppFixtures extends Fixture
         $experience->setClient($this->companies['apollo']);
         $experience->setDateBegin(new \DateTime('2018-05-01 00:00:00'));
         $experience->setDateEnd(new \DateTime('2019-02-01 00:00:00'));
-        $experience->setDescription('Développement d\'une application de gestion RH, POC sur les 3 premier mois, puis d\'un MVP sur la suite. Le projet avait commencé depuis seulement 1 mois, avec une équipe de 3 développeurs (uniquement back), puis s\'est agrandit à une équipe de 8 développeurs (6 back et 2 autres front).');
+        $experience->setDescription('Développement d\'une application de gestion RH, POC sur les 3 premier mois, puis d\'un MVP sur la suite. Le projet avait commencé depuis seulement 1 mois, avec une équipe de 3 développeurs (uniquement back), puis s\'est agrandit à une équipe de 8 développeurs (6 back et 2 autres front). Collaboration avec une équipe d\'UX/UI.');
         $experience->setIsFreelance(true);
         $experience->setOnSite(true);
         $experience->setOnHomepage(true);
-        $experience->addSkill($this->skills['angular']);
+        $experience->addSkill($this->skills['angular-7']);
         $experience->addSkill($this->skills['git']);
         $this->manager->persist($experience);
         $this->experiences['201805'] = $experience;
@@ -897,12 +993,12 @@ class AppFixtures extends Fixture
         $experience->setClient($this->companies['bewizyu']);
         $experience->setDateBegin(new \DateTime('2019-06-01 00:00:00'));
         $experience->setDateEnd(new \DateTime('2020-02-29 00:00:00'));
-        $experience->setDescription('Ajout de fonctionnalité sur une application de gestion existante');
+        $experience->setDescription('Ajout de fonctionnalité sur une application de gestion existante. Travail en autonomie.');
         $experience->setIsFreelance(true);
         $experience->setOnSite(true);
         $experience->setOnHomepage(true);
-        $experience->addSkill($this->skills['symfony']);
-        $experience->addSkill($this->skills['angular']);
+        $experience->addSkill($this->skills['symfony-4']);
+        $experience->addSkill($this->skills['angular-7']);
         $experience->addSkill($this->skills['git']);
         $this->manager->persist($experience);
         $this->experiences['201906'] = $experience;
@@ -1858,6 +1954,22 @@ class AppFixtures extends Fixture
         $invoice->setObject('Prestation de développement web');
         $invoice->setTotalHt(4400);
         $invoice->setTotalTax(880);
+        $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
+        $invoice->setStatus(Invoice::STATUS_WAITING);
+        $this->periods[2020]->addInvoice($invoice);
+        $this->periods['2020-1']->addInvoice($invoice);
+        $this->manager->persist($invoice);
+
+        $invoice = new Invoice();
+        $invoice->setNumber('202001-1');
+        $invoice->setCompany($this->companies['bewizyu']);
+        $invoice->setExperience($this->experiences['201906']);
+        $invoice->setTjm(400);
+        $invoice->setCreatedAt(new \DateTime('2020-01-31 00:00:00'));
+        $invoice->setPayedAt(null);
+        $invoice->setObject('Prestation de développement web');
+        $invoice->setDaysCount(10);
+        $invoice->setTotalTax(800);
         $invoice->setPayedBy(Invoice::PAYEDBY_TRANSFERT);
         $invoice->setStatus(Invoice::STATUS_WAITING);
         $this->periods[2020]->addInvoice($invoice);

@@ -39,9 +39,10 @@ class DeclarationService
     }
 
     /**
+     * Retourne les mois de declaration sociales
      * @return int[]
      */
-    public function getDueSocialMonth()
+    public static function getDueSocialMonth()
     {
         return [
             4,
@@ -52,9 +53,10 @@ class DeclarationService
     }
 
     /**
+     * Retourne les mois de déclaration de TVA
      * @return int[]
      */
-    public function getDueTvaMonth()
+    public static function getDueTvaMonth()
     {
         return [
             7,
@@ -63,9 +65,14 @@ class DeclarationService
         ];
     }
 
+    /**
+     * Retourne l'année comptable
+     * @param \DateTime $date
+     * @return int
+     */
     public function getAccountingYear(\DateTime $date): int
     {
-        $lastMonth = $this->getDueSocialMonth()[3];
+        $lastMonth = DeclarationService::getDueSocialMonth()[3];
         $year = intval($date->format('Y'));
         $month = intval($date->format('m'));
 
@@ -76,10 +83,15 @@ class DeclarationService
         return $year;
     }
 
+    /**
+     * Verifie si on est dans un mois de déclaration sociale
+     * @return bool
+     * @throws \Exception
+     */
     public function isDueSocialMonth()
     {
         $date = new \DateTime();
-        $dueDatesMonth = $this->getDueSocialMonth();
+        $dueDatesMonth = DeclarationService::getDueSocialMonth();
 
         foreach ($dueDatesMonth as $index => $dueDateMonth) {
             $isDueSocialMonth = intval($date->format('m')) ===  $dueDateMonth;
@@ -93,13 +105,14 @@ class DeclarationService
     }
 
     /**
+     * Récupère les dates courantes de déclarations sociales
      * @param \DateTime $date
      * @return array
      * @throws \Exception
      */
     public function getDueSocialDatesBy(\DateTime $date): array
     {
-        $dueDatesMonth = $this->getDueSocialMonth();
+        $dueDatesMonth = DeclarationService::getDueSocialMonth();
         $dueDates = [];
 
         foreach ($dueDatesMonth as $index => $dueDateMonth) {
@@ -111,7 +124,9 @@ class DeclarationService
             $dueDates[] = [
                 $index + 1,
                 clone $dueDateBegin,
-                $dueDateBegin->add(new \DateInterval('P'.(intval($dueDateBegin->format('t')) - 1).'D'))
+                $dueDateBegin
+                    ->add(new \DateInterval('P'.(intval($dueDateBegin->format('t')) - 1).'D'))
+                    ->add(new \DateInterval('PT23H59M59S'))
             ];
         }
 
@@ -119,6 +134,7 @@ class DeclarationService
     }
 
     /**
+     * Retourne les dates de début et fin du prochain trimestre
      * @return array
      * @throws \Exception
      */
@@ -138,6 +154,10 @@ class DeclarationService
         return [];
     }
 
+    /**
+     * Calcule le montant d'une déclaration
+     * @param Declaration $declaration
+     */
     public function calculate(Declaration $declaration)
     {
         if ($declaration->getStatus() === Declaration::STATUS_PAYED) {
@@ -180,6 +200,7 @@ class DeclarationService
     }
 
     /**
+     * Renvoi la période courante
      * @param \DateTime $date
      * @return Period[]
      * @throws \Exception
@@ -205,6 +226,7 @@ class DeclarationService
 
 
     /**
+     * Renvoi la précédente période
      * @return Period[]
      * @throws \Exception
      */
@@ -214,6 +236,12 @@ class DeclarationService
         return $this->getCurrentPeriod($date);
     }
 
+    /**
+     * Récupère la déclaration sociale courante
+     * @param bool $forceCurrent
+     * @return Declaration|mixed
+     * @throws \Exception
+     */
     public function getSocialDeclarations($forceCurrent = false)
     {
         list ($annualyPeriod, $quarterlyPeriod)
@@ -240,6 +268,12 @@ class DeclarationService
         return $declarationSocial;
     }
 
+    /**
+     * Récupère la déclarations TVA courante
+     * @param bool $forceCurrent
+     * @return Declaration|mixed
+     * @throws \Exception
+     */
     public function getTvaDeclarations($forceCurrent = false)
     {
         list ($annualyPeriod) = $this->getCurrentPeriod();
@@ -261,6 +295,12 @@ class DeclarationService
         return $declarationTva;
     }
 
+    /**
+     * Récupère la déclaration d'impot courante
+     * @param bool $forceCurrent
+     * @return Declaration|mixed
+     * @throws \Exception
+     */
     public function getImpotDeclarations($forceCurrent = false)
     {
         list ($annualyPeriod) = $this->getCurrentPeriod();

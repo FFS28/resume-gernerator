@@ -40,6 +40,7 @@ class Skill
     const TYPE_PLATFORM = "platform";
     const TYPE_LANGUAGE  = "language";
     const TYPE_OS  = "os";
+    const TYPE_VERSION  = "version";
 
     /** @var array user friendly named type */
     const TYPES = [
@@ -48,6 +49,7 @@ class Skill
         'Platform' => self::TYPE_PLATFORM,
         'Language' => self::TYPE_LANGUAGE,
         'OS' => self::TYPE_OS,
+        'Version' => self::TYPE_VERSION,
     ];
 
     public function __toString(): string
@@ -78,7 +80,7 @@ class Skill
     /**
      * @var int
      *
-     * @ORM\Column(name="level", type="integer", nullable=false)
+     * @ORM\Column(name="level", type="integer", nullable=true)
      */
     private $level;
 
@@ -108,6 +110,7 @@ class Skill
     {
         $this->experiences = new ArrayCollection();
         $this->children = new ArrayCollection();
+        $this->level = 0;
     }
 
     public function getId(): ?int
