@@ -124,7 +124,9 @@ class DeclarationService
             $dueDates[] = [
                 $index + 1,
                 clone $dueDateBegin,
-                $dueDateBegin->add(new \DateInterval('P'.(intval($dueDateBegin->format('t')) - 1).'D'))
+                $dueDateBegin
+                    ->add(new \DateInterval('P'.(intval($dueDateBegin->format('t')) - 1).'D'))
+                    ->add(new \DateInterval('PT23H59M59S'))
             ];
         }
 
