@@ -33,8 +33,12 @@ Encore
 
     .addEntry('js/bootstrap-datepicker', './assets/js/bootstrap-datepicker.js')
     .addEntry('js/bootstrap-datepicker.fr', './assets/js/bootstrap-datepicker.fr.js')
+    .addEntry('js/Chart.bundle.min', './assets/js/Chart.bundle.min.js')
+    .addEntry('js/html2pdf.bundle', './assets/js/html2pdf.bundle.js')
     .addEntry('js/app', './assets/js/app.js')
+
     .addStyleEntry('css/bootstrap-datepicker', './assets/css/bootstrap-datepicker.css')
+    .addStyleEntry('css/Chart.min', './assets/css/Chart.min.css')
 
     .addStyleEntry('css/app', './assets/css/app.scss')
     .addStyleEntry('css/login', './assets/css/login.scss')
