@@ -28,7 +28,7 @@ class Invoice
      */
     private $number;
 
-    const NUMBER_DATE_FORMAT = 'Yn-';
+    const NUMBER_DATE_FORMAT = 'Ym-';
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Company", inversedBy="invoices", cascade={"persist"})

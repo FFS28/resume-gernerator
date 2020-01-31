@@ -4,6 +4,11 @@ namespace App\Helper;
 
 abstract class StringHelper
 {
+    /**
+     * Crée un slug
+     * @param string $text
+     * @return string
+     */
     public static function slugify(string $text): string
     {
         // replace non letter or digits by -
@@ -22,6 +27,11 @@ abstract class StringHelper
         return $text;
     }
 
+    /**
+     * Supprime tout les caractères spéciaux
+     * @param string $str
+     * @return string
+     */
     public static function clean(string $str): string
     {
         $str = preg_replace('#&([A-za-z])(?:acute|cedil|caron|circ|grave|orn|ring|slash|th|tilde|uml);#', '\1', $str);
@@ -31,6 +41,11 @@ abstract class StringHelper
         return $str;
     }
 
+    /**
+     * Supprime tout les accents
+     * @param $stripAccents
+     * @return string
+     */
     public static function stripAccents($stripAccents)
     {
         return strtr(
@@ -39,4 +54,21 @@ abstract class StringHelper
             'aaaaaceeeeiiiinooooouuuuyyAAAAACEEEEIIIINOOOOOUUUUY'
         );
     }
+
+    /**
+     * Encode pour les PDF
+     * @param string|null $string
+     * @return string
+     */
+    public static function encode(?string $string): string
+    {
+        if (!$string) return '';
+
+        $fromEncoding = mb_detect_encoding($string);
+        $toEncoding = 'UTF-8////IGNORE';
+
+        return $convertedString = @mb_convert_encoding($string, $toEncoding, $fromEncoding) ?:
+            @iconv($fromEncoding, $toEncoding, $string);
+    }
+
 }
