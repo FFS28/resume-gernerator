@@ -2095,6 +2095,22 @@ class AppFixtures extends Fixture
 
         $declaration = new Declaration();
         $declaration->setType(Declaration::TYPE_SOCIAL);
+        $declaration->setRevenue(41688);
+        $declaration->setTax(7636);
+        $declaration->setStatus(Declaration::STATUS_PAYED);
+        $this->manager->persist($declaration);
+        $this->periods['2018']->addDeclaration($declaration);
+
+        $declaration = new Declaration();
+        $declaration->setType(Declaration::TYPE_IMPOT);
+        $declaration->setRevenue(40471);
+        $declaration->setTax(6343);
+        $declaration->setStatus(Declaration::STATUS_PAYED);
+        $this->manager->persist($declaration);
+        $this->periods['2018']->addDeclaration($declaration);
+
+        $declaration = new Declaration();
+        $declaration->setType(Declaration::TYPE_SOCIAL);
         $declaration->setRevenue(9000);
         $declaration->setTax(1988);
         $declaration->setStatus(Declaration::STATUS_PAYED);
@@ -2137,6 +2153,14 @@ class AppFixtures extends Fixture
         $declaration->setType(Declaration::TYPE_IMPOT);
         $declaration->setRevenue(39800);
         $declaration->setTax(0);
+        $declaration->setStatus(Declaration::STATUS_WAITING);
+        $this->manager->persist($declaration);
+        $this->periods['2019']->addDeclaration($declaration);
+
+        $declaration = new Declaration();
+        $declaration->setType(Declaration::TYPE_IMPOT);
+        $declaration->setRevenue(39800);
+        $declaration->setTax(2269);
         $declaration->setStatus(Declaration::STATUS_WAITING);
         $this->manager->persist($declaration);
         $this->periods['2019']->addDeclaration($declaration);

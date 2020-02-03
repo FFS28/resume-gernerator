@@ -48,11 +48,17 @@ class Period
      */
     private $periodsQuarter;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Purchase", mappedBy="period")
+     */
+    private $purchases;
+
     public function __construct()
     {
         $this->invoices = new ArrayCollection();
         $this->declarations = new ArrayCollection();
         $this->periodsQuarter = new ArrayCollection();
+        $this->purchases = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -195,6 +201,37 @@ class Period
             // set the owning side to null (unless already changed)
             if ($quarter->getPeriodYear() === $this) {
                 $quarter->setPeriodYear(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Purchase[]
+     */
+    public function getPurchases(): Collection
+    {
+        return $this->purchases;
+    }
+
+    public function addPurchase(Purchase $purchase): self
+    {
+        if (!$this->purchases->contains($purchase)) {
+            $this->purchases[] = $purchase;
+            $purchase->setPeriod($this);
+        }
+
+        return $this;
+    }
+
+    public function removePurchase(Purchase $purchase): self
+    {
+        if ($this->purchases->contains($purchase)) {
+            $this->purchases->removeElement($purchase);
+            // set the owning side to null (unless already changed)
+            if ($purchase->getPeriod() === $this) {
+                $purchase->setPeriod(null);
             }
         }
 

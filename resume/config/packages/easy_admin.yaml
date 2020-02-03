@@ -23,6 +23,7 @@ easy_admin:
 
       - { label: 'Invoicing' }
       - { entity: 'Invoice', label: 'Invoices', icon: 'coins' }
+      - { entity: 'Purchase', label: 'Purchases', icon: 'credit-card' }
       - { entity: 'Declaration', label: 'Declarations', icon: 'landmark' }
       - { entity: 'Activity', label: 'Activities', icon: 'calendar-check' }
       - { entity: 'Company', label: 'Companies', icon: 'building' }
@@ -156,6 +157,25 @@ easy_admin:
           - { name: 'validate', label: 'Validate'}
           - { name: 'send', label: 'Send'}
         collapse_actions: true
+    Purchase:
+      class: App\Entity\Purchase
+      controller: App\Controller\PurchaseController
+      form:
+        fields:
+          - number
+          - { property: 'payedAt', type_options: { widget: 'single_text', html5: false, format: 'dd/MM/yyyy', attr: { data-provide: 'datepicker', data-date-format: 'dd/mm/yyyy', data-date-language: 'fr' } } }
+          - period
+          - totalHt
+          - totalTax
+          - { property: 'proofFile', type: 'file' }
+      list:
+        fields:
+          - number
+          - payedAt
+          - totalHt
+          - totalTax
+          - totalTtc
+          - { property: 'proof', type: 'image', base_path: '%PROOF_DIRECTORY%' }
     Declaration:
       class: App\Entity\Declaration
       controller: App\Controller\DeclarationController

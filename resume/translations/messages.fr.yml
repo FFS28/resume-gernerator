@@ -71,6 +71,7 @@ Object: Objet
 Total: Total
 Total ht: Total HT
 Total tax: Total TVA
+Total ttc: Total TTC
 Created at: Créé le
 Created at year: Créé l'année
 Created at quarter: Créé le trimestre
@@ -134,6 +135,11 @@ TVA: TVA
 
 Period: Période
 Periods: Périodes
+
+Purchase: Achat
+Purchases: Achats
+Proof: Justificatif
+Proof file: Justificatif
 
 Date: Date
 Year: Année
