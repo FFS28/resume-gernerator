@@ -120,7 +120,7 @@ class InvoiceController extends EasyAdminController
                 ))
                 ->attachFromPath(
                     $this->getParameter('PDF_DIRECTORY').$entity->getFilename(),
-                    'invoice-jeremy-achain-'.$entity->getNumber());
+                    'invoice-jeremy-achain-'.$entity->getNumber().'.pdf');
 
             $this->mailer->send($email);
 
