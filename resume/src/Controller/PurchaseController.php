@@ -22,6 +22,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use thiagoalessio\TesseractOCR\TesseractOCR;
 
 class PurchaseController extends EasyAdminController
 {
@@ -41,6 +42,29 @@ class PurchaseController extends EasyAdminController
         $this->purchaseRepository = $purchaseRepository;
         $this->purchaseService = $purchaseService;
         $this->translator = $translator;
+    }
+
+    public function ocrAction()
+    {
+        $id = $this->request->query->get('id');
+        /** @var Purchase $entity */
+        $entity = $this->em->getRepository(Purchase::class)->find($id);
+
+        if ($entity) {
+            $filePath = $this->getParameter('PROOF_DIRECTORY').$entity->getProof();
+            $tsa = new TesseractOCR($filePath);
+
+            $tsa->executable($this->getParameter('APP_DIR').'/bin/tesseract');
+
+            echo ($tsa)
+                ->run();
+            exit;
+
+            //$this->em->flush();
+        }
+
+
+        return $this->redirectToReferrer();
     }
 
     /**

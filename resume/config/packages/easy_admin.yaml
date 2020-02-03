@@ -168,6 +168,8 @@ easy_admin:
           - totalHt
           - totalTax
           - { property: 'proofFile', type: 'file' }
+        actions:
+          - { name: 'ocr', label: 'Ocr', icon: 'eye', css_class: 'btn btn-secondary'}
       list:
         fields:
           - number
@@ -176,6 +178,8 @@ easy_admin:
           - totalTax
           - totalTtc
           - { property: 'proof', type: 'image', base_path: '%PROOF_DIRECTORY%' }
+        actions:
+          - { name: 'ocr', label: 'Ocr'}
     Declaration:
       class: App\Entity\Declaration
       controller: App\Controller\DeclarationController

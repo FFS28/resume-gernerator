@@ -170,6 +170,9 @@
             "webpack.config.js"
         ]
     },
+    "thiagoalessio/tesseract_ocr": {
+        "version": "2.9.3"
+    },
     "twig/extra-bundle": {
         "version": "v3.0.0"
     },

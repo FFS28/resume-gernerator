@@ -24,6 +24,7 @@
         "symfony/twig-pack": "^1.0",
         "symfony/webpack-encore-bundle": "^1.7",
         "symfony/yaml": "5.0.*",
+        "thiagoalessio/tesseract_ocr": "^2.9",
         "vich/uploader-bundle": "^1.13"
     },
     "require-dev": {
