@@ -8,7 +8,10 @@ use App\Repository\PurchaseRepository;
 use App\Service\DeclarationService;
 use App\Service\PurchaseService;
 use Doctrine\ORM\EntityManager;
+use Exception;
+use GuzzleHttp\Client;
 use http\Client\Request;
+use JFuentesTgn\OcrSpace\OcrAPI;
 use Konekt\PdfPurchase\PurchasePrinter;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\RequestInterface;
@@ -51,18 +54,9 @@ class PurchaseController extends EasyAdminController
         $entity = $this->em->getRepository(Purchase::class)->find($id);
 
         if ($entity) {
-            $filePath = $this->getParameter('PROOF_DIRECTORY').$entity->getProof();
-            $tsa = new TesseractOCR($filePath);
-
-            $tsa->executable($this->getParameter('APP_DIR').'/bin/tesseract');
-
-            echo ($tsa)
-                ->run();
-            exit;
-
-            //$this->em->flush();
+            $proofText = $this->purchaseService->proofToText($entity);
+            $this->purchaseService->importProofAmount($entity, $proofText);
         }
-
 
         return $this->redirectToReferrer();
     }
@@ -71,7 +65,8 @@ class PurchaseController extends EasyAdminController
      * @param Purchase $entity
      * @throws \Exception
      */
-    protected function persistEntity($entity){
+    protected function persistEntity($entity)
+    {
         $this->purchaseService->updatePeriod($entity);
 
         parent::persistEntity($entity);
@@ -81,7 +76,8 @@ class PurchaseController extends EasyAdminController
      * @param Purchase $entity
      * @throws \Exception
      */
-    protected function updateEntity($entity){
+    protected function updateEntity($entity)
+    {
         $this->purchaseService->updatePeriod($entity);
 
         parent::updateEntity($entity);

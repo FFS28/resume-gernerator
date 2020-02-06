@@ -9,6 +9,7 @@
         "doctrine/doctrine-fixtures-bundle": "^3.3",
         "easycorp/easyadmin-bundle": "^2.3",
         "gregwar/captcha-bundle": "^2.1",
+        "guzzlehttp/guzzle": "^6.5",
         "konekt/pdf-invoice": "^1.5",
         "sensio/framework-extra-bundle": "^5.5",
         "symfony/cache": "5.0.*",
@@ -24,8 +25,8 @@
         "symfony/twig-pack": "^1.0",
         "symfony/webpack-encore-bundle": "^1.7",
         "symfony/yaml": "5.0.*",
-        "thiagoalessio/tesseract_ocr": "^2.9",
-        "vich/uploader-bundle": "^1.13"
+        "vich/uploader-bundle": "^1.13",
+        "ext-json": "*"
     },
     "require-dev": {
         "symfony/maker-bundle": "^1.14",

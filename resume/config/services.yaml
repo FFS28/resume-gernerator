@@ -45,4 +45,9 @@ services:
             $companyStatut: '%env(COMPANY_STATUT)%'
             $companyTva: '%env(COMPANY_TVA)%'
 
+    App\Service\PurchaseService:
+        public: true
+        arguments:
+            $proofDirectory: '%PROOF_DIRECTORY%'
+
 

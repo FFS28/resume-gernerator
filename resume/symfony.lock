@@ -26,6 +26,15 @@
     "gregwar/captcha-bundle": {
         "version": "v2.1.1"
     },
+    "guzzlehttp/guzzle": {
+        "version": "6.5.2"
+    },
+    "guzzlehttp/promises": {
+        "version": "v1.3.1"
+    },
+    "guzzlehttp/psr7": {
+        "version": "1.6.1"
+    },
     "jms/metadata": {
         "version": "2.1.0"
     },
@@ -64,6 +73,9 @@
     },
     "psr/simple-cache": {
         "version": "1.0.1"
+    },
+    "ralouphie/getallheaders": {
+        "version": "3.0.3"
     },
     "sensio/framework-extra-bundle": {
         "version": "5.2",
@@ -169,9 +181,6 @@
             "package.json",
             "webpack.config.js"
         ]
-    },
-    "thiagoalessio/tesseract_ocr": {
-        "version": "2.9.3"
     },
     "twig/extra-bundle": {
         "version": "v3.0.0"
