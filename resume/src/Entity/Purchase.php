@@ -62,6 +62,16 @@ class Purchase
      */
     private $period;
 
+    /**
+     * @ORM\Column(type="array", nullable=true)
+     */
+    private $proofData = [];
+
+    public function __construct()
+    {
+        $this->setPayedAt(new \DateTime());
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -156,6 +166,18 @@ class Purchase
     public function setPeriod(?Period $period): self
     {
         $this->period = $period;
+
+        return $this;
+    }
+
+    public function getProofData(): ?array
+    {
+        return $this->proofData;
+    }
+
+    public function setProofData(?array $proofData): self
+    {
+        $this->proofData = $proofData;
 
         return $this;
     }

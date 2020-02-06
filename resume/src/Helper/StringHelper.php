@@ -42,6 +42,16 @@ abstract class StringHelper
     }
 
     /**
+     * Supprime tout les espaces
+     * @param string $str
+     * @return string
+     */
+    public static function removeSpaces(string $str): string
+    {
+        return preg_replace('#\s#', '', $str);
+    }
+
+    /**
      * Supprime tout les accents
      * @param $stripAccents
      * @return string

@@ -1,6 +1,6 @@
 # Resume
 
-### Features
+### TODO
 
 - Rapport
     - Envoi d'un compte rendu

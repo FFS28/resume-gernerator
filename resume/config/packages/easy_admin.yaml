@@ -168,11 +168,11 @@ easy_admin:
           - totalHt
           - totalTax
           - { property: 'proofFile', type: 'file' }
+          - proofData
         actions:
           - { name: 'ocr', label: 'Ocr', icon: 'eye', css_class: 'btn btn-secondary'}
       list:
         fields:
-          - number
           - payedAt
           - totalHt
           - totalTax
