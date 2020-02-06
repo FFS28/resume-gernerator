@@ -200,6 +200,12 @@ class DeclarationService
         }
         $declaration->setRevenue($revenues);
 
+        if ($declaration->getType() === Declaration::TYPE_TVA) {
+            foreach ($declaration->getPurchases() as $purchase) {
+                $tva -= $purchase->getTotalTax();
+            }
+        }
+
         switch ($declaration->getType()) {
             case Declaration::TYPE_SOCIAL:
                 $declaration->setTax($revenues *

@@ -174,6 +174,7 @@ easy_admin:
       list:
         fields:
           - payedAt
+          - period
           - totalHt
           - totalTax
           - totalTtc
@@ -198,7 +199,9 @@ easy_admin:
           - { type: 'group', columns: 3, label: '' }
           - { property: 'payedAt', type_options: { widget: 'single_text', html5: false, format: 'dd/MM/yyyy', attr: { data-provide: 'datepicker', data-date-format: 'dd/mm/yyyy', data-date-language: 'fr' } } }
           - { type: 'group', columns: 12, label: 'Invoices' }
-          - { property: invoices, label: '', mapped: false, type_options: { block_name: 'array_with_total' } }
+          - { property: invoices, label: '', mapped: false, type_options: { block_name: 'invoices_array_with_total' } }
+          - { type: 'group', columns: 12, label: 'Purchases' }
+          - { property: purchases, label: '', mapped: false, type_options: { block_name: 'purchases_array_with_total' } }
         actions:
           - { name: 'calculate', label: 'Recalculate', icon: 'calculator', css_class: 'btn btn-secondary'}
           - { name: 'validate', label: 'Validate', icon: 'check', css_class: 'btn btn-secondary'}

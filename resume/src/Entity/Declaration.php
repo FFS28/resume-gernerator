@@ -223,7 +223,24 @@ class Declaration
             return $invoices;
         }
 
-        return $this->getPeriod()->getInvoices()->toArray();
+        return $period->getInvoices()->toArray();
+    }
+
+    /**
+     * @return Purchase[]
+     */
+    public function getPurchases(): array
+    {
+        if ($this->getType() !== self::TYPE_TVA) {
+            return [];
+        }
+
+        $period = $this->getPeriod();
+        if (!$period) {
+            return [];
+        }
+
+        return $period->getPurchases()->toArray();
     }
 
     public function setInvoices(?array $invoices)
