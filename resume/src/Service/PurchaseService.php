@@ -97,6 +97,8 @@ class PurchaseService
      */
     public function importProofAmount(Purchase $purchase, string $proof)
     {
+        dump($proof);
+        exit;
         //$this->entityManager->flush();
     }
 
