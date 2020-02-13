@@ -23,6 +23,7 @@ easy_admin:
 
       - { label: 'Invoicing' }
       - { entity: 'Invoice', label: 'Invoices', icon: 'coins' }
+      - { entity: 'Purchase', label: 'Purchases', icon: 'credit-card' }
       - { entity: 'Declaration', label: 'Declarations', icon: 'landmark' }
       - { entity: 'Activity', label: 'Activities', icon: 'calendar-check' }
       - { entity: 'Company', label: 'Companies', icon: 'building' }
@@ -119,7 +120,7 @@ easy_admin:
           - { property: 'createdAt', type_options: { widget: 'single_text', html5: false, format: 'dd/MM/yyyy', attr: {data-provide: 'datepicker', data-date-format: 'dd/mm/yyyy', data-date-language: 'fr' } } }
           - { type: 'group', columns: 2, label: 'Payment' }
           - { property: 'payedBy', type: 'choice', type_options: { choices: !php/const App\Entity\Invoice::PAYED_BYS } }
-          - { property: 'payedAt', ype_options: { widget: 'single_text', html5: false, format: 'dd/MM/yyyy', attr: {data-provide: 'datepicker', data-date-format: 'dd/mm/yyyy', data-date-language: 'fr' }} }
+          - { property: 'payedAt', type_options: { widget: 'single_text', html5: false, format: 'dd/MM/yyyy', attr: {data-provide: 'datepicker', data-date-format: 'dd/mm/yyyy', data-date-language: 'fr' }} }
           - { type: 'group', columns: 2, label: 'Payment' }
           - { property: 'status', type: 'choice', type_options: { choices: !php/const App\Entity\Invoice::STATUES } }
           - period
@@ -156,6 +157,30 @@ easy_admin:
           - { name: 'validate', label: 'Validate'}
           - { name: 'send', label: 'Send'}
         collapse_actions: true
+    Purchase:
+      class: App\Entity\Purchase
+      controller: App\Controller\PurchaseController
+      form:
+        fields:
+          - number
+          - { property: 'payedAt', type_options: { widget: 'single_text', html5: false, format: 'dd/MM/yyyy', attr: { data-provide: 'datepicker', data-date-format: 'dd/mm/yyyy', data-date-language: 'fr' } } }
+          - period
+          - totalHt
+          - totalTax
+          - { property: 'proofFile', type: 'file' }
+          - proofData
+        actions:
+          - { name: 'ocr', label: 'Ocr', icon: 'eye', css_class: 'btn btn-secondary'}
+      list:
+        fields:
+          - payedAt
+          - period
+          - totalHt
+          - totalTax
+          - totalTtc
+          - { property: 'proof', type: 'image', base_path: '%PROOF_DIRECTORY%' }
+        actions:
+          - { name: 'ocr', label: 'Ocr'}
     Declaration:
       class: App\Entity\Declaration
       controller: App\Controller\DeclarationController
@@ -174,7 +199,9 @@ easy_admin:
           - { type: 'group', columns: 3, label: '' }
           - { property: 'payedAt', type_options: { widget: 'single_text', html5: false, format: 'dd/MM/yyyy', attr: { data-provide: 'datepicker', data-date-format: 'dd/mm/yyyy', data-date-language: 'fr' } } }
           - { type: 'group', columns: 12, label: 'Invoices' }
-          - { property: invoices, label: '', mapped: false, type_options: { block_name: 'array_with_total' } }
+          - { property: invoices, label: '', mapped: false, type_options: { block_name: 'invoices_array_with_total' } }
+          - { type: 'group', columns: 12, label: 'Purchases' }
+          - { property: purchases, label: '', mapped: false, type_options: { block_name: 'purchases_array_with_total' } }
         actions:
           - { name: 'calculate', label: 'Recalculate', icon: 'calculator', css_class: 'btn btn-secondary'}
           - { name: 'validate', label: 'Validate', icon: 'check', css_class: 'btn btn-secondary'}

@@ -5,10 +5,12 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     APP_ENV: '%env(APP_ENV)%'
+    APP_DIR: '%kernel.project_dir%'
     MAILER_FROM: '%env(MAILER_FROM)%'
     MAILER_SUBJECT: '%env(MAILER_SUBJECT)%'
     COMPANY_NAME: '%env(COMPANY_NAME)%'
     PDF_DIRECTORY: '%kernel.project_dir%%env(DIRECTORY_INVOICE)%'
+    PROOF_DIRECTORY: 'upload%env(DIRECTORY_PURCHASE)%'
 
 services:
     # default configuration for services in *this* file
@@ -42,5 +44,10 @@ services:
             $companyApe: '%env(COMPANY_APE)%'
             $companyStatut: '%env(COMPANY_STATUT)%'
             $companyTva: '%env(COMPANY_TVA)%'
+
+    App\Service\PurchaseService:
+        public: true
+        arguments:
+            $proofDirectory: '%PROOF_DIRECTORY%'
 
 

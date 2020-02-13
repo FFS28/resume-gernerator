@@ -36,6 +36,9 @@ class InvoiceService
     /** @var DeclarationService */
     private $declarationService;
 
+    /** @var PeriodService */
+    private $periodService;
+
     /** @var SerializerInterface */
     private $serializer;
 
@@ -55,6 +58,7 @@ class InvoiceService
         InvoiceRepository $invoiceRepository,
         ExperienceRepository $experienceRepository,
         DeclarationService $declarationService,
+        PeriodService $periodService,
         SerializerInterface $serializer,
         TranslatorInterface $translator
     ) {
@@ -71,6 +75,7 @@ class InvoiceService
         $this->invoiceRepository = $invoiceRepository;
         $this->experienceRepository = $experienceRepository;
         $this->declarationService = $declarationService;
+        $this->periodService = $periodService;
 
         $this->serializer = $serializer;
         $this->translator = $translator;
@@ -246,7 +251,7 @@ class InvoiceService
      */
     public function updatePeriod(Invoice $invoice)
     {
-        list ($annualyPeriod, $quarterlyPeriod) = $this->declarationService->getCurrentPeriod();
+        list ($annualyPeriod, $quarterlyPeriod) = $this->periodService->getCurrentPeriod();
         $invoice->setPeriod($quarterlyPeriod);
     }
 

@@ -73,7 +73,9 @@ class DeclarationController extends EasyAdminController
      */
     protected function persistEntity($entity){
         parent::persistEntity($entity);
-        $this->declarationService->calculate($entity);
+        if (!$entity->getRevenue() && !$entity->getTax()) {
+            $this->declarationService->calculate($entity);
+        }
     }
 
     /**

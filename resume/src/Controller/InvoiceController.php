@@ -84,7 +84,7 @@ class InvoiceController extends EasyAdminController
         /** @var Invoice $entity */
         $entity = $this->em->getRepository(Invoice::class)->find($id);
 
-        if ($entity->isEditable()) {
+        if (!$entity->getPayedAt()) {
             $entity->setStatus(Invoice::STATUS_PAYED);
             $entity->setPayedAt(new \DateTime('now'));
             $this->invoiceService->updatePeriod($entity);
@@ -102,7 +102,7 @@ class InvoiceController extends EasyAdminController
         /** @var Invoice $entity */
         $entity = $this->em->getRepository(Invoice::class)->find($id);
 
-        if ($entity->getFilename() && $entity->getCompany()->getEmail()) {
+        if ($entity && $entity->getFilename() && $entity->getCompany()->getEmail()) {
             $this->invoiceService->createPdf($entity);
 
             $email = (new Email())
@@ -134,7 +134,7 @@ class InvoiceController extends EasyAdminController
         /** @var Invoice $entity */
         $entity = $this->em->getRepository(Invoice::class)->find($id);
 
-        if ($entity->getStatus() === Invoice::STATUS_DRAFT) {
+        if ($entity && $entity->getStatus() === Invoice::STATUS_DRAFT) {
             return parent::deleteAction();
         }
 

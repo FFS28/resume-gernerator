@@ -22,6 +22,9 @@ class DeclarationService
     /** @var PeriodRepository */
     private $periodRepository;
 
+    /** @var PeriodService */
+    private $periodService;
+
     /** @var InvoiceRepository */
     private $invoiceRepository;
 
@@ -29,12 +32,14 @@ class DeclarationService
         EntityManagerInterface $entityManager,
         DeclarationRepository $declarationRepository,
         PeriodRepository $periodRepository,
+        PeriodService $periodService,
         InvoiceRepository $invoiceRepository
     )
     {
         $this->entityManager = $entityManager;
         $this->declarationRepository = $declarationRepository;
         $this->periodRepository = $periodRepository;
+        $this->periodService = $periodService;
         $this->invoiceRepository = $invoiceRepository;
     }
 
@@ -61,6 +66,17 @@ class DeclarationService
         return [
             7,
             12,
+            5
+        ];
+    }
+
+    /**
+     * Retourne les mois de déclaration des Impots
+     * @return int[]
+     */
+    public static function getDueImpotMonth()
+    {
+        return [
             5
         ];
     }
@@ -184,6 +200,12 @@ class DeclarationService
         }
         $declaration->setRevenue($revenues);
 
+        if ($declaration->getType() === Declaration::TYPE_TVA) {
+            foreach ($declaration->getPurchases() as $purchase) {
+                $tva -= $purchase->getTotalTax();
+            }
+        }
+
         switch ($declaration->getType()) {
             case Declaration::TYPE_SOCIAL:
                 $declaration->setTax($revenues *
@@ -200,43 +222,6 @@ class DeclarationService
     }
 
     /**
-     * Renvoi la période courante
-     * @param \DateTime $date
-     * @return Period[]
-     * @throws \Exception
-     */
-    public function getCurrentPeriod($date = null)
-    {
-        if (!$date) {
-            $date = new \DateTime();
-        }
-
-        $year = intval($date->format('Y'));
-
-        $annualyPeriod = $this->periodRepository->findOneBy([
-            'year' => $year
-        ]);
-        $quarterlyPeriod = $this->periodRepository->findOneBy([
-            'year' => $year,
-            'quarter' => ceil(intval($date->format('n')) / 3)
-        ]);
-
-        return [$annualyPeriod, $quarterlyPeriod];
-    }
-
-
-    /**
-     * Renvoi la précédente période
-     * @return Period[]
-     * @throws \Exception
-     */
-    public function getPreviousPeriod()
-    {
-        $date = (new \DateTime())->sub(new \DateInterval('P1M'));
-        return $this->getCurrentPeriod($date);
-    }
-
-    /**
      * Récupère la déclaration sociale courante
      * @param bool $forceCurrent
      * @return Declaration|mixed
@@ -245,7 +230,7 @@ class DeclarationService
     public function getSocialDeclarations($forceCurrent = false)
     {
         list ($annualyPeriod, $quarterlyPeriod)
-            = $this->isDueSocialMonth() && !$forceCurrent ? $this->getPreviousPeriod() : $this->getCurrentPeriod();
+            = $this->isDueSocialMonth() && !$forceCurrent ? $this->periodService->getPreviousPeriod() : $this->periodService->getCurrentPeriod();
 
         $declarationSocial = $this->declarationRepository->getByDate(
             Declaration::TYPE_SOCIAL,
@@ -276,7 +261,7 @@ class DeclarationService
      */
     public function getTvaDeclarations($forceCurrent = false)
     {
-        list ($annualyPeriod) = $this->getCurrentPeriod();
+        list ($annualyPeriod) = $this->periodService->getCurrentPeriod();
 
         $declarationTva = $this->declarationRepository->getByDate(Declaration::TYPE_TVA, $annualyPeriod->getYear());
 
@@ -303,7 +288,7 @@ class DeclarationService
      */
     public function getImpotDeclarations($forceCurrent = false)
     {
-        list ($annualyPeriod) = $this->getCurrentPeriod();
+        list ($annualyPeriod) = $this->periodService->getCurrentPeriod();
 
         $declarationImpot = $this->declarationRepository->getByDate(Declaration::TYPE_IMPOT, $annualyPeriod->getYear());
 

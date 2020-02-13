@@ -5,10 +5,13 @@
         "php": "^7.2.5",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "ext-json": "*",
         "alterphp/easyadmin-extension-bundle": "^3.0",
         "doctrine/doctrine-fixtures-bundle": "^3.3",
         "easycorp/easyadmin-bundle": "^2.3",
         "gregwar/captcha-bundle": "^2.1",
+        "gumlet/php-image-resize": "^1.9",
+        "guzzlehttp/guzzle": "^6.5",
         "konekt/pdf-invoice": "^1.5",
         "sensio/framework-extra-bundle": "^5.5",
         "symfony/cache": "5.0.*",
@@ -23,7 +26,8 @@
         "symfony/templating": "5.0.*",
         "symfony/twig-pack": "^1.0",
         "symfony/webpack-encore-bundle": "^1.7",
-        "symfony/yaml": "5.0.*"
+        "symfony/yaml": "5.0.*",
+        "vich/uploader-bundle": "^1.13"
     },
     "require-dev": {
         "symfony/maker-bundle": "^1.14",

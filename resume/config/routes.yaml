@@ -5,9 +5,11 @@
 logout:
     path: /logout
 
-homepage:
-    path: /fr/
+redirect:
+    path: /fr/{all}
     controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::urlRedirectAction
     defaults:
         path: /
         permanent: true
+    requirements:
+        all: ".+"
