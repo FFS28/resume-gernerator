@@ -11,6 +11,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\HttpFoundation\AcceptHeader;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class UserController extends AbstractController
 {
@@ -33,6 +35,14 @@ class UserController extends AbstractController
             ->add('_password', \Symfony\Component\Form\Extension\Core\Type\PasswordType::class, ['label' => 'Password'])
             ->add('submit', \Symfony\Component\Form\Extension\Core\Type\SubmitType::class, ['label' => 'Connexion', 'attr' => ['class' => 'btn-primary btn-block']])
             ->getForm();
+
+        $acceptHeader = AcceptHeader::fromString($request->headers->get('Accept'));
+
+        if ($acceptHeader->has('application/ld+json')) {
+            $response = new JsonResponse([]);
+            $response->setStatusCode(401);
+            return $response;
+        }
 
         return $this->render('security/login.html.twig', [
             'mainNavLogin' => true, 'title' => 'Connexion',
