@@ -84,7 +84,7 @@ class InvoiceController extends EasyAdminController
         /** @var Invoice $entity */
         $entity = $this->em->getRepository(Invoice::class)->find($id);
 
-        if ($entity && $entity->isEditable()) {
+        if (!$entity->getPayedAt()) {
             $entity->setStatus(Invoice::STATUS_PAYED);
             $entity->setPayedAt(new \DateTime('now'));
             $this->invoiceService->updatePeriod($entity);

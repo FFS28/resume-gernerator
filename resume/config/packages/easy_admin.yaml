@@ -120,7 +120,7 @@ easy_admin:
           - { property: 'createdAt', type_options: { widget: 'single_text', html5: false, format: 'dd/MM/yyyy', attr: {data-provide: 'datepicker', data-date-format: 'dd/mm/yyyy', data-date-language: 'fr' } } }
           - { type: 'group', columns: 2, label: 'Payment' }
           - { property: 'payedBy', type: 'choice', type_options: { choices: !php/const App\Entity\Invoice::PAYED_BYS } }
-          - { property: 'payedAt', ype_options: { widget: 'single_text', html5: false, format: 'dd/MM/yyyy', attr: {data-provide: 'datepicker', data-date-format: 'dd/mm/yyyy', data-date-language: 'fr' }} }
+          - { property: 'payedAt', type_options: { widget: 'single_text', html5: false, format: 'dd/MM/yyyy', attr: {data-provide: 'datepicker', data-date-format: 'dd/mm/yyyy', data-date-language: 'fr' }} }
           - { type: 'group', columns: 2, label: 'Payment' }
           - { property: 'status', type: 'choice', type_options: { choices: !php/const App\Entity\Invoice::STATUES } }
           - period
