@@ -65,58 +65,6 @@ class IndexController extends AbstractController
             'messageSended' => $request->get('messageSended')
         ];
 
-        if ($data['isPdf']) {
-            $pdfFilename = $data['filename'];
-            $html =  $this->renderView('page/index.html.twig', $data);
-            $pdf = null;
-
-            /*if ($request->query->get('pdf') === 'mpdf') {
-                $mpdf = new \Mpdf\Mpdf([
-                    'default_font' => 'DejaVuSans'
-                ]);
-                //$mpdf->WriteHTML(file_get_contents(, \Mpdf\HTMLParserMode::HEADER_CSS);
-                $mpdf->WriteHTML($html);
-                $pdf = $mpdf->Output();
-            }
-
-            if ($request->query->get('pdf') === 'html2pdf') {
-                $html2pdf = new Html2Pdf();
-                $html2pdf->writeHTML($html);
-                $pdf = $html2pdf->output();
-            }
-
-            if ($request->query->get('pdf') === 'dompdf') {
-                $dompdf = new Dompdf();
-                $dompdf->loadHtml($html);
-                $dompdf->setPaper('A4', 'portrait');
-                $dompdf->render();
-                $pdf = $dompdf->output();
-            }
-
-            if ($request->query->get('pdf') === 'tcpdf') {
-                $tcpdf = $tcpdfService->create('vertical', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-                $tcpdf->AddPage();
-                $tcpdf->writeHTMLCell($w = 0, $h = 0, $x = '', $y = '', $html, $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
-                $pdf = $tcpdf->Output($pdfFilename,'I');
-            }
-
-            if ($request->query->get('pdf') === 'browsershot') {
-                $pdf = Browsershot::html($html)->pdf();
-            }*/
-
-            if ($pdf) {
-                return new Response(
-                    $pdf,
-                    200,
-                    array(
-                        'Content-Type' => 'application/pdf',
-                        'Content-Disposition' => 'inline; filename="' . $pdfFilename . '"'
-                        //'Content-Disposition'   => 'attachment; filename="'.$pdfFilename.'"'
-                    )
-                );
-            }
-        }
-
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
@@ -135,5 +83,101 @@ class IndexController extends AbstractController
         $data['isSubmittedWithErrors'] = $form->isSubmitted() && !$form->isValid();
 
         return $this->render('page/index.html.twig', $data);
+    }
+
+    /**
+     * @Route("/projects/scales-of-me", name="project-scales")
+     * @param Request $request
+     * @return Response
+     */
+    public function scales(
+        Request $request
+    ) {
+        $data = [
+            'scales' => [
+                [
+                    'title' => 'Gender identity',
+                    'children' => [
+                        [
+                            'labels' => ['agenre', 'non-binary', 'female'],
+                            'value' => 20,
+                            'description' => ''
+                        ],
+                        [
+                            'labels' => ['agenre', 'non-binary', 'male'],
+                            'value' => 80,
+                            'description' => ''
+                        ],
+                    ]
+                ],
+                [
+                    'title' => 'Gender expression',
+                    'children' => [
+                        [
+                            'labels' => ['hyper-masc', 'andro, both', 'hyper-female'],
+                            'value' => 20,
+                            'description' => ''
+                        ]
+                    ]
+                ],
+                [
+                    'title' => 'Sexual orientation',
+                    'children' => [
+                        [
+                            'labels' => ['', 'female'],
+                            'value' => 100,
+                            'description' => ''
+                        ],
+                        [
+                            'labels' => ['', 'male'],
+                            'value' => 10,
+                            'description' => ''
+                        ],
+                        [
+                            'labels' => ['asexual', 'sexual', 'hypersexual'],
+                            'value' => 70,
+                            'description' => ''
+                        ],
+                        [
+                            'labels' => ['vanilla', 'curious', 'all the BDSM'],
+                            'value' => 50,
+                            'description' => ''
+                        ],
+                    ]
+                ],
+                [
+                    'title' => 'Romantic orientation',
+                    'children' => [
+                        [
+                            'labels' => ['', 'female'],
+                            'value' => 100,
+                            'description' => ''
+                        ],
+                        [
+                            'labels' => ['', 'male'],
+                            'value' => 0,
+                            'description' => ''
+                        ],
+                        [
+                            'labels' => ['aromantic', 'romantic', 'extra-romantic'],
+                            'value' => 70,
+                            'description' => ''
+                        ],
+                    ]
+                ],
+                [
+                    'title' => 'Relation orientation',
+                    'children' => [
+                        [
+                            'labels' => ['mono', 'open, fluid, single', 'poly'],
+                            'value' => 70,
+                            'description' => ''
+                        ]
+                    ]
+                ],
+            ]
+        ];
+
+        return $this->render('project/scales.html.twig', $data);
     }
 }

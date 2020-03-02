@@ -36,9 +36,11 @@ Encore
     .addEntry('js/Chart.bundle.min', './assets/js/Chart.bundle.min.js')
     .addEntry('js/html2pdf.bundle', './assets/js/html2pdf.bundle.js')
     .addEntry('js/app', './assets/js/app.js')
+    .addEntry('js/scales', './assets/js/scales.js')
 
     .addStyleEntry('css/bootstrap-datepicker', './assets/css/bootstrap-datepicker.css')
     .addStyleEntry('css/Chart.min', './assets/css/Chart.min.css')
+    .addStyleEntry('css/scales', './assets/css/scales.scss')
 
     .addStyleEntry('css/app', './assets/css/app.scss')
     .addStyleEntry('css/login', './assets/css/login.scss')
@@ -56,7 +58,10 @@ Encore
     .enableSassLoader()
 
     // uncomment if you're having problems with a jQuery plugin
-    .autoProvidejQuery()
+    //.autoProvidejQuery()
+
+    // VueJS
+    .enableVueLoader()
 ;
 
 module.exports = Encore.getWebpackConfig();

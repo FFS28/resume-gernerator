@@ -14,7 +14,7 @@
             {{ css }}
         </style>
     {% else %}
-        <link rel="stylesheet" type="text/css" href="{{ asset('build/css/index.css') }}">
+        {{ encore_entry_link_tags('css/index') }}
     {% endif %}
 {% endblock %}
 

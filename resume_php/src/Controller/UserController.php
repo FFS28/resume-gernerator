@@ -36,14 +36,6 @@ class UserController extends AbstractController
             ->add('submit', \Symfony\Component\Form\Extension\Core\Type\SubmitType::class, ['label' => 'Connexion', 'attr' => ['class' => 'btn-primary btn-block']])
             ->getForm();
 
-        $acceptHeader = AcceptHeader::fromString($request->headers->get('Accept'));
-
-        if ($acceptHeader->has('application/ld+json')) {
-            $response = new JsonResponse([]);
-            $response->setStatusCode(401);
-            return $response;
-        }
-
         return $this->render('security/login.html.twig', [
             'mainNavLogin' => true, 'title' => 'Connexion',
             'form' => $form->createView(),
