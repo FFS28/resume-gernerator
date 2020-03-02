@@ -1,5 +1,5 @@
-html, body{
-  padding: 0;
+body{
+  padding: 20px 60px;
   margin: 0;
   font-family: Verdana, Geneva, DejaVuSans, sans-serif;
 }
@@ -9,10 +9,9 @@ html, body{
 }
 
 ul{
-  margin: 0;
+  padding: 0;
 }
 
 li{
   list-style: none;
-  margin-right: 20px;
 }

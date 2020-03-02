@@ -124,12 +124,12 @@ class IndexController extends AbstractController
                     'title' => 'Sexual orientation',
                     'children' => [
                         [
-                            'labels' => ['', 'female'],
+                            'labels' => ['no female', 'female'],
                             'value' => 100,
                             'description' => ''
                         ],
                         [
-                            'labels' => ['', 'male'],
+                            'labels' => ['no male', 'male'],
                             'value' => 10,
                             'description' => ''
                         ],
@@ -149,12 +149,12 @@ class IndexController extends AbstractController
                     'title' => 'Romantic orientation',
                     'children' => [
                         [
-                            'labels' => ['', 'female'],
+                            'labels' => ['no female', 'female'],
                             'value' => 100,
                             'description' => ''
                         ],
                         [
-                            'labels' => ['', 'male'],
+                            'labels' => ['no male', 'male'],
                             'value' => 0,
                             'description' => ''
                         ],
