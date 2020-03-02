@@ -13,5 +13,8 @@
     "vue-loader": "^15.0.11",
     "vue-template-compiler": "^2.6.11",
     "webpack-notifier": "^1.8.0"
+  },
+  "dependencies": {
+    "vue-slide-bar": "^1.2.0"
   }
 }
