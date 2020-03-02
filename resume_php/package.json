@@ -8,7 +8,11 @@
     "moment": "^2.24.0",
     "node-sass": "^4.13.0",
     "sass-loader": "^7.0.1",
-    "webpack-notifier": "^1.8.0",
-    "serialize-javascript": ">=2.1.1"
+    "serialize-javascript": ">=2.1.1",
+    "vue": "^2.6.11",
+    "vue-loader": "^15.0.11",
+    "vue-template-compiler": "^2.6.11",
+    "webpack": "^4.42.0",
+    "webpack-notifier": "^1.8.0"
   }
 }
