@@ -3,7 +3,9 @@
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.11.2",
     "@symfony/webpack-encore": "^0.28.0",
+    "babel-loader": "^8.0.6",
     "bootstrap-datetimepicker": "^0.0.7",
+    "css-loader": "^3.4.2",
     "jquery": "^3.4.1",
     "moment": "^2.24.0",
     "node-sass": "^4.13.0",
@@ -12,7 +14,6 @@
     "vue": "^2.6.11",
     "vue-loader": "^15.0.11",
     "vue-template-compiler": "^2.6.11",
-    "webpack": "^4.42.0",
     "webpack-notifier": "^1.8.0"
   }
 }
