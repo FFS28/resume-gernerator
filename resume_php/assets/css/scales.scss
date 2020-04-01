@@ -1,17 +1,23 @@
+@import "flexbox";
+
 body{
   padding: 20px 60px;
   margin: 0;
   font-family: Verdana, Geneva, DejaVuSans, sans-serif;
 }
 
-.center {
-  text-align: center;
-}
-
 ul{
   padding: 0;
-}
 
-li{
-  list-style: none;
+  &.groups {
+
+  }
+
+  li{
+    list-style: none;
+
+    .group{
+
+    }
+  }
 }

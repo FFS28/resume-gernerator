@@ -1,10 +1,10 @@
 
 <template>
-    <ul>
-        <li v-for="scaleGroup in scales">
+    <ul class="groups">
+        <li v-for="scaleGroup in scales" class="group">
             <h1>{{ scaleGroup.title }}</h1>
-            <ul>
-                <li v-for="scale in scaleGroup.children">
+            <ul class="scales">
+                <li v-for="scale in scaleGroup.children" class="scale">
                     <VueSlideBar v-model="scale.value" :data="scale.data" :range="scale.labels"
                                  :min="0" :max="100" :showTooltip="true" :lineHeight="10"
                                  :labelStyles="{ color: 'red', backgroundColor: '#4a4a4a' }"
