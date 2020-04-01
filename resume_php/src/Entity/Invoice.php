@@ -140,7 +140,7 @@ class Invoice
     private $period;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="decimal", precision=3, scale=1, nullable=true)
      */
     private $daysCount;
 
@@ -462,12 +462,12 @@ class Invoice
         return null;
     }
 
-    public function getDaysCount(): ?int
+    public function getDaysCount(): ?float
     {
         return $this->daysCount;
     }
 
-    public function setDaysCount(?int $daysCount): self
+    public function setDaysCount(?float $daysCount): self
     {
         $this->daysCount = $daysCount;
         if (!$this->getTotalHt()) {
