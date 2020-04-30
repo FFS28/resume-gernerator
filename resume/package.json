@@ -4,7 +4,7 @@
     "@fortawesome/fontawesome-free": "^5.11.2",
     "@symfony/webpack-encore": "^0.28.0",
     "bootstrap-datetimepicker": "^0.0.7",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "moment": "^2.24.0",
     "node-sass": "^4.13.0",
     "sass-loader": "^7.0.1",
