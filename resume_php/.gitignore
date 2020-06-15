@@ -1,8 +1,3 @@
-###> data ###
-/public/upload/
-/data/
-/tmp/
-###< data ###
 
 ###> symfony/framework-bundle ###
 /.env.local
@@ -29,6 +24,8 @@ yarn-error.log
 /.idea/
 ###< phpstorm ###
 
-###> lexik/jwt-authentication-bundle ###
-/config/jwt/*.pem
-###< lexik/jwt-authentication-bundle ###
+###> data ###
+/public/upload/
+/data/
+/tmp/
+###< data ###
