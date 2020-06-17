@@ -9,7 +9,7 @@
 {%- endblock -%}
 
 {% block stylesheets %}
-    {% if isPdf and css %}
+    {% if (isPdf or isDoc) and css %}
         <style>
             {{ css }}
         </style>
@@ -21,13 +21,12 @@
 {% block javascripts %}
     {% if isPdf %}
         <script type='text/javascript' src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
-        {#<script src="{{ asset('build/js/html2pdf.bundle.js') }}"></script>#}
         <script type='text/javascript'>
             window.onload = function() {
                 let element = document.getElementById('body');
                 let worker = html2pdf().set({
                     margin: [0.2, 0.1, 0.2, 0.1],
-                    filename: '{{ filename }}',
+                    filename: '{{ filename }}.pdf',
                     jsPDF: { unit: 'in', orientation: 'portrait' },
                     pagebreak: { before: ['#educations'], after: [], avoid: ['li'] }
                 }).from(element).save().then(function() {
@@ -37,6 +36,25 @@
                 }, function() {
                     window.print();
                 });
+            };
+        </script>
+    {% elseif isDoc %}
+        <script type='text/javascript'>
+            window.onload = function() {
+                var header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' "+
+                    "xmlns:w='urn:schemas-microsoft-com:office:word' "+
+                    "xmlns='http://www.w3.org/TR/REC-html40'>"+
+                    "<head><meta charset='utf-8'><title>{{ block('title') }}</title></head><body>";
+                var footer = "</body></html>";
+                var sourceHTML = header + document.getElementById('body').innerHTML + footer;
+
+                var source = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(sourceHTML);
+                var fileDownload = document.createElement("a");
+                document.body.appendChild(fileDownload);
+                fileDownload.href = source;
+                fileDownload.download = '{{ filename }}.doc';
+                fileDownload.click();
+                document.body.removeChild(fileDownload);
             };
         </script>
     {% elseif isSubmittedWithErrors %}
@@ -55,24 +73,24 @@
 {% endblock %}
 
 {% block body %}
-    {% if not isPdf %}
+    {% if not isPdf and not isDoc %}
         <a id="download" href="/?pdf=true" target="_blank" class="hidden-print" rel="noreferrer" >⇩</a>
     {% endif %}
     <div itemscope itemtype="http://schema.org/Person">
-        <div id="head" class="text-center {% if isPdf %}html-pdf{% endif %}">
+        <div id="head" class="text-center {% if isPdf or isDoc %}html-pdf{% endif %}">
             {% if messageSended %}
                 <div id="message" class="hidden-print">
                     <a class="close" href="{{ url('index') }}">&times;</a>
                     {{ 'Message sended' | trans }}
                 </div>
-            {% elseif attributes['message'] is defined and attributes['message'].value and not isPdf %}
+            {% elseif attributes['message'] is defined and attributes['message'].value and not isPdf and not isDoc %}
                 <div id="message" class="hidden-print">
                     <button class="close" onclick="document.getElementById('message').remove()">&times;</button>
                     {{ attributes['message'].value | raw }}
                 </div>
             {% endif %}
             <div id="me">
-                {% if attributes['quote'] is defined and not isPdf %}
+                {% if attributes['quote'] is defined and not isPdf and not isDoc%}
                     <div id="quote" class="hidden-print">
                         <i class="fas fa-quote-left hidden-xs" aria-hidden="true">&ldquo;</i>
                         <span class="quote">{{ attributes['quote'].value }}</span>
@@ -90,8 +108,8 @@
                 </h1>
             </div>
         </div>
-        <div class="{% if isPdf %}html-pdf{% endif %}">
-            {% if attributes['subtitle'] is defined and not isPdf %}
+        <div class="{% if isPdf or isDoc %}html-pdf{% endif %}">
+            {% if attributes['subtitle'] is defined and not isPdf and not isDoc%}
                 <h2 id="subtitle" class="text-center hidden-print">{{ attributes['subtitle'].value }}</h2>
             {% endif %}
             <div id="attributes" class="ul text-center">
@@ -113,36 +131,37 @@
             </div>
         </div>
     </div>
-    <div id="skills" class="section text-center {% if isPdf %}html-pdf{% endif %}">
-        <h2>
-            {{ 'Skills' | trans }}
-            {#<a href="{{ url('skills') }}">{{ 'Skills' | trans }}</a>#}
-        </h2>
-        <ul>
-            {% for skill in skills %}
-                <li>
-                    <div class="">
-                        {% if isPdf %}
-                            <div class="bar-chart">
-                                <div style="height:{{ (10 - skill.level) * 10 }}%"></div>
-                                <span>{{ skill.level }}</span>
-                            </div>
-                        {% else %}
-                            <div class="donut-chart donut-{{ skill.level }}">
-                                <div class="slice one"></div>
-                                <div class="slice two"></div>
-                                <div class="chart-center">
-                                    <span></span>
+    {% if not isPdf and not isDoc %}
+        <div id="skills" class="section text-center {% if isPdf or isDoc %}html-pdf{% endif %}">
+            <h2>
+                {{ 'Skills' | trans }}
+            </h2>
+            <ul>
+                {% for skill in skills %}
+                    <li>
+                        <div class="">
+                            {% if isPdf or isDoc %}
+                                <div class="bar-chart">
+                                    <div style="height:{{ (10 - skill.level) * 10 }}%"></div>
+                                    <span>{{ skill.level }}</span>
                                 </div>
-                            </div>
-                        {% endif %}
-                    </div>
-                    <div class="name">{{ skill.name }}</div>
-                </li>
-            {% endfor %}
-        </ul>
-    </div>
-    <div id="experiences" class="section text-center {% if isPdf %}html-pdf{% endif %}">
+                            {% else %}
+                                <div class="donut-chart donut-{{ skill.level }}">
+                                    <div class="slice one"></div>
+                                    <div class="slice two"></div>
+                                    <div class="chart-center">
+                                        <span></span>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="name">{{ skill.name }}</div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    <div id="experiences" class="section text-center {% if isPdf or isDoc %}html-pdf{% endif %}">
         <h2>
             {{ 'Experiences' | trans }}
         </h2>
@@ -172,7 +191,7 @@
         </ul>
         <div class="clearfix"></div>
     </div>
-    <div id="educations" class="section text-center {% if isPdf %}html-pdf{% endif %}">
+    <div id="educations" class="section text-center {% if isPdf or isDoc %}html-pdf{% endif %}">
         <h2>{{ 'Educations' | trans }}</h2>
         <ul>
             {% for education in educations %}
@@ -194,7 +213,7 @@
             {% endfor %}
         </ul>
     </div>
-    <div id="hobbies" class="section text-center {% if isPdf %}html-pdf{% endif %}">
+    <div id="hobbies" class="section text-center {% if isPdf or isDoc %}html-pdf{% endif %}">
         <h2>{{ 'Hobbies' | trans }}</h2>
         <ul>
             {% for hobby in hobbies %}
@@ -202,7 +221,7 @@
             {% endfor %}
         </ul>
     </div>
-    {% if not isPdf %}
+    {% if not isPdf and not isDoc %}
         <a id="" class="hidden-print" href="{{ url('index', {'pdf' : true}) }}"></a>
         {% if contactForm is defined %}
             <div class="hidden-print" id="contact">
