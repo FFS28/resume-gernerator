@@ -29,3 +29,6 @@ yarn-error.log
 /data/
 /tmp/
 ###< data ###
+###> lexik/jwt-authentication-bundle ###
+/config/jwt/*.pem
+###< lexik/jwt-authentication-bundle ###
