@@ -1,0 +1,23 @@
+@import "flexbox";
+
+body{
+  padding: 20px 60px;
+  margin: 0;
+  font-family: Verdana, Geneva, DejaVuSans, sans-serif;
+}
+
+ul{
+  padding: 0;
+
+  &.groups {
+
+  }
+
+  li{
+    list-style: none;
+
+    .group{
+
+    }
+  }
+}

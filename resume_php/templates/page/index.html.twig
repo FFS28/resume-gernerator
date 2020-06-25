@@ -1,0 +1,244 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Jérémy ACHAIN | {{ 'Web Developer' | trans }}{% endblock %}
+
+{%- block description -%}
+    {%- if attributes['description'] is defined -%}
+        {{ attributes['description'].value }}
+    {%- endif -%}
+{%- endblock -%}
+
+{% block stylesheets %}
+    {% if (isPdf or isDoc) and css %}
+        <style>
+            {{ css }}
+        </style>
+    {% else %}
+        <link rel="stylesheet" type="text/css" href="{{ asset('build/css/index.css') }}">
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    {% if isPdf %}
+        <script type='text/javascript' src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
+        <script type='text/javascript'>
+            window.onload = function() {
+                let element = document.getElementById('body');
+                let worker = html2pdf().set({
+                    margin: [0.2, 0.1, 0.2, 0.1],
+                    filename: '{{ filename }}.pdf',
+                    jsPDF: { unit: 'in', orientation: 'portrait' },
+                    pagebreak: { before: ['#educations'], after: [], avoid: ['li'] }
+                }).from(element).save().then(function() {
+                    setTimeout(function(){
+                        window.close();
+                    }, 1000);
+                }, function() {
+                    window.print();
+                });
+            };
+        </script>
+    {% elseif isDoc %}
+        <script type='text/javascript'>
+            window.onload = function() {
+                var header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' "+
+                    "xmlns:w='urn:schemas-microsoft-com:office:word' "+
+                    "xmlns='http://www.w3.org/TR/REC-html40'>"+
+                    "<head><meta charset='utf-8'><title>{{ block('title') }}</title></head><body>";
+                var footer = "</body></html>";
+                var sourceHTML = header + document.getElementById('body').innerHTML + footer;
+
+                var source = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(sourceHTML);
+                var fileDownload = document.createElement("a");
+                document.body.appendChild(fileDownload);
+                fileDownload.href = source;
+                fileDownload.download = '{{ filename }}.doc';
+                fileDownload.click();
+                document.body.removeChild(fileDownload);
+            };
+        </script>
+    {% elseif isSubmittedWithErrors %}
+        <script type='text/javascript'>
+            window.onload = function() {
+                location.hash = "#contact_form";
+            }
+        </script>
+    {% elseif messageSended %}
+        <script type='text/javascript'>
+            window.onload = function() {
+                location.hash = "#body";
+            }
+        </script>
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    {% if not isPdf and not isDoc %}
+        <a id="download" href="/?pdf=true" target="_blank" class="hidden-print" rel="noreferrer" >⇩</a>
+    {% endif %}
+    <div itemscope itemtype="http://schema.org/Person">
+        <div id="head" class="text-center {% if isPdf or isDoc %}html-pdf{% endif %}">
+            {% if messageSended %}
+                <div id="message" class="hidden-print">
+                    <a class="close" href="{{ url('index') }}">&times;</a>
+                    {{ 'Message sended' | trans }}
+                </div>
+            {% elseif attributes['message'] is defined and attributes['message'].value and not isPdf and not isDoc %}
+                <div id="message" class="hidden-print">
+                    <button class="close" onclick="document.getElementById('message').remove()">&times;</button>
+                    {{ attributes['message'].value | raw }}
+                </div>
+            {% endif %}
+            <div id="me">
+                {% if attributes['quote'] is defined and not isPdf and not isDoc%}
+                    <div id="quote" class="hidden-print">
+                        <i class="fas fa-quote-left hidden-xs" aria-hidden="true">&ldquo;</i>
+                        <span class="quote">{{ attributes['quote'].value }}</span>
+                        <i class="fas fa-quote-right hidden-xs" aria-hidden="true">&rdquo;</i>
+                    </div>
+                    <div id="delimiter" class="hidden-xs hidden-print"></div>
+                {% endif %}
+                <h1 id="name">
+                    {% if attributes['name'] is defined %}
+                        <div class="name" itemprop="name">{{ attributes['name'].value }}</div>
+                    {% endif %}
+                    {% if attributes['job'] is defined %}
+                        <div class="h2 job" itemprop="jobTitle">{{ attributes['job'].value }}</div>
+                    {% endif %}
+                </h1>
+            </div>
+        </div>
+        <div class="{% if isPdf or isDoc %}html-pdf{% endif %}">
+            {% if attributes['subtitle'] is defined and not isPdf and not isDoc%}
+                <h2 id="subtitle" class="text-center hidden-print">{{ attributes['subtitle'].value }}</h2>
+            {% endif %}
+            <div id="attributes" class="ul text-center">
+                {% set age = date('now').diff((date('1988-09-05'))).format('%y') %}
+                <li>{{ 'Age' | trans({'{age}':age}) }}</li>
+                {% if attributes['city'] is defined %}
+                    <li class="separator hidden-xs"><i class="fas fa-circle"></i></li>
+                    <li itemprop="homeLocation" itemscope itemtype="http://schema.org/PostalAddress">
+                        <span itemprop="addressLocality">{{ attributes['city'].value }}</span>
+                    </li>
+                {% endif %}
+                {% for attribute in attributes_listable %}
+                    <li class="separator hidden-xs"><i class="fas fa-circle"></i></li>
+                    <li>
+                        {% if attribute.icon %}<i class="icon {{ attribute.icon }}"></i>{% endif %}
+                        <span>{{ attribute.value }}</span>
+                    </li>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% if not isPdf and not isDoc %}
+        <div id="skills" class="section text-center {% if isPdf or isDoc %}html-pdf{% endif %}">
+            <h2>
+                {{ 'Skills' | trans }}
+            </h2>
+            <ul>
+                {% for skill in skills %}
+                    <li>
+                        <div class="">
+                            {% if isPdf or isDoc %}
+                                <div class="bar-chart">
+                                    <div style="height:{{ (10 - skill.level) * 10 }}%"></div>
+                                    <span>{{ skill.level }}</span>
+                                </div>
+                            {% else %}
+                                <div class="donut-chart donut-{{ skill.level }}">
+                                    <div class="slice one"></div>
+                                    <div class="slice two"></div>
+                                    <div class="chart-center">
+                                        <span></span>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="name">{{ skill.name }}</div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    <div id="experiences" class="section text-center {% if isPdf or isDoc %}html-pdf{% endif %}">
+        <h2>
+            {{ 'Main experiences' | trans }}
+        </h2>
+        <ul>
+            {% for experience in experiences %}
+                <li>
+                    <div class="date">
+                        <span>{{ experience.dateBegin | date('F') | trans }} {{ experience.dateBegin | date('Y') }}</span>&nbsp;-&nbsp;
+                        <span>{% if experience.dateEnd %}
+                                {{ experience.dateEnd | date('F') | trans }} {{ experience.dateEnd | date('Y') }}
+                            {% else %}
+                                {{ 'today' | trans }}
+                            {% endif %}</span>
+                    </div>
+                    <h4 class="title">
+                        <span>{{ experience.title }}</span> / <span>{{ experience.company.name }}</span>
+                    </h4>
+                    <div class="description">{{ experience.description | nl2br }}</div>
+                    <div class="badges">
+                        <span class="badge">{{ (experience.isFreelance ? 'Freelance' : 'Employee') | trans }}</span>
+                        {% for skill in experience.skills %}
+                            <span class="badge">{{ skill }}</span>
+                        {% endfor %}
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+        <div class="clearfix"></div>
+    </div>
+    <div id="educations" class="section text-center {% if isPdf or isDoc %}html-pdf{% endif %}">
+        <h2>{{ 'Educations' | trans }}</h2>
+        <ul>
+            {% for education in educations %}
+                <li>
+                    <div class="date">
+                        <span>{{ education.dateBegin | date('F') | trans }} {{ education.dateBegin | date('Y') }}</span> - <span>{{ education.dateEnd | date('F') | trans }} {{ education.dateEnd | date('Y') }}</span>
+                    </div>
+                    <h4 class="title"><span>Bac +{{ education.level }}</span> : <span>{{ education.name }}</span></h4>
+                    {% if education.details %}
+                        <div>{{ education.details }}</div>
+                    {% endif %}
+                    {% if education.school %}
+                        <div>{{ education.school }}</div>
+                    {% endif %}
+                    {% if education.location %}
+                        <div><span class="badge">{{ education.location }}</span></div>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div id="hobbies" class="section text-center {% if isPdf or isDoc %}html-pdf{% endif %}">
+        <h2>{{ 'Hobbies' | trans }}</h2>
+        <ul>
+            {% for hobby in hobbies %}
+                <li class="badge">{{ hobby.name }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% if not isPdf and not isDoc %}
+        <a id="" class="hidden-print" href="{{ url('index', {'pdf' : true}) }}"></a>
+        {% if contactForm is defined %}
+            <div class="hidden-print" id="contact">
+                {{ form(contactForm) }}
+            </div>
+        {% endif %}
+        <div id="links" class="hidden-print">
+            <ul>
+                {% for link in links %}
+                    <li>
+                        <a href="{{ link.url }}" target="_blank" rel="noreferrer" >
+                            {% if link.icon %}<i class="icon {{ link.icon }}"></i>{% endif %}
+                            {% if link.name %}<span>{{ link.name }}</span>{% endif %}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+{% endblock %}

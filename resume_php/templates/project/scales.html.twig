@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Scales of me{% endblock %}
+
+{%- block description -%}
+
+{%- endblock -%}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('css/scales') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('js/scales') }}
+{% endblock %}
+
+{% block body %}
+    <div ref="scales" data-scales="{{ scales | json_encode }}"></div>
+    <div id="scales">
+        <app></app>
+    </div>
+{% endblock %}
