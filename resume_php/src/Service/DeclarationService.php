@@ -183,19 +183,21 @@ class DeclarationService
         $revenues = 0;
         $tva = 0;
         foreach ($declaration->getInvoices() as $invoice) {
-            switch ($declaration->getType()) {
-                case Declaration::TYPE_IMPOT:
-                case Declaration::TYPE_SOCIAL:
-                    $revenues += $invoice->getTotalHt();
-                    break;
-
-                case Declaration::TYPE_TVA:
-                    if ($invoice->getTotalTax()) {
+            if ($invoice->getStatus() === Invoice::STATUS_PAYED) {
+                switch ($declaration->getType()) {
+                    case Declaration::TYPE_IMPOT:
+                    case Declaration::TYPE_SOCIAL:
                         $revenues += $invoice->getTotalHt();
-                        $tva += $invoice->getTotalTax();
-                    }
-                    break;
+                        break;
 
+                    case Declaration::TYPE_TVA:
+                        if ($invoice->getTotalTax()) {
+                            $revenues += $invoice->getTotalHt();
+                            $tva += $invoice->getTotalTax();
+                        }
+                        break;
+
+                }
             }
         }
         $declaration->setRevenue($revenues);

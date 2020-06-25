@@ -125,8 +125,11 @@ Declaration: Déclaration
 Declarations: Déclarations
 Tax: Charges
 Revenue: Chiffre d'affaire
+DeclarationTva: Déclaration TVA
 Tva: TVA
+DeclarationSocial: Déclaration Social
 Social: Social
+DeclarationImpot: Déclaration Impôt
 Impot: Impôt
 Next declaration: Prochaine déclaration
 Quarter: Trimestre

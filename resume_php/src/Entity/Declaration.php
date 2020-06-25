@@ -218,12 +218,12 @@ class Declaration
         if (count($periodsQuarter)) {
             $invoices = [];
             foreach ($periodsQuarter as $period) {
-                $invoices = array_merge($invoices, $period->getInvoices()->toArray());
+                $invoices = array_merge($invoices, $period->getPayedInvoices());
             }
             return $invoices;
         }
 
-        return $period->getInvoices()->toArray();
+        return $period->getPayedInvoices();
     }
 
     /**

@@ -86,6 +86,21 @@ class Period
         return $this->invoices;
     }
 
+    /**
+     * @return Invoice[]
+     */
+    public function getPayedInvoices(): array
+    {
+        $invoices = [];
+        /** @var Invoice $invoice */
+        foreach ($this->invoices as $invoice) {
+            if ($invoice->getStatus() === Invoice::STATUS_PAYED) {
+                $invoices[] = $invoice;
+            }
+        }
+        return $invoices;
+    }
+
     public function addInvoice(Invoice $invoice): self
     {
         if (!$this->invoices->contains($invoice)) {
