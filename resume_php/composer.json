@@ -9,7 +9,6 @@
         "ext-gd": "*",
         "ext-intl": "*",
         "ext-fileinfo": "*",
-        "ext-pgsql": "*",
         "alterphp/easyadmin-extension-bundle": "^3.0",
         "doctrine/doctrine-fixtures-bundle": "^3.3",
         "easycorp/easyadmin-bundle": "^2.3",
