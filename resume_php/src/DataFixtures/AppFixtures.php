@@ -157,8 +157,15 @@ class AppFixtures extends Fixture
         $this->manager->persist($attribute);
 
         $attribute = new Attribute();
-        $attribute->setSlug('message');
-        $attribute->setValue('Appel des travailleuses et travailleurs du numérique pour une autre réforme des retraites <a href="https://onestla.tech/" target="_blank">OnEstLa.Tech ✊</a>');
+        $attribute->setSlug('email');
+        $attribute->setValue('achain.jeremy@gmail.com');
+        $attribute->setWeight(0);
+        $attribute->setIsListable(false);
+        $this->manager->persist($attribute);
+
+        $attribute = new Attribute();
+        $attribute->setSlug('telephone');
+        $attribute->setValue('06 63 41 73 72');
         $attribute->setWeight(0);
         $attribute->setIsListable(false);
         $this->manager->persist($attribute);
@@ -733,7 +740,7 @@ class AppFixtures extends Fixture
         $experience->setOnSite(true);
         $experience->setOnHomepage(false);
         $experience->addSkill($this->skills['php']);
-        $experience->addSkill($this->skills['extjs']);
+        $experience->addSkill($this->skills['jquery']);
         $this->manager->persist($experience);
 
         $experience = new Experience();

@@ -82,7 +82,7 @@ easy_admin:
       class: App\Entity\Person
       form:
         fields:
-          - { property: 'company',  type: 'easyadmin_autocomplete', type_options: { class: 'App\Entity\Company' } }
+          - { property: 'company' }
           - { property: 'civility', type: 'choice', type_options: { choices: !php/const App\Entity\Person::CIVILITIES } }
           - firstname
           - lastname
