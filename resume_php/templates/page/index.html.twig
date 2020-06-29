@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block javascripts %}
-    {% if format = 'pdf' %}
+    {% if format == 'pdf' %}
         <script type='text/javascript' src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
         <script type='text/javascript'>
             window.onload = function() {
@@ -32,7 +32,7 @@
                 });
             };
         </script>
-    {% elseif format = 'doc' %}
+    {% elseif format == 'doc' %}
         <script type='text/javascript'>
             window.onload = function() {
                 var header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' "+
@@ -174,7 +174,7 @@
                                 {{ 'today' | trans }}
                             {% endif %}</span>
                     </div>
-                    {% if format = 'doc' %}
+                    {% if format == 'doc' %}
                         <b><span>{{ experience.title }}</span> / <span>{{ experience.company.name }}</span></b>
                     {% else %}
                         <h4 class="title">
@@ -188,7 +188,7 @@
                             <span class="badge">{{ skill }}</span>
                         {% endfor %}
                     </div>
-                    {% if format = 'doc' %}<br/>{% endif %}
+                    {% if format == 'doc' %}<br/>{% endif %}
                 </li>
             {% endfor %}
         </ul>
@@ -203,7 +203,7 @@
                         <span>{{ education.dateBegin | date('F') | trans }} {{ education.dateBegin | date('Y') }}</span> - <span>{{ education.dateEnd | date('F') | trans }} {{ education.dateEnd | date('Y') }}</span>
                     </div>
 
-                    {% if format = 'doc' %}
+                    {% if format == 'doc' %}
                         <b><span>Bac +{{ education.level }}</span> : <span>{{ education.name }}</span></b>
                     {% else %}
                         <h4 class="title"><span>Bac +{{ education.level }}</span> : <span>{{ education.name }}</span></h4>
@@ -217,7 +217,7 @@
                     {% if education.location %}
                         <div><span class="badge">{{ education.location }}</span></div>
                     {% endif %}
-                    {% if format = 'doc' %}<br/>{% endif %}
+                    {% if format == 'doc' %}<br/>{% endif %}
                 </li>
             {% endfor %}
         </ul>
