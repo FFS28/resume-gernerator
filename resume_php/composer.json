@@ -10,6 +10,7 @@
         "ext-intl": "*",
         "ext-json": "*",
         "alterphp/easyadmin-extension-bundle": "^3.0",
+        "api-platform/api-pack": "^1.2",
         "doctrine/doctrine-fixtures-bundle": "^3.3",
         "easycorp/easyadmin-bundle": "^2.3",
         "gregwar/captcha-bundle": "^2.1",
