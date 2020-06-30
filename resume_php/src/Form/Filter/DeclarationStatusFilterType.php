@@ -27,6 +27,7 @@ class DeclarationStatusFilterType extends FilterType
 
     public function filter(QueryBuilder $queryBuilder, FormInterface $form, array $metadata)
     {
-
+        $queryBuilder->andWhere('entity.status = :status')
+            ->setParameter('status', (string) $form->getData());
     }
 }

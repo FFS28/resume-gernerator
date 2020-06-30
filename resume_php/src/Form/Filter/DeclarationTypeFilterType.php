@@ -27,6 +27,7 @@ class DeclarationTypeFilterType extends FilterType
 
     public function filter(QueryBuilder $queryBuilder, FormInterface $form, array $metadata)
     {
-
+        $queryBuilder->andWhere('entity.type = :type')
+            ->setParameter('type', (string) $form->getData());
     }
 }

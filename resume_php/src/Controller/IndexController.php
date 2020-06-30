@@ -49,7 +49,9 @@ class IndexController extends AbstractController
         $form = $this->createForm(ContactFormType::class);
         $form->handleRequest($request);
 
+        $format = $request->query->get('format');
         $experiencesFilter = $request->query->get('all') ? [] : ['onHomepage' => true];
+
         $data = [
             'attributes' => $attributeRepository->findAllIndexedBy('slug', false),
             'attributes_listable' => $attributeRepository->findAllIndexedBy('slug', true),
@@ -58,9 +60,7 @@ class IndexController extends AbstractController
             'educations' => $educationRepository->findBy([], ['dateBegin' => 'DESC']),
             'hobbies' => $hobbyRepository->findAll(),
             'links' => $linkRepository->findAll(),
-            'css' => '',
-            'isPdf' => $request->query->get('pdf') ? true : false,
-            'isDoc' => $request->query->get('doc') ? true : false,
+            'format' => $format,
             'contactForm' => $form->createView(),
             'filename' => 'jeremy-achain-cv',
             'messageSended' => $request->get('messageSended')

@@ -9,17 +9,11 @@
 {%- endblock -%}
 
 {% block stylesheets %}
-    {% if (isPdf or isDoc) and css %}
-        <style>
-            {{ css }}
-        </style>
-    {% else %}
-        <link rel="stylesheet" type="text/css" href="{{ asset('build/css/index.css') }}">
-    {% endif %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('build/css/index.css') }}">
 {% endblock %}
 
 {% block javascripts %}
-    {% if isPdf %}
+    {% if format == 'pdf' %}
         <script type='text/javascript' src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
         <script type='text/javascript'>
             window.onload = function() {
@@ -38,7 +32,7 @@
                 });
             };
         </script>
-    {% elseif isDoc %}
+    {% elseif format == 'doc' %}
         <script type='text/javascript'>
             window.onload = function() {
                 var header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' "+
@@ -55,6 +49,10 @@
                 fileDownload.download = '{{ filename }}.doc';
                 fileDownload.click();
                 document.body.removeChild(fileDownload);
+
+                setTimeout(function(){
+                    window.close();
+                }, 1000);
             };
         </script>
     {% elseif isSubmittedWithErrors %}
@@ -73,24 +71,24 @@
 {% endblock %}
 
 {% block body %}
-    {% if not isPdf and not isDoc %}
+    {% if not format %}
         <a id="download" href="/?pdf=true" target="_blank" class="hidden-print" rel="noreferrer" >⇩</a>
     {% endif %}
     <div itemscope itemtype="http://schema.org/Person">
-        <div id="head" class="text-center {% if isPdf or isDoc %}html-pdf{% endif %}">
+        <div id="head" class="text-center {% if format %}html-pdf{% endif %}">
             {% if messageSended %}
                 <div id="message" class="hidden-print">
                     <a class="close" href="{{ url('index') }}">&times;</a>
                     {{ 'Message sended' | trans }}
                 </div>
-            {% elseif attributes['message'] is defined and attributes['message'].value and not isPdf and not isDoc %}
+            {% elseif attributes['message'] is defined and attributes['message'].value and not format %}
                 <div id="message" class="hidden-print">
                     <button class="close" onclick="document.getElementById('message').remove()">&times;</button>
                     {{ attributes['message'].value | raw }}
                 </div>
             {% endif %}
             <div id="me">
-                {% if attributes['quote'] is defined and not isPdf and not isDoc%}
+                {% if attributes['quote'] is defined and not format%}
                     <div id="quote" class="hidden-print">
                         <i class="fas fa-quote-left hidden-xs" aria-hidden="true">&ldquo;</i>
                         <span class="quote">{{ attributes['quote'].value }}</span>
@@ -108,8 +106,8 @@
                 </h1>
             </div>
         </div>
-        <div class="{% if isPdf or isDoc %}html-pdf{% endif %}">
-            {% if attributes['subtitle'] is defined and not isPdf and not isDoc%}
+        <div class="{% if format %}html-pdf{% endif %}">
+            {% if attributes['subtitle'] is defined and not format%}
                 <h2 id="subtitle" class="text-center hidden-print">{{ attributes['subtitle'].value }}</h2>
             {% endif %}
             <div id="attributes" class="ul text-center">
@@ -128,11 +126,17 @@
                         <span>{{ attribute.value }}</span>
                     </li>
                 {% endfor %}
+                {% if format and attributes['telephone'] is defined %}
+                    <li>Téléphone : {{ attributes['telephone'].value }}</li>
+                {% endif %}
+                {% if format and attributes['email'] is defined %}
+                    <li>Email : {{ attributes['email'].value }}</li>
+                {% endif %}
             </div>
         </div>
     </div>
-    {% if not isPdf and not isDoc %}
-        <div id="skills" class="section text-center {% if isPdf or isDoc %}html-pdf{% endif %}">
+    {% if not format %}
+        <div id="skills" class="section text-center {% if format %}html-pdf{% endif %}">
             <h2>
                 {{ 'Skills' | trans }}
             </h2>
@@ -140,7 +144,7 @@
                 {% for skill in skills %}
                     <li>
                         <div class="">
-                            {% if isPdf or isDoc %}
+                            {% if format %}
                                 <div class="bar-chart">
                                     <div style="height:{{ (10 - skill.level) * 10 }}%"></div>
                                     <span>{{ skill.level }}</span>
@@ -161,7 +165,7 @@
             </ul>
         </div>
     {% endif %}
-    <div id="experiences" class="section text-center {% if isPdf or isDoc %}html-pdf{% endif %}">
+    <div id="experiences" class="section text-center {% if format %}html-pdf{% endif %}">
         <h2>
             {{ 'Main experiences' | trans }}
         </h2>
@@ -176,9 +180,13 @@
                                 {{ 'today' | trans }}
                             {% endif %}</span>
                     </div>
-                    <h4 class="title">
-                        <span>{{ experience.title }}</span> / <span>{{ experience.company.name }}</span>
-                    </h4>
+                    {% if format == 'doc' %}
+                        <b><span>{{ experience.title }}</span> / <span>{{ experience.company.name }}</span></b>
+                    {% else %}
+                        <h4 class="title">
+                            <span>{{ experience.title }}</span> / <span>{{ experience.company.name }}</span>
+                        </h4>
+                    {% endif %}
                     <div class="description">{{ experience.description | nl2br }}</div>
                     <div class="badges">
                         <span class="badge">{{ (experience.isFreelance ? 'Freelance' : 'Employee') | trans }}</span>
@@ -186,12 +194,13 @@
                             <span class="badge">{{ skill }}</span>
                         {% endfor %}
                     </div>
+                    {% if format == 'doc' %}<br/>{% endif %}
                 </li>
             {% endfor %}
         </ul>
         <div class="clearfix"></div>
     </div>
-    <div id="educations" class="section text-center {% if isPdf or isDoc %}html-pdf{% endif %}">
+    <div id="educations" class="section text-center {% if format %}html-pdf{% endif %}">
         <h2>{{ 'Educations' | trans }}</h2>
         <ul>
             {% for education in educations %}
@@ -199,7 +208,12 @@
                     <div class="date">
                         <span>{{ education.dateBegin | date('F') | trans }} {{ education.dateBegin | date('Y') }}</span> - <span>{{ education.dateEnd | date('F') | trans }} {{ education.dateEnd | date('Y') }}</span>
                     </div>
-                    <h4 class="title"><span>Bac +{{ education.level }}</span> : <span>{{ education.name }}</span></h4>
+
+                    {% if format == 'doc' %}
+                        <b><span>Bac +{{ education.level }}</span> : <span>{{ education.name }}</span></b>
+                    {% else %}
+                        <h4 class="title"><span>Bac +{{ education.level }}</span> : <span>{{ education.name }}</span></h4>
+                    {% endif %}
                     {% if education.details %}
                         <div>{{ education.details }}</div>
                     {% endif %}
@@ -209,11 +223,12 @@
                     {% if education.location %}
                         <div><span class="badge">{{ education.location }}</span></div>
                     {% endif %}
+                    {% if format == 'doc' %}<br/>{% endif %}
                 </li>
             {% endfor %}
         </ul>
     </div>
-    <div id="hobbies" class="section text-center {% if isPdf or isDoc %}html-pdf{% endif %}">
+    <div id="hobbies" class="section text-center {% if format %}html-pdf{% endif %}">
         <h2>{{ 'Hobbies' | trans }}</h2>
         <ul>
             {% for hobby in hobbies %}
@@ -221,8 +236,8 @@
             {% endfor %}
         </ul>
     </div>
-    {% if not isPdf and not isDoc %}
-        <a id="" class="hidden-print" href="{{ url('index', {'pdf' : true}) }}"></a>
+    {% if not format %}
+        <a id="" class="hidden-print" href="{{ url('index', {'format' : 'pdf'}) }}"></a>
         {% if contactForm is defined %}
             <div class="hidden-print" id="contact">
                 {{ form(contactForm) }}
