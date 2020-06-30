@@ -126,6 +126,12 @@
                         <span>{{ attribute.value }}</span>
                     </li>
                 {% endfor %}
+                {% if format and attributes['telephone'] is defined %}
+                    <li>Téléphone : {{ attributes['telephone'].value }}</li>
+                {% endif %}
+                {% if format and attributes['email'] is defined %}
+                    <li>Email : {{ attributes['email'].value }}</li>
+                {% endif %}
             </div>
         </div>
     </div>
