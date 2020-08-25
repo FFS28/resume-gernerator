@@ -60,6 +60,7 @@
                             <div class="day day-active">
                                 {{ form_widget(activity.selected) }}
                                 <label for="month_activities_activities_{{ loop.index0 }}_selected">
+                                    <span class="day-number">{{ activity.vars.data.date | date('d') }}</span>
                                     {{ form_widget(activity.value) }}
                                     {{ form_widget(activity.date) }}
                                     {{ form_widget(activity.company) }}

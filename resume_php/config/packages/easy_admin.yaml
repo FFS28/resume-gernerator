@@ -139,6 +139,7 @@ easy_admin:
           - number
           - company
           - experience
+          - { property: 'totalNet', format: '%.0f' }
           - { property: 'totalHt', format: '%.0f' }
           - daysCount
           - createdAt

@@ -152,6 +152,11 @@ class Invoice
         return !$this->getPayedAt() && $this->getStatus() === self::STATUS_DRAFT;
     }
 
+    public function getTotalNet(): float
+    {
+        return floatval($this->totalHt) * (1 - Declaration::SOCIAL_NON_COMMERCIALE);
+    }
+
     /**
      * @param Activity[] $activities
      */
@@ -380,16 +385,18 @@ class Invoice
         return $this;
     }
 
-    public function getDueAt(): \DateTime
+    /**
+     * @return \DateTime|null
+     * @throws \Exception
+     */
+    public function getDueAt(): ?\DateTime
     {
         if (!$this->getCreatedAt() || !$this->getDueInterval()) return null;
 
         $createdAt = $this->getCreatedAt();
         $lastDayOfMonth = new \DateTime($createdAt->format('Y-m-t'));
         $firstDayOfNextMonth = (clone $lastDayOfMonth)->add(new \DateInterval('P1D'));
-        $lastDayOfNextMonth = new \DateTime($firstDayOfNextMonth->format('Y-m-t'));
-
-        return $lastDayOfNextMonth;
+        return new \DateTime($firstDayOfNextMonth->format('Y-m-t'));
     }
 
     /**
