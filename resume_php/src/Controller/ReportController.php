@@ -131,7 +131,7 @@ class ReportController extends EasyAdminController
             }
 
             $entityManager->flush();
-            return $this->redirectToRoute('report', ['year' => $viewData['activeYear'], 'month' => $viewData['activeMonth'], 'slug' => $viewData['activeCompany']->getSlug()]);
+            return $this->redirectToRoute('report', ['year' => $viewData['activeYear'], 'month' => $viewData['activeMonth'], 'slug' => $viewData['activeCompany'] ? $viewData['activeCompany']->getSlug() : '']);
         }
 
         return $this->render('page/report.html.twig', $viewData);

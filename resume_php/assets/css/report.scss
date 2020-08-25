@@ -57,8 +57,15 @@
     @include flex-direction(row wrap);
 
     .day {
-
+      position: relative;
       height: 80px;
+
+      .day-number {
+        position: absolute;
+        top: 0;
+        left: 0;
+        font-size: 10px;
+      }
 
       &.day-active {
         background: $secondaryColor;
