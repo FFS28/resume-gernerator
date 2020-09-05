@@ -6,7 +6,7 @@
     "bootstrap-datetimepicker": "^0.0.7",
     "jquery": "^3.5.0",
     "moment": "^2.24.0",
-    "node-sass": "^4.13.0",
+    "node-sass": "^4.13.1",
     "sass-loader": "^7.0.1",
     "webpack-notifier": "^1.8.0",
     "serialize-javascript": ">=3.1.0"
