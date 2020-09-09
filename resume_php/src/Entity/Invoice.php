@@ -131,6 +131,16 @@ class Invoice
      */
     private $daysCount;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $extraLibelle;
+
+    /**
+     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $extraHt;
+
     const TJM_DEFAULT = 400;
     const LIMIT_AE_TVA = 33200;
     const LIMIT_AE = 70000;
@@ -272,11 +282,14 @@ class Invoice
         return $this->totalHt;
     }
 
-    public function setTotalHt(string $totalHt): self
+    public function setTotalHt(?string $totalHt): self
     {
         $this->totalHt = $totalHt;
         if (!$this->getDaysCount()) {
             $this->setDaysCount($this->getTotalHt() / $this->getTjm());
+        }
+        if ($this->getExtraHt()) {
+
         }
 
         return $this;
@@ -467,6 +480,30 @@ class Invoice
         if (!$this->getTotalHt()) {
             $this->setTotalHt($this->getDaysCount() * $this->getTjm());
         }
+
+        return $this;
+    }
+
+    public function getExtraLibelle(): ?string
+    {
+        return $this->extraLibelle;
+    }
+
+    public function setExtraLibelle(?string $extraLibelle): self
+    {
+        $this->extraLibelle = $extraLibelle;
+
+        return $this;
+    }
+
+    public function getExtraHt(): ?string
+    {
+        return $this->extraHt;
+    }
+
+    public function setExtraHt(?string $extraHt): self
+    {
+        $this->extraHt = $extraHt;
 
         return $this;
     }

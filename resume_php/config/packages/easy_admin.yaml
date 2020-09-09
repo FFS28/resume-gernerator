@@ -109,10 +109,13 @@ easy_admin:
           - { type: 'group', columns: 3 }
           - { property: 'company', type: 'easyadmin_autocomplete', type_options: { class: 'App\Entity\Company', attr: { create: true } } }
           - { type: 'group', columns: 3 }
-          - { property: 'experience', type: 'easyadmin_autocomplete', type_options: { class: 'App\Entity\Experience', attr: { create: true } } }
+          - { property: 'experience', type: 'easyadmin_autocomplete', type_options: { class: 'App\Entity\Experience' } }
           - { type: 'group', columns: 2, label: 'Invoicing' }
           - { property: 'daysCount', type: 'number'}
           - tjm
+          - { type: 'group', columns: 2, label: 'Extra' }
+          - extraLibelle
+          - extraHt
           - { type: 'group', columns: 2, label: 'Calculated' }
           - totalHt
           - totalTax
