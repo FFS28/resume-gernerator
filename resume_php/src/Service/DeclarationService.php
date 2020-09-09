@@ -121,6 +121,48 @@ class DeclarationService
     }
 
     /**
+     * Verifie si on est dans un mois de déclaration sociale
+     * @return bool
+     * @throws \Exception
+     */
+    public function isDueTvaMonth()
+    {
+        $date = new \DateTime();
+        $dueDatesMonth = DeclarationService::getDueTvaMonth();
+
+        foreach ($dueDatesMonth as $index => $dueDateMonth) {
+            $isDueSocialMonth = intval($date->format('m')) ===  $dueDateMonth;
+
+            if ($isDueSocialMonth) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Verifie si on est dans un mois de déclaration sociale
+     * @return bool
+     * @throws \Exception
+     */
+    public function isDueImpotMonth()
+    {
+        $date = new \DateTime();
+        $dueDatesMonth = DeclarationService::getDueImpotMonth();
+
+        foreach ($dueDatesMonth as $index => $dueDateMonth) {
+            $isDueSocialMonth = intval($date->format('m')) ===  $dueDateMonth;
+
+            if ($isDueSocialMonth) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Récupère les dates courantes de déclarations sociales
      * @param \DateTime $date
      * @return array
@@ -150,14 +192,117 @@ class DeclarationService
     }
 
     /**
-     * Retourne les dates de début et fin du prochain trimestre
+     * Récupère les dates courantes de déclarations sociales
+     * @param \DateTime $date
      * @return array
      * @throws \Exception
      */
-    public function getNextQuarterDueDate(): array
+    public function getDueTvaDatesBy(\DateTime $date): array
     {
-        $currentDate = new \DateTime();
+        $dueDatesMonth = DeclarationService::getDueTvaMonth();
+        $dueDates = [];
+
+        foreach ($dueDatesMonth as $index => $dueDateMonth) {
+            $dueDateBegin = new \DateTime($this->getAccountingYear($date).'-'.($dueDateMonth < 10 ? '0' : '').$dueDateMonth.'-01');
+            if ($index == 3) {
+                $dueDateBegin->add(new \DateInterval('P1Y'));
+            }
+
+            $dueDates[] = [
+                $index + 1,
+                clone $dueDateBegin,
+                $dueDateBegin
+                    ->add(new \DateInterval('P'.(intval($dueDateBegin->format('t')) - 1).'D'))
+                    ->add(new \DateInterval('PT23H59M59S'))
+            ];
+        }
+
+        return $dueDates;
+    }
+
+    /**
+     * Récupère les dates courantes de déclarations sociales
+     * @param \DateTime $date
+     * @return array
+     * @throws \Exception
+     */
+    public function getDueImpotDatesBy(\DateTime $date): array
+    {
+        $dueDatesMonth = DeclarationService::getDueImpotMonth();
+        $dueDates = [];
+
+        foreach ($dueDatesMonth as $index => $dueDateMonth) {
+            $dueDateBegin = new \DateTime($this->getAccountingYear($date).'-'.($dueDateMonth < 10 ? '0' : '').$dueDateMonth.'-01');
+            if ($index == 3) {
+                $dueDateBegin->add(new \DateInterval('P1Y'));
+            }
+
+            $dueDates[] = [
+                $index + 1,
+                clone $dueDateBegin,
+                $dueDateBegin
+                    ->add(new \DateInterval('P'.(intval($dueDateBegin->format('t')) - 1).'D'))
+                    ->add(new \DateInterval('PT23H59M59S'))
+            ];
+        }
+
+        return $dueDates;
+    }
+
+    /**
+     * Retourne les dates de début et fin du prochain trimestre de cotisation social
+     * @param \DateTime|null $date
+     * @return array
+     * @throws \Exception
+     */
+    public function getNextSocialDueDate(\DateTime $date = null): array
+    {
+        $currentDate = $date ? $date : new \DateTime();
         $dueDates = $this->getDueSocialDatesBy($currentDate);
+
+        foreach ($dueDates as $index => $dueDate)
+        {
+            if ($currentDate < $dueDate[2]) {
+                $dueDate[] = $currentDate >= $dueDate[1] && $currentDate <= $dueDate[2];
+                return $dueDate;
+            }
+        }
+
+        return [];
+    }
+
+    /**
+     * Retourne les dates de début et fin du prochain trimestre
+     * @param \DateTime|null $date
+     * @return array
+     * @throws \Exception
+     */
+    public function getNextTvaDueDate(\DateTime $date = null): array
+    {
+        $currentDate = $date ? $date : new \DateTime();
+        $dueDates = $this->getDueTvaDatesBy($currentDate);
+
+        foreach ($dueDates as $index => $dueDate)
+        {
+            if ($currentDate < $dueDate[2]) {
+                $dueDate[] = $currentDate >= $dueDate[1] && $currentDate <= $dueDate[2];
+                return $dueDate;
+            }
+        }
+
+        return [];
+    }
+
+    /**
+     * Retourne les dates de début et fin du prochain trimestre
+     * @param \DateTime|null $date
+     * @return array
+     * @throws \Exception
+     */
+    public function getNextImpotDueDate(\DateTime $date = null): array
+    {
+        $currentDate = $date ? $date : new \DateTime();
+        $dueDates = $this->getDueImpotDatesBy($currentDate);
 
         foreach ($dueDates as $index => $dueDate)
         {
@@ -319,24 +464,67 @@ class DeclarationService
         $date = new \DateTime();
         $messages = [];
 
-        /** @var int $quarterDueDate */
-        /** @var \DateTime $quarterDueDateBegin */
-        /** @var \DateTime $quarterDueDateEnd */
-        /** @var bool $quarterDueueDateIsActive */
-        list(
-            $quarterDueDate,
-            $quarterDueDateBegin,
-            $quarterDueDateEnd,
-            $quarterDueueDateIsActive
-        ) = $this->getNextQuarterDueDate();
+        $nextSocialDueDate = $this->getNextSocialDueDate($date);
+        if (count($nextSocialDueDate) > 0) {
+            /** @var int $socialDueDate */
+            /** @var \DateTime $socialDueDateBegin */
+            /** @var \DateTime $socialDueDateEnd */
+            /** @var bool $socialDueueDateIsActive */
+            list(
+                $socialDueDate,
+                $socialDueDateBegin,
+                $socialDueDateEnd,
+                $socialDueDateIsActive
+                ) = $nextSocialDueDate;
 
-        $declarationSocial = $this->getSocialDeclarations();
-        $declarationImpot = $this->getImpotDeclarations();
-        $declarationTva = $this->getTvaDeclarations();
+            $declarationSocial = $this->getSocialDeclarations();
 
-        if ($quarterDueueDateIsActive && $declarationSocial->getStatus() !== Declaration::STATUS_PAYED) {
-            $messages[] = 'Déclaration en cours du T'.$quarterDueDate.' à faire entre' .
-                ' le '. $quarterDueDateBegin->format('d/m/Y') . ' et le ' . $quarterDueDateEnd->format('d/m/Y');
+            if ($socialDueDateIsActive && $declarationSocial->getStatus() !== Declaration::STATUS_PAYED) {
+                $messages[] = 'Déclaration social en cours du T'.$socialDueDate.' à faire entre' .
+                    ' le '. $socialDueDateBegin->format('d/m/Y') . ' et le ' . $socialDueDateEnd->format('d/m/Y');
+            }
+        }
+
+        $nextTvaDueDate = $this->getNextTvaDueDate($date);
+        if (count($nextTvaDueDate) > 0) {
+            /** @var int $tvaDueDate */
+            /** @var \DateTime $tvaDueDateBegin */
+            /** @var \DateTime $tvaDueDateEnd */
+            /** @var bool $tvaDueueDateIsActive */
+            list(
+                $tvaDueDate,
+                $tvaDueDateBegin,
+                $tvaDueDateEnd,
+                $tvaDueDateIsActive
+                ) = $nextTvaDueDate;
+
+            $declarationTva = $this->getTvaDeclarations();
+
+            if ($tvaDueDateIsActive && $declarationTva->getStatus() !== Declaration::STATUS_PAYED) {
+                $messages[] = 'Déclaration TVA en cours à faire entre' .
+                    ' le '. $tvaDueDateBegin->format('d/m/Y') . ' et le ' . $tvaDueDateEnd->format('d/m/Y');
+            }
+        }
+
+        $nextImpotDueDate = $this->getNextImpotDueDate($date);
+        if (count($nextImpotDueDate) > 0) {
+            /** @var int $impotDueDate */
+            /** @var \DateTime $impotDueDateBegin */
+            /** @var \DateTime $impotDueDateEnd */
+            /** @var bool $impotDueueDateIsActive */
+            list(
+                $impotDueDate,
+                $impotDueDateBegin,
+                $impotDueDateEnd,
+                $impotDueDateIsActive
+                ) = $nextImpotDueDate;
+
+            $declarationImpot = $this->getImpotDeclarations();
+
+            if ($impotDueDateIsActive && $declarationImpot->getStatus() !== Declaration::STATUS_PAYED) {
+                $messages[] = 'Déclaration d\'Impots en cours à faire entre' .
+                    ' le '. $impotDueDateBegin->format('d/m/Y') . ' et le ' . $impotDueDateEnd->format('d/m/Y');
+            }
         }
 
         return $messages;
