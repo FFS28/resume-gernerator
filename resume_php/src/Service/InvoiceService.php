@@ -91,6 +91,9 @@ class InvoiceService
     {
         $pdfInvoice = new InvoicePrinter('A4', '€', 'fr');
 
+        $pdfInvoice->lang['date'] = 'Facturation';
+        $pdfInvoice->lang['due'] = 'Echéance';
+
         /* Header settings */
         $pdfInvoice->setColor("#5cb85c");      // pdf color scheme
         $pdfInvoice->setType(StringHelper::encode("Facture n° " . $invoice->getNumber()));    // Invoice Type
@@ -121,6 +124,19 @@ class InvoiceService
             '',
             $invoice->getTotalHt()
         );
+
+        if ($invoice->getExtraLibelle() && $invoice->getExtraHt()) {
+            $pdfInvoice->addItem(
+                StringHelper::encode($invoice->getExtraLibelle()),
+                "",
+                "",
+                $invoice->getTotalTax() ? (Invoice::TAX_MULTIPLIER * 100)."%" : '',
+                $invoice->getExtraHt(),
+                '',
+                $invoice->getExtraHt()
+            );
+        }
+
         $pdfInvoice->AliasNbPages('');
         $pdfInvoice->addTotal("Total HT", $invoice->getTotalHt());
         $pdfInvoice->addTotal("TVA ".(Invoice::TAX_MULTIPLIER * 100)."%", $invoice->getTotalTax());
@@ -241,7 +257,7 @@ class InvoiceService
      */
     public function calculTotalHt(Invoice $invoice)
     {
-        $invoice->setTotalHt($invoice->getTjm() * $invoice->getDaysCount());
+        $invoice->setTotalHt($invoice->getTjm() * $invoice->getDaysCount() + $invoice->getExtraHt());
     }
 
     /**
