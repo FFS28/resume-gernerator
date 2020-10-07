@@ -142,8 +142,10 @@ easy_admin:
           - number
           - company
           - experience
+          - { property: 'totalTtc', format: '%.0f' }
           - { property: 'totalNet', format: '%.0f' }
           - { property: 'totalHt', format: '%.0f' }
+          - { property: 'totalTax', format: '%.0f' }
           - daysCount
           - createdAt
           - payedAt
