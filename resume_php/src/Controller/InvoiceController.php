@@ -98,6 +98,8 @@ class InvoiceController extends EasyAdminController
 
     public function sendAction()
     {
+        $this->pdfAction();
+
         $id = $this->request->query->get('id');
         /** @var Invoice $entity */
         $entity = $this->em->getRepository(Invoice::class)->find($id);

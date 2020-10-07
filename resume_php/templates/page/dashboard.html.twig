@@ -62,10 +62,10 @@
                 <div class="card-content">
                     {% if currentYear == activeYear %}
                         <h4>{{ 'Days remaining' | trans }}</h4>
-                        <span>{{ remainingDaysBeforeLimit }}</span>
+                        <span>{{ remainingDaysBeforeLimit | round }}</span>
                     {% else %}
                         <h4>{{ 'Worked days' | trans }}</h4>
-                        <span>{{ dayCount }}</span>
+                        <span>{{ dayCount | round }}</span>
                     {% endif %}
                 </div>
             </div>

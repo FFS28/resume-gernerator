@@ -151,6 +151,7 @@ easy_admin:
           - payedAt
           - period
           - { property: 'socialDeclaration', label: 'Declarations' }
+        sort: [ 'createdAt', 'DESC' ]
         filters:
           - company
           - { property: status, type: 'App\Form\Filter\InvoiceStatusFilterType' }
@@ -220,6 +221,7 @@ easy_admin:
           - { property: 'rate', format: '%.2f' }
           - period
           - status
+        sort: ['period', 'DESC']
         actions:
           - { name: 'calculate', label: 'Recalculate'}
           - { name: 'validate', label: 'Validate'}

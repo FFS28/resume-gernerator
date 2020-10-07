@@ -147,6 +147,7 @@ class Invoice
 
     public function __construct()
     {
+        $this->daysCount = 0;
         $this->tjm = self::TJM_DEFAULT;
         $this->createdAt = new \DateTime();
         $this->object = "Prestation de développement web - " . (new \DateTime())->format('Y-m');
