@@ -34,6 +34,22 @@
             "src/DataFixtures/AppFixtures.php"
         ]
     },
+    "doctrine/doctrine-migrations-bundle": {
+        "version": "2.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "2.2",
+            "ref": "baaa439e3e3179e69e3da84b671f0a3e4a2f56ad"
+        },
+        "files": [
+            "config/packages/doctrine_migrations.yaml",
+            "migrations/.gitignore"
+        ]
+    },
+    "doctrine/migrations": {
+        "version": "3.0.1"
+    },
     "doctrine/sql-formatter": {
         "version": "1.1.0"
     },
@@ -70,24 +86,6 @@
     "lcobucci/jwt": {
         "version": "3.3.2"
     },
-    "league/uri-components": {
-        "version": "1.8.2"
-    },
-    "league/uri-hostname-parser": {
-        "version": "1.1.1"
-    },
-    "league/uri-interfaces": {
-        "version": "1.1.1"
-    },
-    "league/uri-manipulations": {
-        "version": "1.5.0"
-    },
-    "league/uri-parser": {
-        "version": "1.4.1"
-    },
-    "league/uri-schemes": {
-        "version": "1.2.1"
-    },
     "lexik/jwt-authentication-bundle": {
         "version": "2.5",
         "recipe": {
@@ -121,6 +119,9 @@
     "ocramius/package-versions": {
         "version": "1.5.1"
     },
+    "ocramius/proxy-manager": {
+        "version": "2.2.3"
+    },
     "php": {
         "version": "7.3"
     },
@@ -141,9 +142,6 @@
     },
     "psr/link": {
         "version": "1.0.0"
-    },
-    "psr/simple-cache": {
-        "version": "1.0.1"
     },
     "ralouphie/getallheaders": {
         "version": "3.0.3"
@@ -178,6 +176,9 @@
             "ref": "f8fd4ddb9b477510f8f4bce2b9c054ab428c0120"
         }
     },
+    "symfony/http-client-contracts": {
+        "version": "v2.2.0"
+    },
     "symfony/mailer": {
         "version": "4.3",
         "recipe": {
@@ -199,6 +200,9 @@
             "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
         }
     },
+    "symfony/orm-pack": {
+        "version": "v2.0.0"
+    },
     "symfony/polyfill-intl-grapheme": {
         "version": "v1.13.1"
     },
@@ -213,6 +217,9 @@
     },
     "symfony/serializer": {
         "version": "v5.0.2"
+    },
+    "symfony/serializer-pack": {
+        "version": "v1.0.3"
     },
     "symfony/stopwatch": {
         "version": "v5.0.2"
@@ -282,5 +289,11 @@
     },
     "willdurand/negotiation": {
         "version": "v2.3.1"
+    },
+    "zendframework/zend-code": {
+        "version": "3.4.1"
+    },
+    "zendframework/zend-eventmanager": {
+        "version": "3.2.1"
     }
 }
