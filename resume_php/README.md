@@ -12,9 +12,6 @@
     - Rentrer dans les fixtures les impots 2016 et 2017 (voir montant à mettre à jour suite à la régularisation)
 
 - Notifications
-    - TVA
-        - Ajouter les dates (à vérifier) : décembre, juillet (accomptes) et mai (régularisation)
-        - Ajouter les notifications
     - Impots
         - Ajouter les dates
         - Ajouter les notifications

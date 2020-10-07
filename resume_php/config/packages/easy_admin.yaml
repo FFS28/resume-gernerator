@@ -142,13 +142,16 @@ easy_admin:
           - number
           - company
           - experience
+          - { property: 'totalTtc', format: '%.0f' }
           - { property: 'totalNet', format: '%.0f' }
           - { property: 'totalHt', format: '%.0f' }
+          - { property: 'totalTax', format: '%.0f' }
           - daysCount
           - createdAt
           - payedAt
           - period
           - { property: 'socialDeclaration', label: 'Declarations' }
+        sort: [ 'createdAt', 'DESC' ]
         filters:
           - company
           - { property: status, type: 'App\Form\Filter\InvoiceStatusFilterType' }
@@ -218,6 +221,7 @@ easy_admin:
           - { property: 'rate', format: '%.2f' }
           - period
           - status
+        sort: ['period', 'DESC']
         actions:
           - { name: 'calculate', label: 'Recalculate'}
           - { name: 'validate', label: 'Validate'}
@@ -250,6 +254,7 @@ easy_admin:
           - delete
     Experience:
       class: App\Entity\Experience
+      controller: App\Controller\ExperienceController
       form:
         fields:
           - { type: 'group', columns: 4, label: 'Principal' }
@@ -272,6 +277,8 @@ easy_admin:
           - dateBegin
           - dateEnd
           - onHomepage
+        batch_actions:
+          - update
     Skill:
       class: App\Entity\Skill
       form:

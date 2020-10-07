@@ -182,7 +182,7 @@ class InvoiceRepository extends ServiceEntityRepository
     {
         $query = $this->createQueryBuilder('i')
             ->select('ToChar(i.createdAt, \'MM\') AS month')
-            ->addSelect('SUM(i.totalHt / i.tjm) total')
+            ->addSelect('SUM(i.daysCount) total')
             ->orderBy('month')
             ->groupBy('month');
 

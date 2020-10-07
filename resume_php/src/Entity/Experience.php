@@ -26,6 +26,11 @@ class Experience
     private $title;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $search;
+
+    /**
      * @ORM\Column(type="text", nullable=true)
      */
     private $description;
@@ -113,6 +118,18 @@ class Experience
     public function setTitle(string $title): self
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    public function getSearch(): ?string
+    {
+        return $this->search;
+    }
+
+    public function setSearch(string $search): self
+    {
+        $this->search = $search;
 
         return $this;
     }
