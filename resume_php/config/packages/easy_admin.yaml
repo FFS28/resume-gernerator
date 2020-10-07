@@ -252,6 +252,7 @@ easy_admin:
           - delete
     Experience:
       class: App\Entity\Experience
+      controller: App\Controller\ExperienceController
       form:
         fields:
           - { type: 'group', columns: 4, label: 'Principal' }
@@ -274,6 +275,8 @@ easy_admin:
           - dateBegin
           - dateEnd
           - onHomepage
+        batch_actions:
+          - update
     Skill:
       class: App\Entity\Skill
       form:
