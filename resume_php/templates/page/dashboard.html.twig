@@ -50,14 +50,16 @@
                     {% endif %}
                 </div>
             </div>#}
-            <div class="card card-4 {% if nextQuarterDueDate[3] %}card-danger{% endif %}">
-                <div class="card-content card">
-                    <h4>{{ 'Declaration' | trans }}</h4>
-                    <span style="font-size: 24px">
-                        {{ nextQuarterDueDate[1] | date('d') }}-{{ nextQuarterDueDate[2] | date('d') }} / {{ nextQuarterDueDate[1] | date('m') }}
-                    </span>
+            {% if (nextDueDate | length) != 0 %}
+                <div class="card card-4 {% if nextDueDate[3] %}card-danger{% endif %}">
+                    <div class="card-content card">
+                        <h4>{{ 'Declaration' | trans }} {{ nextDueDate[4] | trans }}</h4>
+                        <span style="font-size: 24px">
+                            {{ (nextDueDate[3] ? 'now' : nextDueDate[1]) | date('d') }}-{{ nextDueDate[2] | date('d') }}  {{ nextDueDate[1] | date('F') | trans }}
+                        </span>
+                    </div>
                 </div>
-            </div>
+            {% endif %}
             <div class="card card-4">
                 <div class="card-content">
                     {% if currentYear == activeYear %}

@@ -36,12 +36,14 @@ class Declaration
     const TYPE_TVA    = "tva";
     const TYPE_SOCIAL = "social";
     const TYPE_IMPOT = "impot";
+    const TYPE_CFE = "cfe";
 
     /** @var array user friendly named type */
     const TYPES = [
         'TVA' => self::TYPE_TVA,
         'Social' => self::TYPE_SOCIAL,
         'Impot' => self::TYPE_IMPOT,
+        'CFE' => self::TYPE_CFE,
     ];
 
     /**
