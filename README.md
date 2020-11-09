@@ -39,7 +39,7 @@ OCR sur les factures pour récupération TVA.
 
 ### Declarations
 
-Regroupement des factures par trimestre et par an pour les déclarations d'impot, de tva et cotisations sociales.  
+Regroupement des factures par trimestre et par an pour les déclarations d'impot, de TVA, CFE et cotisations sociales.  
 Idée des montants à déclarer et à payer.  
 
 ### Notifications
