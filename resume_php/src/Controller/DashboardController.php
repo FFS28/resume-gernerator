@@ -108,7 +108,7 @@ class DashboardController extends EasyAdminController
 
         $viewData['unpayedInvoices'] = $invoiceRepository->findInvoicesBy(null, null, false);
         $viewData['currentExperiences'] = $experienceRepository->getCurrents();
-        $viewData['nextQuarterDueDate'] = $declarationService->getNextSocialDueDate();
+        $viewData['nextDueDate'] = $declarationService->getNextDueDate();
 
         return $this->render('page/dashboard.html.twig', $viewData);
     }

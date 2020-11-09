@@ -33,9 +33,6 @@ class InvoiceService
     /** @var ExperienceRepository */
     private $experienceRepository;
 
-    /** @var DeclarationService */
-    private $declarationService;
-
     /** @var PeriodService */
     private $periodService;
 
@@ -57,7 +54,6 @@ class InvoiceService
         EntityManagerInterface $entityManager,
         InvoiceRepository $invoiceRepository,
         ExperienceRepository $experienceRepository,
-        DeclarationService $declarationService,
         PeriodService $periodService,
         SerializerInterface $serializer,
         TranslatorInterface $translator
@@ -74,7 +70,6 @@ class InvoiceService
         $this->entityManager = $entityManager;
         $this->invoiceRepository = $invoiceRepository;
         $this->experienceRepository = $experienceRepository;
-        $this->declarationService = $declarationService;
         $this->periodService = $periodService;
 
         $this->serializer = $serializer;

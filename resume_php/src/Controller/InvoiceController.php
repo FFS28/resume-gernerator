@@ -5,7 +5,6 @@ namespace App\Controller;
 use AlterPHP\EasyAdminExtensionBundle\Controller\EasyAdminController;
 use App\Entity\Invoice;
 use App\Repository\InvoiceRepository;
-use App\Service\DeclarationService;
 use App\Service\InvoiceService;
 use Doctrine\ORM\EntityManager;
 use http\Client\Request;
@@ -31,9 +30,6 @@ class InvoiceController extends EasyAdminController
     /** @var InvoiceService */
     private $invoiceService;
 
-    /** @var DeclarationService */
-    private $declarationService;
-
     /** @var MailerInterface */
     private $mailer;
 
@@ -42,13 +38,11 @@ class InvoiceController extends EasyAdminController
 
     public function __construct(InvoiceRepository $invoiceRepository,
                                 InvoiceService $invoiceService,
-                                DeclarationService $declarationService,
                                 MailerInterface $mailer,
                                 TranslatorInterface $translator)
     {
         $this->invoiceRepository = $invoiceRepository;
         $this->invoiceService = $invoiceService;
-        $this->declarationService = $declarationService;
         $this->mailer = $mailer;
         $this->translator = $translator;
     }

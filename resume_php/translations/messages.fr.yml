@@ -130,16 +130,22 @@ Declarations: Déclarations
 Tax: Charges
 Revenue: Chiffre d'affaire
 DeclarationTva: Déclaration TVA
-Tva: TVA
 DeclarationSocial: Déclaration Social
-Social: Social
 DeclarationImpot: Déclaration Impôt
-Impot: Impôt
 Next declaration: Prochaine déclaration
 Quarter: Trimestre
 Rate: Taux
 Recalculate: Recalculer
+Social: Social
+social: Social
+Impot: Impôt
+impot: Impôt
+Tva: TVA
 TVA: TVA
+tva: TVA
+CFE: CFE
+Cfe: CFE
+cfe: CFE
 
 Period: Période
 Periods: Périodes
