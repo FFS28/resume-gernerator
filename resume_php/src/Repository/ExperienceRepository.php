@@ -35,7 +35,7 @@ class ExperienceRepository extends ServiceEntityRepository
                     $query->expr()->gte('e.dateEnd', ':date')
                 )
             )
-            ->setParameter('date', (new \DateTime())->format('Y-m-d'));
+            ->setParameter('date', (new \DateTime())->sub(new \DateInterval('P1M'))->format('Y-m-d'));
         ;
 
         return $query->getQuery()->getResult();
