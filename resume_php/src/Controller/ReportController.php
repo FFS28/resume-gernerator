@@ -87,7 +87,7 @@ class ReportController extends EasyAdminController
         /** @var Experience[] $currentExperiences */
         $currentExperiences = $experienceRepository->getCurrents();
         foreach ($currentExperiences as $experience){
-            $viewData['companies'][] = $experience->getClient();
+            $viewData['companies'][] = $experience->getClient() ? $experience->getClient() : $experience->getCompany();
         }
         $viewData['activeCompany'] = count($viewData['companies']) == 1 ?? !$company ? $viewData['companies'][0] : $company;
 

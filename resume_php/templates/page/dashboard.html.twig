@@ -132,8 +132,6 @@
 {% endblock %}
 
 {% block body_javascript %}
-    {#<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css"/>#}
     <script src="{{ asset('build/js/Chart.bundle.min.js') }}"></script>
     <link rel="stylesheet" type="text/css" href="{{ asset('build/css/Chart.min.css') }}">
 
@@ -148,7 +146,10 @@
                         label: 'CA (€)',
                         data: ['{{ (revenuesByYears) | join("', '") | raw }}'],
                         backgroundColor: ['{{ colorsByYears | join("', '") | raw }}'],
-                    }]
+                    }{#,{
+                      label: 'Social',
+                       data: ['1000', '2000', '3000', '4000', '5000'],
+                    }#}]
                 }
             });
 
