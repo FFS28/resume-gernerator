@@ -78,6 +78,42 @@ class DeclarationTypeService
         return [];
     }
 
+
+    public function getTotalByYear($year)
+    {
+        $declarations = [];
+        $amount = 0;
+
+        $period = $this->periodService->getAnnualyByYear($year);
+        $declaration = $this->declarationRepository->findOneBy([
+            'type' => $this->type,
+            'period' => $period
+        ]);
+        if ($declaration) {
+            $declarations[] = $declaration;
+        }
+
+        if ($this->type === Declaration::TYPE_SOCIAL) {
+            $period = $this->periodService->getQuarterlyByYear($year);
+            foreach ($period as $period) {
+                $declaration = $this->declarationRepository->findOneBy([
+                    'type' => $this->type,
+                    'period' => $period
+                ]);
+
+                if ($declaration) {
+                    $declarations[] = $declaration;
+                }
+            }
+        }
+
+        foreach ($declarations as $declaration) {
+            $amount+= $declaration->getTax();
+        }
+
+        return $amount;
+    }
+
     /**
      * Verifie si on est dans un mois de déclaration
      * @return bool

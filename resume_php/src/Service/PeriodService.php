@@ -53,6 +53,33 @@ class PeriodService
         return [$annualyPeriod, $quarterlyPeriod];
     }
 
+    /**
+     * @param $year
+     * @return Period|null
+     */
+    public function getAnnualyByYear($year)
+    {
+        return $this->periodRepository->findOneBy([
+            'year' => $year
+        ]);
+    }
+
+    /**
+     * @param $year
+     * @return Period[]
+     */
+    public function getQuarterlyByYear($year)
+    {
+        $quarterly = [];
+        for ($quarter = 1; $quarter <= 4; $quarter++) {
+            $quarterly[] = $this->periodRepository->findOneBy([
+                'year' => $year,
+                'quarter' => $quarter
+            ]);
+        }
+        return $quarterly;
+    }
+
 
     /**
      * Renvoi la précédente période

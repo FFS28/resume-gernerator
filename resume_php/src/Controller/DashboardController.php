@@ -110,6 +110,30 @@ class DashboardController extends EasyAdminController
         $viewData['currentExperiences'] = $experienceRepository->getCurrents();
         $viewData['nextDueDate'] = $declarationService->getNextDueDate();
 
+        $viewData['globalByYears'] = [];
+        foreach ($viewData['years'] as $year) {
+            $totalSocial = $declarationService->declarationTypeSocial->getTotalByYear($year);
+            $totalCfe = $declarationService->declarationTypeCfe->getTotalByYear($year);
+            $totalTva = $declarationService->declarationTypeTva->getTotalByYear($year);
+            $totalImpot = $declarationService->declarationTypeImpot->getTotalByYear($year);
+            $totalSales = $invoiceRepository->getSalesRevenuesBy($year);
+            $daysByMonth = $invoiceRepository->getDaysCountByYear($year);
+            $net = $totalSales - $totalSocial - $totalImpot - $totalCfe;
+
+            $viewData['globalByYears'][] = [
+                'year' => $year,
+                'social' => $totalSocial,
+                'cfe' => $totalCfe,
+                'tva' => $totalTva,
+                'impot' => $totalImpot,
+                'ht' => $totalSales,
+                'net' => $net,
+                'days' => $daysByMonth,
+                'percent' => round($daysByMonth * 100 / (20 * 12)),
+                'netByMonth' => round($net / 12),
+            ];
+        }
+
         return $this->render('page/dashboard.html.twig', $viewData);
     }
 }
