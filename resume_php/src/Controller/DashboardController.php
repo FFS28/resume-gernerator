@@ -122,12 +122,12 @@ class DashboardController extends EasyAdminController
 
             $viewData['globalByYears'][] = [
                 'year' => $year,
-                'social' => $totalSocial,
-                'cfe' => $totalCfe,
-                'tva' => $totalTva,
-                'impot' => $totalImpot,
-                'ht' => $totalSales,
-                'net' => $net,
+                'social' => round($totalSocial),
+                'cfe' => round($totalCfe),
+                'tva' => round($totalTva),
+                'impot' => round($totalImpot),
+                'ht' => round($totalSales),
+                'net' => round($net),
                 'days' => $daysByMonth,
                 'percent' => round($daysByMonth * 100 / (20 * 12)),
                 'netByMonth' => round($net / 12),
