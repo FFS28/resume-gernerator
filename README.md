@@ -18,15 +18,16 @@ Gestion des :
 - Loisirs
 - Liens externes (Linkedin, ...)
 
-### Commpanies
+### Companies
 
 Liste des entreprises, des liens qu'elles ont entre elle, et des contacts.  
 
 ### Dashboard
 
-Statistiques du CA par années et trimestres, nombre de jours travaillés par mois.  
-Date de la prochaine déclaration.  
-Liste des factures impayés et des missions en cours.  
+Statistiques du CA par années et trimestres, nombre de jours travaillés par mois. 
+Date de la prochaine déclaration. 
+Liste des factures impayés et des missions en cours. 
+Statistiques globales de chaque années. 
 
 ### CRA / RAC
 
@@ -34,12 +35,12 @@ Création d'un rapport d'activité, par mois et par client, sous la forme d'un c
 
 ### Invoicing
 
-Génération de facture de type régie avec export pdf et envoie au client.  
-OCR sur les factures pour récupération TVA.  
+Génération de facture de type régie avec export pdf et envoie au client. 
+OCR sur les factures pour récupération TVA. 
 
 ### Declarations
 
-Regroupement des factures par trimestre et par an pour les déclarations d'impot, de TVA, CFE et cotisations sociales.  
+Regroupement des factures par trimestre et par an pour les déclarations d'impôt, de TVA et cotisations sociales. 
 Idée des montants à déclarer et à payer.  
 
 ### Notifications

@@ -277,6 +277,9 @@ easy_admin:
           - dateBegin
           - dateEnd
           - onHomepage
+          - mainSkills
+        filters:
+          - skills
         batch_actions:
           - update
     Skill:

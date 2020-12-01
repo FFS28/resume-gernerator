@@ -105,6 +105,27 @@ class Experience
         $this->invoices = new ArrayCollection();
     }
 
+    public function getMainSkills(): string
+    {
+        /** @var Skill[] $skillCollection */
+        $skillCollection = $this->getSkills()->filter(
+            function(Skill $var) {
+                if (substr($var->getName(), 0, 7) === "Symfony" || substr($var->getName(), 0, 7) === "Angular") {
+                    return true;
+                }
+                return false;
+            }
+        );
+
+        $skillNames = [];
+        foreach ($skillCollection as $skill) {
+            $skillNames[] = $skill->getName();
+        }
+
+
+        return implode(', ', $skillNames);
+    }
+
     public function getId()
     {
         return $this->id;
