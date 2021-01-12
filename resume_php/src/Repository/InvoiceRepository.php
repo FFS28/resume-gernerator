@@ -28,7 +28,7 @@ class InvoiceRepository extends ServiceEntityRepository
     public function findYears(): array
     {
         $query = $this->createQueryBuilder('i')
-            ->select('ToChar(i.createdAt, \'YYYY\') AS year')
+            ->select('ToChar(i.payedAt, \'YYYY\') AS year')
             ->orderBy('year')
             ->distinct();
 
@@ -104,12 +104,12 @@ class InvoiceRepository extends ServiceEntityRepository
     private function addFilters(QueryBuilder $query, int $year = null, int $quarter = null, $isPayed = null): QueryBuilder
     {
         if ($year !== null) {
-            $query->andWhere('ToChar(i.createdAt, \'YYYY\') = :year')
+            $query->andWhere('ToChar(i.payedAt, \'YYYY\') = :year')
                 ->setParameter('year', (string) $year);
         }
 
         if ($quarter !== null) {
-            $query->andWhere('ToChar(i.createdAt, \'Q\') = :quarter')
+            $query->andWhere('ToChar(i.payedAt, \'Q\') = :quarter')
                 ->setParameter('quarter', (string) $quarter);
         }
 
@@ -181,7 +181,7 @@ class InvoiceRepository extends ServiceEntityRepository
     public function getDaysCountByMonth(int $year)
     {
         $query = $this->createQueryBuilder('i')
-            ->select('ToChar(i.createdAt, \'MM\') AS month')
+            ->select('ToChar(i.payedAt, \'MM\') AS month')
             ->addSelect('SUM(i.daysCount) total')
             ->orderBy('month')
             ->groupBy('month');
