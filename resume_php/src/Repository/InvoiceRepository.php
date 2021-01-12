@@ -215,7 +215,7 @@ class InvoiceRepository extends ServiceEntityRepository
      * @throws NonUniqueResultException
      * @throws \Doctrine\ORM\NoResultException
      */
-    public function getSalesRevenuesBy(int $year = null, int $quarter = null, $isPayed = null): int
+    public function getSalesRevenuesBy(int $year = null, int $quarter = null, $isPayed = true): int
     {
         $query = $this->createQueryBuilder('i')
             ->select('SUM(i.totalHt) total');
