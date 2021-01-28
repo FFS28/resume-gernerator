@@ -39,6 +39,10 @@ easy_admin:
 
       - { label: 'Other' }
       - { label: 'Invoices book', url: '/admin/invoice/csv', icon: 'file-excel' }
+
+      - { label: 'Kitchen' }
+      - { entity: 'Recipe', label: 'Recipes', icon: 'concierge-bell' }
+      - { entity: 'Ingredient', label: 'Ingredients', icon: 'apple-alt' }
   formats:
     date: 'd/m/Y'
   list:
@@ -354,6 +358,44 @@ easy_admin:
           - level
           - dateBegin
           - dateEnd
+
+    Recipe:
+      class: App\Entity\Recipe
+      controller: App\Controller\RecipeController
+      form:
+        fields:
+          - name
+          - { property: 'recipeIngredients', type: 'easyadmin_autocomplete', type_options: { class: 'App\Entity\RecipeIngredient', attr: { create: true } } }
+          - nbSlices
+          - cookingDuration
+          - preparationDuration
+          - { property: 'instructions', type: 'collection', allow_delete: true, delete_empty: true, type_options: { entry_type: 'textarea', entry_options: {attr: {multiline: true, rows: 6, style: 'display:inline-block'}} } }
+      list:
+        fields:
+          - name
+          - type
+          - nbSlices
+          - cookingDuration
+          - preparationDuration
+    Ingredient:
+      class: App\Entity\Ingredient
+      form:
+        fields:
+          - name
+          - { property: 'type', type: 'choice', type_options: { choices: !php/const App\Entity\Ingredient::TYPES } }
+      list:
+        fields:
+          - name
+          - type
+    RecipeIngredient:
+      class: App\Entity\RecipeIngredient
+      controller: App\Controller\RecipeIngredientController
+      form:
+        fields:
+          - ingredient
+          - quantity
+
+
 
 easy_admin_extension:
   minimum_role: ROLE_ADMIN

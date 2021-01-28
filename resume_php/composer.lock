@@ -4,38 +4,39 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "01919adf34e6ffb6b3bfce43f4282320",
+    "content-hash": "b2237908b6ac75877bc3612a11874c6f",
     "packages": [
         {
             "name": "alterphp/easyadmin-extension-bundle",
-            "version": "v3.0.2",
+            "version": "v3.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alterphp/EasyAdminExtensionBundle.git",
-                "reference": "90aba46351cf08546f83a697848e7233405edfc9"
+                "reference": "224721f3472673c6db3e08542c5b01c8aa435ec8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alterphp/EasyAdminExtensionBundle/zipball/90aba46351cf08546f83a697848e7233405edfc9",
-                "reference": "90aba46351cf08546f83a697848e7233405edfc9",
+                "url": "https://api.github.com/repos/alterphp/EasyAdminExtensionBundle/zipball/224721f3472673c6db3e08542c5b01c8aa435ec8",
+                "reference": "224721f3472673c6db3e08542c5b01c8aa435ec8",
                 "shasum": ""
             },
             "require": {
                 "doctrine/collections": "^1.5",
-                "doctrine/common": "^2.8",
+                "doctrine/common": "^2.11|^3.0",
                 "doctrine/doctrine-bundle": "^1.8|^2.0",
-                "doctrine/orm": "^2.6",
-                "easycorp/easyadmin-bundle": "^2.2.2",
-                "php": "^7.1.3",
-                "symfony/config": "^4.2|^5.0",
-                "symfony/dependency-injection": "^4.2|^5.0",
-                "symfony/event-dispatcher": "^4.2|^5.0",
-                "symfony/form": "^4.2|^5.0",
-                "symfony/framework-bundle": "^4.2|^5.0",
-                "symfony/http-foundation": "^4.2|^5.0.7",
-                "symfony/http-kernel": "^4.2|^5.0",
-                "symfony/property-access": "^4.2|^5.0",
-                "symfony/validator": "^4.2|^5.0",
+                "doctrine/orm": "^2.7",
+                "doctrine/persistence": "^1.3|^2",
+                "easycorp/easyadmin-bundle": "^2.3.4",
+                "php": "^7.1.3|^8.0",
+                "symfony/config": "^4.4|^5.0",
+                "symfony/dependency-injection": "^4.4|^5.0",
+                "symfony/event-dispatcher": "^4.4|^5.0",
+                "symfony/form": "^4.4|^5.0",
+                "symfony/framework-bundle": "^4.4|^5.0",
+                "symfony/http-foundation": "^4.4|^5.0.7",
+                "symfony/http-kernel": "^4.4|^5.0",
+                "symfony/property-access": "^4.4|^5.0",
+                "symfony/validator": "^4.4|^5.0",
                 "twig/twig": "^2.11.3|^3.0"
             },
             "conflict": {
@@ -48,17 +49,17 @@
                 "php-coveralls/php-coveralls": "^2.0",
                 "phpstan/phpstan": "^0.12",
                 "psr/log": "~1.0",
-                "symfony/browser-kit": "^4.2|^5.0",
-                "symfony/console": "^4.2|^5.0",
-                "symfony/css-selector": "^4.2|^5.0",
-                "symfony/dom-crawler": "^4.2|^5.0",
+                "symfony/browser-kit": "^4.4|^5.0",
+                "symfony/console": "^4.4|^5.0",
+                "symfony/css-selector": "^4.4|^5.0",
+                "symfony/dom-crawler": "^4.4|^5.0",
                 "symfony/phpunit-bridge": "^4.3.5|^5.0",
                 "symfony/polyfill-mbstring": "^1.7",
-                "symfony/security-bundle": "^4.2|^5.0",
-                "symfony/thanks": "^1.2.4",
-                "symfony/twig-bundle": "^4.2|^5.0",
-                "symfony/var-dumper": "^4.2|^5.0",
-                "symfony/yaml": "^4.2|^5.0"
+                "symfony/security-bundle": "^4.4|^5.0",
+                "symfony/thanks": "^1.2.10",
+                "symfony/twig-bundle": "^4.4|^5.0",
+                "symfony/var-dumper": "^4.4|^5.0",
+                "symfony/yaml": "^4.4|^5.0"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -91,7 +92,7 @@
                 "backend",
                 "generator"
             ],
-            "time": "2020-07-15T12:49:55+00:00"
+            "time": "2021-01-18T21:56:10+00:00"
         },
         {
             "name": "api-platform/api-pack",
@@ -1832,6 +1833,7 @@
                 "reflection",
                 "static"
             ],
+            "abandoned": "roave/better-reflection",
             "time": "2020-03-27T11:06:43+00:00"
         },
         {
@@ -1889,25 +1891,25 @@
         },
         {
             "name": "easycorp/easyadmin-bundle",
-            "version": "v2.3.10",
+            "version": "v2.3.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/EasyCorp/EasyAdminBundle.git",
-                "reference": "bb817cc97761d27bbe6478d3344694a828511abc"
+                "reference": "a51b3e5eaa5bfafda9ed2791d2a2e0735c845893"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EasyCorp/EasyAdminBundle/zipball/bb817cc97761d27bbe6478d3344694a828511abc",
-                "reference": "bb817cc97761d27bbe6478d3344694a828511abc",
+                "url": "https://api.github.com/repos/EasyCorp/EasyAdminBundle/zipball/a51b3e5eaa5bfafda9ed2791d2a2e0735c845893",
+                "reference": "a51b3e5eaa5bfafda9ed2791d2a2e0735c845893",
                 "shasum": ""
             },
             "require": {
-                "doctrine/common": "^2.8",
+                "doctrine/common": "^2.8 || ^3.0",
                 "doctrine/doctrine-bundle": "^1.8|^2.0",
                 "doctrine/orm": "^2.6.3",
-                "doctrine/persistence": "^1.3.4",
+                "doctrine/persistence": "^1.3.4 || ^2.0",
                 "pagerfanta/pagerfanta": "^1.0.1|^2.0",
-                "php": "^7.1.3",
+                "php": ">=7.1.3",
                 "symfony/asset": "^4.2|^5.0",
                 "symfony/cache": "^4.2|^5.0",
                 "symfony/config": "^4.2|^5.0",
@@ -1976,7 +1978,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-09-26T09:35:23+00:00"
+            "time": "2021-01-21T18:39:17+00:00"
         },
         {
             "name": "egulias/email-validator",
@@ -4773,16 +4775,16 @@
         },
         {
             "name": "symfony/flex",
-            "version": "v1.9.5",
+            "version": "v1.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/flex.git",
-                "reference": "585dd28d43a781dd0081f90f308d3e83b6885a31"
+                "reference": "ceb2b4e612bd0b4bb36a4d7fb2e800c861652f48"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/flex/zipball/585dd28d43a781dd0081f90f308d3e83b6885a31",
-                "reference": "585dd28d43a781dd0081f90f308d3e83b6885a31",
+                "url": "https://api.github.com/repos/symfony/flex/zipball/ceb2b4e612bd0b4bb36a4d7fb2e800c861652f48",
+                "reference": "ceb2b4e612bd0b4bb36a4d7fb2e800c861652f48",
                 "shasum": ""
             },
             "require": {
@@ -4792,13 +4794,14 @@
             "require-dev": {
                 "composer/composer": "^1.0.2|^2.0",
                 "symfony/dotenv": "^4.4|^5.0",
+                "symfony/filesystem": "^4.4|^5.0",
                 "symfony/phpunit-bridge": "^4.4|^5.0",
                 "symfony/process": "^3.4|^4.4|^5.0"
             },
             "type": "composer-plugin",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.8-dev"
+                    "dev-main": "1.9-dev"
                 },
                 "class": "Symfony\\Flex\\Flex"
             },
@@ -4832,7 +4835,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-10-07T09:41:05+00:00"
+            "time": "2020-12-03T10:57:35+00:00"
         },
         {
             "name": "symfony/form",
@@ -7836,6 +7839,77 @@
             "time": "2019-10-17T05:44:22+00:00"
         },
         {
+            "name": "symfony/ux-chartjs",
+            "version": "v1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/ux-chartjs.git",
+                "reference": "0d53205fa56b3129fb0579e9cd9306d3972c1553"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/ux-chartjs/zipball/0d53205fa56b3129fb0579e9cd9306d3972c1553",
+                "reference": "0d53205fa56b3129fb0579e9cd9306d3972c1553",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.5",
+                "symfony/config": "^4.4.17|^5.0",
+                "symfony/dependency-injection": "^4.4.17|^5.0",
+                "symfony/http-kernel": "^4.4.17|^5.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^8.5",
+                "symfony/framework-bundle": "^4.4.17|^5.0",
+                "symfony/twig-bundle": "^4.4.17|^5.0",
+                "symfony/var-dumper": "^4.4.17|^5.0"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\UX\\Chartjs\\": "."
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Titouan Galopin",
+                    "email": "galopintitouan@gmail.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Chart.js integration for Symfony",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "Chart.js",
+                "chart",
+                "chartjs",
+                "symfony",
+                "ux"
+            ],
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2020-12-05T19:56:39+00:00"
+        },
+        {
             "name": "symfony/validator",
             "version": "v5.1.7",
             "source": {
@@ -8583,12 +8657,12 @@
             "version": "1.9.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/webmozart/assert.git",
+                "url": "https://github.com/webmozarts/assert.git",
                 "reference": "bafc69caeb4d49c39fd0779086c03a3738cbb389"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webmozart/assert/zipball/bafc69caeb4d49c39fd0779086c03a3738cbb389",
+                "url": "https://api.github.com/repos/webmozarts/assert/zipball/bafc69caeb4d49c39fd0779086c03a3738cbb389",
                 "reference": "bafc69caeb4d49c39fd0779086c03a3738cbb389",
                 "shasum": ""
             },

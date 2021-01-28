@@ -9,7 +9,7 @@
         "ext-iconv": "*",
         "ext-intl": "*",
         "ext-json": "*",
-        "alterphp/easyadmin-extension-bundle": "^3.0",
+        "alterphp/easyadmin-extension-bundle": "^3.1",
         "api-platform/api-pack": "^1.2",
         "doctrine/doctrine-fixtures-bundle": "^3.3",
         "easycorp/easyadmin-bundle": "^2.3",
@@ -31,6 +31,7 @@
         "symfony/serializer": "5.0.*",
         "symfony/templating": "5.0.*",
         "symfony/twig-pack": "^1.0",
+        "symfony/ux-chartjs": "^1.1",
         "symfony/webpack-encore-bundle": "^1.7",
         "symfony/yaml": "5.0.*",
         "vich/uploader-bundle": "^1.13"

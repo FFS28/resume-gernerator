@@ -197,7 +197,7 @@ class InvoiceRepository extends ServiceEntityRepository
      * @throws NonUniqueResultException
      * @throws \Doctrine\ORM\NoResultException
      */
-    public function getDaysCountByYear(int $year)
+    public function getDaysCountByYear(int $year = null)
     {
         $query = $this->createQueryBuilder('i')
             ->select('SUM(i.totalHt / i.tjm) total');
