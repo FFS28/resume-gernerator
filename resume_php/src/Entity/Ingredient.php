@@ -97,6 +97,19 @@ class Ingredient
         return $this->type;
     }
 
+    /**
+     * @return string
+     */
+    public function getTypeName()
+    {
+        $typeName = array_flip(self::TYPES);
+        if (!isset($typeName[$this->type])) {
+            return null;
+        }
+
+        return $typeName[$this->type];
+    }
+
     public function setType(?string $type): self
     {
         $this->type = $type;

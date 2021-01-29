@@ -27,8 +27,15 @@ class KitchenController extends AbstractController
      * @return Response
      */
     public function index(RecipeRepository $recipeRepository) {
+        $recipes = $recipeRepository->findAll();
+        $recipesSerialized = [];
+
+        foreach ($recipes as $recipe) {
+            $recipesSerialized[] = $recipe->toArray();
+        }
+
         $data = [
-            'recipes' => $recipeRepository->findAll()
+            'recipes' => $recipesSerialized
         ];
 
         return $this->render('project/kitchen.html.twig', $data);

@@ -20,7 +20,25 @@ Encore
      * Each entry will result in one JavaScript file (e.g. app.js)
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
-    .addEntry('app', './assets/app.js')
+    .addEntry('js/bootstrap-datepicker', './assets/js/bootstrap-datepicker.js')
+    .addEntry('js/bootstrap-datepicker.fr', './assets/js/bootstrap-datepicker.fr.js')
+    .addEntry('js/Chart.bundle.min', './assets/js/Chart.bundle.min.js')
+    .addEntry('js/html2pdf.bundle', './assets/js/html2pdf.bundle.js')
+    .addEntry('js/app', './assets/js/app.js')
+
+    .addStyleEntry('css/bootstrap-datepicker', './assets/css/bootstrap-datepicker.css')
+    .addStyleEntry('css/Chart.min', './assets/css/Chart.min.css')
+
+    .addStyleEntry('css/app', './assets/css/app.scss')
+    .addStyleEntry('css/login', './assets/css/login.scss')
+    .addStyleEntry('css/index', './assets/css/index.scss')
+    .addStyleEntry('css/admin', './assets/css/admin.scss')
+    .addStyleEntry('css/dashboard', './assets/css/dashboard.scss')
+    .addStyleEntry('css/report', './assets/css/report.scss')
+    .addStyleEntry('css/report_pdf', './assets/css/report_pdf.scss')
+    .addStyleEntry('css/timeline', './assets/css/timeline.scss')
+
+    .addEntry('recipes/main', './assets/js/recipes.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')
@@ -56,10 +74,10 @@ Encore
     })
 
     // enables Sass/SCSS support
-    //.enableSassLoader()
+    .enableSassLoader()
 
     // uncomment if you use TypeScript
-    //.enableTypeScriptLoader()
+    .enableTypeScriptLoader()
 
     // uncomment if you use React
     //.enableReactPreset()
@@ -70,6 +88,8 @@ Encore
 
     // uncomment if you're having problems with a jQuery plugin
     //.autoProvidejQuery()
+
+    .enableVueLoader()
 ;
 
 module.exports = Encore.getWebpackConfig();

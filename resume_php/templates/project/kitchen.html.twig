@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Kitchen Party{% endblock %}
+
+{%- block description -%}
+
+{%- endblock -%}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('recipes/main') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('recipes/main') }}
+{% endblock %}
+
+{% block body %}
+    <div ref="recipes" data-recipes='{{ recipes | json_encode | raw }}'></div>
+    <div id="recipes">
+        <app></app>
+    </div>
+{% endblock %}

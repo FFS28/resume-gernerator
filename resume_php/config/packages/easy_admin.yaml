@@ -373,10 +373,10 @@ easy_admin:
       list:
         fields:
           - name
-          - type
           - nbSlices
           - cookingDuration
           - preparationDuration
+          - { property : recipeIngredients, type: array }
     Ingredient:
       class: App\Entity\Ingredient
       form:
@@ -386,7 +386,7 @@ easy_admin:
       list:
         fields:
           - name
-          - type
+          - { property: 'type', trans: true }
     RecipeIngredient:
       class: App\Entity\RecipeIngredient
       controller: App\Controller\RecipeIngredientController
