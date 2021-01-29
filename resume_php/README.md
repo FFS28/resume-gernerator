@@ -27,10 +27,6 @@
     - Event
     - Message
     
-- A tester
-    - Vue.JS
-    - Flutter
-    
 ### Installation
 
 - symfony composer install
@@ -40,3 +36,16 @@
 - yarn
 - symfony server:start
 - yarn encore dev --watch
+
+# Kitchen Party
+
+### Features
+
+- Liste des recettes  
+- Filtre par ingrédients, options vegan/végé  
+- Tri par temps de préparation et temps de cuisson  
+- Selection multiple pour génération de liste de courses (regroupement des ingrédients, calcul du nombre de parts)  
+- Vue recette
+
+### TODO
+- Enregistrement d'une image par recette

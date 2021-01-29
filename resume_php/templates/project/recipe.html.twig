@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Kitchen Party{% endblock %}
+
+{%- block description -%}
+
+{%- endblock -%}
+
+{% block stylesheets %}
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' https://fonts.googleapis.com 'unsafe-inline' 'unsafe-eval';">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic|Material+Icons">
+    {{ encore_entry_link_tags('recipe/main') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('recipe/main') }}
+{% endblock %}
+
+{% block body %}
+    <div ref="recipe" data-recipe='{{ recipe | json_encode | raw }}'></div>
+    <div id="recipe">
+        <app></app>
+    </div>
+{% endblock %}

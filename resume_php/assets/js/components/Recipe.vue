@@ -1,7 +1,10 @@
 
 <template>
-    <div class="recipes">
-      <md-card v-for="recipe in recipes" v-bind:key="recipe.id" class="recipe">
+    <div class="recipe">
+      <md-button class="md-fab" :href="'/kitchen'">
+        <md-icon>arrow_back</md-icon>
+      </md-button>
+      <md-card v-if="recipe">
         <md-card-header>
           <md-card-header-text>
             <div class="md-title">{{ recipe.name }}</div>
@@ -12,19 +15,15 @@
           <div v-for="recipeIngredient in recipe.recipeIngredients" v-bind:key="recipeIngredient.id">
             {{ recipeIngredient.ingredient.name }} ({{ recipeIngredient.quantity }}) {{ recipeIngredient.ingredient.typeName }}
           </div>
-          <!--{{ recipe.cookingDuration }}
+          <div v-for="instruction in recipe.instructions">
+            {{ instruction }}
+          </div>
+          {{ recipe.cookingDuration }}
           {{ recipe.preparationDuration }}
           {{ recipe.nbSlices }}
-          {{ recipe.vegan }} // eco vert
-          {{ recipe.vege }} // goat rouge
-          recipe.meat // goat vert-->
+          {{ recipe.vegan }}
+          {{ recipe.vege }}
         </md-card-content>
-
-        <md-card-actions>
-          <md-button class="md-fab md-primary" :href="'/kitchen/' + recipe.id">
-            <md-icon>local_dining</md-icon>
-          </md-button>
-        </md-card-actions>
       </md-card>
     </div>
 </template>
@@ -42,12 +41,12 @@
   export default {
       data() {
           return {
-              recipes: [],
+              recipe: {},
           };
       },
       mounted() {
-          let el = document.querySelector("div[data-recipes]");
-          this.recipes = JSON.parse(el.dataset.recipes);
+          let el = document.querySelector("div[data-recipe]");
+          this.recipe = JSON.parse(el.dataset.recipe);
       },
       components: {
 

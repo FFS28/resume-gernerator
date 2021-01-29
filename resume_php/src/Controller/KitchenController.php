@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Recipe;
 use App\Form\Type\ContactFormType;
 use App\Repository\AttributeRepository;
 use App\Repository\EducationRepository;
@@ -18,26 +19,49 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Translation\Translator;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class KitchenController extends AbstractController
 {
     /**
-     * @Route("/kitchen", name="kitchen")
+     * @Route("/kitchen", name="recipes")
      * @return Response
      */
-    public function index(RecipeRepository $recipeRepository) {
+    public function recipes(RecipeRepository $recipeRepository, TranslatorInterface $translator) {
         $recipes = $recipeRepository->findAll();
         $recipesSerialized = [];
 
         foreach ($recipes as $recipe) {
-            $recipesSerialized[] = $recipe->toArray();
+            $recipeArray = $recipe->toArray();
+            foreach ($recipeArray['recipeIngredients'] as &$recipeIngredient) {
+                $recipeIngredient['ingredient']['typeName'] = $translator->trans($recipeIngredient['ingredient']['typeName']);
+            }
+
+            $recipesSerialized[] = $recipeArray;
         }
 
         $data = [
             'recipes' => $recipesSerialized
         ];
 
-        return $this->render('project/kitchen.html.twig', $data);
+        return $this->render('project/recipes.html.twig', $data);
+    }
+
+    /**
+     * @Route("/kitchen/{id}", name="recipe")
+     * @return Response
+     */
+    public function recipe(Recipe $recipe, TranslatorInterface $translator) {
+        $recipeSerialized = $recipe->toArray();
+        foreach ($recipeSerialized['recipeIngredients'] as &$recipeIngredient) {
+            $recipeIngredient['ingredient']['typeName'] = $translator->trans($recipeIngredient['ingredient']['typeName']);
+        }
+
+        $data = [
+            'recipe' => $recipeSerialized
+        ];
+
+        return $this->render('project/recipe.html.twig', $data);
     }
 }

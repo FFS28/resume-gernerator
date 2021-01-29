@@ -10,6 +10,23 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class RecipeIngredient
 {
+    const UNIT_GRAM   = "g";
+    const UNIT_KILOGRAM   = "kg";
+    const UNIT_CENTILITER   = "cl";
+    const UNIT_LITER   = "l";
+    const UNIT_TABLESPOON   = "c-à-s";
+    const UNIT_TEASPOON   = "c-à-c";
+
+    /** @var array user friendly named type */
+    const UNITS = [
+        self::UNIT_GRAM => self::UNIT_GRAM,
+        self::UNIT_KILOGRAM => self::UNIT_KILOGRAM,
+        self::UNIT_CENTILITER => self::UNIT_CENTILITER,
+        self::UNIT_LITER => self::UNIT_LITER,
+        self::UNIT_TABLESPOON => self::UNIT_TABLESPOON,
+        self::UNIT_TEASPOON => self::UNIT_TEASPOON,
+    ];
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -30,13 +47,63 @@ class RecipeIngredient
     private $ingredient;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="decimal", scale=1, nullable=true)
      */
     private $quantity;
 
-    public function __toString()
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $unit;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $measure;
+
+    public function __toString(): string
     {
-        return $this->getIngredient() . ' (' . $this->getQuantity() . ')';
+        $str = $this->getIngredient();
+
+        if ($this->getMeasureStr()) {
+            $str .= ' ' . $this->getMeasureStr();
+        }
+
+        return $str;
+    }
+
+    public function getMeasureStr(): string
+    {
+        $str = '';
+        if ($this->getMeasure() || $this->getQuantity()) {
+            $str .= '(';
+            if ($this->getQuantity()) {
+                $str .= $this->getQuantity();
+                if ($this->getMeasure() || $this->getUnit()) {
+                    $str .= ' ';
+                    if ($this->getMeasure()) {
+                        $str .= $this->getMeasure();
+                    } else if ($this->getUnit()) {
+                        $str .= $this->getUnit();
+                    }
+                }
+            }
+            $str .= ')';
+        }
+        return $str;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUnitName()
+    {
+        $unitName = array_flip(self::UNITS);
+        if (!isset($unitName[$this->unit])) {
+            return null;
+        }
+
+        return $unitName[$this->unit];
     }
 
     public function getId(): ?int
@@ -68,14 +135,38 @@ class RecipeIngredient
         return $this;
     }
 
-    public function getQuantity(): ?string
+    public function getQuantity(): ?float
     {
         return $this->quantity;
     }
 
-    public function setQuantity(string $quantity): self
+    public function setQuantity(float $quantity): self
     {
         $this->quantity = $quantity;
+
+        return $this;
+    }
+
+    public function getUnit(): ?string
+    {
+        return $this->unit;
+    }
+
+    public function setUnit(?string $unit): self
+    {
+        $this->unit = $unit;
+
+        return $this;
+    }
+
+    public function getMeasure(): ?string
+    {
+        return $this->measure;
+    }
+
+    public function setMeasure(?string $measure): self
+    {
+        $this->measure = $measure;
 
         return $this;
     }

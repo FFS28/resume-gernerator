@@ -39,6 +39,7 @@ Encore
     .addStyleEntry('css/timeline', './assets/css/timeline.scss')
 
     .addEntry('recipes/main', './assets/js/recipes.js')
+    .addEntry('recipe/main', './assets/js/recipe.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')

@@ -393,7 +393,9 @@ easy_admin:
       form:
         fields:
           - ingredient
-          - quantity
+          - { property: 'quantity', type: 'number', scale: 1, html5: true, attr: {min: 1} }
+          - { property: 'unit', type: 'choice', type_options: { expanded: true, multiple: false, choices: !php/const App\Entity\RecipeIngredient::UNITS } }
+          - measure
 
 
 

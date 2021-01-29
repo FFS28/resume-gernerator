@@ -31,7 +31,8 @@ class ResponseSubscriber implements EventSubscriberInterface
 
         $response->headers->set("Content-Security-Policy",
             "script-src 'self' " . $request->getSchemeAndHttpHost() . " https://raw.githack.com/eKoopmans/html2pdf/ 'unsafe-inline';"
-            . "style-src 'self' " . $request->getSchemeAndHttpHost() . " 'unsafe-inline';");
+            . "style-src 'self' " . $request->getSchemeAndHttpHost() . " https://fonts.gstatic.com https://fonts.googleapis.com 'unsafe-inline';"
+        );
 
         $response->headers->set("X-Frame-Options", 'deny');
         $response->headers->set("X-XSS-Protection", '1; mode=block');
