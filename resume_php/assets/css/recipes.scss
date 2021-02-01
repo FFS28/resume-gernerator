@@ -1,4 +1,5 @@
 @import "flexbox";
+@import "kitchen";
 
 body{
   margin: 0;
@@ -8,15 +9,32 @@ body{
   @include flexbox();
   @include flex-direction(row);
   @include justify-content(center);
-  @include align-items(center);
+  @include align-items(top);
   @include flex-wrap(wrap);
 
   .recipe {
     width: 400px;
     margin: 10px;
 
+    &:not(.md-expand-active) {
+      height: 176px;
+    }
+
+    .md-title{
+      text-align: center;
+      height: 64px;
+      font-size: 20px;
+    }
+
+    .md-card-actions div{
+      @include flexbox();
+      @include flex-direction(row);
+      @include align-items(center);
+    }
+
     .md-card-content{
-      height: 100px;
+      i, span { vertical-align: middle}
+      i { width: 20px;}
     }
   }
 }

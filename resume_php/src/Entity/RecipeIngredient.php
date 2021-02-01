@@ -4,6 +4,10 @@ namespace App\Entity;
 
 use App\Repository\RecipeIngredientRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 /**
  * @ORM\Entity(repositoryClass=RecipeIngredientRepository::class)
@@ -61,22 +65,39 @@ class RecipeIngredient
      */
     private $measure;
 
+    public function toArray(): array
+    {
+        $encoder    = new JsonEncoder();
+        $defaultContext = [
+            AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object, $format, $context) {
+                return $object;
+            },
+        ];
+        $normalizer = new ObjectNormalizer(null, null, null, null, null, null, $defaultContext);
+
+        $serializer = new Serializer([$normalizer], [$encoder]);
+        return json_decode($serializer->serialize($this, 'json'), true);
+    }
+
     public function __toString(): string
     {
         $str = $this->getIngredient();
 
         if ($this->getMeasureStr()) {
-            $str .= ' ' . $this->getMeasureStr();
+            $str .= ' (' . $this->getMeasureStr() . ')';
         }
 
         return $str;
+    }
+
+    public function getName(): string {
+        return $this->__toString();
     }
 
     public function getMeasureStr(): string
     {
         $str = '';
         if ($this->getMeasure() || $this->getQuantity()) {
-            $str .= '(';
             if ($this->getQuantity()) {
                 $str .= $this->getQuantity();
                 if ($this->getMeasure() || $this->getUnit()) {
@@ -88,7 +109,6 @@ class RecipeIngredient
                     }
                 }
             }
-            $str .= ')';
         }
         return $str;
     }

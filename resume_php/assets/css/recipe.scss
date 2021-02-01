@@ -1,4 +1,5 @@
 @import "flexbox";
+@import "kitchen";
 
 body{
   margin: 0;
@@ -8,11 +9,88 @@ body{
   @include align-items(center);
   @include flex-wrap(wrap);
 
+  .md-title,
+  .md-subhead{
+    text-align: center;
+  }
+
   .recipe{
+    width: 100%;
+
     & > a {
       position: absolute;
       left: 10px;
       top: 10px;
+    }
+
+    & > .md-card {
+      min-height: calc(100vh - 20px);
+      margin: 10px;
+
+
+      .ingredients {
+        @include flexbox();
+        @include flex-direction(row);
+        @include justify-content(space-around);
+        @include align-items(center);
+        @include flex-wrap(wrap);
+
+        .md-card{
+          width: 200px;
+          height: 160px;
+          margin: 10px;
+
+          .md-card-header {
+            padding: 10px;
+          }
+        }
+
+        .ingredient{
+          .md-title{
+            height: 40px;
+            font-size: 20px;
+            line-height: 20px;
+            font-weight: bold;
+          }
+          .md-subhead{
+            height: 20px;
+            font-weight: bold;
+            padding-top: 5px;
+          }
+        }
+
+        .info {
+          @include flexbox();
+          @include flex-direction(column);
+          @include justify-content(space-around);
+          @include align-items(center);
+          @include flex-wrap(wrap);
+
+          .md-title{
+            i, span {
+              display: inline-block;
+              vertical-align: middle;
+            }
+            i {
+              margin-right: 10px;
+            }
+            span {
+              font-weight: bold;
+              font-size: 28px !important;
+              line-height: 28px;
+            }
+          }
+        }
+      }
+
+      .instruction{
+        margin: 10px 0;
+
+        .md-card-content{
+          padding: 10px;
+        }
+      }
+
     }
   }
 }

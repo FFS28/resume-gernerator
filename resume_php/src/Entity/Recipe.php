@@ -67,10 +67,20 @@ class Recipe
 
     public function isVege(): ?bool
     {
-        return false;
+        return true;
     }
 
     public function isVegan(): ?bool
+    {
+        return false;
+    }
+
+    public function isMeat(): ?bool
+    {
+        return false;
+    }
+
+    public function isFish(): ?bool
     {
         return false;
     }
@@ -87,6 +97,24 @@ class Recipe
 
         $serializer = new Serializer([$normalizer], [$encoder]);
         return json_decode($serializer->serialize($this, 'json'), true);
+    }
+
+    public function orderedIngredientsByType(): array {
+        /** @var RecipeIngredient[] $recipeIngredients */
+        $recipeIngredients = $this->getRecipeIngredients()->toArray();
+
+        usort($recipeIngredients,
+            function($recipeIngredientA, $recipeIngredientB) {
+                $a = array_search($recipeIngredientA->getIngredient()->getType(), Ingredient::TYPES);
+                $b = array_search($recipeIngredientB->getIngredient()->getType(), Ingredient::TYPES);
+
+                if ($a == $b) {
+                    return 0;
+                }
+                return ($a < $b) ? -1 : 1;
+        });
+
+        return $recipeIngredients;
     }
 
     public function getId(): ?int

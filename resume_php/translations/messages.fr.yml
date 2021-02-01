@@ -234,18 +234,18 @@ Nb slices: Nombre de parts
 Instructions: Instructions
 Quantity: Quantité
 
-fruit vegetable: Fruits et légumes
-cereal legume: Céréales et Légumineuses
 meat: Viandes
-fish seafood: Poissons et fruits de mer
-animal fat: Matières grasses animales
-vegetable fat: Matières grasses végétales
+fish_seafood: Poissons et fruits de mer
+fruit_vegetable: Fruits et légumes
+cereal_legume: Céréales et Légumineuses
+animal_fat: Matières grasses animales
+vegetable_fat: Matières grasses végétales
+aromatic_herb: Herbes aromatiques
+spice: Epices
 sugar: Sucres
 salt: Sels
-spice: Epices
-aromatic herb: Herbes aromatiques
-water: Eau
 alcohol: Alcools
+water: Eau
 gram: g
 kilogram: kg
 liter: l

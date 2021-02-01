@@ -18,6 +18,7 @@
 
 {% block body %}
     <div ref="recipes" data-recipes='{{ recipes | json_encode | raw }}'></div>
+    <div ref="ingredients" data-ingredients='{{ ingredients | json_encode | raw }}'></div>
     <div id="recipes">
         <app></app>
     </div>

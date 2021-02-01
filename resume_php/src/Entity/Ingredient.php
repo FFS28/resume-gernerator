@@ -7,6 +7,10 @@ use App\Repository\IngredientRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 /**
  * @ApiResource()
@@ -14,33 +18,33 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Ingredient
 {
-    const TYPE_FRUIT_VEGETABLE   = "fruit vegetable"; // Fruits et légumes
-    const TYPE_CEREAL_LEGUME = "cereal legume"; // Céréales et Légumineuses
     const TYPE_MEAT = "meat"; // Viandes
-    const TYPE_FISH_SEAFOOD = "fish seafood"; // Poissons et fruits de mer
-    const TYPE_ANIMAL_FAT = "animal fat"; // Matière grasse animale
-    const TYPE_VEGETABLE_FAT  = "vegetable fat"; // Matière grasse végétale
+    const TYPE_FISH_SEAFOOD = "fish_seafood"; // Poissons et fruits de mer
+    const TYPE_FRUIT_VEGETABLE   = "fruit_vegetable"; // Fruits et légumes
+    const TYPE_CEREAL_LEGUME = "cereal_legume"; // Céréales et Légumineuses
+    const TYPE_ANIMAL_FAT = "animal_fat"; // Matière grasse animale
+    const TYPE_VEGETABLE_FAT  = "vegetable_fat"; // Matière grasse végétale
+    const TYPE_AROMATIC_HERB  = "aromatic_herb"; // Herbes aromatiques
+    const TYPE_SPICES  = "spice"; // Epices
     const TYPE_SUGAR  = "sugar"; // Sucres
     const TYPE_SALT  = "salt"; // Sels
-    const TYPE_SPICES  = "spice"; // Epices
-    const TYPE_AROMATIC_HERB  = "aromatic herb"; // Herbes aromatiques
-    const TYPE_WATER  = "water"; // Eau
     const TYPE_ALCOHOL  = "alcohol"; // Alcool
+    const TYPE_WATER  = "water"; // Eau
 
     /** @var array user friendly named type */
     const TYPES = [
-        self::TYPE_FRUIT_VEGETABLE => self::TYPE_FRUIT_VEGETABLE,
-        self::TYPE_CEREAL_LEGUME => self::TYPE_CEREAL_LEGUME,
         self::TYPE_MEAT => self::TYPE_MEAT,
         self::TYPE_FISH_SEAFOOD => self::TYPE_FISH_SEAFOOD,
+        self::TYPE_FRUIT_VEGETABLE => self::TYPE_FRUIT_VEGETABLE,
+        self::TYPE_CEREAL_LEGUME => self::TYPE_CEREAL_LEGUME,
         self::TYPE_ANIMAL_FAT => self::TYPE_ANIMAL_FAT,
         self::TYPE_VEGETABLE_FAT => self::TYPE_VEGETABLE_FAT,
+        self::TYPE_AROMATIC_HERB => self::TYPE_AROMATIC_HERB,
+        self::TYPE_SPICES => self::TYPE_SPICES,
         self::TYPE_SUGAR => self::TYPE_SUGAR,
         self::TYPE_SALT => self::TYPE_SALT,
-        self::TYPE_SPICES => self::TYPE_SPICES,
-        self::TYPE_AROMATIC_HERB => self::TYPE_AROMATIC_HERB,
-        self::TYPE_WATER => self::TYPE_WATER,
         self::TYPE_ALCOHOL => self::TYPE_ALCOHOL,
+        self::TYPE_WATER => self::TYPE_WATER,
     ];
 
     /**
@@ -68,6 +72,20 @@ class Ingredient
     public function __construct()
     {
         $this->recipeIngredients = new ArrayCollection();
+    }
+
+    public function toArray(): array
+    {
+        $encoder    = new JsonEncoder();
+        $defaultContext = [
+            AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object, $format, $context) {
+                return $object;
+            },
+        ];
+        $normalizer = new ObjectNormalizer(null, null, null, null, null, null, $defaultContext);
+
+        $serializer = new Serializer([$normalizer], [$encoder]);
+        return json_decode($serializer->serialize($this, 'json'), true);
     }
 
     public function __toString(): ?string
