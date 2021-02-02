@@ -38,13 +38,13 @@
                 <md-icon v-if="recipe.vegan">eco</md-icon>
               </md-button>
               <md-button class="md-fab" style="background-color: white;">
-                <md-icon style="color: black;">microwave</md-icon>{{ recipe.cookingDuration }}</small>
+                <md-icon style="color: black;">microwave</md-icon><span>{{ recipe.cookingDuration }}</span>
               </md-button>
               <md-button class="md-fab" style="background-color: white;">
-                <md-icon style="color: black;">av_timer</md-icon>{{ recipe.preparationDuration }}</small>
+                <md-icon style="color: black;">av_timer</md-icon><span>{{ recipe.preparationDuration }}</span>
               </md-button>
               <md-button class="md-fab" style="background-color: white;">
-                <md-icon style="color: black;">local_pizza</md-icon>{{ recipe.nbSlices }}</small>
+                <md-icon style="color: black;">local_pizza</md-icon><span>{{ recipe.nbSlices }}</span>
               </md-button>
               <md-card-expand-trigger>
                 <md-button class="md-icon-button">

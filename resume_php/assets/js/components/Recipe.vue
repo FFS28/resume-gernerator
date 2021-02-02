@@ -4,6 +4,8 @@
       <md-button class="md-fab" :href="'/kitchen'">
         <md-icon>arrow_back</md-icon>
       </md-button>
+      <md-button class="md-primary md-fab" @click="showDialog = true"><md-icon>zoom_in</md-icon></md-button>
+
       <md-card v-if="recipe">
         <md-card-header>
           <md-card-header-text>
@@ -53,59 +55,56 @@
               </md-card-content>
             </md-card>
           </div>
+
+          <div class="instructions">
+            <md-card v-for="(instruction, index) in recipe.instructions" v-bind:key="index" class="instruction">
+              <md-card-content>
+                {{ instruction }}
+              </md-card-content>
+            </md-card>
+          </div>
         </md-card-content>
-
-        <md-card-expand>
-          <md-card-expand-content>
-            <md-card-content>
-              <div class="instructions">
-                <md-card v-for="(instruction, index) in recipe.instructions" v-bind:key="index" class="instruction">
-                  <md-card-content>
-                    {{ instruction }}
-                  </md-card-content>
-                </md-card>
-              </div>
-            </md-card-content>
-          </md-card-expand-content>
-
-          <md-card-actions md-alignment="right">
-            <md-card-expand-trigger>
-              <md-button class="md-icon-button">
-                <md-icon>keyboard_arrow_down</md-icon>
-              </md-button>
-            </md-card-expand-trigger>
-          </md-card-actions>
-        </md-card-expand>
       </md-card>
+      <md-dialog :md-active.sync="showDialog">
+        <div class="instructions">
+          <md-card v-for="(instruction, index) in recipe.instructions" v-bind:key="index" class="instruction">
+            <md-card-content>
+              {{ instruction }}
+            </md-card-content>
+          </md-card>
+        </div>
+        <md-dialog-actions>
+          <md-button class="md-primary" @click="showDialog = false"><md-icon>close</md-icon></md-button>
+        </md-dialog-actions>
+      </md-dialog>
     </div>
 </template>
 
 <script>
   import Vue from 'vue';
-  import {MdCard, MdButton, MdIcon} from 'vue-material/dist/components';
+  import {MdCard, MdButton, MdIcon, MdDialog} from 'vue-material/dist/components';
   import 'vue-material/dist/vue-material.min.css';
   import 'vue-material/dist/theme/default.css';
 
   Vue.use(MdCard);
   Vue.use(MdButton);
   Vue.use(MdIcon);
+  Vue.use(MdDialog);
 
   export default {
-      data() {
-          return {
-              ingredientTypes: {
+    data() {
+      return {
+        showDialog: false,
+        recipe: {},
+      };
+    },
+    mounted() {
+      let el = document.querySelector("div[data-recipe]");
+      this.recipe = JSON.parse(el.dataset.recipe);
+      console.log(this.recipe);
+    },
+    components: {
 
-              },
-              recipe: {},
-          };
-      },
-      mounted() {
-          let el = document.querySelector("div[data-recipe]");
-          this.recipe = JSON.parse(el.dataset.recipe);
-          console.log(this.recipe);
-      },
-      components: {
-
-      }
+    }
   };
 </script>

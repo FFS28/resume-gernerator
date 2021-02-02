@@ -17,11 +17,12 @@ body{
   .recipe{
     width: 100%;
 
-    & > a {
+    & > a , & > button{
       position: absolute;
-      left: 10px;
       top: 10px;
     }
+    & > a {left : 10px;}
+    & > button { right : 10px;}
 
     & > .md-card {
       min-height: calc(100vh - 20px);
@@ -90,7 +91,15 @@ body{
           padding: 10px;
         }
       }
+    }
+  }
 
+  .md-dialog {
+    .instruction {
+      margin: 10px 10px 0 10px;
+      .md-card-content{
+        font-size: 24px;
+      }
     }
   }
 }
