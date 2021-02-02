@@ -10,7 +10,7 @@ function minToHour(minutes, dense = false, showAll = false){
   if (dense) {
     let hDisplay = h;
     let mDisplay = (m < 10 ? '0' : '') + m;
-    return (h > 0 || showAll ? hDisplay : '') + (h > 0 || showAll ? ":" : "") + mDisplay;
+    return (h > 0 || showAll ? hDisplay : '') + (h > 0 || showAll ? ":" : "") + (h > 0 || showAll ? mDisplay : m);
   } else {
     let hDisplay = h > 0 ? h + " h" : "";
     let mDisplay = m > 0 ? m + " min" : "";
