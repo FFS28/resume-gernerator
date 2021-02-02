@@ -14,7 +14,7 @@
               <div v-for="recipeIngredient in recipe.recipeIngredients" v-bind:key="recipeIngredient.id">
                 <md-icon v-if="recipeIngredient.ingredient.type === 'meat'">goat</md-icon>
                 <md-icon v-if="recipeIngredient.ingredient.type === 'fish_seafood'">directions_boat</md-icon>
-                <md-icon v-if="recipeIngredient.ingredient.type === 'fruit_vegetable'">local_florist</md-icon>
+                <md-icon v-if="recipeIngredient.ingredient.type === 'fruit_vegetable_mushroom'">local_florist</md-icon>
                 <md-icon v-if="recipeIngredient.ingredient.type === 'cereal_legume'">grass</md-icon>
                 <md-icon v-if="recipeIngredient.ingredient.type === 'animal_fat'">opacity</md-icon>
                 <md-icon v-if="recipeIngredient.ingredient.type === 'vegetable_fat'">opacity</md-icon>

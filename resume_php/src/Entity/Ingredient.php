@@ -20,10 +20,11 @@ class Ingredient
 {
     const TYPE_MEAT = "meat"; // Viandes
     const TYPE_FISH_SEAFOOD = "fish_seafood"; // Poissons et fruits de mer
-    const TYPE_FRUIT_VEGETABLE   = "fruit_vegetable"; // Fruits et légumes
+    const TYPE_FRUIT_VEGETABLE_MUSHROOM   = "fruit_vegetable_mushroom"; // Fruits et légumes
     const TYPE_CEREAL_LEGUME = "cereal_legume"; // Céréales et Légumineuses
     const TYPE_ANIMAL_FAT = "animal_fat"; // Matière grasse animale
     const TYPE_VEGETABLE_FAT  = "vegetable_fat"; // Matière grasse végétale
+    const TYPE_YEAST  = "yeast"; // Levures
     const TYPE_AROMATIC_HERB  = "aromatic_herb"; // Herbes aromatiques
     const TYPE_SPICES  = "spice"; // Epices
     const TYPE_SUGAR  = "sugar"; // Sucres
@@ -35,7 +36,7 @@ class Ingredient
     const TYPES = [
         self::TYPE_MEAT => self::TYPE_MEAT,
         self::TYPE_FISH_SEAFOOD => self::TYPE_FISH_SEAFOOD,
-        self::TYPE_FRUIT_VEGETABLE => self::TYPE_FRUIT_VEGETABLE,
+        self::TYPE_FRUIT_VEGETABLE_MUSHROOM => self::TYPE_FRUIT_VEGETABLE_MUSHROOM,
         self::TYPE_CEREAL_LEGUME => self::TYPE_CEREAL_LEGUME,
         self::TYPE_ANIMAL_FAT => self::TYPE_ANIMAL_FAT,
         self::TYPE_VEGETABLE_FAT => self::TYPE_VEGETABLE_FAT,

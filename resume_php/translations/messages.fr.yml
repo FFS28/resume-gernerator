@@ -236,10 +236,11 @@ Quantity: Quantité
 
 meat: Viandes
 fish_seafood: Poissons et fruits de mer
-fruit_vegetable: Fruits et légumes
+fruit_vegetable_mushroom: Fruits, légumes et champignons
 cereal_legume: Céréales et Légumineuses
 animal_fat: Matières grasses animales
 vegetable_fat: Matières grasses végétales
+yeast: Levures
 aromatic_herb: Herbes aromatiques
 spice: Epices
 sugar: Sucres
