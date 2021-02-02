@@ -83,8 +83,12 @@
 <script>
   import Vue from 'vue';
   import {MdCard, MdButton, MdIcon, MdDialog} from 'vue-material/dist/components';
+  import NoSleep from 'nosleep.js';
   import 'vue-material/dist/vue-material.min.css';
   import 'vue-material/dist/theme/default.css';
+
+  const noSleep = new NoSleep();
+  noSleep.enable();
 
   Vue.use(MdCard);
   Vue.use(MdButton);
