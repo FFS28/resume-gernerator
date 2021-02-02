@@ -14,16 +14,24 @@ body{
     text-align: center;
   }
 
+  & > a , & > button, .ingredient {
+    .md-icon {
+      font-size: 36px !important;
+    }
+  }
+
   .recipe{
     width: 100%;
 
     & > a , & > button{
       position: absolute;
       top: 10px;
+      .md-icon{
+        color: black !important;
+      }
     }
     & > .action-back {left : 10px;}
-    & > .action-dialog { right : 10px;}
-    & > .action-fullscreen { right : 75px;}
+    & > .action-fullscreen { right : 10px;}
 
     & > .md-card {
       min-height: calc(100vh - 20px);
@@ -50,11 +58,12 @@ body{
         .ingredient{
           .md-title{
             height: 40px;
-            font-size: 20px;
+            font-size: 22px;
             line-height: 20px;
             font-weight: bold;
           }
           .md-subhead{
+            font-size: 20px;
             height: 20px;
             font-weight: bold;
             padding-top: 5px;
@@ -89,18 +98,21 @@ body{
         margin: 10px 0;
 
         .md-card-content{
-          padding: 10px;
+          padding: 10px 10px 10px 25px;
+          font-size: 22px;
+        }
+        .md-badge {
+          left : -4px;
+          font-size: 20px;
+          color: white;
+          background-color: black;
         }
       }
     }
   }
+}
 
-  .md-dialog {
-    .instruction {
-      margin: 10px 10px 0 10px;
-      .md-card-content{
-        font-size: 24px;
-      }
-    }
-  }
+
+body.fullscreen {
+  zoom: 0.5;
 }

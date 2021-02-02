@@ -30,6 +30,12 @@ body{
       @include flexbox();
       @include flex-direction(row);
       @include align-items(center);
+
+      .md-button{
+        &, .md-icon {
+          color: black !important;
+        }
+      }
     }
 
     .md-card-content{

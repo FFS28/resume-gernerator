@@ -4,7 +4,6 @@
       <md-button class="md-fab action-back" :href="'/kitchen'">
         <md-icon>arrow_back</md-icon>
       </md-button>
-      <md-button class="md-primary md-fab action-dialog" @click="showDialog = true"><md-icon>zoom_in</md-icon></md-button>
       <md-button class="md-primary md-fab action-fullscreen" @click="toggle()"><md-icon>fullscreen</md-icon></md-button>
 
       <md-card v-if="recipe">
@@ -60,34 +59,23 @@
           <div class="instructions">
             <md-card v-for="(instruction, index) in recipe.instructions" v-bind:key="index" class="instruction">
               <md-card-content>
+                <md-badge class="md-primary" :md-content="parseInt(index)+1" />
                 {{ instruction }}
               </md-card-content>
             </md-card>
           </div>
         </md-card-content>
       </md-card>
-      <md-dialog :md-active.sync="showDialog">
-        <div class="instructions">
-          <md-card v-for="(instruction, index) in recipe.instructions" v-bind:key="index" class="instruction">
-            <md-card-content>
-              {{ instruction }}
-            </md-card-content>
-          </md-card>
-        </div>
-        <md-dialog-actions>
-          <md-button class="md-primary" @click="showDialog = false"><md-icon>close</md-icon></md-button>
-        </md-dialog-actions>
-      </md-dialog>
     </div>
 </template>
 
 <script>
   import Vue from 'vue';
-  import {MdCard, MdButton, MdIcon, MdDialog} from 'vue-material/dist/components';
+  import {MdCard, MdButton, MdIcon, MdDialog, MdBadge} from 'vue-material/dist/components';
   import NoSleep from 'nosleep.js';
   import fullscreen from 'vue-fullscreen';
   import 'vue-material/dist/vue-material.min.css';
-  import 'vue-material/dist/theme/default.css';
+  import 'vue-material/dist/theme/default-dark.css';
 
   const noSleep = new NoSleep();
   noSleep.enable();
@@ -96,12 +84,13 @@
   Vue.use(MdButton);
   Vue.use(MdIcon);
   Vue.use(MdDialog);
+  Vue.use(MdBadge);
   Vue.use(fullscreen);
 
   export default {
     methods: {
       toggle() {
-        this.$fullscreen.toggle() // recommended
+        this.$fullscreen.toggle(document.body, {fullscreenClass: 'fullscreen'}) // recommended
       }
     },
     data() {

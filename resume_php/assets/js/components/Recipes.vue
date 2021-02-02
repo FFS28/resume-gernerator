@@ -68,7 +68,7 @@
   import {MdCard, MdButton, MdIcon} from 'vue-material/dist/components';
   import NoSleep from 'nosleep.js';
   import 'vue-material/dist/vue-material.min.css';
-  import 'vue-material/dist/theme/default.css';
+  import 'vue-material/dist/theme/default-dark.css';
 
   const noSleep = new NoSleep();
   noSleep.enable();
