@@ -7,11 +7,11 @@
 {%- endblock -%}
 
 {% block stylesheets %}
+    {{ encore_entry_link_tags('recipe/main') }}
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' https://fonts.googleapis.com 'unsafe-inline' 'unsafe-eval';">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic|Material+Icons">
     <meta name="viewport" content="width=device-width, initial-scale=0.5, minimum-scale=0.5, maximum-scale=0.5, user-scalable=no">
     <link rel="manifest" href="/manifest_kitchen.json">
-    {{ encore_entry_link_tags('recipe/main') }}
 {% endblock %}
 
 {% block javascripts %}

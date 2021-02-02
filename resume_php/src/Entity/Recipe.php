@@ -210,12 +210,12 @@ class Recipe
 
     public function getInstructions(): ?array
     {
-        return $this->instructions;
+        return array_values($this->instructions);
     }
 
     public function setInstructions(?array $instructions): self
     {
-        $this->instructions = $instructions;
+        $this->instructions = array_values($instructions);
 
         return $this;
     }
