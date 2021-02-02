@@ -67,21 +67,48 @@ class Recipe
 
     public function isVege(): ?bool
     {
+        /** @var RecipeIngredient $recipeIngredient */
+        foreach ($this->recipeIngredients as $recipeIngredient) {
+            if ($recipeIngredient->getIngredient()->getType() === Ingredient::TYPE_MEAT ||
+                $recipeIngredient->getIngredient()->getType() === Ingredient::TYPE_FISH_SEAFOOD) {
+                return false;
+            }
+        }
         return true;
     }
 
     public function isVegan(): ?bool
     {
-        return false;
+        /** @var RecipeIngredient $recipeIngredient */
+        foreach ($this->recipeIngredients as $recipeIngredient) {
+            if ($recipeIngredient->getIngredient()->getType() === Ingredient::TYPE_MEAT ||
+                $recipeIngredient->getIngredient()->getType() === Ingredient::TYPE_FISH_SEAFOOD ||
+                $recipeIngredient->getIngredient()->getType() === Ingredient::TYPE_ANIMAL_FAT) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public function isMeat(): ?bool
     {
+        /** @var RecipeIngredient $recipeIngredient */
+        foreach ($this->recipeIngredients as $recipeIngredient) {
+            if ($recipeIngredient->getIngredient()->getType() === Ingredient::TYPE_MEAT) {
+                return true;
+            }
+        }
         return false;
     }
 
     public function isFish(): ?bool
     {
+        /** @var RecipeIngredient $recipeIngredient */
+        foreach ($this->recipeIngredients as $recipeIngredient) {
+            if ($recipeIngredient->getIngredient()->getType() === Ingredient::TYPE_FISH_SEAFOOD) {
+                return true;
+            }
+        }
         return false;
     }
 
