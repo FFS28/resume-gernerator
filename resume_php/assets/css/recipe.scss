@@ -21,8 +21,9 @@ body{
       position: absolute;
       top: 10px;
     }
-    & > a {left : 10px;}
-    & > button { right : 10px;}
+    & > .action-back {left : 10px;}
+    & > .action-dialog { right : 10px;}
+    & > .action-fullscreen { right : 75px;}
 
     & > .md-card {
       min-height: calc(100vh - 20px);

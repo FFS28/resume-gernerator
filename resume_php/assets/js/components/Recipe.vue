@@ -1,10 +1,11 @@
 
 <template>
     <div class="recipe">
-      <md-button class="md-fab" :href="'/kitchen'">
+      <md-button class="md-fab action-back" :href="'/kitchen'">
         <md-icon>arrow_back</md-icon>
       </md-button>
-      <md-button class="md-primary md-fab" @click="showDialog = true"><md-icon>zoom_in</md-icon></md-button>
+      <md-button class="md-primary md-fab action-dialog" @click="showDialog = true"><md-icon>zoom_in</md-icon></md-button>
+      <md-button class="md-primary md-fab action-fullscreen" @click="toggle()"><md-icon>fullscreen</md-icon></md-button>
 
       <md-card v-if="recipe">
         <md-card-header>
@@ -84,6 +85,7 @@
   import Vue from 'vue';
   import {MdCard, MdButton, MdIcon, MdDialog} from 'vue-material/dist/components';
   import NoSleep from 'nosleep.js';
+  import fullscreen from 'vue-fullscreen';
   import 'vue-material/dist/vue-material.min.css';
   import 'vue-material/dist/theme/default.css';
 
@@ -94,11 +96,18 @@
   Vue.use(MdButton);
   Vue.use(MdIcon);
   Vue.use(MdDialog);
+  Vue.use(fullscreen);
 
   export default {
+    methods: {
+      toggle() {
+        this.$fullscreen.toggle() // recommended
+      }
+    },
     data() {
       return {
         showDialog: false,
+        fullscreen: false,
         recipe: {},
       };
     },
