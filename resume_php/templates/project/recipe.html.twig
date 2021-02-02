@@ -19,7 +19,7 @@
 {% endblock %}
 
 {% block body %}
-    <div ref="recipe" data-recipe='{{ recipe | json_encode | raw }}'></div>
+    <div ref="recipe" data-recipe='{{ recipe | json_encode }}'></div>
     <div id="recipe">
         <app></app>
     </div>

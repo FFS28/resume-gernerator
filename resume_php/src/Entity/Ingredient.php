@@ -40,6 +40,7 @@ class Ingredient
         self::TYPE_CEREAL_LEGUME => self::TYPE_CEREAL_LEGUME,
         self::TYPE_ANIMAL_FAT => self::TYPE_ANIMAL_FAT,
         self::TYPE_VEGETABLE_FAT => self::TYPE_VEGETABLE_FAT,
+        self::TYPE_YEAST => self::TYPE_YEAST,
         self::TYPE_AROMATIC_HERB => self::TYPE_AROMATIC_HERB,
         self::TYPE_SPICES => self::TYPE_SPICES,
         self::TYPE_SUGAR => self::TYPE_SUGAR,
