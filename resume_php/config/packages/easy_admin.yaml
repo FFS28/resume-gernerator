@@ -376,6 +376,7 @@ easy_admin:
           - nbSlices
           - cookingDuration
           - preparationDuration
+          - waitingDuration
           - { property : recipeIngredients, type: array }
     Ingredient:
       class: App\Entity\Ingredient
