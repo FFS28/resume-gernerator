@@ -217,3 +217,38 @@ Captcha: Captcha
 New message: Nouveau message
 Message sended: Message envoyé
 Notifications: Notifications
+
+Kitchen: Cuisine
+Ingredient: Ingrédient
+Ingredients: Ingrédients
+Recipe: Recette
+Recipes: Recettes
+RecipeIngredient: Ingrédient
+recipeingredient: Ingrédient
+Recipe ingredients: Ingrédients
+Is vege: Végétarien
+Is vegan: Végan
+Preparation duration: Temps de préparation (min)
+Cooking duration: Temps de cuisson (min)
+Nb slices: Nombre de parts
+Instructions: Instructions
+Quantity: Quantité
+
+meat: Viandes
+fish_seafood: Poissons et fruits de mer
+fruit_vegetable: Fruits et légumes
+cereal_legume: Céréales et Légumineuses
+animal_fat: Matières grasses animales
+vegetable_fat: Matières grasses végétales
+aromatic_herb: Herbes aromatiques
+spice: Epices
+sugar: Sucres
+salt: Sels
+alcohol: Alcools
+water: Eau
+gram: g
+kilogram: kg
+liter: l
+centiliter: cl
+teaspoon: c-à-c
+tablespoon: c-à-s

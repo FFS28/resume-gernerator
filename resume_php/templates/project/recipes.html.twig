@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Kitchen Party{% endblock %}
+
+{%- block description -%}
+
+{%- endblock -%}
+
+{% block stylesheets %}
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' https://fonts.googleapis.com 'unsafe-inline' 'unsafe-eval';">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic|Material+Icons">
+    <meta name="viewport" content="width=device-width, initial-scale=0.7, minimum-scale=0.7, maximum-scale=0.7, user-scalable=no">
+    <link rel="manifest" href="/manifest_kitchen.json">
+    {{ encore_entry_link_tags('recipes/main') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('recipes/main') }}
+{% endblock %}
+
+{% block body %}
+    <div ref="recipes" data-recipes='{{ recipes | json_encode | raw }}'></div>
+    <div ref="ingredients" data-ingredients='{{ ingredients | json_encode | raw }}'></div>
+    <div id="recipes">
+        <app></app>
+    </div>
+{% endblock %}
