@@ -15,8 +15,8 @@
                 <span v-if="recipe.vegan">Vegan</span>
               )</span>
               <span v-if="recipe.meat || recipe.fish">(<md-icon>goat</md-icon>
-                <span v-if="recipe.meat">Poisson</span>
-                <span v-if="recipe.fish">Viande</span>
+                <span v-if="recipe.fish">Poisson</span>
+                <span v-if="recipe.meat">Viande</span>
               )</span>
               <span v-if="recipe.nbSlices"><md-icon class="md-size">local_pizza</md-icon><span>{{ recipe.nbSlices }} parts</span></span>
             </div>
