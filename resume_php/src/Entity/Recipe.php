@@ -105,13 +105,19 @@ class Recipe
 
         usort($recipeIngredients,
             function($recipeIngredientA, $recipeIngredientB) {
-                $a = array_search($recipeIngredientA->getIngredient()->getType(), Ingredient::TYPES);
-                $b = array_search($recipeIngredientB->getIngredient()->getType(), Ingredient::TYPES);
+                $a = array_search($recipeIngredientA->getIngredient()->getType(), array_values(Ingredient::TYPES));
+                $b = array_search($recipeIngredientB->getIngredient()->getType(), array_values(Ingredient::TYPES));
 
                 if ($a == $b) {
-                    return 0;
+                    $a = $recipeIngredientA->getQuantity();
+                    $b = $recipeIngredientB->getQuantity();
+
+                    if ($a == $b) {
+                        return 0;
+                    }
+                    return ($a > $b) ? -1 : 1;
                 }
-                return ($a < $b) ? -1 : 1;
+                return ($a > $b) ? 1 : -1;
         });
 
         return $recipeIngredients;

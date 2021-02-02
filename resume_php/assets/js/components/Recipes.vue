@@ -18,6 +18,7 @@
                 <md-icon v-if="recipeIngredient.ingredient.type === 'cereal_legume'">grass</md-icon>
                 <md-icon v-if="recipeIngredient.ingredient.type === 'animal_fat'">opacity</md-icon>
                 <md-icon v-if="recipeIngredient.ingredient.type === 'vegetable_fat'">opacity</md-icon>
+                <md-icon v-if="recipeIngredient.ingredient.type === 'yeast'">bubble_chart</md-icon>
                 <md-icon v-if="recipeIngredient.ingredient.type === 'aromatic_herb'">eco</md-icon>
                 <md-icon v-if="recipeIngredient.ingredient.type === 'spice'">bolt</md-icon>
                 <md-icon v-if="recipeIngredient.ingredient.type === 'sugar'">view_comfortable</md-icon>
