@@ -16,6 +16,7 @@ class RecipeIngredient
 {
     const UNIT_GRAM   = "g";
     const UNIT_KILOGRAM   = "kg";
+    const UNIT_MILLILITER   = "ml";
     const UNIT_CENTILITER   = "cl";
     const UNIT_LITER   = "l";
     const UNIT_TABLESPOON   = "c-à-s";
@@ -25,6 +26,7 @@ class RecipeIngredient
     const UNITS = [
         self::UNIT_GRAM => self::UNIT_GRAM,
         self::UNIT_KILOGRAM => self::UNIT_KILOGRAM,
+        self::UNIT_MILLILITER => self::UNIT_MILLILITER,
         self::UNIT_CENTILITER => self::UNIT_CENTILITER,
         self::UNIT_LITER => self::UNIT_LITER,
         self::UNIT_TABLESPOON => self::UNIT_TABLESPOON,
@@ -104,6 +106,9 @@ class RecipeIngredient
                     $str .= ' ';
                     if ($this->getMeasure()) {
                         $str .= $this->getMeasure();
+                        if ($this->getQuantity() > 1) {
+                            $str .= 's';
+                        }
                     } else if ($this->getUnit()) {
                         $str .= $this->getUnit();
                     }

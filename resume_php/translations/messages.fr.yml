@@ -230,6 +230,7 @@ Is vege: Végétarien
 Is vegan: Végan
 Preparation duration: Temps de préparation (min)
 Cooking duration: Temps de cuisson (min)
+Waiting duration: Temps d'attente (min)
 Nb slices: Nombre de parts
 Instructions: Instructions
 Quantity: Quantité
@@ -247,9 +248,3 @@ sugar: Sucres
 salt: Sels
 alcohol: Alcools
 water: Eau
-gram: g
-kilogram: kg
-liter: l
-centiliter: cl
-teaspoon: c-à-c
-tablespoon: c-à-s

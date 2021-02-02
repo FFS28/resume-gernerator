@@ -46,6 +46,11 @@ class Recipe
     private $preparationDuration;
 
     /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $waitingDuration;
+
+    /**
      * @ORM\Column(type="array", nullable=true)
      */
     private $instructions = [];
@@ -242,6 +247,18 @@ class Recipe
                 $recipeIngredient->setRecipe(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getWaitingDuration(): ?int
+    {
+        return $this->waitingDuration;
+    }
+
+    public function setWaitingDuration(?int $waitingDuration): self
+    {
+        $this->waitingDuration = $waitingDuration;
 
         return $this;
     }
