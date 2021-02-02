@@ -38,16 +38,16 @@
                 <md-icon v-if="recipe.vege && !recipe.vegan">goat</md-icon>
                 <md-icon v-if="recipe.vegan">eco</md-icon>
               </md-button>
-              <md-button v-if="recipe.cookingDuration" class="md-fab" style="background-color: white;">
+              <md-button v-if="recipe.cookingDuration" class="md-fab" :md-ripple="false" style="background-color: white;">
                 <md-icon style="color: black;">microwave</md-icon><span>{{ recipe.cookingDuration }}</span>
               </md-button>
-              <md-button v-if="recipe.preparationDuration" class="md-fab" style="background-color: white;">
+              <md-button v-if="recipe.preparationDuration" class="md-fab" :md-ripple="false" style="background-color: white;">
                 <md-icon style="color: black;">av_timer</md-icon><span>{{ recipe.preparationDuration }}</span>
               </md-button>
-              <md-button v-if="recipe.waitingDuration" class="md-fab" style="background-color: white;">
+              <md-button v-if="recipe.waitingDuration" class="md-fab" :md-ripple="false" style="background-color: white;">
                 <md-icon style="color: black;">snooze</md-icon><span>{{ recipe.waitingDuration }}</span>
               </md-button>
-              <md-button v-if="recipe.nbSlices" class="md-fab" style="background-color: white;">
+              <md-button v-if="recipe.nbSlices" class="md-fab" :md-ripple="false" style="background-color: white;">
                 <md-icon style="color: black;">local_pizza</md-icon><span>{{ recipe.nbSlices }}</span>
               </md-button>
               <md-card-expand-trigger>
