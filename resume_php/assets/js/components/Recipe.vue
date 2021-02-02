@@ -51,9 +51,9 @@
             </md-card>
             <md-card class="info">
               <md-card-content>
-                <div class="md-title" v-if="recipe.cookingDuration"><md-icon class="md-size-2x">microwave</md-icon><span>{{ recipe.cookingDuration }} min</span></div>
-                <div class="md-title" v-if="recipe.preparationDuration"><md-icon class="md-size-2x">av_timer</md-icon><span>{{ recipe.preparationDuration }} min</span></div>
-                <div class="md-title" v-if="recipe.waitingDuration"><md-icon class="md-size-2x">snooze</md-icon><span>{{ recipe.waitingDuration }} min</span></div>
+                <div class="md-title" v-if="recipe.preparationDuration"><md-icon class="md-size-2x">av_timer</md-icon><span>{{ minToHour(recipe.preparationDuration) }}</span></div>
+                <div class="md-title" v-if="recipe.cookingDuration"><md-icon class="md-size-2x">microwave</md-icon><span>{{ minToHour(recipe.cookingDuration) }}</span></div>
+                <div class="md-title" v-if="recipe.waitingDuration"><md-icon class="md-size-2x">snooze</md-icon><span>{{ minToHour(recipe.waitingDuration) }}</span></div>
               </md-card-content>
             </md-card>
           </div>
@@ -78,6 +78,7 @@
   import fullscreen from 'vue-fullscreen';
   import 'vue-material/dist/vue-material.min.css';
   import 'vue-material/dist/theme/default-dark.css';
+  import tools from '../functions';
 
   const noSleep = new NoSleep();
   noSleep.enable();
@@ -91,6 +92,9 @@
 
   export default {
     methods: {
+      minToHour(min) {
+        return tools.minToHour(min, true, true);
+      },
       toggle() {
         this.$fullscreen.toggle(document.body, {fullscreenClass: 'fullscreen'}) // recommended
       }

@@ -1,0 +1,21 @@
+function minToHour(minutes, dense = false, showAll = false){
+  let d = Number(minutes);
+  if (d === 0) {
+    return '';
+  }
+
+  let h = Math.floor(d / 60);
+  let m = Math.floor(d % 60);
+
+  if (dense) {
+    let hDisplay = h;
+    let mDisplay = (m < 10 ? '0' : '') + m;
+    return (h > 0 || showAll ? hDisplay : '') + (h > 0 || showAll ? ":" : "") + mDisplay;
+  } else {
+    let hDisplay = h > 0 ? h + " h" : "";
+    let mDisplay = m > 0 ? m + " min" : "";
+    return hDisplay + (h > 0 && m > 0 ? " " : "") + mDisplay;
+  }
+}
+
+export default {minToHour};

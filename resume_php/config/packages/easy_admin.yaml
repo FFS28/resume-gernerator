@@ -367,16 +367,16 @@ easy_admin:
           - name
           - { property: 'recipeIngredients', type: 'easyadmin_autocomplete', type_options: { class: 'App\Entity\RecipeIngredient', attr: { create: true } } }
           - nbSlices
-          - cookingDuration
           - preparationDuration
+          - cookingDuration
           - waitingDuration
           - { property: 'instructions', type: 'collection', allow_delete: true, delete_empty: true, type_options: { entry_type: 'textarea', entry_options: {attr: {multiline: true, rows: 6, style: 'display:inline-block'}} } }
       list:
         fields:
           - name
           - nbSlices
-          - cookingDuration
           - preparationDuration
+          - cookingDuration
           - waitingDuration
           - { property : recipeIngredients, type: array }
     Ingredient:

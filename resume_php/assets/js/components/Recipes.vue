@@ -38,14 +38,14 @@
                 <md-icon v-if="recipe.vege && !recipe.vegan">goat</md-icon>
                 <md-icon v-if="recipe.vegan">eco</md-icon>
               </md-button>
-              <md-button v-if="recipe.cookingDuration" class="md-fab" :md-ripple="false" style="background-color: white;">
-                <md-icon style="color: black;">microwave</md-icon><span>{{ recipe.cookingDuration }}</span>
-              </md-button>
               <md-button v-if="recipe.preparationDuration" class="md-fab" :md-ripple="false" style="background-color: white;">
-                <md-icon style="color: black;">av_timer</md-icon><span>{{ recipe.preparationDuration }}</span>
+                <md-icon style="color: black;">av_timer</md-icon><span>{{ minToHour(recipe.preparationDuration) }}</span>
+              </md-button>
+              <md-button v-if="recipe.cookingDuration" class="md-fab" :md-ripple="false" style="background-color: white;">
+                <md-icon style="color: black;">microwave</md-icon><span>{{ minToHour(recipe.cookingDuration) }}</span>
               </md-button>
               <md-button v-if="recipe.waitingDuration" class="md-fab" :md-ripple="false" style="background-color: white;">
-                <md-icon style="color: black;">snooze</md-icon><span>{{ recipe.waitingDuration }}</span>
+                <md-icon style="color: black;">snooze</md-icon><span>{{ minToHour(recipe.waitingDuration) }}</span>
               </md-button>
               <md-button v-if="recipe.nbSlices" class="md-fab" :md-ripple="false" style="background-color: white;">
                 <md-icon style="color: black;">local_pizza</md-icon><span>{{ recipe.nbSlices }}</span>
@@ -73,6 +73,7 @@
   import NoSleep from 'nosleep.js';
   import 'vue-material/dist/vue-material.min.css';
   import 'vue-material/dist/theme/default-dark.css';
+  import tools from '../functions';
 
   const noSleep = new NoSleep();
   noSleep.enable();
@@ -82,6 +83,11 @@
   Vue.use(MdIcon);
 
   export default {
+    methods: {
+      minToHour(min) {
+        return tools.minToHour(min, true);
+      }
+    },
     data() {
       return {
         recipes: [],
