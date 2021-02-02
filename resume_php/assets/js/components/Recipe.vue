@@ -18,6 +18,7 @@
                 <span v-if="recipe.meat">Poisson</span>
                 <span v-if="recipe.fish">Viande</span>
               )</span>
+              <span v-if="recipe.nbSlices"><md-icon class="md-size">local_pizza</md-icon><span>{{ recipe.nbSlices }} parts</span></span>
             </div>
 
           </md-card-header-text>
@@ -53,7 +54,6 @@
                 <div class="md-title" v-if="recipe.cookingDuration"><md-icon class="md-size-2x">microwave</md-icon><span>{{ recipe.cookingDuration }} min</span></div>
                 <div class="md-title" v-if="recipe.preparationDuration"><md-icon class="md-size-2x">av_timer</md-icon><span>{{ recipe.preparationDuration }} min</span></div>
                 <div class="md-title" v-if="recipe.waitingDuration"><md-icon class="md-size-2x">snooze</md-icon><span>{{ recipe.waitingDuration }} min</span></div>
-                <div class="md-title" v-if="recipe.nbSlices"><md-icon class="md-size-2x">local_pizza</md-icon><span>{{ recipe.nbSlices }}</span></div>
               </md-card-content>
             </md-card>
           </div>

@@ -13,7 +13,7 @@ body{
   @include flex-wrap(wrap);
 
   .recipe {
-    width: 400px;
+    width: 420px;
     margin: 10px;
 
     &:not(.md-expand-active) {
