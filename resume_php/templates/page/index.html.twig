@@ -167,7 +167,11 @@
     {% endif %}
     <div id="experiences" class="section text-center {% if format %}html-pdf{% endif %}">
         <h2>
-            {{ 'Main experiences' | trans }}
+            {% if all is defined and all %}
+                {{ 'Experiences' | trans }}
+            {% else %}
+                {{ 'Main experiences' | trans }}
+            {% endif %}
         </h2>
         <ul>
             {% for experience in experiences %}

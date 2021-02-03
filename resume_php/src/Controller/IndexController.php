@@ -50,7 +50,8 @@ class IndexController extends AbstractController
         $form->handleRequest($request);
 
         $format = $request->query->get('format');
-        $experiencesFilter = $request->query->get('all') ? [] : ['onHomepage' => true];
+        $all = $request->query->get('all');
+        $experiencesFilter = $all ? [] : ['onHomepage' => true];
 
         $data = [
             'attributes' => $attributeRepository->findAllIndexedBy('slug', false),
@@ -61,6 +62,7 @@ class IndexController extends AbstractController
             'hobbies' => $hobbyRepository->findAll(),
             'links' => $linkRepository->findAll(),
             'format' => $format,
+            'all' => $all,
             'contactForm' => $form->createView(),
             'filename' => 'jeremy-achain-cv',
             'messageSended' => $request->get('messageSended')
