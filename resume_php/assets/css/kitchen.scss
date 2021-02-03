@@ -9,14 +9,12 @@
 .type_yeast{background-color: #6d4c41 !important;} // marron
 .type_aromatic_herb{background-color: #880e4f !important;} // violet
 .type_spice{background-color: #e64a19 !important; } // orange
-.type_sugar{background-color: white !important; }
-.type_salt{background-color: white !important; }
+.type_sugar{background-color: #ea80fc !important; }
+.type_salt{background-color: #9e9e9e !important; }
 .type_alcohol{background-color: white !important; }
 .type_water{background-color: white !important; }
 
-.type_meat i, .type_fruit_vegetable_mushroom i, .type_vegan i,  .type_aromatic_herb i {
-  color: white !important;
-}
+.type_meat i, .type_fruit_vegetable_mushroom i, .type_vegan i,  .type_aromatic_herb i,
 .type_fish_seafood i, .type_fish i, .type_cereal_legume i, .type_animal_fat i, .type_vegetable_fat i, .type_vege i,
 .type_spice i,  .type_sugar i,  .type_salt i,  .type_alcohol i,  .type_water i, .type_yeast i{
   color: black  !important;

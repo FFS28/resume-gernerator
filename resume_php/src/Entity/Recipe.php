@@ -117,6 +117,44 @@ class Recipe
         return false;
     }
 
+    public function isSweet(): ?bool
+    {
+        $sugar = 0;
+        $salt = 0;
+        /** @var RecipeIngredient $recipeIngredient */
+        foreach ($this->recipeIngredients as $recipeIngredient) {
+            if ($recipeIngredient->getIngredient()->getType() === Ingredient::TYPE_FISH_SEAFOOD
+                || $recipeIngredient->getIngredient()->getType() === Ingredient::TYPE_MEAT) {
+                return false;
+            } elseif ($recipeIngredient->getIngredient()->getType() === Ingredient::TYPE_SUGAR) {
+                $sugar += $recipeIngredient->getEquivalentGram();
+            } elseif ($recipeIngredient->getIngredient()->getType() === Ingredient::TYPE_SALT) {
+                $salt += $recipeIngredient->getEquivalentGram();
+            }
+
+        }
+        return $sugar > $salt;
+    }
+
+    public function isSalty(): ?bool
+    {
+        $sugar = 0;
+        $salt = 0;
+        /** @var RecipeIngredient $recipeIngredient */
+        foreach ($this->recipeIngredients as $recipeIngredient) {
+            if ($recipeIngredient->getIngredient()->getType() === Ingredient::TYPE_FISH_SEAFOOD
+                || $recipeIngredient->getIngredient()->getType() === Ingredient::TYPE_MEAT) {
+                return true;
+            } elseif ($recipeIngredient->getIngredient()->getType() === Ingredient::TYPE_SUGAR) {
+                $sugar += $recipeIngredient->getEquivalentGram();
+            } elseif ($recipeIngredient->getIngredient()->getType() === Ingredient::TYPE_SALT) {
+                $salt += $recipeIngredient->getEquivalentGram();
+            }
+
+        }
+        return $salt > $sugar;
+    }
+
     public function toArray(): array
     {
         $encoder    = new JsonEncoder();

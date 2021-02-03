@@ -57,7 +57,7 @@
               </md-card-expand-trigger>
             </div>
             <div>
-              <md-button class="md-fab md-primary" :href="'/kitchen/' + recipe.id">
+              <md-button class="md-fab" :href="'/kitchen/' + recipe.id" v-bind:class="{type_sugar: recipe.sweet, type_salt: recipe.salty, 'md-primary': !recipe.sweet && !recipe.salty }">
                 <md-icon>local_dining</md-icon>
               </md-button>
             </div>
