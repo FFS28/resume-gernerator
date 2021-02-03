@@ -35,6 +35,8 @@ body{
         &, .md-icon {
           color: black !important;
         }
+        &.bg_black{ background-color: black !important;  }
+        &.bg_black i.md-icon{color: white !important;}
       }
       .md-card-expand-trigger .md-icon{
         color: white !important;
