@@ -123,9 +123,10 @@ class Recipe
         $salt = 0;
         /** @var RecipeIngredient $recipeIngredient */
         foreach ($this->recipeIngredients as $recipeIngredient) {
-            if ($recipeIngredient->getIngredient()->getType() === Ingredient::TYPE_FISH_SEAFOOD
-                || $recipeIngredient->getIngredient()->getType() === Ingredient::TYPE_MEAT) {
+            if ($recipeIngredient->getIngredient()->isSalty() === true) {
                 return false;
+            } elseif ($recipeIngredient->getIngredient()->isSweet() === true) {
+                return true;
             } elseif ($recipeIngredient->getIngredient()->getType() === Ingredient::TYPE_SUGAR) {
                 $sugar += $recipeIngredient->getEquivalentGram();
             } elseif ($recipeIngredient->getIngredient()->getType() === Ingredient::TYPE_SALT) {
@@ -142,15 +143,15 @@ class Recipe
         $salt = 0;
         /** @var RecipeIngredient $recipeIngredient */
         foreach ($this->recipeIngredients as $recipeIngredient) {
-            if ($recipeIngredient->getIngredient()->getType() === Ingredient::TYPE_FISH_SEAFOOD
-                || $recipeIngredient->getIngredient()->getType() === Ingredient::TYPE_MEAT) {
+            if ($recipeIngredient->getIngredient()->isSalty() === true) {
                 return true;
+            } elseif ($recipeIngredient->getIngredient()->isSweet() === true) {
+                return false;
             } elseif ($recipeIngredient->getIngredient()->getType() === Ingredient::TYPE_SUGAR) {
                 $sugar += $recipeIngredient->getEquivalentGram();
             } elseif ($recipeIngredient->getIngredient()->getType() === Ingredient::TYPE_SALT) {
                 $salt += $recipeIngredient->getEquivalentGram();
             }
-
         }
         return $salt > $sugar;
     }

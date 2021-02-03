@@ -76,6 +76,31 @@ class Ingredient
         $this->recipeIngredients = new ArrayCollection();
     }
 
+    public function isSalty(): ?bool
+    {
+        if ($this->getType() === Ingredient::TYPE_FISH_SEAFOOD
+            || $this->getType() === Ingredient::TYPE_MEAT) {
+            return true;
+        } elseif (in_array($this->getName(), [
+            'Ail', 'Moutarde', 'Fromage râpé', 'Herbes de provonce'
+        ])) {
+            return true;
+        }
+
+        return null;
+    }
+
+    public function isSweet(): ?bool
+    {
+        if (in_array($this->getName(), [
+            'Fraise'
+        ])) {
+            return true;
+        }
+
+        return null;
+    }
+
     public function toArray(): array
     {
         $encoder    = new JsonEncoder();
@@ -172,7 +197,7 @@ class Ingredient
         if ($this->recipeIngredients->contains($recipeIngredient)) {
             $this->recipeIngredients->removeElement($recipeIngredient);
             // set the owning side to null (unless already changed)
-            if ($recipeIngredient->getIngredient() === $this) {
+            if ($this === $this) {
                 $recipeIngredient->setIngredient(null);
             }
         }
