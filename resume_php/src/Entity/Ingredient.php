@@ -66,11 +66,6 @@ class Ingredient
      */
     private $type;
 
-    /**
-     * @ORM\OneToMany(targetEntity=RecipeIngredient::class, mappedBy="ingredient", orphanRemoval=true)
-     */
-    private $recipeIngredients;
-
     public function __construct()
     {
         $this->recipeIngredients = new ArrayCollection();
@@ -172,36 +167,5 @@ class Ingredient
     {
         return $this->getIsVege()
             && $this->type !== self::TYPE_ANIMAL_FAT;
-    }
-
-    /**
-     * @return Collection|RecipeIngredient[]
-     */
-    public function getRecipeIngredients(): Collection
-    {
-        return $this->recipeIngredients;
-    }
-
-    public function addRecipeIngredient(RecipeIngredient $recipeIngredient): self
-    {
-        if (!$this->recipeIngredients->contains($recipeIngredient)) {
-            $this->recipeIngredients[] = $recipeIngredient;
-            $recipeIngredient->setIngredient($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRecipeIngredient(RecipeIngredient $recipeIngredient): self
-    {
-        if ($this->recipeIngredients->contains($recipeIngredient)) {
-            $this->recipeIngredients->removeElement($recipeIngredient);
-            // set the owning side to null (unless already changed)
-            if ($this === $this) {
-                $recipeIngredient->setIngredient(null);
-            }
-        }
-
-        return $this;
     }
 }
