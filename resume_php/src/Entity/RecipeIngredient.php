@@ -120,21 +120,23 @@ class RecipeIngredient
 
     public function getEquivalentGram(): ?int
     {
+        $quantity = $this->getQuantity() ? $this->getQuantity() : 1;
+
         switch ($this->getMeasure()) {
             case 'pincée':
-                return $this->getQuantity();
+                return $quantity;
         }
 
         switch ($this->getUnit()) {
             case self::UNIT_TABLESPOON:
-                return $this->getQuantity() * 15;
+                return $quantity * 15;
 
             case self::UNIT_TEASPOON:
-                return $this->getQuantity() * 5;
+                return $quantity * 5;
 
             case self::UNIT_GRAM:
             default:
-                return $this->getQuantity();
+                return $quantity;
         }
     }
 
