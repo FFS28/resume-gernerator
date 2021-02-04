@@ -170,6 +170,18 @@ class Recipe
         return json_decode($serializer->serialize($this, 'json'), true);
     }
 
+    public function getIngredientIds(): array
+    {
+        $ids = [];
+
+        /** @var RecipeIngredient $recipeIngredient */
+        foreach ($this->recipeIngredients as $recipeIngredient) {
+            $ids[] = $recipeIngredient->getIngredient()->getId();
+        }
+
+        return $ids;
+    }
+
     public function orderedIngredientsByType(): array {
         /** @var RecipeIngredient[] $recipeIngredients */
         $recipeIngredients = $this->getRecipeIngredients()->toArray();

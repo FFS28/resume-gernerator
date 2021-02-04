@@ -7170,6 +7170,11 @@ vue-material@^1.0.0-beta-15:
     vue-github-buttons "^3.1.0"
     vue-toc "0.0.1"
 
+vue-multiselect@^2.1.6:
+  version "2.1.6"
+  resolved "https://registry.yarnpkg.com/vue-multiselect/-/vue-multiselect-2.1.6.tgz#5be5d811a224804a15c43a4edbb7485028a89c7f"
+  integrity sha512-s7jmZPlm9FeueJg1RwJtnE9KNPtME/7C8uRWSfp9/yEN4M8XcS/d+bddoyVwVnvFyRh9msFo0HWeW0vTL8Qv+w==
+
 vue-slide-bar@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/vue-slide-bar/-/vue-slide-bar-1.2.0.tgz#d77e1c09ffff35a205109c532d0eefbfc39b217f"

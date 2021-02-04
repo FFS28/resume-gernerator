@@ -18,4 +18,10 @@ function minToHour(minutes, dense = false, showAll = false){
   }
 }
 
-export default {minToHour};
+function normalize(str) {
+  str = str.toLowerCase();
+  str = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  return str;
+}
+
+export default {minToHour, normalize};

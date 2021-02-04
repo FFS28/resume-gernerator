@@ -5,11 +5,52 @@ body{
   margin: 0;
 }
 
+.md-toolbar {
+  height: 80px;
+
+  .search-field {
+    margin: 0 20px 10px 20px;
+  }
+  .multiselect {
+    max-height: 40px;
+    margin-top: 6px;
+
+    .multiselect__tags, input {
+      background-color: transparent;
+    }
+    input, input::placeholder, .multiselect__placeholder {
+      color: white;
+    }
+    .multiselect__tags{
+      @include flexbox();
+      @include flex-direction(row);
+
+      background-color: transparent;
+      border-radius: 0;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+
+      .multiselect__tags-wrap{
+        @include flexbox();
+        @include flex-direction(row);
+
+        .multiselect__tag{
+          margin-bottom: 10px;
+        }
+      }
+    }
+    .multiselect__select::before{
+      border-color: white transparent transparent;
+    }
+  }
+}
+
 .recipes{
   @include flexbox();
   @include flex-direction(row);
   @include justify-content(center);
-  @include align-items(top);
+  @include align-items(center);
   @include flex-wrap(wrap);
 
   .recipe {
