@@ -7,7 +7,7 @@
 
           </div>
 
-          <md-field md-layout="box" class="search-field">
+          <md-field md-layout="box" class="search-field" md-clearable>
             <label>Nom</label>
             <md-input v-model="form.search"></md-input>
           </md-field>
