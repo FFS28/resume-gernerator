@@ -101,7 +101,7 @@ class RecipeIngredient
         $str = '';
         if ($this->getMeasure() || $this->getQuantity()) {
             if ($this->getQuantity()) {
-                $str .= $this->getQuantity();
+                $str .= $this->getQuantity() == 0.5 ? '1/2' : $this->getQuantity();
                 if ($this->getMeasure() || $this->getUnit()) {
                     $str .= ' ';
                     if ($this->getMeasure()) {

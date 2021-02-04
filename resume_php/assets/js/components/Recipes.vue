@@ -160,6 +160,17 @@
           if (recipeA.sweet) sortA = -1;
           if (recipeB.sweet) sortB = -1;
 
+          if (sortA === sortB) {
+            if (recipeA.vegan) sortA = 4;
+            if (recipeB.vegan) sortB = 4;
+            if (recipeA.vege) sortA = 3;
+            if (recipeB.vege) sortB = 3;
+            if (recipeA.meat) sortA = 2;
+            if (recipeB.meat) sortB = 2;
+            if (recipeA.fish) sortA = 1;
+            if (recipeB.fish) sortB = 1;
+          }
+
           return sortB - sortA;
         });
 
