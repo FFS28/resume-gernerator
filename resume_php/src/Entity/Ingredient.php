@@ -77,7 +77,7 @@ class Ingredient
             || $this->getType() === Ingredient::TYPE_MEAT) {
             return true;
         } elseif (in_array($this->getName(), [
-            'Ail', 'Moutarde', 'Fromage râpé', 'Herbes de provence'
+            'Ail', 'Moutarde', 'Fromage râpé', 'Herbes de provence', 'Tomate'
         ])) {
             return true;
         }
