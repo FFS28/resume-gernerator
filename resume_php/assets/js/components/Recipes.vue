@@ -151,6 +151,18 @@
           }
         });
 
+        recipes.sort((recipeA, recipeB) => {
+          let sortA = 0;
+          let sortB = 0;
+
+          if (recipeA.salty) sortA = 1;
+          if (recipeB.salty) sortB = 1;
+          if (recipeA.sweet) sortA = -1;
+          if (recipeB.sweet) sortB = -1;
+
+          return sortB - sortA;
+        });
+
         return recipes;
       },
       minToHour(min) {
