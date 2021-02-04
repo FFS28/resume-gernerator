@@ -145,7 +145,7 @@
         this.recipes.forEach(recipe => {
           if (
               (this.form.ingredients.length === 0 || selectedIngredientIds.every(id => recipe.ingredientIds.indexOf(id) > -1))
-              && tools.normalize(recipe.name).search(this.form.search) > -1
+              && tools.normalize(recipe.name).search(this.form.search.toLowerCase()) > -1
           ) {
             recipes.push(recipe);
           }
