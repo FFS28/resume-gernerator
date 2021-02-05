@@ -11,6 +11,7 @@ parameters:
     COMPANY_NAME: '%env(COMPANY_NAME)%'
     PDF_DIRECTORY: '%kernel.project_dir%%env(DIRECTORY_INVOICE)%'
     PROOF_DIRECTORY: 'upload%env(DIRECTORY_PURCHASE)%'
+    RECIPE_DIRECTORY: 'upload%env(DIRECTORY_RECIPE)%'
 
 services:
     # default configuration for services in *this* file

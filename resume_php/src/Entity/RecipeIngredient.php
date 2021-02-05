@@ -47,7 +47,7 @@ class RecipeIngredient
     private $recipe;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Ingredient::class, inversedBy="recipeIngredients")
+     * @ORM\ManyToOne(targetEntity=Ingredient::class)
      * @ORM\JoinColumn(nullable=false)
      */
     private $ingredient;

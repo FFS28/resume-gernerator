@@ -29,6 +29,7 @@ class KitchenController extends AbstractController
     private function recipeToArray(Recipe $recipe, $translator): array
     {
         $recipeSerialized = $recipe->toArray();
+        $recipeSerialized['imagePath'] = '/' . $this->getParameter('RECIPE_DIRECTORY') . $recipeSerialized['image'];
         $recipeSerialized['recipeIngredients'] = [];
 
         foreach ($recipe->orderedIngredientsByType() as $recipeIngredient) {
