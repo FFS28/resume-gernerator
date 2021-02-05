@@ -57,9 +57,9 @@ body{
     width: 460px;
     margin: 10px;
 
-    &:not(.md-expand-active) {
+    /*&:not(.md-expand-active) {
       height: 176px;
-    }
+    }*/
 
     .md-title{
       text-align: center;
@@ -89,4 +89,19 @@ body{
       i { width: 20px;}
     }
   }
+}
+
+.center-cropped {
+  width: 100vh;
+  height: 100vw;
+  background-position: center center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+/* Set the image to fill its parent and make transparent */
+.center-cropped img {
+  min-height: 100%;
+  min-width: 100%;
+  opacity: 0;
 }

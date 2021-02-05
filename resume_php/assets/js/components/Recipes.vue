@@ -28,6 +28,10 @@
       </md-app-toolbar>
       <md-app-content class="recipes">
         <md-card v-for="recipe in listRecipes()" v-bind:key="recipe.id" class="recipe" >
+          <md-card-media v-if="recipe.image">
+            <img :src="recipe.imagePath" v-on:click="showModal(recipe)">
+          </md-card-media>
+
           <md-card-header>
             <md-card-header-text>
               <div class="md-title">{{ recipe.name }}</div>
@@ -92,6 +96,12 @@
         </md-card>
       </md-app-content>
     </md-app>
+    <md-dialog :md-active.sync="modalShowed">
+      <div class="center-cropped"
+           v-bind:style="{'background-image': 'url(\'' + (selectedRecipe ? selectedRecipe.imagePath : '') + '\')'}">
+        <img :src="selectedRecipe ? selectedRecipe.imagePath : null" />
+      </div>
+    </md-dialog>
   </div>
 </template>
 
@@ -105,7 +115,7 @@
     MdApp,
     MdContent,
     MdField,
-    MdAutocomplete, MdMenu, MdHighlightText, MdList
+    MdAutocomplete, MdMenu, MdHighlightText, MdList, MdDialog
   } from 'vue-material/dist/components';
   import NoSleep from 'nosleep.js';
   import Multiselect from 'vue-multiselect'
@@ -127,6 +137,8 @@
   Vue.use(MdIcon);
 
   Vue.use(MdField);
+
+  Vue.use(MdDialog);
 
   // register globally
 
@@ -178,6 +190,11 @@
       },
       minToHour(min) {
         return tools.minToHour(min, true);
+      },
+      showModal(recipe) {
+        console.log(recipe);
+        this.selectedRecipe = recipe;
+        this.modalShowed = true;
       }
     },
     data() {
@@ -188,6 +205,8 @@
         },
         recipes: [],
         ingredients: [],
+        selectedRecipe: null,
+        modalShowed: false,
       };
     },
     mounted() {
