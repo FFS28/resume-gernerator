@@ -234,6 +234,10 @@ Waiting duration: Temps de repos (min)
 Nb slices: Nombre de parts
 Instructions: Instructions
 Quantity: Quantité
+Source: Source
+Image file: Photo
+Image: Photo
+form.label.delete: Supprimer la photo ?
 
 meat: Viandes
 fish_seafood: Poissons et fruits de mer
