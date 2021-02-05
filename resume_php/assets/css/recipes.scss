@@ -111,8 +111,11 @@ body{
         }
       }
       &.md-expand-active{
-        .md-card-expand{
-          background-color: #212121;
+        .card-informations{
+          height: auto;
+          .md-card-expand{
+            background-color: #212121;
+          }
         }
       }
     }
