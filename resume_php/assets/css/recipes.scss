@@ -93,7 +93,7 @@ body{
     &.hasPhoto {
       .md-card-media{
         .center-cropped {
-          max-height: 300px;
+          height: 300px;
         }
       }
 
@@ -102,7 +102,8 @@ body{
       }
 
       .card-informations{
-        margin-top: -175px;
+        height: 176px;
+        margin-top: -176px;
         background-color: rgba(0,0,0,0.4);
 
         .md-card-actions{
@@ -111,7 +112,7 @@ body{
       }
       &.md-expand-active{
         .md-card-expand{
-          background-color: rgba(0,0,0,100);
+          background-color: #212121;
         }
       }
     }
