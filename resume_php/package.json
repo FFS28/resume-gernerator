@@ -3,7 +3,6 @@
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.11.2",
     "@symfony/stimulus-bridge": "^1.1.0",
-    "@symfony/ux-chartjs": "file:vendor/symfony/ux-chartjs/Resources/assets",
     "@symfony/webpack-encore": "^0.32.0",
     "bootstrap-datetimepicker": "^0.0.7",
     "jquery": "^3.5.0",
@@ -16,7 +15,8 @@
     "vue": "^2.5",
     "vue-loader": "^15",
     "vue-template-compiler": "^2.6.12",
-    "webpack-notifier": "^1.8.0"
+    "webpack-notifier": "^1.8.0",
+    "@symfony/ux-chartjs": "file:vendor/symfony/ux-chartjs/Resources/assets"
   },
   "dependencies": {
     "9": "^0.0.1",

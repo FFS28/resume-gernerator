@@ -20,6 +20,7 @@
         "lexik/jwt-authentication-bundle": "^2.8",
         "nelmio/cors-bundle": "^2.0",
         "sensio/framework-extra-bundle": "^5.5",
+        "stof/doctrine-extensions-bundle": "^1.5",
         "symfony/cache": "5.2.*",
         "symfony/console": "5.2.*",
         "symfony/dotenv": "5.2.*",

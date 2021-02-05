@@ -19,6 +19,9 @@
             "./src/Entity/.gitignore"
         ]
     },
+    "behat/transliterator": {
+        "version": "v1.3.0"
+    },
     "doctrine/data-fixtures": {
         "version": "1.4.0"
     },
@@ -58,6 +61,9 @@
     },
     "fig/link-util": {
         "version": "1.1.1"
+    },
+    "gedmo/doctrine-extensions": {
+        "version": "v3.0.3"
     },
     "gregwar/captcha": {
         "version": "v1.1.7"
@@ -163,6 +169,18 @@
     },
     "setasign/fpdf": {
         "version": "1.8.2"
+    },
+    "stof/doctrine-extensions-bundle": {
+        "version": "1.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "1.2",
+            "ref": "6c1ceb662f8997085f739cd089bfbef67f245983"
+        },
+        "files": [
+            "config/packages/stof_doctrine_extensions.yaml"
+        ]
     },
     "symfony/deprecation-contracts": {
         "version": "v2.1.2"
