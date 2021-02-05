@@ -257,6 +257,11 @@ class Recipe
         return $this;
     }
 
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
     public function getNbSlices(): ?int
     {
         return $this->nbSlices;

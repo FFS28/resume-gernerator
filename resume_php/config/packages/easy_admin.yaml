@@ -376,6 +376,7 @@ easy_admin:
       list:
         fields:
           - name
+          - slug
           - { property : recipeIngredients, type: array }
           - { property: 'image', type: 'image', base_path: '%RECIPE_DIRECTORY%' }
     Ingredient:
