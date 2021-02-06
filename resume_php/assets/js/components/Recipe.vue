@@ -4,7 +4,8 @@
       <md-button class="md-fab action-back" :href="'/kitchen'">
         <md-icon>arrow_back</md-icon>
       </md-button>
-      <md-button class="md-primary md-fab action-fullscreen" @click="toggle()"><md-icon>fullscreen</md-icon></md-button>
+      <md-button class="md-primary md-fab action-zoomi" @click="setZoom(0.1)"><md-icon>zoom_in</md-icon></md-button>
+      <md-button class="md-primary md-fab action-zoomd" @click="setZoom(-0.1)"><md-icon>zoom_out</md-icon></md-button>
 
       <md-card v-if="recipe">
         <md-card-header>
@@ -24,7 +25,7 @@
           </md-card-header-text>
         </md-card-header>
 
-        <md-card-content>
+        <md-card-content v-bind:style="{zoom: zoom}">
           <div class="ingredients">
             <md-card v-for="recipeIngredient in recipe.recipeIngredients" v-bind:key="recipeIngredient.id" class="ingredient md-elevation-6">
               <md-card-header>
@@ -95,15 +96,17 @@
       minToHour(min) {
         return tools.minToHour(min, true, true);
       },
-      toggle() {
-        this.$fullscreen.toggle(document.body, {fullscreenClass: 'fullscreen'}) // recommended
+      setZoom(step) {
+        if (this.zoom + step > 0.5 && this.zoom + step < 2) {
+          this.zoom += step;
+          console.log(this.zoom);
+        }
       }
     },
     data() {
       return {
-        showDialog: false,
-        fullscreen: false,
         recipe: {},
+        zoom: 1,
       };
     },
     mounted() {
