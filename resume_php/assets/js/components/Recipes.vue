@@ -22,7 +22,9 @@
           </multiselect>
 
           <div class="md-toolbar-section-end">
-
+            <md-button class="md-primary md-raised md-icon-button" v-on:click="goToShopping()" :disabled="form.selectedRecipes.length === 0">
+              <md-icon>shopping_cart</md-icon>
+            </md-button>
           </div>
         </div>
       </md-app-toolbar>
@@ -37,6 +39,7 @@
 
           <div class="card-informations">
             <md-card-header>
+              <md-checkbox v-model="form.selectedRecipes" :value="recipe"></md-checkbox>
               <md-card-header-text>
                 <div class="md-title">{{ recipe.name }}</div>
               </md-card-header-text>
@@ -120,7 +123,7 @@
     MdApp,
     MdContent,
     MdField,
-    MdAutocomplete, MdMenu, MdHighlightText, MdList, MdDialog
+    MdAutocomplete, MdMenu, MdHighlightText, MdList, MdDialog, MdCheckbox
   } from 'vue-material/dist/components';
   import NoSleep from 'nosleep.js';
   import Multiselect from 'vue-multiselect'
@@ -142,6 +145,7 @@
   Vue.use(MdIcon);
 
   Vue.use(MdField);
+  Vue.use(MdCheckbox);
 
   Vue.use(MdDialog);
 
@@ -197,14 +201,19 @@
         return tools.minToHour(min, true);
       },
       showModal(recipe) {
-        console.log(recipe);
         this.selectedRecipe = recipe;
         this.modalShowed = true;
+      },
+      goToShopping() {
+        this.form.selectedRecipes.forEach(recipe => {
+
+        });
       }
     },
     data() {
       return {
         form : {
+          selectedRecipes: [],
           search: '',
           ingredients: []
         },

@@ -46,6 +46,8 @@
 - Tri par temps de préparation et temps de cuisson  
 - Selection multiple pour génération de liste de courses (regroupement des ingrédients, calcul du nombre de parts)  
 - Vue recette
+- Enregistrement d'une image par recette
 
 ### TODO
-- Enregistrement d'une image par recette
+- filter par plat/dessert/"pâte"
+- recherche en fonction du "frigo"
