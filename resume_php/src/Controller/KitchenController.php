@@ -74,7 +74,7 @@ class KitchenController extends AbstractController
     }
 
     /**
-     * @Route("/kitchen/{id}", name="recipe")
+     * @Route("/kitchen/{slug}", name="recipe")
      * @return Response
      */
     public function recipe(Recipe $recipe, TranslatorInterface $translator) {
