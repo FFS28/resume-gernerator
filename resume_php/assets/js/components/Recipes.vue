@@ -274,7 +274,7 @@
                   for (let measure in this.quantities.measures) {
                     quantities.push(this.quantities.measures[measure] + ' ' + measure + (this.quantities.measures[measure] > 1 ? 's' : ''))
                   }
-                  return this.name + quantities.length > 0 ? (' (' + quantities.join(' + ') + ')') : '';
+                  return this.name + (quantities.length > 0 ? (' (' + quantities.join(' + ') + ')') : '');
                 }
               };
               if (recipeIngredient.measure) {
