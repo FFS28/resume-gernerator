@@ -241,7 +241,6 @@
             }
 
             if (ingredientIndex > -1) {
-
               if (recipeIngredient.measure) {
                 if (typeof this.form.ingredientsCart[ingredientIndex].quantities.measures[recipeIngredient.measure] !== undefined) {
                   this.form.ingredientsCart[ingredientIndex].quantities.measures[recipeIngredient.measure] += quantity;
@@ -251,7 +250,7 @@
               } else {
                 if (recipeIngredient.unit !== null) {
                   this.form.ingredientsCart[ingredientIndex].quantities.unit += quantity;
-                } else if (recipeIngredient.unit === '') {
+                } else {
                   this.form.ingredientsCart[ingredientIndex].quantities.count += quantity;
                 }
               }
@@ -275,7 +274,7 @@
                   for (let measure in this.quantities.measures) {
                     quantities.push(this.quantities.measures[measure] + ' ' + measure + (this.quantities.measures[measure] > 1 ? 's' : ''))
                   }
-                  return this.name + ' (' + quantities.join(' + ') + ')'
+                  return this.name + quantities.length > 0 ? (' (' + quantities.join(' + ') + ')') : '';
                 }
               };
               if (recipeIngredient.measure) {
