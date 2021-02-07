@@ -104,11 +104,20 @@
         </md-card>
       </md-app-content>
     </md-app>
-    <md-dialog :md-active.sync="modalShowed">
+    <md-dialog :md-active.sync="lightboxShowed">
       <div class="center-cropped"
            v-bind:style="{'background-image': 'url(\'' + (selectedRecipe ? selectedRecipe.imagePath : '') + '\')'}">
         <img :src="selectedRecipe ? selectedRecipe.imagePath : null" />
       </div>
+    </md-dialog>
+    <md-dialog :md-active.sync="cartShowed">
+      <md-card>
+        <md-card-content>
+          <div v-for="ingredient in form.ingredientsCart" v-bind:key="ingredient.id">
+            {{ ingredient.toString() }}
+          </div>
+        </md-card-content>
+      </md-card>
     </md-dialog>
   </div>
 </template>
@@ -148,8 +157,6 @@
   Vue.use(MdCheckbox);
 
   Vue.use(MdDialog);
-
-  // register globally
 
   export default {
     components: {
@@ -202,25 +209,106 @@
       },
       showModal(recipe) {
         this.selectedRecipe = recipe;
-        this.modalShowed = true;
+        this.lightboxShowed = true;
       },
       goToShopping() {
+        this.form.ingredientsCart = [];
+        const ingredientIds = [];
         this.form.selectedRecipes.forEach(recipe => {
+          recipe.recipeIngredients.forEach(recipeIngredient => {
 
+            const ingredientIndex = ingredientIds.indexOf(recipeIngredient.ingredient.id);
+            let quantity = recipeIngredient.quantity;
+            if (recipeIngredient.unit === 'c-à-c' || recipeIngredient.unit === 'c-à-s') {
+              quantity *= (recipeIngredient.unit === 'c-à-s' ? 15 : 5);
+            }
+            if (recipeIngredient.unit === 'g' || recipeIngredient.unit === 'kg') {
+              switch(recipeIngredient.unit) {
+                case 'kg':
+                  quantity *= 1000;
+                  break;
+              }
+            }
+            else if (recipeIngredient.unit === 'l' || recipeIngredient.unit === 'cl'|| recipeIngredient.unit === 'ml') {
+              switch(recipeIngredient.unit) {
+                case 'l':
+                  quantity *= 1000;
+                  break;
+                case 'cl':
+                  quantity *= 10;
+                  break;
+              }
+            }
+
+            if (ingredientIndex > -1) {
+
+              if (recipeIngredient.measure) {
+                if (typeof this.form.ingredientsCart[ingredientIndex].quantities.measures[recipeIngredient.measure] !== undefined) {
+                  this.form.ingredientsCart[ingredientIndex].quantities.measures[recipeIngredient.measure] += quantity;
+                } else {
+                  this.form.ingredientsCart[ingredientIndex].quantities.measures[recipeIngredient.measure] = quantity;
+                }
+              } else {
+                if (recipeIngredient.unit !== null) {
+                  this.form.ingredientsCart[ingredientIndex].quantities.unit += quantity;
+                } else if (recipeIngredient.unit === '') {
+                  this.form.ingredientsCart[ingredientIndex].quantities.count += quantity;
+                }
+              }
+            } else {
+              const ingredientCart = {
+                id: recipeIngredient.ingredient.id,
+                name : recipeIngredient.ingredient.name,
+                quantities : {
+                  unit: 0,
+                  count: 0,
+                  measures : {}
+                },
+                toString() {
+                  const quantities = [];
+                  if (this.quantities.unit) {
+                    quantities.push(tools.convert(this.quantities.unit, recipeIngredient.ingredient.liquid));
+                  }
+                  if (this.quantities.count) {
+                    quantities.push(this.quantities.count);
+                  }
+                  for (let measure in this.quantities.measures) {
+                    quantities.push(this.quantities.measures[measure] + ' ' + measure + (this.quantities.measures[measure] > 1 ? 's' : ''))
+                  }
+                  return this.name + ' (' + quantities.join(' + ') + ')'
+                }
+              };
+              if (recipeIngredient.measure) {
+                ingredientCart.quantities.measures[recipeIngredient.measure] = quantity;
+              } else {
+                if (recipeIngredient.unit !== null) {
+                  ingredientCart.quantities.unit = quantity;
+                } else {
+                  ingredientCart.quantities.count = quantity;
+                }
+              }
+
+              ingredientIds.push(recipeIngredient.ingredient.id);
+              this.form.ingredientsCart.push(ingredientCart);
+            }
+          });
         });
+        this.cartShowed = true;
       }
     },
     data() {
       return {
         form : {
           selectedRecipes: [],
+          ingredientsCart: [],
           search: '',
           ingredients: []
         },
         recipes: [],
         ingredients: [],
         selectedRecipe: null,
-        modalShowed: false,
+        lightboxShowed: false,
+        cartShowed: false,
       };
     },
     mounted() {
@@ -228,8 +316,6 @@
       let elIngredients = document.querySelector("div[data-ingredients]");
       this.recipes = JSON.parse(elRecipes.dataset.recipes);
       this.ingredients = JSON.parse(elIngredients.dataset.ingredients);
-      console.log(this.recipes)
-      console.log(this.ingredients)
     },
   };
 </script>

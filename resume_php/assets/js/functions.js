@@ -24,4 +24,8 @@ function normalize(str) {
   return str;
 }
 
-export default {minToHour, normalize};
+function convert(value, isLiquid) {
+  return value + ' ' +  (isLiquid ? 'ml' : 'g');
+}
+
+export default {minToHour, normalize, convert};

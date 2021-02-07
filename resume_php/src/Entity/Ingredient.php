@@ -66,6 +66,11 @@ class Ingredient
      */
     private $type;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isLiquid;
+
     public function __construct()
     {
         $this->recipeIngredients = new ArrayCollection();
@@ -79,6 +84,7 @@ class Ingredient
         } elseif (in_array($this->getName(), [
             'Ail', 'Moutarde', 'Fromage râpé', 'Herbes de provence', 'Tomate'
         ])) {
+        } elseif (substr($this->getName(), 0, 9) === 'Bouillon ') {
             return true;
         }
 
@@ -167,5 +173,17 @@ class Ingredient
     {
         return $this->getIsVege()
             && $this->type !== self::TYPE_ANIMAL_FAT;
+    }
+
+    public function getIsLiquid(): ?bool
+    {
+        return $this->isLiquid;
+    }
+
+    public function setIsLiquid(?bool $isLiquid): self
+    {
+        $this->isLiquid = $isLiquid;
+
+        return $this;
     }
 }
