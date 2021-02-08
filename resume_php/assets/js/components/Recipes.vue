@@ -242,7 +242,7 @@
 
             if (ingredientIndex > -1) {
               if (recipeIngredient.measure) {
-                if (typeof this.form.ingredientsCart[ingredientIndex].quantities.measures[recipeIngredient.measure] !== undefined) {
+                if (typeof this.form.ingredientsCart[ingredientIndex].quantities.measures[recipeIngredient.measure] != 'undefined') {
                   this.form.ingredientsCart[ingredientIndex].quantities.measures[recipeIngredient.measure] += quantity;
                 } else {
                   this.form.ingredientsCart[ingredientIndex].quantities.measures[recipeIngredient.measure] = quantity;
@@ -258,6 +258,7 @@
               const ingredientCart = {
                 id: recipeIngredient.ingredient.id,
                 name : recipeIngredient.ingredient.name,
+                typeIndex : recipeIngredient.ingredient.typeIndex,
                 quantities : {
                   unit: 0,
                   count: 0,
@@ -279,6 +280,7 @@
               };
               if (recipeIngredient.measure) {
                 ingredientCart.quantities.measures[recipeIngredient.measure] = quantity;
+                console.log(recipeIngredient, quantity, ingredientCart);
               } else {
                 if (recipeIngredient.unit !== null) {
                   ingredientCart.quantities.unit = quantity;
@@ -291,6 +293,9 @@
               this.form.ingredientsCart.push(ingredientCart);
             }
           });
+        });
+        this.form.ingredientsCart.sort((ingredientA, ingredientB) => {
+          return ingredientA.typeIndex - ingredientB.typeIndex;
         });
         this.cartShowed = true;
       }
