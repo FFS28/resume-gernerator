@@ -138,6 +138,11 @@ class Ingredient
         return $this;
     }
 
+    public function getTypeIndex(): ?int
+    {
+        return array_search($this->type, array_values(self::TYPES));
+    }
+
     public function getType(): ?string
     {
         return $this->type;
