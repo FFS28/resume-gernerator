@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Helper\StringHelper;
 use App\Repository\RecipeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -253,6 +254,7 @@ class Recipe
     public function setName(string $name): self
     {
         $this->name = $name;
+        $this->slug = StringHelper::slugify($name);
 
         return $this;
     }
