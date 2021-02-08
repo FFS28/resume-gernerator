@@ -92,7 +92,7 @@ class Ingredient
             return true;
         } elseif (substr($name, 0, 9) === 'bouillon ') {
             return true;
-        } elseif (array_search('tomate', $name) !== false) {
+        } elseif (strpos( $name, 'tomate') !== false) {
             return true;
         }
 
