@@ -261,7 +261,7 @@ class Recipe
 
     public function getSlug(): ?string
     {
-        return $this->slug ? $this->slug : $this->id;
+        return $this->slug;
     }
 
     public function getNbSlices(): ?int
