@@ -78,13 +78,21 @@ class Ingredient
 
     public function isSalty(): ?bool
     {
+        $name = strtolower($this->getName());
         if ($this->getType() === Ingredient::TYPE_FISH_SEAFOOD
             || $this->getType() === Ingredient::TYPE_MEAT) {
             return true;
-        } elseif (in_array($this->getName(), [
-            'Ail', 'Moutarde', 'Fromage râpé', 'Herbes de provence', 'Tomate'
+        } elseif (in_array($name, [
+            'ail', 'herbes de provence',
+            'moutarde', 'mayonnaise',
+            'fromage râpé', 'parmesan',
+            'aubergine', 'salade',
+            'Sauce soja salé'
         ])) {
-        } elseif (substr($this->getName(), 0, 9) === 'Bouillon ') {
+            return true;
+        } elseif (substr($name, 0, 9) === 'bouillon ') {
+            return true;
+        } elseif (array_search('tomate', $name) !== false) {
             return true;
         }
 
@@ -93,8 +101,9 @@ class Ingredient
 
     public function isSweet(): ?bool
     {
-        if (in_array($this->getName(), [
-            'Fraise'
+        $name = strtolower($this->getName());
+        if (in_array($name, [
+            'fraise', 'sucre vanillé', 'chocolat'
         ])) {
             return true;
         }
