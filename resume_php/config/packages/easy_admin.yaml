@@ -389,6 +389,7 @@ easy_admin:
         fields:
           - name
           - { property: 'type', trans: true }
+          - isLiquid
     RecipeIngredient:
       class: App\Entity\RecipeIngredient
       controller: App\Controller\RecipeIngredientController
