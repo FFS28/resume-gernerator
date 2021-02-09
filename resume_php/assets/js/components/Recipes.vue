@@ -267,7 +267,7 @@
                 toString() {
                   const quantities = [];
                   if (this.quantities.unit) {
-                    quantities.push(tools.convert(this.quantities.unit, recipeIngredient.ingredient.liquid));
+                    quantities.push(tools.prettyNumber(this.quantities.unit, recipeIngredient.ingredient.liquid));
                   }
                   if (this.quantities.count) {
                     quantities.push(this.quantities.count);

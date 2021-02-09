@@ -42,12 +42,14 @@
 ### Features
 
 - Liste des recettes  
-- Filtre par ingrédients, options vegan/végé  
-- Tri par temps de préparation et temps de cuisson  
+- Filtre par nom et ingrédients
 - Selection multiple pour génération de liste de courses (regroupement des ingrédients, calcul du nombre de parts)  
 - Vue recette
 - Enregistrement d'une image par recette
 
 ### TODO
-- filter par plat/dessert/"pâte"
+
+- Filtre options vegan/végé
+- Filtre plat/dessert/"pâte"
 - recherche en fonction du "frigo"
+- Tri par temps de préparation et temps de cuisson  

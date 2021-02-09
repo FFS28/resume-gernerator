@@ -384,11 +384,11 @@ easy_admin:
         fields:
           - name
           - { property: 'type', type: 'choice', type_options: { choices: !php/const App\Entity\Ingredient::TYPES } }
+          - isLiquid
       list:
         fields:
           - name
           - { property: 'type', trans: true }
-          - isLiquid
     RecipeIngredient:
       class: App\Entity\RecipeIngredient
       controller: App\Controller\RecipeIngredientController

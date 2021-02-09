@@ -24,8 +24,15 @@ function normalize(str) {
   return str;
 }
 
-function convert(value, isLiquid) {
+function prettyNumber(value, isLiquid) {
+  if (value > 1000) {
+    return (value / 1000) + ' ' +  (isLiquid ? 'l' : 'kg');
+
+  } else if (value > 100 && isLiquid) {
+    return (value / 100) + ' cl';
+  }
+
   return value + ' ' +  (isLiquid ? 'ml' : 'g');
 }
 
-export default {minToHour, normalize, convert};
+export default {minToHour, normalize, prettyNumber};
