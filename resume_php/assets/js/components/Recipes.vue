@@ -39,7 +39,7 @@
 
           <div class="card-informations">
             <md-card-header>
-              <md-checkbox v-model="form.selectedRecipes" :value="recipe"></md-checkbox>
+              <md-checkbox v-model="form.selectedRecipes" :value="recipe" class="md-primary"></md-checkbox>
               <md-card-header-text>
                 <div class="md-title">{{ recipe.name }}</div>
               </md-card-header-text>
