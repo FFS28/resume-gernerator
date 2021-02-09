@@ -49,7 +49,5 @@
 
 ### TODO
 
-- Filtre options vegan/végé
-- Filtre plat/dessert/"pâte"
 - recherche en fonction du "frigo"
 - Tri par temps de préparation et temps de cuisson  

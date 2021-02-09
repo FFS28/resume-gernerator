@@ -139,3 +139,14 @@ body{
     opacity: 0;
   }
 }
+
+.cart{
+  .md-card-content {
+    ul {
+      padding-left: 30px;
+      li {
+        margin: 10px 0;
+      }
+    }
+  }
+}

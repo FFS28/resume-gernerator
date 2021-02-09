@@ -4,13 +4,30 @@
       <md-app-toolbar>
         <div class="md-toolbar-row">
           <div class="md-toolbar-section-start">
+            <md-field>
+              <label for="type">Type</label>
+              <md-select v-model="form.type" name="type" id="type">
+                <md-option value="">Tous</md-option>
+                <md-option value="sweet">Sucré</md-option>
+                <md-option value="salty">Salé</md-option>
+                <md-option value="none">Neutre</md-option>
+              </md-select>
+            </md-field>
+            <md-field style="margin-left: 20px;">
+              <label for="diet">Régime</label>
+              <md-select v-model="form.diet" name="diet" id="diet">
+                <md-option value="">Tous</md-option>
+                <md-option value="vege">Végé</md-option>
+                <md-option value="vegan">Vegan</md-option>
+                <md-option value="meat">Viande</md-option>
+              </md-select>
+            </md-field>
 
+            <md-field md-layout="box" class="search-field" md-clearable>
+              <label>Nom</label>
+              <md-input v-model="form.search"></md-input>
+            </md-field>
           </div>
-
-          <md-field md-layout="box" class="search-field" md-clearable>
-            <label>Nom</label>
-            <md-input v-model="form.search"></md-input>
-          </md-field>
 
           <multiselect class="search-field" v-model="form.ingredients" :options="ingredients" :multiple="true"
                        placeholder="Ingredients"
@@ -22,6 +39,9 @@
           </multiselect>
 
           <div class="md-toolbar-section-end">
+            <md-button class="md-raised md-icon-button" v-on:click="clearForm()">
+              <md-icon>clear</md-icon>
+            </md-button>
             <md-button class="md-primary md-raised md-icon-button" v-on:click="goToShopping()" :disabled="form.selectedRecipes.length === 0">
               <md-icon>shopping_cart</md-icon>
             </md-button>
@@ -39,9 +59,9 @@
 
           <div class="card-informations">
             <md-card-header>
-              <md-checkbox v-model="form.selectedRecipes" :value="recipe" class="md-primary"></md-checkbox>
+              <md-checkbox v-model="form.selectedRecipes" id="selectRecipe" :value="recipe" class="md-primary"></md-checkbox>
               <md-card-header-text>
-                <div class="md-title">{{ recipe.name }}</div>
+                <div class="md-title" for="selectRecipe">{{ recipe.name }}</div>
               </md-card-header-text>
             </md-card-header>
 
@@ -110,12 +130,15 @@
         <img :src="selectedRecipe ? selectedRecipe.imagePath : null" />
       </div>
     </md-dialog>
-    <md-dialog :md-active.sync="cartShowed">
+    <md-dialog class="cart" :md-active.sync="cartShowed">
+      <md-dialog-title>Liste de course</md-dialog-title>
       <md-card>
         <md-card-content>
-          <div v-for="ingredient in form.ingredientsCart" v-bind:key="ingredient.id">
-            {{ ingredient.toString() }}
-          </div>
+          <ul>
+            <li v-for="ingredient in form.ingredientsCart" v-bind:key="ingredient.id">
+              {{ ingredient.toString() }}
+            </li>
+          </ul>
         </md-card-content>
       </md-card>
     </md-dialog>
@@ -155,8 +178,19 @@
 
   Vue.use(MdField);
   Vue.use(MdCheckbox);
+  Vue.use(MdMenu);
+  Vue.use(MdList);
 
   Vue.use(MdDialog);
+
+  Vue.config.errorHandler = (err, vm, info) => {
+    if (process.env.NODE_ENV !== 'production') {
+      // Show any error but this one
+      if (err.message !== "Cannot read property 'badInput' of undefined") {
+        console.error(err);
+      }
+    }
+  }
 
   export default {
     components: {
@@ -174,6 +208,8 @@
           if (
               (this.form.ingredients.length === 0 || selectedIngredientIds.every(id => recipe.ingredientIds.indexOf(id) > -1))
               && tools.normalize(recipe.name).search(tools.normalize(this.form.search)) > -1
+              && (this.form.type === '' || this.form.type === 'sweet' && recipe.sweet || this.form.type === 'salty' && recipe.salty || this.form.type === 'none' && !recipe.sweet && !recipe.salty)
+              && (this.form.diet === '' || this.form.diet === 'vege' && recipe.vege || this.form.diet === 'vegan' && recipe.vegan || this.form.diet === 'meat' && recipe.meat)
           ) {
             recipes.push(recipe);
           }
@@ -307,7 +343,13 @@
           ingredientIds.push(recipeIngredient.ingredient.id);
           this.form.ingredientsCart.push(ingredientCart);
         }
-      }
+      },
+      clearForm() {
+        this.form.type = this.form.diet = this.form.search = '';
+        this.form.selectedRecipes = [];
+        this.form.ingredientsCart = [];
+        this.form.ingredients = [];
+      },
     },
     data() {
       return {
@@ -315,6 +357,8 @@
           selectedRecipes: [],
           ingredientsCart: [],
           search: '',
+          type: '',
+          diet: '',
           ingredients: []
         },
         recipes: [],
