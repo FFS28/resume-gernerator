@@ -238,6 +238,7 @@ Source: Source
 Image file: Photo
 Image: Photo
 Is liquid: Liquide ?
+Is recipe: Recette ?
 form.label.delete: Supprimer la photo ?
 
 meat: Viandes

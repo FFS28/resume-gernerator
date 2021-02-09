@@ -57,7 +57,7 @@ class Ingredient
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     private $name;
 
@@ -70,6 +70,11 @@ class Ingredient
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $isLiquid;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isRecipe;
 
     public function __construct()
     {
@@ -197,6 +202,18 @@ class Ingredient
     public function setIsLiquid(?bool $isLiquid): self
     {
         $this->isLiquid = $isLiquid;
+
+        return $this;
+    }
+
+    public function getIsRecipe(): ?bool
+    {
+        return $this->isRecipe;
+    }
+
+    public function setIsRecipe(?bool $isRecipe): self
+    {
+        $this->isRecipe = $isRecipe;
 
         return $this;
     }

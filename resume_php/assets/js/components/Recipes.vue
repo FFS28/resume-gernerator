@@ -217,6 +217,10 @@
         this.form.selectedRecipes.forEach(recipe => {
           recipe.recipeIngredients.forEach(recipeIngredient => {
 
+            if (recipeIngredient.ingredient.isRecipe) {
+
+            }
+
             const ingredientIndex = ingredientIds.indexOf(recipeIngredient.ingredient.id);
             let quantity = recipeIngredient.quantity;
             if (recipeIngredient.unit === 'c-à-c' || recipeIngredient.unit === 'c-à-s') {
