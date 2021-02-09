@@ -50,7 +50,7 @@
                 </md-button>
               </md-card-actions>
             </md-card>
-            <md-card class="info">
+            <md-card class="info" v-if="recipe.preparationDuration || recipe.cookingDuration || recipe.waitingDuration">
               <md-card-content>
                 <div class="md-title" v-if="recipe.preparationDuration"><md-icon class="md-size-2x">av_timer</md-icon><span>{{ minToHour(recipe.preparationDuration) }}</span></div>
                 <div class="md-title" v-if="recipe.cookingDuration"><md-icon class="md-size-2x">microwave</md-icon><span>{{ minToHour(recipe.cookingDuration) }}</span></div>

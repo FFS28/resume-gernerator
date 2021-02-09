@@ -218,83 +218,11 @@
           recipe.recipeIngredients.forEach(recipeIngredient => {
 
             if (recipeIngredient.ingredient.isRecipe) {
-
-            }
-
-            const ingredientIndex = ingredientIds.indexOf(recipeIngredient.ingredient.id);
-            let quantity = recipeIngredient.quantity;
-            if (recipeIngredient.unit === 'c-à-c' || recipeIngredient.unit === 'c-à-s') {
-              quantity *= (recipeIngredient.unit === 'c-à-s' ? 15 : 5);
-            }
-            if (recipeIngredient.unit === 'g' || recipeIngredient.unit === 'kg') {
-              switch(recipeIngredient.unit) {
-                case 'kg':
-                  quantity *= 1000;
-                  break;
-              }
-            }
-            else if (recipeIngredient.unit === 'l' || recipeIngredient.unit === 'cl'|| recipeIngredient.unit === 'ml') {
-              switch(recipeIngredient.unit) {
-                case 'l':
-                  quantity *= 1000;
-                  break;
-                case 'cl':
-                  quantity *= 10;
-                  break;
-              }
-            }
-
-            if (ingredientIndex > -1) {
-              if (recipeIngredient.measure) {
-                if (typeof this.form.ingredientsCart[ingredientIndex].quantities.measures[recipeIngredient.measure] != 'undefined') {
-                  this.form.ingredientsCart[ingredientIndex].quantities.measures[recipeIngredient.measure] += quantity;
-                } else {
-                  this.form.ingredientsCart[ingredientIndex].quantities.measures[recipeIngredient.measure] = quantity;
-                }
-              } else {
-                if (recipeIngredient.unit !== null) {
-                  this.form.ingredientsCart[ingredientIndex].quantities.unit += quantity;
-                } else {
-                  this.form.ingredientsCart[ingredientIndex].quantities.count += quantity;
-                }
-              }
+              this.recipeByNames[recipeIngredient.ingredient.name].recipeIngredients.forEach(recipeIngredient => {
+                this.addIngredientToCart(ingredientIds, recipeIngredient);
+              });
             } else {
-              const ingredientCart = {
-                id: recipeIngredient.ingredient.id,
-                name : recipeIngredient.ingredient.name,
-                typeIndex : recipeIngredient.ingredient.typeIndex,
-                quantities : {
-                  unit: 0,
-                  count: 0,
-                  measures : {}
-                },
-                toString() {
-                  const quantities = [];
-                  if (this.quantities.unit) {
-                    quantities.push(tools.prettyNumber(this.quantities.unit, recipeIngredient.ingredient.isLiquid));
-                  }
-                  if (this.quantities.count) {
-                    quantities.push(this.quantities.count);
-                  }
-                  for (let measure in this.quantities.measures) {
-                    quantities.push(this.quantities.measures[measure] + ' ' + measure + (this.quantities.measures[measure] > 1 ? 's' : ''))
-                  }
-                  return this.name + (quantities.length > 0 ? (' (' + quantities.join(' + ') + ')') : '');
-                }
-              };
-              if (recipeIngredient.measure) {
-                ingredientCart.quantities.measures[recipeIngredient.measure] = quantity;
-                console.log(recipeIngredient, quantity, ingredientCart);
-              } else {
-                if (recipeIngredient.unit !== null) {
-                  ingredientCart.quantities.unit = quantity;
-                } else {
-                  ingredientCart.quantities.count = quantity;
-                }
-              }
-
-              ingredientIds.push(recipeIngredient.ingredient.id);
-              this.form.ingredientsCart.push(ingredientCart);
+              this.addIngredientToCart(ingredientIds, recipeIngredient);
             }
           });
         });
@@ -302,6 +230,83 @@
           return ingredientA.typeIndex - ingredientB.typeIndex;
         });
         this.cartShowed = true;
+      },
+      addIngredientToCart(ingredientIds, recipeIngredient) {
+        const ingredientIndex = ingredientIds.indexOf(recipeIngredient.ingredient.id);
+        let quantity = recipeIngredient.quantity;
+        if (recipeIngredient.unit === 'c-à-c' || recipeIngredient.unit === 'c-à-s') {
+          quantity *= (recipeIngredient.unit === 'c-à-s' ? 15 : 5);
+        }
+        if (recipeIngredient.unit === 'g' || recipeIngredient.unit === 'kg') {
+          switch(recipeIngredient.unit) {
+            case 'kg':
+              quantity *= 1000;
+              break;
+          }
+        }
+        else if (recipeIngredient.unit === 'l' || recipeIngredient.unit === 'cl'|| recipeIngredient.unit === 'ml') {
+          switch(recipeIngredient.unit) {
+            case 'l':
+              quantity *= 1000;
+              break;
+            case 'cl':
+              quantity *= 10;
+              break;
+          }
+        }
+
+        if (ingredientIndex > -1) {
+          if (recipeIngredient.measure) {
+            if (typeof this.form.ingredientsCart[ingredientIndex].quantities.measures[recipeIngredient.measure] != 'undefined') {
+              this.form.ingredientsCart[ingredientIndex].quantities.measures[recipeIngredient.measure] += quantity;
+            } else {
+              this.form.ingredientsCart[ingredientIndex].quantities.measures[recipeIngredient.measure] = quantity;
+            }
+          } else {
+            if (recipeIngredient.unit !== null) {
+              this.form.ingredientsCart[ingredientIndex].quantities.unit += quantity;
+            } else {
+              this.form.ingredientsCart[ingredientIndex].quantities.count += quantity;
+            }
+          }
+        } else {
+          const ingredientCart = {
+            id: recipeIngredient.ingredient.id,
+            name : recipeIngredient.ingredient.name,
+            typeIndex : recipeIngredient.ingredient.typeIndex,
+            quantities : {
+              unit: 0,
+              count: 0,
+              measures : {}
+            },
+            toString() {
+              const quantities = [];
+              if (this.quantities.unit) {
+                quantities.push(tools.prettyNumber(this.quantities.unit, recipeIngredient.ingredient.isLiquid));
+              }
+              if (this.quantities.count) {
+                quantities.push(this.quantities.count);
+              }
+              for (let measure in this.quantities.measures) {
+                quantities.push(this.quantities.measures[measure] + ' ' + measure + (this.quantities.measures[measure] > 1 ? 's' : ''))
+              }
+              return this.name + (quantities.length > 0 ? (' (' + quantities.join(' + ') + ')') : '');
+            }
+          };
+          if (recipeIngredient.measure) {
+            ingredientCart.quantities.measures[recipeIngredient.measure] = quantity;
+            console.log(recipeIngredient, quantity, ingredientCart);
+          } else {
+            if (recipeIngredient.unit !== null) {
+              ingredientCart.quantities.unit = quantity;
+            } else {
+              ingredientCart.quantities.count = quantity;
+            }
+          }
+
+          ingredientIds.push(recipeIngredient.ingredient.id);
+          this.form.ingredientsCart.push(ingredientCart);
+        }
       }
     },
     data() {
@@ -313,6 +318,7 @@
           ingredients: []
         },
         recipes: [],
+        recipeByNames: {},
         ingredients: [],
         selectedRecipe: null,
         lightboxShowed: false,
@@ -324,6 +330,10 @@
       let elIngredients = document.querySelector("div[data-ingredients]");
       this.recipes = JSON.parse(elRecipes.dataset.recipes);
       this.ingredients = JSON.parse(elIngredients.dataset.ingredients);
+
+      this.recipes.forEach(recipe => {
+        this.recipeByNames[recipe.name] = recipe;
+      })
     },
   };
 </script>
