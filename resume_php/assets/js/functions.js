@@ -28,7 +28,7 @@ function prettyNumber(value, isLiquid) {
   if (value > 1000) {
     return (value / 1000) + ' ' +  (isLiquid ? 'l' : 'kg');
 
-  } else if (value > 100 && isLiquid) {
+  } else if (value > 100 && isLiquid === true) {
     return (value / 100) + ' cl';
   }
 
