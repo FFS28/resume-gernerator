@@ -8,17 +8,17 @@
               <label for="type">Type</label>
               <md-select v-model="form.type" name="type" id="type">
                 <md-option value="">Tous</md-option>
-                <md-option value="sweet">Sucré</md-option>
-                <md-option value="salty">Salé</md-option>
                 <md-option value="none">Neutre</md-option>
+                <md-option value="salty">Salé</md-option>
+                <md-option value="sweet">Sucré</md-option>
               </md-select>
             </md-field>
             <md-field style="margin-left: 20px;">
               <label for="diet">Régime</label>
               <md-select v-model="form.diet" name="diet" id="diet">
                 <md-option value="">Tous</md-option>
-                <md-option value="vege">Végé</md-option>
                 <md-option value="vegan">Vegan</md-option>
+                <md-option value="vege">Végé</md-option>
                 <md-option value="meat">Viande</md-option>
               </md-select>
             </md-field>
