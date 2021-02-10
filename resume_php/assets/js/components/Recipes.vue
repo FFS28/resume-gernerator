@@ -29,12 +29,13 @@
             </md-field>
           </div>
 
-          <multiselect class="search-field" v-model="form.ingredients" :options="ingredients" :multiple="true"
+          <multiselect class="search-field" v-model="form.ingredients" :options="ingredientsByTypes" :multiple="true"
                        placeholder="Ingredients"
                        selectLabel="Selection de l'ingrédient"
                        deselectLabel="Supprimer l'ingrédient"
                        selectedLabel="Selectionné"
-                       track-by="name" label="name" >
+                       track-by="name" label="name"
+                       group-label="name" group-values="ingredients" :group-select="false">
               <span slot="noResult">Aucun ingrédient trouvé</span>
           </multiselect>
 
@@ -364,6 +365,7 @@
         recipes: [],
         recipeByNames: {},
         ingredients: [],
+        ingredientsByTypes: [],
         selectedRecipe: null,
         lightboxShowed: false,
         cartShowed: false,
@@ -377,7 +379,29 @@
 
       this.recipes.forEach(recipe => {
         this.recipeByNames[recipe.name] = recipe;
+      });
+
+      const ingredientsByType = {};
+      this.ingredients.forEach(ingredient => {
+        if (typeof ingredientsByType[ingredient.type] === 'undefined') {
+          ingredientsByType[ingredient.type] = {
+            name: ingredient.typeName,
+            index: ingredient.typeIndex,
+            ingredients: []
+          }
+        }
+        ingredientsByType[ingredient.type].ingredients.push({
+          id : ingredient.id,
+          name : ingredient.name,
+        });
+      });
+      for (let i in ingredientsByType){
+        this.ingredientsByTypes.push(ingredientsByType[i]);
+      }
+      this.ingredientsByTypes = this.ingredientsByTypes.sort((a, b) => {
+        return a.index - b.index;
       })
+      console.log(this.ingredientsByTypes);
     },
   };
 </script>
