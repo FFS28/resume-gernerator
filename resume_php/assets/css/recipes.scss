@@ -8,7 +8,7 @@ body{
 .md-toolbar {
   height: 80px;
 
-  .search-field {
+  .field-ingredients {
     margin: 0 20px 10px 20px;
   }
   .md-button i.md-icon{
@@ -16,7 +16,7 @@ body{
   }
   .multiselect {
     max-height: 40px;
-    margin-top: 6px;
+    margin-top: 2px;
 
     .multiselect__tags, input {
       background-color: transparent;
@@ -46,6 +46,16 @@ body{
     .multiselect__select::before{
       border-color: white transparent transparent;
     }
+  }
+
+  .field-type, .field-diet{
+    width: 100px;
+  }
+  .field-name {
+    max-width: 200px;
+  }
+  .field-diet, .field-name {
+    margin-left: 20px;
   }
 }
 

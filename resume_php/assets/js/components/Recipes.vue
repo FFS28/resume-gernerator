@@ -4,7 +4,7 @@
       <md-app-toolbar>
         <div class="md-toolbar-row">
           <div class="md-toolbar-section-start">
-            <md-field>
+            <md-field class="field-type">
               <label for="type">Type</label>
               <md-select v-model="form.type" name="type" id="type">
                 <md-option value="">Tous</md-option>
@@ -13,7 +13,7 @@
                 <md-option value="sweet">Sucré</md-option>
               </md-select>
             </md-field>
-            <md-field style="margin-left: 20px;">
+            <md-field class="field-diet">
               <label for="diet">Régime</label>
               <md-select v-model="form.diet" name="diet" id="diet">
                 <md-option value="">Tous</md-option>
@@ -23,13 +23,13 @@
               </md-select>
             </md-field>
 
-            <md-field md-layout="box" class="search-field" md-clearable>
+            <md-field md-layout="box" class="field-name" md-clearable>
               <label>Nom</label>
               <md-input v-model="form.search"></md-input>
             </md-field>
           </div>
 
-          <multiselect class="search-field" v-model="form.ingredients" :options="ingredientsByTypes" :multiple="true"
+          <multiselect class="field-ingredients" v-model="form.ingredients" :options="ingredientsByTypes" :multiple="true"
                        placeholder="Ingredients"
                        selectLabel="Selection de l'ingrédient"
                        deselectLabel="Supprimer l'ingrédient"
