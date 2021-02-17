@@ -165,6 +165,7 @@
   import 'vue-material/dist/vue-material.min.css';
   import 'vue-material/dist/theme/default-dark.css';
   import "vue-multiselect/dist/vue-multiselect.min.css";
+  import axios from "axios";
 
   const noSleep = new NoSleep();
   noSleep.enable();
@@ -372,36 +373,36 @@
       };
     },
     mounted() {
-      let elRecipes = document.querySelector("div[data-recipes]");
-      let elIngredients = document.querySelector("div[data-ingredients]");
-      this.recipes = JSON.parse(elRecipes.dataset.recipes);
-      this.ingredients = JSON.parse(elIngredients.dataset.ingredients);
+        axios.get('/kitchen/recipes')
+          .then(response => {
+            this.recipes = response.data.recipes;
+            this.ingredients = response.data.ingredients;
 
-      this.recipes.forEach(recipe => {
-        this.recipeByNames[recipe.name] = recipe;
-      });
+            this.recipes.forEach(recipe => {
+              this.recipeByNames[recipe.name] = recipe;
+            });
 
-      const ingredientsByType = {};
-      this.ingredients.forEach(ingredient => {
-        if (typeof ingredientsByType[ingredient.type] === 'undefined') {
-          ingredientsByType[ingredient.type] = {
-            name: ingredient.typeName,
-            index: ingredient.typeIndex,
-            ingredients: []
-          }
-        }
-        ingredientsByType[ingredient.type].ingredients.push({
-          id : ingredient.id,
-          name : ingredient.name,
-        });
-      });
-      for (let i in ingredientsByType){
-        this.ingredientsByTypes.push(ingredientsByType[i]);
-      }
-      this.ingredientsByTypes = this.ingredientsByTypes.sort((a, b) => {
-        return a.index - b.index;
-      })
-      console.log(this.ingredientsByTypes);
+            const ingredientsByType = {};
+            this.ingredients.forEach(ingredient => {
+              if (typeof ingredientsByType[ingredient.type] === 'undefined') {
+                ingredientsByType[ingredient.type] = {
+                  name: ingredient.typeName,
+                  index: ingredient.typeIndex,
+                  ingredients: []
+                }
+              }
+              ingredientsByType[ingredient.type].ingredients.push({
+                id : ingredient.id,
+                name : ingredient.name,
+              });
+            });
+            for (let i in ingredientsByType){
+              this.ingredientsByTypes.push(ingredientsByType[i]);
+            }
+            this.ingredientsByTypes = this.ingredientsByTypes.sort((a, b) => {
+              return a.index - b.index;
+            });
+          });
     },
   };
 </script>

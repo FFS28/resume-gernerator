@@ -43,7 +43,7 @@ class KitchenController extends AbstractController
     }
 
     /**
-     * @Route("/kitchen", name="recipes")
+     * @Route("/kitchen/recipes", name="recipes")
      * @return Response
      */
     public function recipes(
@@ -70,7 +70,15 @@ class KitchenController extends AbstractController
             'ingredients' => $ingredientsSerialized,
         ];
 
-        return $this->render('project/recipes.html.twig', $data);
+        return $this->json($data);
+    }
+
+    /**
+     * @Route("/kitchen", name="kitchen")
+     * @return Response
+     */
+    public function kitchen() {
+        return $this->render('project/recipes.html.twig', []);
     }
 
     /**

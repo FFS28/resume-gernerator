@@ -108,7 +108,7 @@ class Ingredient
     {
         $name = strtolower($this->getName());
         if (in_array($name, [
-            'fraise', 'sucre vanillé', 'chocolat'
+            'fraise', 'sucre vanillé', 'chocolat', 'framboise'
         ])) {
             return true;
         }
