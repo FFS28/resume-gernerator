@@ -12,3 +12,54 @@
     }
   }
 }
+
+#edit-recipe-form{
+  .form-group {
+    display: block;
+
+    .col-form-label {
+      text-align: left;
+      width: 100px;
+    }
+  }
+
+  .field-ingredients{
+    width: 100%;
+
+    .field-recipe_ingredient{
+      width: 100%;
+      padding-bottom: 0;
+
+      .form-widget-compound{
+        display: inline-block;
+        width: calc(100% - 21px);
+
+        .form-group{
+          display: inline-block;
+          vertical-align: top;
+
+          &.field-easyadmin_autocomplete{
+            width: 200px;
+          }
+
+          &.field-number{
+            width: 85px;
+          }
+
+          &.field-choice{
+            .form-check{
+              display: inline-block;
+              margin-right: 28px;
+            }
+          }
+
+          &.field-text{
+            width: 120px;
+          }
+        }
+      }
+    }
+
+  }
+}
+

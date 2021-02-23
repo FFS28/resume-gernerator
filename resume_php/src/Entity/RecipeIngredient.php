@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\RecipeIngredientRepository;
+use ArrayAccess;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;

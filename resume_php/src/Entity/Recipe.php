@@ -68,7 +68,7 @@ class Recipe
     private $instructions = [];
 
     /**
-     * @ORM\OneToMany(targetEntity=RecipeIngredient::class, mappedBy="recipe", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=RecipeIngredient::class, mappedBy="recipe", orphanRemoval=true, cascade={"persist"})
      */
     private $recipeIngredients;
 
@@ -94,6 +94,8 @@ class Recipe
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $source;
+
+    private $ingredients = [];
 
     public function __construct()
     {
@@ -203,6 +205,42 @@ class Recipe
 
         $serializer = new Serializer([$normalizer], [$encoder]);
         return json_decode($serializer->serialize($this, 'json'), true);
+    }
+
+    public function getIngredients(): array
+    {
+        $ingredientsArray = [];
+        /** @var RecipeIngredient[] $ingredients */
+        $ingredients = $this->getRecipeIngredients();
+
+        foreach ($ingredients as $ingredient) {
+            $ingredientsArray[] = [
+                'ingredient' => $ingredient->getIngredient(),
+                'quantity' => $ingredient->getQuantity(),
+                'unit' => $ingredient->getUnit(),
+                'measure' => $ingredient->getMeasure(),
+            ];
+        }
+
+        return $ingredientsArray;
+    }
+
+    public function setIngredients(array $ingredients): Recipe
+    {
+        $this->ingredients = $ingredients;
+        $this->recipeIngredients = new ArrayCollection();
+        foreach ($ingredients as $ingredient) {
+            $recipeIngredient = new RecipeIngredient();
+            $recipeIngredient->setRecipe($this);
+            $recipeIngredient->setIngredient($ingredient['ingredient']);
+            $recipeIngredient->setQuantity(floatval($ingredient['quantity']));
+            $recipeIngredient->setUnit($ingredient['unit']);
+            $recipeIngredient->setMeasure($ingredient['measure']);
+
+            $this->addRecipeIngredient($recipeIngredient);
+        }
+
+        return $this;
     }
 
     public function getIngredientIds(): array

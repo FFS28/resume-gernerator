@@ -364,14 +364,19 @@ easy_admin:
       controller: App\Controller\RecipeController
       form:
         fields:
+          - { type: 'group', columns: 12, label: '' }
           - name
-          - { property: 'recipeIngredients', type: 'easyadmin_autocomplete', type_options: { class: 'App\Entity\RecipeIngredient', attr: { create: true } } }
-          - nbSlices
+          - { type: 'group', columns: 12, label: '' }
+          - { property: 'ingredients', type: 'collection', allow_delete: true, delete_empty: true, type_options: { entry_type: 'App\Form\Type\RecipeIngredientType', entry_options: {label: false} }, css_class: 'field-ingredients' }
+          - { type: 'group', columns: 3, label: '' }
           - preparationDuration
           - cookingDuration
           - waitingDuration
+          - { type: 'group', columns: 3, label: '' }
+          - nbSlices
           - source
           - { property: 'imageFile', type: 'file', base_path: '%RECIPE_DIRECTORY%' }
+          - { type: 'group', columns: 4, label: '' }
           - { property: 'instructions', type: 'collection', allow_delete: true, delete_empty: true, type_options: { entry_type: 'textarea', entry_options: {attr: {multiline: true, rows: 6, style: 'display:inline-block'}} } }
       list:
         fields:

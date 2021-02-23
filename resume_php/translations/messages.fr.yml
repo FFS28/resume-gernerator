@@ -240,6 +240,17 @@ Image: Photo
 Is liquid: Liquide ?
 Is recipe: Recette ?
 form.label.delete: Supprimer la photo ?
+Measure: Mesure
+Unit: Unité
+
+g: g
+kg: kg
+ml: ml
+cl: cl
+l: l
+c-à-s: c-à-soupe
+c-à-c: c-à-café
+0: ''
 
 meat: Viandes
 fish_seafood: Poissons et fruits de mer

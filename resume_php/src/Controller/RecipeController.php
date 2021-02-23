@@ -4,6 +4,12 @@ namespace App\Controller;
 
 use AlterPHP\EasyAdminExtensionBundle\Controller\EasyAdminController;
 use App\Entity\Recipe;
+use App\Form\Type\RecipeIngredientType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class RecipeController extends EasyAdminController
@@ -31,8 +37,6 @@ class RecipeController extends EasyAdminController
      */
     private function update($recipe)
     {
-        foreach ($recipe->getRecipeIngredients() as $recipeIngredient){
-            $recipeIngredient->setRecipe($recipe);
-        }
+
     }
 }

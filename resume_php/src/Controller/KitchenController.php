@@ -78,7 +78,7 @@ class KitchenController extends AbstractController
      * @return Response
      */
     public function kitchen() {
-        return $this->render('project/recipes.html.twig', []);
+        return $this->render('project/kitchen/findAll.html.twig', []);
     }
 
     /**
@@ -92,6 +92,6 @@ class KitchenController extends AbstractController
             'recipe' => $recipeSerialized
         ];
 
-        return $this->render('project/recipe.html.twig', $data);
+        return $this->render('project/kitchen/findOne.html.twig', $data);
     }
 }
