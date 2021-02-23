@@ -92,7 +92,7 @@ class Ingredient
             'moutarde', 'mayonnaise',
             'fromage râpé', 'parmesan',
             'aubergine', 'salade',
-            'Sauce soja salé', 'Pomme de terre'
+            'sauce soja salé', 'pomme de terre'
         ])) {
             return true;
         } elseif (substr($name, 0, 9) === 'bouillon ') {
