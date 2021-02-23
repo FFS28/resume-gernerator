@@ -92,7 +92,7 @@ class Ingredient
             'moutarde', 'mayonnaise',
             'fromage râpé', 'parmesan',
             'aubergine', 'salade',
-            'Sauce soja salé'
+            'Sauce soja salé', 'Pomme de terre'
         ])) {
             return true;
         } elseif (substr($name, 0, 9) === 'bouillon ') {
@@ -108,7 +108,7 @@ class Ingredient
     {
         $name = strtolower($this->getName());
         if (in_array($name, [
-            'fraise', 'sucre vanillé', 'chocolat', 'framboise'
+            'fraise', 'sucre vanillé', 'chocolat', 'framboise', 'sucre glace', 'spéculoos'
         ])) {
             return true;
         }
