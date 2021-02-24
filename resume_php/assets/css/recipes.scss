@@ -8,11 +8,18 @@ body{
 .md-toolbar {
   height: 80px;
 
-  .field-ingredients {
-    margin: 0 20px 10px 20px;
-  }
   .md-button i.md-icon{
     color: black !important;
+  }
+  .menu-button {
+
+    i.md-icon{
+      color: #448aff !important;
+    }
+  }
+
+  .field-ingredients {
+    margin: 0 20px 10px 20px;
   }
   .multiselect {
     max-height: 40px;
@@ -56,6 +63,16 @@ body{
   }
   .field-diet, .field-name {
     margin-left: 20px;
+  }
+}
+
+.md-drawer {
+  padding: 10px;
+  max-width: calc(100vw - 125px);
+
+  button {
+    display: block;
+    margin: 20px auto;
   }
 }
 

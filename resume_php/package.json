@@ -27,6 +27,7 @@
     "nosleep.js": "^0.12.0",
     "vue-fullscreen": "^2.2.0",
     "vue-material": "^1.0.0-beta-15",
+    "vue-mobile-detection": "^1.0.0",
     "vue-multiselect": "^2.1.6",
     "vue-slide-bar": "^1.2.0"
   }

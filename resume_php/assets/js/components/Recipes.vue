@@ -2,8 +2,14 @@
   <div class="page-container">
     <md-app md-waterfall md-mode="fixed">
       <md-app-toolbar>
-        <div class="md-toolbar-row">
-          <div class="md-toolbar-section-start">
+        <div class="md-toolbar-row" >
+          <div class="md-toolbar-section-start" v-if="$isMobile()">
+            <md-button class="md-icon-button menu-button" @click="filtersShowed = true">
+              <md-icon>menu</md-icon>
+            </md-button>
+            <span class="md-title">Kitchen Party</span>
+          </div>
+          <div class="md-toolbar-section-start" v-if="!$isMobile()">
             <md-field class="field-type">
               <label for="type">Type</label>
               <md-select v-model="form.type" name="type" id="type">
@@ -29,7 +35,7 @@
             </md-field>
           </div>
 
-          <multiselect class="field-ingredients" v-model="form.ingredients" :options="ingredientsByTypes" :multiple="true"
+          <multiselect v-if="!$isMobile()" class="field-ingredients" v-model="form.ingredients" :options="ingredientsByTypes" :multiple="true"
                        placeholder="Ingredients"
                        selectLabel="Selection de l'ingrédient"
                        deselectLabel="Supprimer l'ingrédient"
@@ -40,7 +46,7 @@
           </multiselect>
 
           <div class="md-toolbar-section-end">
-            <md-button class="md-raised md-icon-button" v-on:click="clearForm()">
+            <md-button class="md-raised md-icon-button" v-on:click="clearForm()" v-if="!$isMobile()">
               <md-icon>clear</md-icon>
             </md-button>
             <md-button class="md-primary md-raised md-icon-button" v-on:click="goToShopping()" :disabled="form.selectedRecipes.length === 0">
@@ -50,6 +56,46 @@
         </div>
       </md-app-toolbar>
       <md-app-content class="recipes">
+        <md-drawer :md-active.sync="filtersShowed" md-swipeable>
+          <md-field class="field-type">
+            <label for="type">Type</label>
+            <md-select v-model="form.type" name="type" id="type">
+              <md-option value="">Tous</md-option>
+              <md-option value="none">Neutre</md-option>
+              <md-option value="salty">Salé</md-option>
+              <md-option value="sweet">Sucré</md-option>
+            </md-select>
+          </md-field>
+          <md-field class="field-diet">
+            <label for="diet">Régime</label>
+            <md-select v-model="form.diet" name="diet" id="diet">
+              <md-option value="">Tous</md-option>
+              <md-option value="vegan">Vegan</md-option>
+              <md-option value="vege">Végé</md-option>
+              <md-option value="meat">Viande</md-option>
+            </md-select>
+          </md-field>
+
+          <md-field md-layout="box" class="field-name" md-clearable>
+            <label>Nom</label>
+            <md-input v-model="form.search"></md-input>
+          </md-field>
+
+          <multiselect class="field-ingredients" v-model="form.ingredients" :options="ingredientsByTypes" :multiple="true"
+                       placeholder="Ingredients"
+                       selectLabel="Selection de l'ingrédient"
+                       deselectLabel="Supprimer l'ingrédient"
+                       selectedLabel="Selectionné"
+                       track-by="name" label="name"
+                       group-label="name" group-values="ingredients" :group-select="false">
+            <span slot="noResult">Aucun ingrédient trouvé</span>
+          </multiselect>
+
+          <md-button class="md-accent" v-on:click="clearForm()">
+            Tous afficher
+          </md-button>
+        </md-drawer>
+
         <md-card v-for="recipe in listRecipes()" v-bind:key="recipe.id" class="recipe" v-bind:class="{hasPhoto: recipe.image}" >
           <md-card-media v-if="recipe.image">
             <div class="center-cropped" v-on:click="showModal(recipe)"
@@ -126,22 +172,23 @@
       </md-app-content>
     </md-app>
     <md-dialog :md-active.sync="lightboxShowed">
-      <div class="center-cropped"
+      <div class="center-cropped" @click="lightboxShowed = false;"
            v-bind:style="{'background-image': 'url(\'' + (selectedRecipe ? selectedRecipe.imagePath : '') + '\')'}">
         <img :src="selectedRecipe ? selectedRecipe.imagePath : null" />
       </div>
     </md-dialog>
     <md-dialog class="cart" :md-active.sync="cartShowed">
       <md-dialog-title>Liste de course</md-dialog-title>
-      <md-card>
-        <md-card-content>
-          <ul>
-            <li v-for="ingredient in form.ingredientsCart" v-bind:key="ingredient.id">
-              {{ ingredient.toString() }}
-            </li>
-          </ul>
-        </md-card-content>
-      </md-card>
+      <md-dialog-content>
+        <ul>
+          <li v-for="ingredient in form.ingredientsCart" v-bind:key="ingredient.id">
+            {{ ingredient.toString() }}
+          </li>
+        </ul>
+      </md-dialog-content>
+      <md-dialog-actions>
+        <md-button class="md-icon-button md-primary" @click="cartShowed = false"><md-icon>clear</md-icon></md-button>
+      </md-dialog-actions>
     </md-dialog>
   </div>
 </template>
@@ -156,7 +203,7 @@
     MdApp,
     MdContent,
     MdField,
-    MdAutocomplete, MdMenu, MdHighlightText, MdList, MdDialog, MdCheckbox
+    MdAutocomplete, MdMenu, MdHighlightText, MdList, MdDialog, MdCheckbox, MdDrawer
   } from 'vue-material/dist/components';
   import NoSleep from 'nosleep.js';
   import Multiselect from 'vue-multiselect'
@@ -166,24 +213,25 @@
   import 'vue-material/dist/theme/default-dark.css';
   import "vue-multiselect/dist/vue-multiselect.min.css";
   import axios from "axios";
+  import VueMobileDetection from 'vue-mobile-detection';
 
   const noSleep = new NoSleep();
   noSleep.enable();
 
+  Vue.use(VueMobileDetection);
+
   Vue.use(MdApp);
   Vue.use(MdToolbar);
   Vue.use(MdContent);
-
   Vue.use(MdCard);
   Vue.use(MdButton);
   Vue.use(MdIcon);
-
   Vue.use(MdField);
   Vue.use(MdCheckbox);
   Vue.use(MdMenu);
   Vue.use(MdList);
-
   Vue.use(MdDialog);
+  Vue.use(MdDrawer);
 
   Vue.config.errorHandler = (err, vm, info) => {
     if (process.env.NODE_ENV !== 'production') {
@@ -333,7 +381,6 @@
           };
           if (recipeIngredient.measure) {
             ingredientCart.quantities.measures[recipeIngredient.measure] = quantity;
-            console.log(recipeIngredient, quantity, ingredientCart);
           } else {
             if (recipeIngredient.unit !== null) {
               ingredientCart.quantities.unit = quantity;
@@ -351,7 +398,12 @@
         this.form.selectedRecipes = [];
         this.form.ingredientsCart = [];
         this.form.ingredients = [];
+        this.filtersShowed = false;
       },
+      showNavigation() {
+        this.navigationShowed = true;
+        console.log(this.navigationShowed);
+      }
     },
     data() {
       return {
@@ -369,6 +421,7 @@
         ingredientsByTypes: [],
         selectedRecipe: null,
         lightboxShowed: false,
+        filtersShowed: false,
         cartShowed: false,
       };
     },

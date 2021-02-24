@@ -99,7 +99,6 @@
       setZoom(step) {
         if (this.zoom + step > 0.5 && this.zoom + step < 2) {
           this.zoom += step;
-          console.log(this.zoom);
         }
       }
     },
@@ -112,7 +111,6 @@
     mounted() {
       let el = document.querySelector("div[data-recipe]");
       this.recipe = JSON.parse(el.dataset.recipe);
-      console.log(this.recipe);
     },
     components: {
 
