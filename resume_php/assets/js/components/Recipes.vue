@@ -180,6 +180,13 @@
     <md-dialog class="cart" :md-active.sync="cartShowed">
       <md-dialog-title>Liste de course</md-dialog-title>
       <md-dialog-content>
+        <h3>Recettes</h3>
+        <ul>
+          <li v-for="recipe in form.selectedRecipes" v-bind:key="recipe.id">
+            {{ recipe.name }}
+          </li>
+        </ul>
+        <h3>Ingrédients</h3>
         <ul>
           <li v-for="ingredient in form.ingredientsCart" v-bind:key="ingredient.id">
             {{ ingredient.toString() }}
@@ -345,6 +352,7 @@
             },
             toString() {
               const quantities = [];
+              console.log(this);
               if (this.quantities.unit) {
                 quantities.push(tools.prettyNumber(this.quantities.unit, recipeIngredient.ingredient.isLiquid));
               }
@@ -357,10 +365,11 @@
               return this.name + (quantities.length > 0 ? (' (' + quantities.join(' + ') + ')') : '');
             }
           };
+          console.log(recipeIngredient);
           if (recipeIngredient.measure) {
             ingredientCart.quantities.measures[recipeIngredient.measure] = quantity;
           } else {
-            if (recipeIngredient.unit !== null) {
+            if (recipeIngredient.unit) {
               ingredientCart.quantities.unit = quantity;
             } else {
               ingredientCart.quantities.count = quantity;
