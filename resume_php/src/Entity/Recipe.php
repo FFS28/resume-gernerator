@@ -16,9 +16,12 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ApiResource()
+ * @UniqueEntity(fields={"name"}, message="A recipe with same name already exists")
  * @ORM\Entity(repositoryClass=RecipeRepository::class)
  * @Vich\Uploadable
  */
@@ -230,14 +233,16 @@ class Recipe
         $this->ingredients = $ingredients;
         $this->recipeIngredients = new ArrayCollection();
         foreach ($ingredients as $ingredient) {
-            $recipeIngredient = new RecipeIngredient();
-            $recipeIngredient->setRecipe($this);
-            $recipeIngredient->setIngredient($ingredient['ingredient']);
-            $recipeIngredient->setQuantity(floatval($ingredient['quantity']));
-            $recipeIngredient->setUnit($ingredient['unit']);
-            $recipeIngredient->setMeasure($ingredient['measure']);
+            if ($ingredient['ingredient']) {
+                $recipeIngredient = new RecipeIngredient();
+                $recipeIngredient->setRecipe($this);
+                $recipeIngredient->setIngredient($ingredient['ingredient']);
+                $recipeIngredient->setQuantity(floatval($ingredient['quantity']));
+                $recipeIngredient->setUnit($ingredient['unit']);
+                $recipeIngredient->setMeasure($ingredient['measure']);
 
-            $this->addRecipeIngredient($recipeIngredient);
+                $this->addRecipeIngredient($recipeIngredient);
+            }
         }
 
         return $this;

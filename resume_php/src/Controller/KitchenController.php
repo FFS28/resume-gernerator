@@ -56,6 +56,33 @@ class KitchenController extends AbstractController
         $recipesSerialized = [];
         $ingredientsSerialized = [];
 
+        /**
+         * @var Recipe $recipeA
+         * @var Recipe $recipeB
+         */
+        usort($recipes, function($recipeA, $recipeB){
+            $sortA = 1;
+            $sortB = 1;
+
+            if ($recipeA->isSalty()) $sortA = 3;
+            if ($recipeB->isSalty()) $sortB = 3;
+            if ($recipeA->isSweet()) $sortA = 2;
+            if ($recipeB->isSweet()) $sortB = 2;
+
+            if ($sortA === $sortB) {
+                if ($recipeA->isvegan()) $sortA = 4;
+                if ($recipeB->isvegan()) $sortB = 4;
+                if ($recipeA->isVege()) $sortA = 3;
+                if ($recipeB->isVege()) $sortB = 3;
+                if ($recipeA->isMeat()) $sortA = 2;
+                if ($recipeB->isMeat()) $sortB = 2;
+                if ($recipeA->isFish()) $sortA = 1;
+                if ($recipeB->isFish()) $sortB = 1;
+            }
+
+            return $sortB - $sortA;
+        });
+
         foreach ($recipes as $recipe) {
             $recipesSerialized[] = $this->recipeToArray($recipe, $translator);
         }

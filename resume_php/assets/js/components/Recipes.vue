@@ -265,29 +265,6 @@
           }
         });
 
-        recipes.sort((recipeA, recipeB) => {
-          let sortA = 1;
-          let sortB = 1;
-
-          if (recipeA.salty) sortA = 3;
-          if (recipeB.salty) sortB = 3;
-          if (recipeA.sweet) sortA = 2;
-          if (recipeB.sweet) sortB = 2;
-
-          if (sortA === sortB) {
-            if (recipeA.vegan) sortA = 4;
-            if (recipeB.vegan) sortB = 4;
-            if (recipeA.vege) sortA = 3;
-            if (recipeB.vege) sortB = 3;
-            if (recipeA.meat) sortA = 2;
-            if (recipeB.meat) sortB = 2;
-            if (recipeA.fish) sortA = 1;
-            if (recipeB.fish) sortB = 1;
-          }
-
-          return sortB - sortA;
-        });
-
         return recipes;
       },
       minToHour(min) {
@@ -304,8 +281,9 @@
           recipe.recipeIngredients.forEach(recipeIngredient => {
 
             if (recipeIngredient.ingredient.isRecipe) {
-              this.recipeByNames[recipeIngredient.ingredient.name].recipeIngredients.forEach(recipeIngredient => {
-                this.addIngredientToCart(ingredientIds, recipeIngredient);
+              console.log(recipeIngredient);
+              this.recipeByNames[recipeIngredient.ingredient.name].recipeIngredients.forEach(recipeIngredientInRecipe => {
+                this.addIngredientToCart(ingredientIds, recipeIngredientInRecipe, recipeIngredient.quantity ? recipeIngredient.quantity : 1);
               });
             } else {
               this.addIngredientToCart(ingredientIds, recipeIngredient);
@@ -317,9 +295,9 @@
         });
         this.cartShowed = true;
       },
-      addIngredientToCart(ingredientIds, recipeIngredient) {
+      addIngredientToCart(ingredientIds, recipeIngredient, multiplier = 1) {
         const ingredientIndex = ingredientIds.indexOf(recipeIngredient.ingredient.id);
-        let quantity = recipeIngredient.quantity;
+        let quantity = recipeIngredient.quantity * multiplier;
         if (recipeIngredient.unit === 'c-à-c' || recipeIngredient.unit === 'c-à-s') {
           quantity *= (recipeIngredient.unit === 'c-à-s' ? 15 : 5);
         }

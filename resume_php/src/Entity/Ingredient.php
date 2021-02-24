@@ -11,9 +11,12 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ApiResource()
+ * @UniqueEntity(fields={"name"}, message="A ingredient with same name already exists")
  * @ORM\Entity(repositoryClass=IngredientRepository::class)
  */
 class Ingredient
