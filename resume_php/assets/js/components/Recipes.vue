@@ -354,7 +354,8 @@
               const quantities = [];
               console.log(this);
               if (this.quantities.unit) {
-                quantities.push(tools.prettyNumber(this.quantities.unit, recipeIngredient.ingredient.isLiquid));
+                let isLiquid = recipeIngredient.ingredient.isLiquid || recipeIngredient.unit === 'cl' || recipeIngredient.unit === 'l';
+                quantities.push(tools.prettyNumber(this.quantities.unit, isLiquid));
               }
               if (this.quantities.count) {
                 quantities.push(this.quantities.count);
