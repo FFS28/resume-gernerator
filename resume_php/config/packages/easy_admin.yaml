@@ -386,7 +386,6 @@ easy_admin:
           - { property: 'image', type: 'image', base_path: '%RECIPE_DIRECTORY%' }
     Ingredient:
       class: App\Entity\Ingredient
-      controller: App\Controller\IngredientController
       form:
         fields:
           - name
