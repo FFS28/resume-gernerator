@@ -91,11 +91,11 @@ class Ingredient
             || $this->getType() === Ingredient::TYPE_MEAT) {
             return true;
         } elseif (in_array($name, [
-            'ail', 'herbes de provence', 'noix de muscade',
+            'ail', 'herbes de provence', 'noix de muscade', 'curry', 'cumin',
             'moutarde', 'mayonnaise',
             'fromage râpé', 'parmesan',
             'aubergine', 'salade',
-            'sauce soja salé', 'pomme de terre'
+            'sauce soja salé', 'pomme de terre', 'patate douce'
         ])) {
             return true;
         } elseif (substr($name, 0, 9) === 'bouillon ') {
