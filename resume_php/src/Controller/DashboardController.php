@@ -27,6 +27,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Translation\Translator;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
+use Symfony\UX\Chartjs\Model\Chart;
 
 class DashboardController extends EasyAdminController
 {
@@ -43,6 +45,7 @@ class DashboardController extends EasyAdminController
      * @Route("/admin/dashboard/{year<\d+>?0}/{quarter<\d+>?0}", name="dashboard")
      */
     public function index(
+        ChartBuilderInterface $chartBuilder,
         InvoiceRepository $invoiceRepository,
         ExperienceRepository $experienceRepository,
         DeclarationService $declarationService,
@@ -55,7 +58,7 @@ class DashboardController extends EasyAdminController
         $viewData['currentQuarter'] = ceil((new DateTime())->format('n') / 3);
         $viewData['activeYear'] = $year ? $year : $viewData['currentYear'];
         $viewData['activeQuarter'] = $quarter ? $quarter : $viewData['currentQuarter'];
-        $viewData['years'] = $invoiceRepository->findYears();
+        $viewData['years'] = array_filter($invoiceRepository->findYears());
 
         if (!in_array($viewData['currentYear'], $viewData['years'])) {
             $viewData['years'][] = $viewData['currentYear'];
@@ -96,7 +99,7 @@ class DashboardController extends EasyAdminController
 
         $viewData['colorsByYears'] = [];
         foreach ($viewData['years'] as $year) {
-            $viewData['colorsByYears'][] = $year == $viewData['activeYear'] ? 'rgba(56, 142, 60, 0.6)' : 'rgba(0, 0, 0, 0.1)';
+            $viewData['colorsByYears'][] = $year == $viewData['activeYear'] ? 'rgba(56, 142, 60, 0.6)' : 'rgba(56, 142, 60, 0.3)';
         }
 
         $viewData['colorsByQuarters'] = [];
@@ -133,6 +136,44 @@ class DashboardController extends EasyAdminController
                 'netByMonth' => round($net / 12),
             ];
         }
+
+        $chartRevenuesByYears = $chartBuilder->createChart(Chart::TYPE_BAR);
+        $chartRevenuesByYears->setData([
+            'labels' => array_keys($viewData['revenuesByYears']),
+            'datasets' => [
+                [
+                    'label' => 'CA (€)',
+                    'backgroundColor' => array_values($viewData['colorsByYears']),
+                    'data' => array_values($viewData['revenuesByYears']),
+                ],
+            ],
+        ]);
+        $viewData['chartRevenuesByYears'] = $chartRevenuesByYears;
+
+        $chartRevenuesByQuarters = $chartBuilder->createChart(Chart::TYPE_BAR);
+        $chartRevenuesByQuarters->setData([
+            'labels' => array_keys($viewData['revenuesByQuarters']),
+            'datasets' => [
+                [
+                    'label' => 'CA (€)',
+                    'backgroundColor' => array_values($viewData['colorsByQuarters']),
+                    'data' => array_values($viewData['revenuesByQuarters']),
+                ],
+            ],
+        ]);
+        $viewData['chartRevenuesByQuarters'] = $chartRevenuesByQuarters;
+
+        $chartDaysByMonth = $chartBuilder->createChart(Chart::TYPE_BAR);
+        $chartDaysByMonth->setData([
+            'labels' => array_keys($viewData['daysByMonth']),
+            'datasets' => [
+                [
+                    'label' => 'CA (€)',
+                    'data' => array_values($viewData['daysByMonth']),
+                ],
+            ],
+        ]);
+        $viewData['chartDaysByMonth'] = $chartDaysByMonth;
 
         return $this->render('page/dashboard.html.twig', $viewData);
     }

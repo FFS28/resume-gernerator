@@ -65,19 +65,19 @@
             <div class="card card-3">
                 <div class="card-content">
                     <h4>{{ 'Revenues by years' | trans }}</h4>
-                    <canvas id="revenuesByYears" width="100%" height="100%"></canvas>
+                    {{ render_chart(chartRevenuesByYears, {'id' : 'revenuesByYears'}) }}
                 </div>
             </div>
             <div class="card card-3">
                 <div class="card-content">
                     <h4>{{ 'Revenues by quarter' | trans }}</h4>
-                    <canvas id="revenuesByQuarters" width="100%" height="100%"></canvas>
+                    {{ render_chart(chartRevenuesByQuarters, {'id' : 'revenuesByQuarters'}) }}
                 </div>
             </div>
             <div class="card card-3">
                 <div class="card-content">
                     <h4>{{ 'Days by month' | trans }}</h4>
-                    <canvas id="daysByMonth" width="100%" height="100%"></canvas>
+                    {{ render_chart(chartDaysByMonth, {'id' : 'daysByMonth'}) }}
                 </div>
             </div>
         </div>
@@ -183,48 +183,5 @@
 {% endblock %}
 
 {% block body_javascript %}
-    <script src="{{ asset('build/js/Chart.bundle.min.js') }}"></script>
-    <link rel="stylesheet" type="text/css" href="{{ asset('build/css/Chart.min.css') }}">
-
-    <script>
-        window.onload = function() {
-            var ctx = document.getElementById('revenuesByYears');
-            var myChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['{{ (revenuesByYears | keys) | join("', '") | raw }}'],
-                    datasets: [{
-                        label: 'CA (€)',
-                        data: ['{{ (revenuesByYears) | join("', '") | raw }}'],
-                        backgroundColor: ['{{ colorsByYears | join("', '") | raw }}'],
-                    }]
-                }
-            });
-
-            var ctx = document.getElementById('revenuesByQuarters');
-            var myChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['{{ (revenuesByQuarters | keys) | join("', '") | raw }}'],
-                    datasets: [{
-                        label: 'CA (€)',
-                        data: ['{{ (revenuesByQuarters) | join("', '") | raw }}'],
-                        backgroundColor: ['{{ colorsByQuarters | join("', '") | raw }}'],
-                    }]
-                }
-            });
-
-            var ctx = document.getElementById('daysByMonth');
-            var myChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['{{ (daysByMonth | keys) | join("', '") | raw }}'],
-                    datasets: [{
-                        label: '{{ 'Days' | trans }}',
-                        data: ['{{ (daysByMonth) | join("', '") | raw }}'],
-                    }]
-                }
-            });
-        };
-    </script>
+    {{ encore_entry_script_tags('app') }}
 {% endblock %}
