@@ -10,6 +10,7 @@ use App\Repository\EducationRepository;
 use App\Repository\ExperienceRepository;
 use App\Repository\HobbyRepository;
 use App\Repository\IngredientRepository;
+use App\Repository\KitchenIngredientRepository;
 use App\Repository\LinkRepository;
 use App\Repository\RecipeRepository;
 use App\Repository\SkillRepository;
@@ -49,12 +50,15 @@ class KitchenController extends AbstractController
     public function recipes(
         TranslatorInterface $translator,
         RecipeRepository $recipeRepository,
-        IngredientRepository $ingredientRepository
+        IngredientRepository $ingredientRepository,
+        KitchenIngredientRepository $kitchenIngredientRepository
     ) {
         $recipes = $recipeRepository->findAll();
         $ingredients = $ingredientRepository->findAll();
+        $kitchenIngredients = $kitchenIngredientRepository->findAll();
         $recipesSerialized = [];
         $ingredientsSerialized = [];
+        $kitchenIngredientsSerialized = [];
 
         /**
          * @var Recipe $recipeA
@@ -91,10 +95,17 @@ class KitchenController extends AbstractController
             $ingredientSerialized['typeName'] = $translator->trans($ingredientSerialized['typeName']);
             $ingredientsSerialized[] = $ingredientSerialized;
         }
+        foreach ($kitchenIngredients as $kitchenIngredient) {
+            $kitchenIngredientSerialized = $kitchenIngredient->toArray();
+            $kitchenIngredientSerialized['ingredient']['typeName'] = $translator->trans($kitchenIngredientSerialized['ingredient']['typeName']);
+
+            $kitchenIngredientsSerialized[] = $kitchenIngredientSerialized;
+        }
 
         $data = [
             'recipes' => $recipesSerialized,
             'ingredients' => $ingredientsSerialized,
+            'kitchen' => $kitchenIngredientsSerialized,
         ];
 
         return $this->json($data);

@@ -219,6 +219,7 @@ Message sended: Message envoyé
 Notifications: Notifications
 
 Kitchen: Cuisine
+Fridge: Frigo
 Ingredient: Ingrédient
 Ingredients: Ingrédients
 Recipe: Recette
@@ -226,6 +227,8 @@ Recipes: Recettes
 RecipeIngredient: Ingrédient
 recipeingredient: Ingrédient
 Recipe ingredients: Ingrédients
+KitchenIngredient: Ingrédient
+KitchenIngredients: Ingrédients
 Is vege: Végétarien
 Is vegan: Végan
 Preparation duration: Temps de préparation (min)

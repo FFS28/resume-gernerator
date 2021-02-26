@@ -25,7 +25,6 @@ function normalize(str) {
 }
 
 function prettyNumber(value, isLiquid) {
-  console.log(value, isLiquid);
   if (value > 1000) {
     return (value / 1000) + ' ' +  (isLiquid ? 'l' : 'kg');
   } else if (value > 10 && isLiquid === true) {

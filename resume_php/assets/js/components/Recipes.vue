@@ -186,12 +186,14 @@
             {{ recipe.name }}
           </li>
         </ul>
-        <h3>Ingrédients</h3>
-        <ul>
-          <li v-for="ingredient in form.ingredientsCart" v-bind:key="ingredient.id">
-            {{ ingredient.toString() }}
-          </li>
-        </ul>
+        <div v-if="form.ingredientsCart.length > 0">
+          <h3>Ingrédients</h3>
+          <ul>
+            <li v-for="ingredient in form.ingredientsCart" v-bind:key="ingredient.id">
+              {{ ingredient.toString() }}
+            </li>
+          </ul>
+        </div>
       </md-dialog-content>
       <md-dialog-actions>
         <md-button class="md-icon-button md-primary" @click="cartShowed = false"><md-icon>clear</md-icon></md-button>
@@ -288,7 +290,6 @@
           recipe.recipeIngredients.forEach(recipeIngredient => {
 
             if (recipeIngredient.ingredient.isRecipe) {
-              console.log(recipeIngredient);
               this.recipeByNames[recipeIngredient.ingredient.name].recipeIngredients.forEach(recipeIngredientInRecipe => {
                 this.addIngredientToCart(ingredientIds, recipeIngredientInRecipe, recipeIngredient.quantity ? recipeIngredient.quantity : 1);
               });
@@ -300,10 +301,36 @@
         this.form.ingredientsCart.sort((ingredientA, ingredientB) => {
           return ingredientA.typeIndex - ingredientB.typeIndex;
         });
+
+        const ingredientsCartWithKitchen = [];
+        this.form.ingredientsCart.forEach((ingredient, index) => {
+          if (typeof this.kitchenIngredientsById[ingredient.id] !== 'undefined') {
+            const kitchenIngredient = this.kitchenIngredientsById[ingredient.id];
+            const kitchenQuantity = this.removeUnit(kitchenIngredient);
+
+            if (!kitchenIngredient.unit && !kitchenIngredient.measure && !kitchenIngredient.quantity) {
+
+            } else if (kitchenIngredient.unit && ingredient.quantities.unit && ingredient.quantities.unit > kitchenQuantity) {
+              ingredient.quantities.unit -= kitchenQuantity;
+              ingredientsCartWithKitchen.push(ingredient);
+            } else if (kitchenIngredient.measure && typeof ingredient.quantities.measures[kitchenIngredient.measure] !== 'undefined' && ingredient.quantities.measures[kitchenIngredient.measure] > kitchenQuantity) {
+              ingredient.quantities.measures[kitchenIngredient.measure] -= kitchenQuantity;
+              ingredientsCartWithKitchen.push(ingredient);
+            } else if (!kitchenIngredient.unit && !kitchenIngredient.measure && ingredient.quantities.count && ingredient.quantities.count > kitchenQuantity) {
+              ingredient.quantities.count -= kitchenQuantity;
+              ingredientsCartWithKitchen.push(ingredient);
+            } else {
+              ingredientsCartWithKitchen.push(ingredient);
+            }
+          } else {
+            ingredientsCartWithKitchen.push(ingredient);
+          }
+        });
+        this.form.ingredientsCart = ingredientsCartWithKitchen;
+
         this.cartShowed = true;
       },
-      addIngredientToCart(ingredientIds, recipeIngredient, multiplier = 1) {
-        const ingredientIndex = ingredientIds.indexOf(recipeIngredient.ingredient.id);
+      removeUnit(recipeIngredient, multiplier = 1) {
         let quantity = recipeIngredient.quantity * multiplier;
         if (recipeIngredient.unit === 'c-à-c' || recipeIngredient.unit === 'c-à-s') {
           quantity *= (recipeIngredient.unit === 'c-à-s' ? 15 : 5);
@@ -325,6 +352,11 @@
               break;
           }
         }
+        return quantity;
+      },
+      addIngredientToCart(ingredientIds, recipeIngredient, multiplier = 1) {
+        const ingredientIndex = ingredientIds.indexOf(recipeIngredient.ingredient.id);
+        const quantity = this.removeUnit(recipeIngredient, multiplier);
 
         if (ingredientIndex > -1) {
           if (recipeIngredient.measure) {
@@ -352,7 +384,6 @@
             },
             toString() {
               const quantities = [];
-              console.log(this);
               if (this.quantities.unit) {
                 let isLiquid = recipeIngredient.ingredient.isLiquid || recipeIngredient.unit === 'cl' || recipeIngredient.unit === 'l';
                 quantities.push(tools.prettyNumber(this.quantities.unit, isLiquid));
@@ -366,7 +397,6 @@
               return this.name + (quantities.length > 0 ? (' (' + quantities.join(' + ') + ')') : '');
             }
           };
-          console.log(recipeIngredient);
           if (recipeIngredient.measure) {
             ingredientCart.quantities.measures[recipeIngredient.measure] = quantity;
           } else {
@@ -388,10 +418,6 @@
         this.form.ingredients = [];
         this.filtersShowed = false;
       },
-      showNavigation() {
-        this.navigationShowed = true;
-        console.log(this.navigationShowed);
-      }
     },
     data() {
       return {
@@ -404,6 +430,8 @@
           ingredients: []
         },
         recipes: [],
+        kitchen: [],
+        kitchenIngredientsById: {},
         recipeByNames: {},
         ingredients: [],
         ingredientsByTypes: [],
@@ -418,6 +446,11 @@
           .then(response => {
             this.recipes = response.data.recipes;
             this.ingredients = response.data.ingredients;
+            this.kitchen = response.data.kitchen;
+
+            this.kitchen.forEach(kitchenIngredient => {
+              this.kitchenIngredientsById[kitchenIngredient.ingredient.id] = kitchenIngredient;
+            })
 
             this.recipes.forEach(recipe => {
               this.recipeByNames[recipe.name] = recipe;

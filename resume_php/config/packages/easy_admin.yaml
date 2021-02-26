@@ -43,6 +43,7 @@ easy_admin:
       - { label: 'Kitchen' }
       - { entity: 'Recipe', label: 'Recipes', icon: 'concierge-bell' }
       - { entity: 'Ingredient', label: 'Ingredients', icon: 'apple-alt' }
+      - { entity: 'KitchenIngredient', label: 'Fridge', icon: 'archive' }
   formats:
     date: 'd/m/Y'
   list:
@@ -398,8 +399,8 @@ easy_admin:
           - { property: 'type', trans: true }
           - isLiquid
           - isRecipe
-    RecipeIngredient:
-      class: App\Entity\RecipeIngredient
+    KitchenIngredient:
+      class: App\Entity\KitchenIngredient
       form:
         fields:
           - ingredient
