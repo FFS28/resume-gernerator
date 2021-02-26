@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\KitchenIngredient;
 use App\Entity\Recipe;
 use App\Entity\RecipeIngredient;
 use App\Form\Type\ContactFormType;
@@ -27,19 +28,41 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class KitchenController extends AbstractController
 {
-    private function recipeToArray(Recipe $recipe, $translator): array
+    /**
+     * @param Recipe $recipe
+     * @param $translator
+     * @param KitchenIngredient[] $kitchenIngredients
+     * @return array
+     */
+    private function recipeToArray(Recipe $recipe, $translator, $kitchenIngredients = []): array
     {
         $recipeSerialized = $recipe->toArray();
         $recipeSerialized['imagePath'] = '/' . $this->getParameter('RECIPE_DIRECTORY') . $recipeSerialized['image'];
         $recipeSerialized['recipeIngredients'] = [];
 
-        foreach ($recipe->orderedIngredientsByType() as $recipeIngredient) {
+        $recipeIngredients = $recipe->orderedIngredientsByType();
+        $countIngredientInKitchen = 0;
+
+        foreach ($recipeIngredients as $recipeIngredient) {
             $recipeIngredientSerialized = $recipeIngredient->toArray();
             $recipeIngredientSerialized['ingredient']['typeName'] = $translator->trans($recipeIngredientSerialized['ingredient']['typeName']);
 
+            if (array_key_exists($recipeIngredient->getIngredient()->getId(), $kitchenIngredients)) {
+                $kitchenIngredient = $kitchenIngredients[$recipeIngredient->getIngredient()->getId()];
+
+                if (!$kitchenIngredient->getUnit() && !$kitchenIngredient->getMeasure() && !$kitchenIngredient->getQuantity()
+                    || $kitchenIngredient->getUnit() && $recipeIngredient->getUnit() && $recipeIngredient->getEquivalentGram() <= $kitchenIngredient->getEquivalentGram()
+                    || $kitchenIngredient->getMeasure() && $kitchenIngredient->getMeasure() === $recipeIngredient->getMeasure() && $recipeIngredient->getQuantity() <= $kitchenIngredient->getQuantity()
+                    || !$kitchenIngredient->getUnit() && !$kitchenIngredient->getMeasure() && $recipeIngredient->getQuantity() < $kitchenIngredient->getQuantity()
+                ) {
+                    $countIngredientInKitchen++;
+                }
+            }
             $recipeSerialized['recipeIngredients'][] = $recipeIngredientSerialized;
         }
 
+        $recipeSerialized['kitchen'] = $countIngredientInKitchen . '/' . count($recipeIngredients);
+        $recipeSerialized['allKitchen'] = $countIngredientInKitchen === count($recipeIngredients);
         return $recipeSerialized;
     }
 
@@ -56,6 +79,7 @@ class KitchenController extends AbstractController
         $recipes = $recipeRepository->findAll();
         $ingredients = $ingredientRepository->findAll();
         $kitchenIngredients = $kitchenIngredientRepository->findAll();
+        $kitchenIngredientsById = [];
         $recipesSerialized = [];
         $ingredientsSerialized = [];
         $kitchenIngredientsSerialized = [];
@@ -87,19 +111,21 @@ class KitchenController extends AbstractController
             return $sortB - $sortA;
         });
 
-        foreach ($recipes as $recipe) {
-            $recipesSerialized[] = $this->recipeToArray($recipe, $translator);
-        }
-        foreach ($ingredients as $ingredient) {
-            $ingredientSerialized = $ingredient->toArray();
-            $ingredientSerialized['typeName'] = $translator->trans($ingredientSerialized['typeName']);
-            $ingredientsSerialized[] = $ingredientSerialized;
-        }
         foreach ($kitchenIngredients as $kitchenIngredient) {
             $kitchenIngredientSerialized = $kitchenIngredient->toArray();
             $kitchenIngredientSerialized['ingredient']['typeName'] = $translator->trans($kitchenIngredientSerialized['ingredient']['typeName']);
 
             $kitchenIngredientsSerialized[] = $kitchenIngredientSerialized;
+            $kitchenIngredientsById[$kitchenIngredient->getIngredient()->getId()] = $kitchenIngredient;
+        }
+        foreach ($recipes as $recipe) {
+            $recipeSerialized = $this->recipeToArray($recipe, $translator, $kitchenIngredientsById);
+            $recipesSerialized[] = $recipeSerialized;
+        }
+        foreach ($ingredients as $ingredient) {
+            $ingredientSerialized = $ingredient->toArray();
+            $ingredientSerialized['typeName'] = $translator->trans($ingredientSerialized['typeName']);
+            $ingredientsSerialized[] = $ingredientSerialized;
         }
 
         $data = [

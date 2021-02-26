@@ -128,6 +128,13 @@ class RelationIngredient
             case self::UNIT_TEASPOON:
                 return $quantity * 5;
 
+            case self::UNIT_CENTILITER:
+                return $quantity * 10;
+
+            case self::UNIT_KILOGRAM:
+            case self::UNIT_LITER:
+                return $quantity * 1000;
+
             case self::UNIT_GRAM:
             default:
                 return $quantity;

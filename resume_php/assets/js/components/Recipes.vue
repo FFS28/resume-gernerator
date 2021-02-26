@@ -154,6 +154,9 @@
                   <md-button v-if="recipe.nbSlices" class="md-fab" :md-ripple="false" style="background-color: white;">
                     <md-icon style="color: black;">local_pizza</md-icon><span>{{ recipe.nbSlices }}</span>
                   </md-button>
+                  <md-button v-if="recipe.kitchen" class="md-fab" :md-ripple="false" v-bind:style="{ backgroundColor: recipe.allKitchen ? '#448aff' : 'white' }">
+                    <md-icon style="color: black;">inventory</md-icon><span>{{ recipe.kitchen }}</span>
+                  </md-button>
                   <md-card-expand-trigger>
                     <md-button class="md-icon-button">
                       <md-icon>keyboard_arrow_down</md-icon>
