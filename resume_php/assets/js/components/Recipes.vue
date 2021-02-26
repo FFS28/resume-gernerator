@@ -310,18 +310,28 @@
           if (typeof this.kitchenIngredientsById[ingredient.id] !== 'undefined') {
             const kitchenIngredient = this.kitchenIngredientsById[ingredient.id];
             const kitchenQuantity = this.removeUnit(kitchenIngredient);
+            console.log(ingredient);
+            console.log(kitchenQuantity);
 
             if (!kitchenIngredient.unit && !kitchenIngredient.measure && !kitchenIngredient.quantity) {
 
-            } else if (kitchenIngredient.unit && ingredient.quantities.unit && ingredient.quantities.unit > kitchenQuantity) {
-              ingredient.quantities.unit -= kitchenQuantity;
-              ingredientsCartWithKitchen.push(ingredient);
-            } else if (kitchenIngredient.measure && typeof ingredient.quantities.measures[kitchenIngredient.measure] !== 'undefined' && ingredient.quantities.measures[kitchenIngredient.measure] > kitchenQuantity) {
-              ingredient.quantities.measures[kitchenIngredient.measure] -= kitchenQuantity;
-              ingredientsCartWithKitchen.push(ingredient);
-            } else if (!kitchenIngredient.unit && !kitchenIngredient.measure && ingredient.quantities.count && ingredient.quantities.count > kitchenQuantity) {
-              ingredient.quantities.count -= kitchenQuantity;
-              ingredientsCartWithKitchen.push(ingredient);
+            } else if (kitchenIngredient.unit && ingredient.quantities.unit) {
+              if (ingredient.quantities.unit > kitchenQuantity) {
+                ingredient.quantities.unit -= kitchenQuantity;
+                ingredientsCartWithKitchen.push(ingredient);
+              }
+            } else if (kitchenIngredient.measure) {
+              if (typeof ingredient.quantities.measures[kitchenIngredient.measure] !== 'undefined' && ingredient.quantities.measures[kitchenIngredient.measure] > kitchenQuantity) {
+                ingredient.quantities.measures[kitchenIngredient.measure] -= kitchenQuantity;
+                ingredientsCartWithKitchen.push(ingredient);
+              } else if (typeof ingredient.quantities.measures[kitchenIngredient.measure] === 'undefined') {
+                ingredientsCartWithKitchen.push(ingredient);
+              }
+            } else if (!kitchenIngredient.unit && !kitchenIngredient.measure && ingredient.quantities.count) {
+              if (ingredient.quantities.count > kitchenQuantity) {
+                ingredient.quantities.count -= kitchenQuantity;
+                ingredientsCartWithKitchen.push(ingredient);
+              }
             } else {
               ingredientsCartWithKitchen.push(ingredient);
             }

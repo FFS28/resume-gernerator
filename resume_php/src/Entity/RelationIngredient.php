@@ -176,7 +176,7 @@ class RelationIngredient
         return $this->quantity;
     }
 
-    public function setQuantity(float $quantity): self
+    public function setQuantity(?float $quantity): self
     {
         $this->quantity = $quantity;
 
