@@ -245,6 +245,7 @@ Is recipe: Recette ?
 form.label.delete: Supprimer la photo ?
 Measure: Mesure
 Unit: Unité
+Measure str: Mesure
 
 g: g
 kg: kg
