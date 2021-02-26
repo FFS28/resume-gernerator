@@ -45,6 +45,7 @@ class KitchenController extends AbstractController
 
         foreach ($recipeIngredients as $recipeIngredient) {
             $recipeIngredientSerialized = $recipeIngredient->toArray();
+            $recipeIngredientSerialized['kitchen'] = false;
             $recipeIngredientSerialized['ingredient']['typeName'] = $translator->trans($recipeIngredientSerialized['ingredient']['typeName']);
 
             if (array_key_exists($recipeIngredient->getIngredient()->getId(), $kitchenIngredients)) {
@@ -55,6 +56,7 @@ class KitchenController extends AbstractController
                     || $kitchenIngredient->getMeasure() && $kitchenIngredient->getMeasure() === $recipeIngredient->getMeasure() && $recipeIngredient->getQuantity() <= $kitchenIngredient->getQuantity()
                     || !$kitchenIngredient->getUnit() && !$kitchenIngredient->getMeasure() && $recipeIngredient->getQuantity() < $kitchenIngredient->getQuantity()
                 ) {
+                    $recipeIngredientSerialized['kitchen'] = true;
                     $countIngredientInKitchen++;
                 }
             }

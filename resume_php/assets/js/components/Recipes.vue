@@ -115,7 +115,7 @@
             <md-card-expand>
               <md-card-expand-content>
                 <md-card-content>
-                  <div v-for="recipeIngredient in recipe.recipeIngredients" v-bind:key="recipeIngredient.id">
+                  <div v-for="recipeIngredient in recipe.recipeIngredients" v-bind:key="recipeIngredient.id" v-bind:style="{color: recipeIngredient.kitchen ? '#448aff' : 'white'}">
                     <md-icon v-if="recipeIngredient.ingredient.type === 'meat'">goat</md-icon>
                     <md-icon v-if="recipeIngredient.ingredient.type === 'fish_seafood'">directions_boat</md-icon>
                     <md-icon v-if="recipeIngredient.ingredient.type === 'fruit_vegetable_mushroom'">local_florist</md-icon>
