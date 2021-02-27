@@ -419,6 +419,7 @@ easy_admin:
           - { name: 'new', label: 'New' }
         batch_actions:
           - update
+        max_results: 100
 
 
 
