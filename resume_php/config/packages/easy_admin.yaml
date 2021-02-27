@@ -401,6 +401,7 @@ easy_admin:
           - isRecipe
     KitchenIngredient:
       class: App\Entity\KitchenIngredient
+      controller: App\Controller\KitchenIngredientController
       form:
         fields:
           - ingredient
@@ -411,6 +412,8 @@ easy_admin:
         fields:
           - ingredient
           - measureStr
+        batch_actions:
+          - update
 
 
 

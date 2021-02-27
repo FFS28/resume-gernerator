@@ -18,5 +18,20 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class KitchenIngredient extends RelationIngredient
 {
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $search;
 
+    public function getSearch(): ?string
+    {
+        return $this->search;
+    }
+
+    public function setSearch(string $search): self
+    {
+        $this->search = $search;
+
+        return $this;
+    }
 }
