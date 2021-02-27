@@ -385,6 +385,7 @@ easy_admin:
           - { property : recipeIngredients, type: array }
           - source
           - { property: 'image', type: 'image', base_path: '%RECIPE_DIRECTORY%' }
+        sort: [ 'name', 'ASC' ]
     Ingredient:
       class: App\Entity\Ingredient
       form:
@@ -399,6 +400,7 @@ easy_admin:
           - { property: 'type', trans: true }
           - isLiquid
           - isRecipe
+        sort: [ 'name', 'ASC' ]
     KitchenIngredient:
       class: App\Entity\KitchenIngredient
       controller: App\Controller\KitchenIngredientController
@@ -419,6 +421,7 @@ easy_admin:
           - { name: 'new', label: 'New' }
         batch_actions:
           - update
+        sort: ['search', 'ASC']
         max_results: 100
 
 

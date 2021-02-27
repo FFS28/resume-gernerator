@@ -16,8 +16,6 @@
 #main {
   form {
     .form-group {
-      padding-left: 0;
-      padding-right: 0;
       .select2-container {
         width: auto !important;
       }
@@ -28,6 +26,14 @@
 body.list-kitcheningredient {
   .form-action-search input[type=search].form-control {
     max-width: 125px
+  }
+  #main {
+    form {
+      .form-group {
+        padding-left: 0;
+        padding-right: 0;
+      }
+    }
   }
   table {
     th.ingredient, td.ingredient{
@@ -98,6 +104,9 @@ body.edit-kitcheningredient, body.new-kitcheningredient {
       }
     }
 
+    .field-collection-item-action{
+      top: 25px;
+    }
   }
 }
 
