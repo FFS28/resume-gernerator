@@ -310,8 +310,6 @@
           if (typeof this.kitchenIngredientsById[ingredient.id] !== 'undefined') {
             const kitchenIngredient = this.kitchenIngredientsById[ingredient.id];
             const kitchenQuantity = this.removeUnit(kitchenIngredient);
-            console.log(ingredient);
-            console.log(kitchenQuantity);
 
             if (!kitchenIngredient.unit && !kitchenIngredient.measure && !kitchenIngredient.quantity) {
 

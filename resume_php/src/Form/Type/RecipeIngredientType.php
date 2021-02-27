@@ -26,7 +26,8 @@ class RecipeIngredientType extends AbstractType
                 'class' => Ingredient::class
             ])
             ->add('quantity', NumberType::class, [
-                'attr' => ['class' => 'field-quantity'],
+                'attr' => ['class' => 'field-quantity', 'min' => 0, 'step' => 0.1],
+                'scale' => 1,
                 'html5' => true
             ])
             ->add('unit', ChoiceType::class, [
