@@ -50,3 +50,13 @@ Avertissement des factures à encaisser et des déclarations à faire quand elle
 ### Export
 
 Génération du livre des recettes.  
+
+# KITCHEN PROJECT
+
+## FEATURES
+
+- Liste des recettes filtré par nom, ingrédients, type et régime
+- Selection multiple pour génération de liste de courses regroupé par ingrédients
+- Vue recette adapté pour tablet ou télévision en paysage avec gestion d'un zoom
+- Enregistrement d'une image par recette
+- Gestion du frigo avec calcul du nombre d'ingrédient restant par recette et déduction dans la liste de course)

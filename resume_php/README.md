@@ -7,10 +7,7 @@
     
 - Entreprises
     - Possibilité d'envoyer un mail à une entreprise
-    
-- Déclarations
-    - Rentrer dans les fixtures les impots 2016 et 2017 (voir montant à mettre à jour suite à la régularisation)
-
+  
 - Notifications
     - Impots
         - Ajouter les dates

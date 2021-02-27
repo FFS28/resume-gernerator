@@ -405,13 +405,18 @@ easy_admin:
       form:
         fields:
           - ingredient
-          - { property: 'quantity', type: 'number', scale: 1, html5: true, attr: {min: 1} }
+          - { property: 'quantity', type: 'number', type_options: { html5: true, input: 'number', scale: 1, attr: {min: 0, step: 0.1}} }
           - { property: 'unit', type: 'choice', type_options: { expanded: true, multiple: false, choices: !php/const App\Entity\RecipeIngredient::UNITS } }
           - measure
+        actions:
+          - { name: 'delete', label: '' }
+          - { name: 'list', label: 'Back' }
       list:
         fields:
-          - ingredient
-          - measureStr
+          - { property : 'search', css_class: 'ingredient', label: 'Ingredient' }
+          - { property : 'measureStr', css_class: 'measure', label: 'Measure' }
+        actions:
+          - { name: 'new', label: 'New' }
         batch_actions:
           - update
 

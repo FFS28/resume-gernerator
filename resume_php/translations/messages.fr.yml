@@ -226,9 +226,9 @@ Recipe: Recette
 Recipes: Recettes
 RecipeIngredient: Ingrédient
 recipeingredient: Ingrédient
-Recipe ingredients: Ingrédients
-KitchenIngredient: Ingrédient
-KitchenIngredients: Ingrédients
+Recipe ingredients: Frigo
+KitchenIngredient: Frigo
+KitchenIngredients: Frigo
 Is vege: Végétarien
 Is vegan: Végan
 Preparation duration: Temps de préparation (min)
@@ -245,7 +245,7 @@ Is recipe: Recette ?
 form.label.delete: Supprimer la photo ?
 Measure: Mesure
 Unit: Unité
-Measure str: Mesure
+None: Aucun
 
 g: g
 kg: kg
@@ -270,3 +270,9 @@ salt: Sels
 alcohol: Alcools
 water: Eau
 
+Back: Retour
+New: +
+action:
+  save: Sauvegarder
+  list: Retour
+  delete: ''

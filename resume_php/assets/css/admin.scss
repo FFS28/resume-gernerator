@@ -13,6 +13,44 @@
   }
 }
 
+#main {
+  form {
+    .form-group {
+      padding-left: 0;
+      padding-right: 0;
+      .select2-container {
+        width: auto !important;
+      }
+    }
+  }
+}
+
+body.list-kitcheningredient {
+  .form-action-search input[type=search].form-control {
+    max-width: 125px
+  }
+  table {
+    th.ingredient, td.ingredient{
+      width: 130px;
+    }
+    th.measure, td.measure{
+      width: 80px;
+    }
+  }
+}
+body.edit-kitcheningredient, body.new-kitcheningredient {
+  #main {
+    form {
+      &.edit-form, &.new-form {
+        button[type=submit] {
+          width: 112px;
+          overflow: hidden;
+        }
+      }
+    }
+  }
+}
+
 #new-recipe-form, #edit-recipe-form{
   .form-group {
     display: block;

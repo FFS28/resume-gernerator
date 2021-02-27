@@ -10,6 +10,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Doctrine\ORM\Mapping\MappedSuperclass;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /** @MappedSuperclass */
 class RelationIngredient
@@ -47,7 +48,9 @@ class RelationIngredient
     protected $ingredient;
 
     /**
+     * @var float|null
      * @ORM\Column(type="decimal", scale=1, nullable=true)
+     * @Assert\Type(type="float", message = "The value {{ value }} must be of type {{ type }}")
      */
     protected $quantity;
 
