@@ -26,6 +26,7 @@ yarn-error.log
 ###> data ###
 /public/upload/
 /data/
+/data/statements/
 /tmp/
 ###< data ###
 ###> lexik/jwt-authentication-bundle ###

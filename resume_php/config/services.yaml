@@ -12,6 +12,7 @@ parameters:
     PDF_DIRECTORY: '%kernel.project_dir%%env(DIRECTORY_INVOICE)%'
     PROOF_DIRECTORY: 'upload%env(DIRECTORY_PURCHASE)%'
     RECIPE_DIRECTORY: 'upload%env(DIRECTORY_RECIPE)%'
+    STATEMENT_DIRECTORY: '%env(DIRECTORY_STATEMENT)%'
 
 services:
     # default configuration for services in *this* file
@@ -50,5 +51,10 @@ services:
         public: true
         arguments:
             $proofDirectory: '%PROOF_DIRECTORY%'
+
+    App\Service\StatementService:
+        public: true
+        arguments:
+            $statementDirectory: '%kernel.project_dir%/data%STATEMENT_DIRECTORY%'
 
 

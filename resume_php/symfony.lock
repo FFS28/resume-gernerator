@@ -170,6 +170,9 @@
     "setasign/fpdf": {
         "version": "1.8.2"
     },
+    "smalot/pdfparser": {
+        "version": "v0.18.2"
+    },
     "stof/doctrine-extensions-bundle": {
         "version": "1.2",
         "recipe": {

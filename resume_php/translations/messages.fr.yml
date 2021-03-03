@@ -270,9 +270,14 @@ salt: Sels
 alcohol: Alcools
 water: Eau
 
-Back: Retour
-New: +
-action:
-  save: Sauvegarder
-  list: Retour
-  delete: ''
+Accounting: Comptabilité
+Operation: Opération
+Operations: Opérations
+Statement: Relevé
+Statements: Relevés
+Filename: Nom du fichier
+File: Fichier
+Data: Données
+Amount: Montant
+Target: Cible
+Analyze: Analyse

@@ -81,4 +81,16 @@ abstract class StringHelper
             @iconv($fromEncoding, $toEncoding, $string);
     }
 
+    public static function extractAmount($string)
+    {
+        $amount = str_replace(',', '.', str_replace('.', '', $string));
+        return floatval($amount);
+    }
+
+    public static function contains($string, Array $search, $caseInsensitive = false) {
+        $exp = '#'
+            . implode('|', $search)
+            . ($caseInsensitive ? '#i' : '#');
+        return preg_match($exp, $string) ? true : false;
+    }
 }

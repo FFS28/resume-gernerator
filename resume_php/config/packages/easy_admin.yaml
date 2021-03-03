@@ -2,13 +2,7 @@ easy_admin:
   site_name: 'Admin'
   design:
     assets:
-      js:
-        - 'build/js/bootstrap-datepicker.js'
-        - 'build/js/bootstrap-datepicker.fr.js'
-        - 'build/js/app.js'
-        - 'build/runtime.js'
       css:
-        - 'build/css/bootstrap-datepicker.css'
         - 'build/css/admin.css'
         - 'build/css/dashboard.css'
         - 'build/css/report.css'
@@ -44,6 +38,10 @@ easy_admin:
       - { entity: 'Recipe', label: 'Recipes', icon: 'concierge-bell' }
       - { entity: 'Ingredient', label: 'Ingredients', icon: 'apple-alt' }
       - { entity: 'KitchenIngredient', label: 'Fridge', icon: 'archive' }
+
+      - { label: 'Accounting' }
+      - { entity: 'Statement', label: 'Statements', icon: 'file-alt' }
+      - { entity: 'Operation', label: 'Operations', icon: 'columns' }
   formats:
     date: 'd/m/Y'
   list:
@@ -125,10 +123,10 @@ easy_admin:
           - totalHt
           - totalTax
           - { type: 'group', columns: 2, label: 'Date' }
-          - { property: 'createdAt', type_options: { widget: 'single_text', html5: false, format: 'dd/MM/yyyy', attr: {data-provide: 'datepicker', data-date-format: 'dd/mm/yyyy', data-date-language: 'fr' } } }
+          - { property: 'createdAt', type_options: { widget: 'single_text', html5: true } }
           - { type: 'group', columns: 2, label: 'Payment' }
           - { property: 'payedBy', type: 'choice', type_options: { choices: !php/const App\Entity\Invoice::PAYED_BYS } }
-          - { property: 'payedAt', type_options: { widget: 'single_text', html5: false, format: 'dd/MM/yyyy', attr: {data-provide: 'datepicker', data-date-format: 'dd/mm/yyyy', data-date-language: 'fr' }} }
+          - { property: 'payedAt', type_options: { widget: 'single_text', html5: true } }
           - { type: 'group', columns: 2, label: 'Payment' }
           - { property: 'status', type: 'choice', type_options: { choices: !php/const App\Entity\Invoice::STATUES } }
           - period
@@ -175,7 +173,7 @@ easy_admin:
       form:
         fields:
           - number
-          - { property: 'payedAt', type_options: { widget: 'single_text', html5: false, format: 'dd/MM/yyyy', attr: { data-provide: 'datepicker', data-date-format: 'dd/mm/yyyy', data-date-language: 'fr' } } }
+          - { property: 'payedAt', type_options: { widget: 'single_text', html5: true } }
           - period
           - totalHt
           - totalTax
@@ -209,7 +207,7 @@ easy_admin:
           - { type: 'group', columns: 3, label: '' }
           - { property: 'status', type: 'choice', type_options: { choices: !php/const App\Entity\Declaration::STATUSES } }
           - { type: 'group', columns: 3, label: '' }
-          - { property: 'payedAt', type_options: { widget: 'single_text', html5: false, format: 'dd/MM/yyyy', attr: { data-provide: 'datepicker', data-date-format: 'dd/mm/yyyy', data-date-language: 'fr' } } }
+          - { property: 'payedAt', type_options: { widget: 'single_text', html5: true } }
           - { type: 'group', columns: 12, label: 'Invoices' }
           - { property: invoices, label: '', mapped: false, type_options: { block_name: 'invoices_array_with_total' } }
           #- { type: 'group', columns: 12, label: 'Purchases' }
@@ -242,7 +240,7 @@ easy_admin:
         fields:
           - { property: 'company',  type: 'easyadmin_autocomplete', type_options: { class: 'App\Entity\Company' } }
           - value
-          - { property: 'date', type_options: { widget: 'single_text', html5: false, format: 'dd/MM/yyyy', attr: {data-provide: 'datepicker', data-date-format: 'dd/mm/yyyy', data-date-language: 'fr' } } }
+          - { property: 'date', type_options: { widget: 'single_text', html5: true } }
           - invoice
       list:
         fields:
@@ -268,8 +266,8 @@ easy_admin:
           - { property: 'company', type: 'easyadmin_autocomplete', type_options: { class: 'App\Entity\Company', attr: { create: true } } }
           - { property: 'client', type: 'easyadmin_autocomplete', type_options: { class: 'App\Entity\Company', attr: { create: true } } }
           - { type: 'group', columns: 4, label: 'Date' }
-          - { property: 'dateBegin', type_options: { widget: 'single_text', html5: false, format: 'dd/MM/yyyy', attr: {data-provide: 'datepicker', data-date-format: 'dd/mm/yyyy', data-date-language: 'fr' } } }
-          - { property: 'dateEnd', type_options: { widget: 'single_text', html5: false, format: 'dd/MM/yyyy', attr: {data-provide: 'datepicker', data-date-format: 'dd/mm/yyyy', data-date-language: 'fr' } } }
+          - { property: 'dateBegin', type_options: { widget: 'single_text', html5: true } }
+          - { property: 'dateEnd', type_options: { widget: 'single_text', html5: true } }
           - { type: 'group', columns: 4, label: 'Options' }
           - { property: 'skills', type: 'easyadmin_autocomplete', type_options: { class: 'App\Entity\Skill', attr: { create: true } } }
           - isFreelance
@@ -349,8 +347,8 @@ easy_admin:
           - details
           - location
           - level
-          - { property: 'dateBegin', type_options: { widget: 'single_text', html5: false, format: 'dd/MM/yyyy', attr: {data-provide: 'datepicker', data-date-format: 'dd/mm/yyyy', data-date-language: 'fr' } } }
-          - { property: 'dateEnd', type_options: { widget: 'single_text', html5: false, format: 'dd/MM/yyyy', attr: {data-provide: 'datepicker', data-date-format: 'dd/mm/yyyy', data-date-language: 'fr' } } }
+          - { property: 'dateBegin', type_options: { widget: 'single_text', html5: true } }
+          - { property: 'dateEnd', type_options: { widget: 'single_text', html5: true } }
       list:
         fields:
           - name
@@ -422,6 +420,47 @@ easy_admin:
         batch_actions:
           - update
         sort: ['search', 'ASC']
+        max_results: 100
+
+    Statement:
+      class: App\Entity\Statement
+      controller: App\Controller\StatementController
+      new:
+        fields:
+          - { property: 'file', type: 'file' }
+      edit:
+        fields:
+            - { property: 'date', type_options: { widget: 'single_text', html5: true } }
+            - { property: 'file', type: 'file' }
+      list:
+        fields:
+          - date
+          - { property: 'operationsCount', label: 'Operations' }
+        actions:
+          - { name: 'ocr', label: 'Ocr', icon: 'eye', css_class: 'btn btn-secondary' }
+        batch_actions:
+          - delete
+    Operation:
+      class: App\Entity\Operation
+      controller: App\Controller\OperationController
+      form:
+        fields:
+          - { property: 'date', type_options: { widget: 'single_text', html5: true } }
+          - { property: 'name', type: 'textarea' }
+          - amount
+          - { property: 'amount', type: 'number', type_options: { html5: true, input: 'number', scale: 2, attr: { step: 0.01 } } }
+          - type
+          - target
+      list:
+        fields:
+          - date
+          - { property: 'nameCleared', label: 'Name' }
+          - amount
+          - type
+          - target
+        batch_actions:
+          - delete
+          - analyze
         max_results: 100
 
 

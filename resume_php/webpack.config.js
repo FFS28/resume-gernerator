@@ -25,6 +25,7 @@ Encore
     .addEntry('js/Chart.bundle.min', './assets/js/Chart.bundle.min.js')
     .addEntry('js/html2pdf.bundle', './assets/js/html2pdf.bundle.js')
     .addEntry('js/app', './assets/js/app.js')
+    .addEntry('js/admin', './assets/js/admin.js')
     .addEntry('app', './assets/app.js')
     .addEntry('bootstrap', './assets/bootstrap.js')
 
