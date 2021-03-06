@@ -84,7 +84,7 @@ body{
   @include flex-wrap(wrap);
 
   .recipe {
-    width: 500px;
+    width: 420px;
     margin: 10px;
 
     /*&:not(.md-expand-active) {
@@ -103,15 +103,27 @@ body{
       @include flex-direction(row);
       @include align-items(center);
 
-      .md-button{
-        &, .md-icon {
-          color: black !important;
-        }
-        &.bg_black{ background-color: black !important;  }
-        &.bg_black i.md-icon{color: white !important;}
-      }
       .md-card-expand-trigger .md-icon{
         color: white !important;
+      }
+      .diet {
+        box-shadow: none;
+        border-radius: 0;
+        width: 40px;
+        height: 40px;
+      }
+      div.diet i{ font-size: 50px !important;}
+      div.info{
+
+        &.allKitchen{
+          &, i{
+            color: #448aff;
+          }
+        }
+        span, i {
+          vertical-align: middle;
+        }
+        margin-left: 10px;
       }
     }
 
@@ -123,7 +135,7 @@ body{
     &.hasPhoto {
       .md-card-media{
         .center-cropped {
-          height: 300px;
+          height: 280px;
         }
       }
 

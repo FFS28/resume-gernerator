@@ -81,7 +81,6 @@ class Ingredient
 
     public function __construct()
     {
-        $this->recipeIngredients = new ArrayCollection();
     }
 
     public function isSalty(): ?bool

@@ -136,27 +136,27 @@
 
               <md-card-actions md-alignment="space-between">
                 <div>
-                  <md-button class="md-fab" :md-ripple="false" style="color: white;" v-bind:class="{type_meat: recipe.meat, type_fish: recipe.fish, type_vege: recipe.vege && !recipe.vegan, type_vegan: recipe.vegan}">
-                    <md-icon v-if="recipe.meat">goat</md-icon>
-                    <md-icon v-if="recipe.fish">directions_boat</md-icon>
-                    <md-icon v-if="recipe.vege && !recipe.vegan">goat</md-icon>
-                    <md-icon v-if="recipe.vegan">eco</md-icon>
-                  </md-button>
-                  <md-button v-if="recipe.preparationDuration" class="md-fab" :md-ripple="false" style="background-color: white;">
-                    <md-icon style="color: black;">av_timer</md-icon><span>{{ minToHour(recipe.preparationDuration) }}</span>
-                  </md-button>
-                  <md-button v-if="recipe.cookingDuration" class="md-fab" :md-ripple="false" style="background-color: white;">
-                    <md-icon style="color: black;">microwave</md-icon><span>{{ minToHour(recipe.cookingDuration) }}</span>
-                  </md-button>
-                  <md-button v-if="recipe.waitingDuration" class="md-fab" :md-ripple="false" style="background-color: white;">
-                    <md-icon style="color: black;">snooze</md-icon><span>{{ minToHour(recipe.waitingDuration) }}</span>
-                  </md-button>
-                  <md-button v-if="recipe.nbSlices" class="md-fab" :md-ripple="false" style="background-color: white;">
-                    <md-icon style="color: black;">local_pizza</md-icon><span>{{ recipe.nbSlices }}</span>
-                  </md-button>
-                  <md-button v-if="recipe.kitchen" class="md-fab" :md-ripple="false" v-bind:style="{ backgroundColor: recipe.allKitchen ? '#448aff' : 'white' }">
-                    <md-icon style="color: black;">inventory</md-icon><span>{{ recipe.kitchen }}</span>
-                  </md-button>
+                  <div class="diet">
+                    <md-icon v-if="recipe.meat" style="color: #b71c1c;">goat</md-icon>
+                    <md-icon v-if="recipe.fish" style="color: #1e88e5;">directions_boat</md-icon>
+                    <md-icon v-if="recipe.vege && !recipe.vegan" style="color: #689f38;">goat</md-icon>
+                    <md-icon v-if="recipe.vegan" style="color: #1b5e20;">eco</md-icon>
+                  </div>
+                  <div class="info" v-if="recipe.preparationDuration">
+                    <md-icon>av_timer</md-icon><span>{{ minToHour(recipe.preparationDuration) }}</span>
+                  </div>
+                  <div class="info" v-if="recipe.cookingDuration">
+                    <md-icon>microwave</md-icon><span>{{ minToHour(recipe.cookingDuration) }}</span>
+                  </div>
+                  <div class="info" v-if="recipe.waitingDuration">
+                    <md-icon>snooze</md-icon><span>{{ minToHour(recipe.waitingDuration) }}</span>
+                  </div>
+                  <div class="info" v-if="recipe.nbSlices">
+                    <md-icon>local_pizza</md-icon><span>{{ recipe.nbSlices }}</span>
+                  </div>
+                  <div class="info" v-if="recipe.kitchen" v-bind:class="{ allKitchen: recipe.allKitchen }">
+                    <md-icon>inventory</md-icon><span>{{ recipe.kitchen }}</span>
+                  </div>
                   <md-card-expand-trigger>
                     <md-button class="md-icon-button">
                       <md-icon>keyboard_arrow_down</md-icon>
@@ -164,8 +164,8 @@
                   </md-card-expand-trigger>
                 </div>
                 <div>
-                  <md-button class="md-fab" :href="'/kitchen/' + recipe.slug" v-bind:class="{type_sugar: recipe.sweet, type_salt: recipe.salty, 'bg_black': !recipe.sweet && !recipe.salty }">
-                    <md-icon>local_dining</md-icon>
+                  <md-button class="md-fab md-primary" :href="'/kitchen/' + recipe.slug">
+                    <md-icon style="color: #000;">local_dining</md-icon>
                   </md-button>
                 </div>
               </md-card-actions>

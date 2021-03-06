@@ -249,8 +249,6 @@ easy_admin:
           - date
           - invoice
         filters:
-          #- company
-          #- invoice
           - { property: dateYear, mapped: false, type: 'App\Form\Filter\DateYearFilterType', type_options: {data: 'date'} }
           - { property: dateMonth, mapped: false, type: 'App\Form\Filter\DateMonthFilterType', type_options: {data: 'date'} }
         batch_actions:
@@ -446,22 +444,28 @@ easy_admin:
       form:
         fields:
           - { property: 'date', type_options: { widget: 'single_text', html5: true } }
-          - { property: 'name', type: 'textarea' }
-          - amount
-          - { property: 'amount', type: 'number', type_options: { html5: true, input: 'number', scale: 2, attr: { step: 0.01 } } }
-          - type
+          - { property: 'type', type: 'choice', type_options: { choices: !php/const App\Entity\Operation::TYPES } }
           - target
+          - label
+          - { property: 'name', type: 'textarea' }
+          - { property: 'amount', type: 'number', type_options: { html5: true, input: 'number', scale: 2, attr: { step: 0.01 } } }
       list:
         fields:
           - date
-          - { property: 'nameCleared', label: 'Name' }
-          - amount
-          - type
+          - { property: type, trans: true}
           - target
+          - { property: 'label', label: 'Name' }
+          - amount
+        filters:
+            - { property: date }
+            - { property: type, type: 'App\Form\Filter\OperationTypeFilterType' }
+            - { property: label }
+            - { property: target }
+            - { property: amount }
         batch_actions:
-          - delete
           - analyze
-        max_results: 100
+        max_results: 300
+        sort: [ 'date', 'DESC' ]
 
 
 

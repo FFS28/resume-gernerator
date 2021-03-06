@@ -12,6 +12,27 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class Operation
 {
+    const TYPE_INCOME    = "income";
+    const TYPE_REFUND    = "refund";
+    const TYPE_SUPPLY    = "supply";
+    const TYPE_FOOD = "food";
+    const TYPE_CHARGE = "charge";
+    const TYPE_SUBSCRIPTION  = "subscription";
+    const TYPE_HOBBY  = "hobby";
+    const TYPE_OTHER  = "other";
+
+    /** @var array user friendly named type */
+    const TYPES = [
+        'income' => self::TYPE_INCOME,
+        'refund' => self::TYPE_REFUND,
+        'supply' => self::TYPE_SUPPLY,
+        'food' => self::TYPE_FOOD,
+        'charge' => self::TYPE_CHARGE,
+        'subscription' => self::TYPE_SUBSCRIPTION,
+        'hobby' => self::TYPE_HOBBY,
+        'other' => self::TYPE_OTHER,
+    ];
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -44,9 +65,27 @@ class Operation
      */
     private $target;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $label;
+
     public function __construct()
     {
 
+    }
+
+    /**
+     * @return string
+     */
+    public function getTypeName()
+    {
+        $typeName = array_flip(self::TYPES);
+        if (!isset($typeName[$this->type])) {
+            return null;
+        }
+
+        return $typeName[$this->type];
     }
 
     public function getId(): ?int
@@ -69,11 +108,6 @@ class Operation
     public function getName(): ?string
     {
         return $this->name;
-    }
-
-    public function getNameCleared(): ?string
-    {
-        return trim(str_replace('CARTE 12946058', '', $this->getName()));
     }
 
     public function setName(string $name): self
@@ -115,6 +149,18 @@ class Operation
     public function setTarget(?string $target): self
     {
         $this->target = $target;
+
+        return $this;
+    }
+
+    public function getLabel(): ?string
+    {
+        return $this->label ? $this->label : $this->name;
+    }
+
+    public function setLabel(?string $label): self
+    {
+        $this->label = $label;
 
         return $this;
     }
