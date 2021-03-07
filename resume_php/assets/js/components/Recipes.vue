@@ -137,7 +137,7 @@
               <md-card-actions md-alignment="space-between">
                 <div>
                   <div class="diet">
-                    <md-icon v-if="recipe.meat" style="color: #b71c1c;">goat</md-icon>
+                    <md-icon v-if="recipe.meat" style="color: #e53935;">goat</md-icon>
                     <md-icon v-if="recipe.fish" style="color: #1e88e5;">directions_boat</md-icon>
                     <md-icon v-if="recipe.vege && !recipe.vegan" style="color: #689f38;">goat</md-icon>
                     <md-icon v-if="recipe.vegan" style="color: #1b5e20;">eco</md-icon>
