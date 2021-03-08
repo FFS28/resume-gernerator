@@ -32,6 +32,29 @@ class OperationRepository extends ServiceEntityRepository
             ;
     }
 
+    public function getTotalsByMonthAndType($year = null, $type = null) {
+        $query = $this->createQueryBuilder('o')
+            ->select('SUM(o.amount) total')
+            ->addSelect('o.type')
+            ->addSelect('ToChar(o.date, \'YYYY-MM\') AS date')
+            ->where('o.type != :hidden')->setParameter('hidden', Operation::TYPE_HIDDEN)
+            ->andWhere('o.type != :other')->setParameter('other', Operation::TYPE_OTHER)
+            ->orderBy('date', 'asc')
+            ->addGroupBy('date')
+            ->addGroupBy('o.type')
+        ;
+
+        if ($year) {
+            $query->andWhere('ToChar(o.date, \'YYYY\') = :year')->setParameter('year', $year);
+        }
+
+        if ($type) {
+            $query->andWhere('o.type = :type')->setParameter('type', $type);
+        }
+
+        return $query->getQuery()->getResult();
+    }
+
     // /**
     //  * @return Operation[] Returns an array of Operation objects
     //  */

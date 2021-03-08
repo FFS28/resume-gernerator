@@ -40,6 +40,7 @@ easy_admin:
       - { entity: 'KitchenIngredient', label: 'Fridge', icon: 'archive' }
 
       - { label: 'Accounting' }
+      - { label: 'Dashboard', url: '/admin/accounting', icon: 'chart-bar' }
       - { entity: 'Statement', label: 'Statements', icon: 'file-alt' }
       - { entity: 'Operation', label: 'Operations', icon: 'columns' }
   formats:
@@ -378,7 +379,7 @@ easy_admin:
       list:
         fields:
           - name
-          - { property : recipeIngredients, type: array }
+          - { property : recipeIngredients, type: array, label: 'Ingredients' }
           - source
           - { property: 'image', type: 'image', base_path: '%RECIPE_DIRECTORY%' }
         sort: [ 'name', 'ASC' ]
@@ -447,6 +448,7 @@ easy_admin:
           - { property: 'type', type: 'choice', type_options: { choices: !php/const App\Entity\Operation::TYPES } }
           - target
           - label
+          - location
           - { property: 'name', type: 'textarea' }
           - { property: 'amount', type: 'number', type_options: { html5: true, input: 'number', scale: 2, attr: { step: 0.01 } } }
       list:
@@ -455,12 +457,15 @@ easy_admin:
           - { property: type, trans: true}
           - target
           - { property: 'label', label: 'Name' }
+          - name
+          - location
           - amount
         filters:
             - { property: date }
             - { property: type, type: 'App\Form\Filter\OperationTypeFilterType' }
             - { property: label }
             - { property: target }
+            - { property: location }
             - { property: amount }
         batch_actions:
           - analyze

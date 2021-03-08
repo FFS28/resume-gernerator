@@ -20,6 +20,7 @@ class Operation
     const TYPE_SUBSCRIPTION  = "subscription";
     const TYPE_HOBBY  = "hobby";
     const TYPE_OTHER  = "other";
+    const TYPE_HIDDEN  = "hidden";
 
     /** @var array user friendly named type */
     const TYPES = [
@@ -31,6 +32,7 @@ class Operation
         'subscription' => self::TYPE_SUBSCRIPTION,
         'hobby' => self::TYPE_HOBBY,
         'other' => self::TYPE_OTHER,
+        'hidden' => self::TYPE_HIDDEN,
     ];
 
     /**
@@ -69,6 +71,11 @@ class Operation
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $label;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $location;
 
     public function __construct()
     {
@@ -161,6 +168,18 @@ class Operation
     public function setLabel(?string $label): self
     {
         $this->label = $label;
+
+        return $this;
+    }
+
+    public function getLocation(): ?string
+    {
+        return $this->location;
+    }
+
+    public function setLocation(?string $location): self
+    {
+        $this->location = $location;
 
         return $this;
     }
