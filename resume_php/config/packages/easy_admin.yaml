@@ -40,7 +40,7 @@ easy_admin:
       - { entity: 'KitchenIngredient', label: 'Fridge', icon: 'archive' }
 
       - { label: 'Accounting' }
-      - { label: 'Dashboard', url: '/admin/accounting', icon: 'chart-pie' }
+      - { label: 'Statistiques', url: '/admin/accounting', icon: 'chart-pie' }
       - { entity: 'Statement', label: 'Statements', icon: 'file-alt' }
       - { entity: 'Operation', label: 'Operations', icon: 'columns' }
       - { entity: 'OperationFilter', label: 'Filters', icon: 'filter' }
