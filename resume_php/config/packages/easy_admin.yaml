@@ -440,6 +440,7 @@ easy_admin:
           - { name: 'ocr', label: 'Ocr', icon: 'eye', css_class: 'btn btn-secondary' }
         batch_actions:
           - delete
+        sort: [ 'date', 'DESC' ]
     OperationFilter:
       class: App\Entity\OperationFilter
       form:
