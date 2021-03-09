@@ -14,7 +14,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @ApiResource()
  * @ORM\Entity(repositoryClass=KitchenIngredientRepository::class)
- * @UniqueEntity(fields={"ingredient"}, message="Ingrdient same name already exists")
+ * @UniqueEntity(fields={"ingredient"}, message="Ingredient same name already exists")
  */
 class KitchenIngredient extends RelationIngredient
 {

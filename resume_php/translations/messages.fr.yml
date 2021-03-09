@@ -270,6 +270,9 @@ salt: Sels
 alcohol: Alcools
 water: Eau
 
+OperationFilter: Filtre
+OperationFilters: Filtres
+Filters: Filtres
 Accounting: Comptabilité
 Operation: Opération
 Operations: Opérations
@@ -281,6 +284,7 @@ Data: Données
 Amount: Montant
 Target: Cible
 Analyze: Analyse
+Label: Libellé
 
 
 supply: Fourniture

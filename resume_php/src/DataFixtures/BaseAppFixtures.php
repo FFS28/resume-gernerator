@@ -16,7 +16,7 @@ use App\Entity\Skill;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class AppFixtures extends Fixture
+class BaseAppFixtures extends Fixture
 {
     /**
      * @var ObjectManager
@@ -52,6 +52,11 @@ class AppFixtures extends Fixture
      * @var Period[]
      */
     private $periods;
+
+    public static function getGroups(): array
+    {
+        return ['base'];
+    }
 
     public function load(ObjectManager $manager)
     {

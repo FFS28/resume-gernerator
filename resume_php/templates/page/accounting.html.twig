@@ -5,8 +5,7 @@
 {% block content_title %}{{ 'Dashboard' | trans }}{% endblock %}
 
 {% block main %}
-    {{ render_chart(chartTotalsByByTypeAndMonth, {'id' : 'totalsByByTypeAndMonth'}) }}
-    {# <div id="dashboard">
+    <div id="dashboard">
         <div class="cards cards-row-120">
             <div class="card card-1 card-navigation">
                 <div class="card-content">
@@ -18,9 +17,9 @@
                         {% endfor %}
                     </ul>
                     <ul>
-                        {% for quarter in [1, 2, 3, 4] %}
+                        {% for type in types %}
                             <li>
-                                <a class="{% if quarter == activeQuarter %}active{% endif %}" href="{{ url(active_route, (active_params | merge({'quarter' : quarter}))) }}">T{{ quarter }}</a>
+                                <a class="{% if type == activeType %}active{% endif %}" href="{{ url(active_route, (active_params | merge({'type' : type}))) }}">{{ type | trans }}</a>
                             </li>
                         {% endfor %}
                     </ul>
@@ -28,152 +27,22 @@
             </div>
         </div>
         <div class="cards cards-row-120">
-            <div class="card card-4">
+            <div class="card card-1">
                 <div class="card-content">
-                    <h4>{{ 'Annual income' | trans }}</h4>
-                    <span>{{ activeRevenuesOnYear | number_format(0, ',', ' ') }}</span>
+                    <h4></h4>
+                    {{ render_chart(chartTotalsByMonthAndType, {'id' : 'totalsByMonthAndType'}) }}
                 </div>
             </div>
-            <div class="card card-4">
-                <div class="card-content">
-                    <h4>{{ 'Quarterly income' | trans }}</h4>
-                    <span>{{ activeRevenuesOnQuarter | number_format(0, ',', ' ') }}</span>
-                </div>
-            </div>
-            {% if (nextDueDate | length) != 0 %}
-                <div class="card card-4 {% if nextDueDate[3] %}card-danger{% endif %}">
-                    <div class="card-content card">
-                        <h4>{{ 'Declaration' | trans }} {{ nextDueDate[4] | trans }}</h4>
-                        <span style="font-size: 24px">
-                            {{ (nextDueDate[3] ? 'now' : nextDueDate[1]) | date('d') }}-{{ nextDueDate[2] | date('d') }}  {{ nextDueDate[1] | date('F') | trans }}
-                        </span>
+            {% if chartTotalsByMonthAndLabel is defined %}
+                <div class="card card-1">
+                    <div class="card-content">
+                        <h4></h4>
+                        {{ render_chart(chartTotalsByMonthAndLabel, {'id' : 'totalsByMonthAndLabel'}) }}
                     </div>
                 </div>
             {% endif %}
-            <div class="card card-4">
-                <div class="card-content">
-                    {% if currentYear == activeYear %}
-                        <h4>{{ 'Days remaining' | trans }}</h4>
-                        <span>{{ remainingDaysBeforeLimit | round }}</span>
-                    {% else %}
-                        <h4>{{ 'Worked days' | trans }}</h4>
-                        <span>{{ dayCount | round }}</span>
-                    {% endif %}
-                </div>
-            </div>
         </div>
-        <div class="cards">
-            <div class="card card-3">
-                <div class="card-content">
-                    <h4>{{ 'Revenues by years' | trans }}</h4>
-                    {{ render_chart(chartRevenuesByYears, {'id' : 'revenuesByYears'}) }}
-                </div>
-            </div>
-            <div class="card card-3">
-                <div class="card-content">
-                    <h4>{{ 'Revenues by quarter' | trans }}</h4>
-                    {{ render_chart(chartRevenuesByQuarters, {'id' : 'revenuesByQuarters'}) }}
-                </div>
-            </div>
-            <div class="card card-3">
-                <div class="card-content">
-                    <h4>{{ 'Days by month' | trans }}</h4>
-                    {{ render_chart(chartDaysByMonth, {'id' : 'daysByMonth'}) }}
-                </div>
-            </div>
-        </div>
-        <div class="cards">
-            <div class="card card-2 card-left card-list">
-                <div class="card-content">
-                    <h4>{{ 'Unpayed invoices' | trans }}</h4>
-                    <div>
-                        {% for invoice in unpayedInvoices %}
-                            <a href="{{ url('easyadmin', {entity: 'Invoice', action: 'show', id: invoice.id}) }}">
-                                {{ invoice.company }} -
-                                {{ invoice }} -
-                                {{ invoice.createdAt | date('d/m/Y') }} -
-                                {{ invoice.totalHt | number_format(0, ',', ' ') }}€
-                            </a>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-            <div class="card card-2 card-left card-list">
-                <div class="card-content">
-                    <h4>{{ 'Current experiences' | trans }}</h4>
-                    <div>
-                        {% for experience in currentExperiences %}
-                            <a href="{{ url('easyadmin', {entity: 'Experience', action: 'show', id: experience.id}) }}">
-                                {{ experience }}
-                            </a>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="cards">
-            <div class="card card-1 card-list">
-                <div class="card-content">
-                    <h4>{{ 'Global statistics' | trans }}</h4>
-                    <style>
-                        h4{
-                            font-weight: bold;
-                        }
-                        .card-list a{
-                            text-align: left;
-                        }
-                        .table_header {
-                            font-weight: bold;
-                            color: #000;
-                        }
-                        .table_header, .table_row {
-                            display: flex;
-                        }
-                        .table_column {
-                            flex: 1;
-                            text-align: right;
-                        }
-                        .table_row{
-                            margin-top: 10px;
-                        }
-                        .table_left{
-                            text-align: left;
-                            font-weight: bold;
-                        }
-                        .table_large{
-                            min-width: 150px;
-                        }
-                    </style>
-                    <section style="width: 100%">
-                        <header class="table_header">
-                            <div class="table_column table_left">Année</div>
-                            <div class="table_column">HT</div>
-                            <div class="table_column">Impot</div>
-                            <div class="table_column">Sociales</div>
-                            <div class="table_column">TVA</div>
-                            <div class="table_column">CFE</div>
-                            <div class="table_column">Occupation</div>
-                            <div class="table_column table_large">Revenu par an</div>
-                            <div class="table_column table_large">Revenu par mois</div>
-                        </header>
-                        {% for globalYear in globalByYears %}
-                            <div class="table_row">
-                                <div class="table_column table_left">{{ globalYear['year'] }}</div>
-                                <div class="table_column">{{ globalYear['ht'] }}</div>
-                                <div class="table_column">{{ globalYear['impot'] }}</div>
-                                <div class="table_column">{{ globalYear['social'] }}</div>
-                                <div class="table_column">{{ globalYear['tva'] }}</div>
-                                <div class="table_column">{{ globalYear['cfe'] }}</div>
-                                <div class="table_column">{{ globalYear['percent'] }}</div>
-                                <div class="table_column table_large">{{ globalYear['net'] }}</div>
-                                <div class="table_column table_large">{{ globalYear['netByMonth'] }}</div>
-                            </div>
-                        {%  endfor %}
-                    </section>
-                </div>
-            </div>
-        </div>
-    </div>#}
+    </div>
 {% endblock %}
 
 {% block content_footer %}

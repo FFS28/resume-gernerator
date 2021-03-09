@@ -40,9 +40,10 @@ easy_admin:
       - { entity: 'KitchenIngredient', label: 'Fridge', icon: 'archive' }
 
       - { label: 'Accounting' }
-      - { label: 'Dashboard', url: '/admin/accounting', icon: 'chart-bar' }
+      - { label: 'Dashboard', url: '/admin/accounting', icon: 'chart-pie' }
       - { entity: 'Statement', label: 'Statements', icon: 'file-alt' }
       - { entity: 'Operation', label: 'Operations', icon: 'columns' }
+      - { entity: 'OperationFilter', label: 'Filters', icon: 'filter' }
   formats:
     date: 'd/m/Y'
   list:
@@ -439,6 +440,28 @@ easy_admin:
           - { name: 'ocr', label: 'Ocr', icon: 'eye', css_class: 'btn btn-secondary' }
         batch_actions:
           - delete
+    OperationFilter:
+      class: App\Entity\OperationFilter
+      form:
+        fields:
+          - name
+          - { property: 'type', type: 'choice', type_options: { choices: !php/const App\Entity\Operation::TYPES } }
+          - target
+          - label
+          - { property: 'date', type_options: { widget: 'single_text', html5: true } }
+          - { property: 'amount', type: 'number', type_options: { html5: true, input: 'number', scale: 2, attr: { step: 0.01 } } }
+      list:
+        fields:
+          - name
+          - { property: type, trans: true}
+          - target
+          - label
+          - date
+          - amount
+        filters:
+          - { property: type, type: 'App\Form\Filter\OperationTypeFilterType' }
+        max_results: 100
+        sort: [ 'type', 'ASC' ]
     Operation:
       class: App\Entity\Operation
       controller: App\Controller\OperationController

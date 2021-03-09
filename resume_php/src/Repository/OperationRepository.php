@@ -19,6 +19,14 @@ class OperationRepository extends ServiceEntityRepository
         parent::__construct($registry, Operation::class);
     }
 
+    public function listYears()
+    {
+        return $this->createQueryBuilder('o')
+            ->select('DISTINCT ToChar(o.date, \'YYYY\') AS date')
+            ->getQuery()
+            ->getScalarResult();
+    }
+
     public function findDateNameAmount($date, $name, $amount) {
         return $this->createQueryBuilder('o')
             ->andWhere('o.date = :date')
@@ -29,7 +37,7 @@ class OperationRepository extends ServiceEntityRepository
             ->setParameter('amount', $amount)
             ->getQuery()
             ->getOneOrNullResult()
-            ;
+        ;
     }
 
     public function getTotalsByMonthAndType($year = null, $type = null) {
@@ -38,10 +46,35 @@ class OperationRepository extends ServiceEntityRepository
             ->addSelect('o.type')
             ->addSelect('ToChar(o.date, \'YYYY-MM\') AS date')
             ->where('o.type != :hidden')->setParameter('hidden', Operation::TYPE_HIDDEN)
-            ->andWhere('o.type != :other')->setParameter('other', Operation::TYPE_OTHER)
             ->orderBy('date', 'asc')
             ->addGroupBy('date')
             ->addGroupBy('o.type')
+        ;
+
+        if (!$type) {
+            $query->andWhere('o.type != :other')->setParameter('other', Operation::TYPE_OTHER);
+        }
+
+        if ($year) {
+            $query->andWhere('ToChar(o.date, \'YYYY\') = :year')->setParameter('year', $year);
+        }
+
+        if ($type) {
+            $query->andWhere('o.type = :type')->setParameter('type', $type);
+        }
+
+        return $query->getQuery()->getResult();
+    }
+
+    public function getTotalsByMonthAndLabel($year = null, $type = null) {
+        $query = $this->createQueryBuilder('o')
+            ->select('SUM(o.amount) total')
+            ->addSelect('o.label')
+            ->addSelect('ToChar(o.date, \'YYYY-MM\') AS date')
+            ->where('o.type != :hidden')->setParameter('hidden', Operation::TYPE_HIDDEN)
+            ->orderBy('date', 'asc')
+            ->addGroupBy('date')
+            ->addGroupBy('o.label')
         ;
 
         if ($year) {
