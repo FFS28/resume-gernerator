@@ -112,7 +112,8 @@ class StatementController extends EasyAdminController
 
         $types = array_values(Operation::TYPES);
         unset($types[array_search(Operation::TYPE_HIDDEN, $types)]);
-        //unset($types[array_search(Operation::TYPE_OTHER, $types)]);
+        unset($types[array_search(Operation::TYPE_INCOME, $types)]);
+        unset($types[array_search(Operation::TYPE_REFUND, $types)]);
 
         $viewData = [
             'years' => $years,
