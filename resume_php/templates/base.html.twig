@@ -1,4 +1,4 @@
-{% set current_route = app.request.attributes.get('_route') | default('app_index') %}
+{% set current_route = app.request.attributes.get('_route') | default('index') %}
 {% set current_params = app.request.attributes.get('_route_params') | default([]) %}
 <!DOCTYPE html>
 <html lang="{{ app.request.locale | split('_')[0] }}">
