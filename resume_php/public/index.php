@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 require dirname(__DIR__) . '/config/bootstrap.php';
 
-if ($_SERVER['APP_DEBUG']) {
+if ($_SERVER['APP_DEBUG'] && $_SERVER['APP_ENV'] == 'dev') {
     umask(0000);
 
     Debug::enable();
