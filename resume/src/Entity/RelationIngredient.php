@@ -115,6 +115,9 @@ class RelationIngredient
         return $str;
     }
 
+    /**
+     * @return int|null
+     */
     public function getEquivalentGram(): ?int
     {
         $quantity = $this->getQuantity() ? $this->getQuantity() : 1;
@@ -124,24 +127,14 @@ class RelationIngredient
                 return $quantity;
         }
 
-        switch ($this->getUnit()) {
-            case self::UNIT_TABLESPOON:
-                return $quantity * 15;
-
-            case self::UNIT_TEASPOON:
-                return $quantity * 5;
-
-            case self::UNIT_CENTILITER:
-                return $quantity * 10;
-
-            case self::UNIT_KILOGRAM:
-            case self::UNIT_LITER:
-                return $quantity * 1000;
-
-            case self::UNIT_GRAM:
-            default:
-                return $quantity;
-        }
+        return match ($this->getUnit()) {
+            self::UNIT_TABLESPOON => $quantity * 15,
+            self::UNIT_TEASPOON => $quantity * 5,
+            self::UNIT_CENTILITER => $quantity * 10,
+            self::UNIT_KILOGRAM, self::UNIT_LITER => $quantity * 1000,
+            self::UNIT_GRAM, self::UNIT_MILLILITER => $quantity,
+            default => null,
+        };
     }
 
     /**

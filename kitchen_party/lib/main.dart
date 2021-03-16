@@ -1,4 +1,11 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:kitchen_party/Ingredient.dart';
+import 'package:kitchen_party/RecipeIngredient.dart';
+import 'dart:developer';
+
+import 'Recipe.dart';
 
 void main() {
   runApp(MyApp());
@@ -9,7 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Kitchen Party',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -22,7 +29,10 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      darkTheme: ThemeData.dark(),
+      themeMode: ThemeMode.dark,
+      debugShowCheckedModeBanner: false,
+      home: MyHomePage(title: 'Kitchen Party'),
     );
   }
 }
@@ -47,6 +57,15 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  List<Recipe> recipes = [];
+  List<Ingredient> ingredients = [];
+  List<RecipeIngredient> kitchen = [];
+
+  @override
+  void initState() {
+    super.initState();
+    this.fetchData();
+  }
 
   void _incrementCounter() {
     setState(() {
@@ -57,6 +76,32 @@ class _MyHomePageState extends State<MyHomePage> {
       // called again, and so nothing would appear to happen.
       _counter++;
     });
+  }
+
+  Future<void> fetchData() async {
+    final response = await http.get(Uri.https('www.jeremy-achain.dev', 'kitchen/recipes'));
+
+    if (response.statusCode == 200) {
+      final List<dynamic> recipes = jsonDecode(response.body)['recipes'];
+      final List<dynamic> ingredients = jsonDecode(response.body)['ingredients'];
+      final List<dynamic> kitchen = jsonDecode(response.body)['kitchen'];
+
+      recipes.forEach((element) {
+        this.recipes.add(Recipe.fromJson(element));
+      });
+      ingredients.forEach((element) {
+        this.ingredients.add(Ingredient.fromJson(element));
+      });
+      kitchen.forEach((element) {
+        this.kitchen.add(RecipeIngredient.fromJson(element));
+      });
+      setState(() {
+        _counter = this.recipes.length;
+        log(_counter.toString());
+      });
+    } else {
+      throw Exception('Failed to load recipes');
+    }
   }
 
   @override

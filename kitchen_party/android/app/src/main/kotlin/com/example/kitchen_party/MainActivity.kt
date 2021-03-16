@@ -1,4 +1,4 @@
-package com.example.kitchen_party
+package com.jeremy_achain.kitchen_party
 
 import io.flutter.embedding.android.FlutterActivity
 
