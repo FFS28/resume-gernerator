@@ -458,6 +458,9 @@
             this.recipes = response.data.recipes;
             this.ingredients = response.data.ingredients;
             this.kitchen = response.data.kitchen;
+            localStorage.setItem('recipes', JSON.stringify(this.recipes));
+            localStorage.setItem('ingredients', JSON.stringify(this.ingredients));
+            localStorage.setItem('kitchen', JSON.stringify(this.kitchen));
 
             this.kitchen.forEach(kitchenIngredient => {
               this.kitchenIngredientsById[kitchenIngredient.ingredient.id] = kitchenIngredient;
@@ -488,6 +491,12 @@
               return a.index - b.index;
             });
           });
+
+        if (localStorage.getItem('recipes') && localStorage.getItem('ingredients') && localStorage.getItem('kitchen')) {
+          this.recipes = JSON.parse(localStorage.getItem('recipes'));
+          this.ingredients = JSON.parse(localStorage.getItem('ingredients'));
+          this.kitchen = JSON.parse(localStorage.getItem('kitchen'));
+        }
     },
   };
 </script>
