@@ -68,12 +68,6 @@
     "gedmo/doctrine-extensions": {
         "version": "v3.0.3"
     },
-    "gregwar/captcha": {
-        "version": "v1.1.7"
-    },
-    "gregwar/captcha-bundle": {
-        "version": "v2.1.1"
-    },
     "gumlet/php-image-resize": {
         "version": "1.9.2"
     },
