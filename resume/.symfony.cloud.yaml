@@ -56,9 +56,11 @@ crons:
         spec: '0 9 * * 1'
         cmd: |
             if [ "$SYMFONY_BRANCH" = master ]; then
+                croncape php bin/console app:notifications
+
                 pg_dump --dbname=postgres://main:main@database.internal:5432/main | gzip > ./data/dump/resume-$(date +"%Y-%m-%d-%H-%M-%S").dump
                 croncape php bin/console app:backup
-                croncape php bin/console app:notifications
+                find ./data/dump/*.dump -mtime +30 -delete
             fi
 
     snapshot:
