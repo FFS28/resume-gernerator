@@ -18,7 +18,7 @@
         "gumlet/php-image-resize": "^1.9",
         "guzzlehttp/guzzle": "^6.5",
         "konekt/pdf-invoice": "^1.6",
-        "lcobucci/jwt": "4",
+        "lcobucci/jwt": "~4",
         "lexik/jwt-authentication-bundle": "^2.11",
         "nelmio/cors-bundle": "^2.0",
         "sensio/framework-extra-bundle": "^5.5",
