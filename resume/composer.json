@@ -41,7 +41,11 @@
         "vich/uploader-bundle": "^1.13"
     },
     "require-dev": {
+        "symfony/browser-kit": "^5.2",
+        "symfony/css-selector": "^5.2",
         "symfony/maker-bundle": "^1.14",
+        "symfony/panther": "^1.0",
+        "symfony/phpunit-bridge": "^5.2",
         "symfony/profiler-pack": "^1.0"
     },
     "config": {

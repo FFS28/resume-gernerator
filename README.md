@@ -49,7 +49,7 @@ Avertissement des factures à encaisser et des déclarations à faire quand elle
 
 ### Export
 
-Génération du livre des recettes.  
+Génération du livre des recettes.
 
 # KITCHEN PROJECT
 
