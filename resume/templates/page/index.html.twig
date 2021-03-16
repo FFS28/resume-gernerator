@@ -20,7 +20,7 @@
                 let element = document.getElementById('body');
                 let worker = html2pdf().set({
                     margin: [0.2, 0.1, 0.2, 0.1],
-                    filename: '{{ filename }}.pdf',
+                    filename: '{{ filename }}{% if all is defined and all %}-full{% endif %}.pdf',
                     jsPDF: { unit: 'in', orientation: 'portrait' },
                     pagebreak: { before: ['#educations'], after: [], avoid: ['li'] }
                 }).from(element).save().then(function() {
@@ -46,7 +46,7 @@
                 var fileDownload = document.createElement("a");
                 document.body.appendChild(fileDownload);
                 fileDownload.href = source;
-                fileDownload.download = '{{ filename }}.doc';
+                fileDownload.download = '{{ filename }}{% if all is defined and all %}-full{% endif %}.doc';
                 fileDownload.click();
                 document.body.removeChild(fileDownload);
 
