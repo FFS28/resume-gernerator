@@ -2,8 +2,8 @@ name: resume
 
 type: php:8.0
 
-runtime:
-    extensions:
+#runtime:
+    #extensions:
         #- mbstring
         #- sodium
         #- pdo_pgsql
