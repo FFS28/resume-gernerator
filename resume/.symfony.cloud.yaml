@@ -4,7 +4,10 @@ type: php:8.0
 
 runtime:
     extensions:
+        - mbstring
         - sodium
+        - pdo_pgsql
+        - pgsql
 
 build:
     flavor: none
