@@ -9,15 +9,17 @@
         "ext-iconv": "*",
         "ext-intl": "*",
         "ext-json": "*",
-        "ext-zip": "*",
         "ext-sodium": "*",
+        "ext-zip": "*",
         "alterphp/easyadmin-extension-bundle": "^3.1",
         "api-platform/api-pack": "^1.2",
         "doctrine/doctrine-fixtures-bundle": "^3.4",
         "easycorp/easyadmin-bundle": "^2.3",
         "gumlet/php-image-resize": "^1.9",
         "guzzlehttp/guzzle": "^6.5",
+        "karser/karser-recaptcha3-bundle": "^0.1.17",
         "konekt/pdf-invoice": "^1.6",
+        "laminas/laminas-code": "^4",
         "lcobucci/jwt": "~4",
         "lexik/jwt-authentication-bundle": "^2.11",
         "nelmio/cors-bundle": "^2.0",
@@ -40,8 +42,7 @@
         "symfony/yaml": "5.2.*",
         "twig/extra-bundle": "^2.12|^3.0",
         "twig/twig": "^2.12|^3.0",
-        "vich/uploader-bundle": "^1.13",
-        "laminas/laminas-code": "^4"
+        "vich/uploader-bundle": "^1.13"
     },
     "require-dev": {
         "dbrekelmans/bdi": "^0.3.0",
