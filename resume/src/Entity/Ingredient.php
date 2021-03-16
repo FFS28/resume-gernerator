@@ -132,7 +132,7 @@ class Ingredient
         return json_decode($serializer->serialize($this, 'json'), true);
     }
 
-    public function __toString(): ?string
+    public function __toString(): string
     {
         return $this->getName();
     }

@@ -1,6 +1,6 @@
 name: resume
 
-type: php:7.3
+type: php:8
 
 runtime:
     extensions:
