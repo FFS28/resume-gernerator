@@ -300,7 +300,7 @@ easy_admin:
           - name
           - { property: 'typeName', label: 'Type' }
           - level
-          - parent
+          - { property: 'parentName', label: 'parent' }
           - onHomepage
     Attribute:
       class: App\Entity\Attribute

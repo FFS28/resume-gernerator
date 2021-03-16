@@ -58,5 +58,3 @@ services:
         public: true
         arguments:
             $statementDirectory: '%kernel.project_dir%/data%STATEMENT_DIRECTORY%'
-
-

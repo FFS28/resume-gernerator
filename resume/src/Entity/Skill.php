@@ -212,6 +212,11 @@ class Skill
         return $this->parent;
     }
 
+    public function getParentName(): ?string
+    {
+        return $this->parent ? $this->parent->getName() : null;
+    }
+
     public function setParent(?self $parent): self
     {
         $this->parent = $parent;
