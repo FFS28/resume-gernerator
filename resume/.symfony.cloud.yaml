@@ -23,9 +23,9 @@ disk: 1024
 
 mounts:
     "/var": { source: local, source_path: var }
-    "/tmp": { source: local, source_path: tmp }
     "/data/invoices": { source: local, source_path: invoices }
     "/data/statements": { source: local, source_path: statements }
+    "/data/dump": { source: local, source_path: dump }
     "/public/upload": { source: local, source_path: uploads }
 
 variables:
@@ -65,6 +65,15 @@ crons:
         cmd: |
             if [ "$SYMFONY_BRANCH" = master ]; then
                 croncape symfony env:snapshot:create --no-wait
+            fi
+
+    backup:
+        # everyday at 5 AM
+        spec: '0 5 * * *'
+        cmd: |
+            if [ "$SYMFONY_BRANCH" = master ]; then
+                pg_dump --dbname=postgres://main:main@database.internal:5432/main | gzip > /data/dump/resume-$(date +"%Y-%m-%d-%H-%M-%S").dump
+                croncape php bin/console app:backup
             fi
 
     renewcert:
