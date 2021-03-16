@@ -1,2 +1,2 @@
-#framework:
-    #error_controller: App\Controller\ErrorController::show
+framework:
+    error_controller: App\Controller\ErrorController::show

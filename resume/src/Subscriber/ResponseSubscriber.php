@@ -30,7 +30,7 @@ class ResponseSubscriber implements EventSubscriberInterface
         $request = $event->getRequest();
 
         $response->headers->set("Content-Security-Policy",
-            "script-src 'self' " . $request->getSchemeAndHttpHost() . " https://raw.githack.com/eKoopmans/html2pdf/ 'unsafe-inline';"
+            "script-src 'self' " . $request->getSchemeAndHttpHost() . " https://raw.githack.com/eKoopmans/html2pdf/ https://www.google.com/ https://www.gstatic.com/ 'unsafe-inline';"
             . "style-src 'self' " . $request->getSchemeAndHttpHost() . " https://fonts.gstatic.com https://fonts.googleapis.com 'unsafe-inline';"
         );
 
