@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:kitchen_party/RecipeIngredient.dart';
 
 class Recipe {
@@ -64,7 +62,7 @@ class Recipe {
     return Recipe(
       id: json['id'],
       name: json['name'],
-      imagePath: json['imagePath'],
+      imagePath: "https://www.jeremy-achain.dev" + json['imagePath'],
       isVege: json['vege'],
       isVegan: json['vegan'],
       hasMeat: json['meat'],

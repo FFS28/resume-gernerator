@@ -122,7 +122,6 @@ class _MyHomePageState extends State<MyHomePage> {
         decoration: new BoxDecoration(
           image: DecorationImage(
             image: NetworkImage(recipe.imagePath),
-            //image: Image.network(recipe.imagePath),
             fit: BoxFit.cover
           )
         ),

@@ -37,7 +37,6 @@ class ResponseSubscriber implements EventSubscriberInterface
         $response->headers->set("X-Frame-Options", 'deny');
         $response->headers->set("X-XSS-Protection", '1; mode=block');
         $response->headers->set("X-Content-Type-Options", 'nosniff');
-        $response->headers->set("Access-Control-Allow-Origin", 'http://localhost:32847/');
         $response->setVary('Accept-Encoding');
     }
 }
