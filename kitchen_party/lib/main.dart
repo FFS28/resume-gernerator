@@ -97,33 +97,54 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: ListView.builder(
-        scrollDirection: Axis.vertical,
+      body: GridView.builder(
+          itemCount: this.recipes.length,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: 420/280,
+          ),
+          itemBuilder: (context, index) {
+            return Container(
+                padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                child: recipeCard(this.recipes[index])
+            );
+          }
+      )
+      /*body: ListView.builder(
         itemCount: this.recipes.length,
         itemBuilder: (context, index) {
           return Container(
               padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
               height: 220,
-              width: double.maxFinite,
               child: recipeCard(this.recipes[index])
           );
         }
-      )
+      )*/
     );
   }
+
 
 
   Widget recipeCard(Recipe recipe) {
     return Card(
       elevation: 5,
       child: Container(
-        padding: EdgeInsets.all(10),
-        child: Text(recipe.name),
         decoration: new BoxDecoration(
-          image: DecorationImage(
-            image: NetworkImage(recipe.imagePath),
-            fit: BoxFit.cover
-          )
+            image: DecorationImage(
+                image: NetworkImage('https://www.jeremy-achain.dev/kitchen/' + recipe.slug + '/image'),
+                fit: BoxFit.fitWidth
+            )
+        ),
+        child: Column(
+          children: [
+            Container(
+                padding: EdgeInsets.all(10),
+                height: 100,
+                width: double.maxFinite,
+                color: Colors.black45,
+                child: Text(recipe.name)
+            )
+          ],
         ),
       )
     );

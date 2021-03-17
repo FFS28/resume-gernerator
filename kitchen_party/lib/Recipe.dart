@@ -3,6 +3,7 @@ import 'package:kitchen_party/RecipeIngredient.dart';
 class Recipe {
   final int id;
   final String name;
+  final String slug;
   final String imagePath;
 
 
@@ -27,6 +28,7 @@ class Recipe {
   Recipe({
     this.id,
     this.name,
+    this.slug,
     this.imagePath,
     this.isVege,
     this.isVegan,
@@ -62,6 +64,7 @@ class Recipe {
     return Recipe(
       id: json['id'],
       name: json['name'],
+      slug: json['slug'],
       imagePath: "https://www.jeremy-achain.dev" + json['imagePath'],
       isVege: json['vege'],
       isVegan: json['vegan'],
