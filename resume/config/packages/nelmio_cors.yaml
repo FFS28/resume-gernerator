@@ -6,6 +6,8 @@ nelmio_cors:
         allow_headers: ['Content-Type', 'Authorization']
         expose_headers: ['Link']
         max_age: 3600
+        allow_credentials: true
+        forced_allow_origin_value: *
     paths:
         '/upload/':
             allow_origin: [ '*' ]
