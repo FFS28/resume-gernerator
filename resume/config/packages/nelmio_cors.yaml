@@ -7,9 +7,13 @@ nelmio_cors:
         expose_headers: ['Link']
         max_age: 3600
         allow_credentials: true
-        forced_allow_origin_value: *
+        forced_allow_origin_value: '*'
     paths:
-        '/upload/':
+        '^/upload/':
+            allow_origin: [ '*' ]
+            allow_methods: [ 'GET' ]
+            allow_headers: [ 'Content-Type' ]
+        '^/kitchen/':
             allow_origin: [ '*' ]
             allow_methods: [ 'GET' ]
             allow_headers: [ 'Content-Type' ]

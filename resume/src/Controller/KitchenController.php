@@ -17,8 +17,10 @@ use App\Repository\RecipeRepository;
 use App\Repository\SkillRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Asset\Packages;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
@@ -159,5 +161,17 @@ class KitchenController extends AbstractController
         ];
 
         return $this->render('project/kitchen/findOne.html.twig', $data);
+    }
+
+    /**
+     * @Route("/kitchen/{slug}/image", name="recipe_image")
+     * @return Response
+     */
+    public function recipeImage(Recipe $recipe, KernelInterface $kernel) {
+        $file = $kernel->getProjectDir() . '/public/' . $this->getParameter('RECIPE_DIRECTORY') . $recipe->getImage();
+        $headers = array(
+            'Content-Type'     => 'image/jpg',
+            'Content-Disposition' => 'inline; filename="'.$recipe->getImage().'"');
+        return new BinaryFileResponse($file, 200, $headers);
     }
 }
