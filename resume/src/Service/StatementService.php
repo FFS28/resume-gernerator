@@ -155,6 +155,8 @@ class StatementService
             dump($logPositives);
             dump("Negatives");
             dump($logNegatives);
+
+            exit;
             throw new \Exception('Les comptes ne tombent pas juste');
         }
 
