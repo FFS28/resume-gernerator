@@ -77,7 +77,7 @@ abstract class StringHelper
         $fromEncoding = mb_detect_encoding($string);
         $toEncoding = 'UTF-8////IGNORE';
 
-        return $convertedString = @mb_convert_encoding($string, $toEncoding, $fromEncoding) ?:
+        return $convertedString = //@mb_convert_encoding($string, $toEncoding, $fromEncoding) ?:
             @iconv($fromEncoding, $toEncoding, $string);
     }
 
