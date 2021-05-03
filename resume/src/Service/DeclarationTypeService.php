@@ -57,7 +57,7 @@ class DeclarationTypeService
                 return [
                     7,
                     12,
-                    5
+                    4
                 ];
                 break;
 
