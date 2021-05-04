@@ -11,7 +11,7 @@ class ErrorController extends AbstractController
     {
         return $this->render('bundles/TwigBundle/Exception/error.html.twig', [
             "code" => $exception->getStatusCode(),
-            "message" =>$exception->getStatusText()
+            "message" =>$exception->getMessage()
         ]);
     }
 }
