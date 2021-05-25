@@ -390,9 +390,9 @@ class Company
         return $this;
     }
 
-    public function getContractor(): ?self
+    public function getContractor()
     {
-        return $this->contractor;
+        return $this->contractor ? $this->contractor : '';
     }
 
     public function setContractor(?self $contractor): self
@@ -415,7 +415,7 @@ class Company
      */
     public function getClient()
     {
-        return count($this->clients) == 1 ? $this->clients[0] : null;
+        return count($this->clients) == 1 ? $this->clients[0] : '';
     }
 
     public function addClient(self $client): self
@@ -433,7 +433,7 @@ class Company
         if ($this->clients->contains($client)) {
             $this->clients->removeElement($client);
             // set the owning side to null (unless already changed)
-            if ($client->getContractor() === $this) {
+            if (!$client->getContractor()) {
                 $client->setContractor(null);
             }
         }
