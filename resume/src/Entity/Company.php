@@ -392,6 +392,11 @@ class Company
 
     public function getContractor()
     {
+        return $this->contractor;
+    }
+
+    public function getContractorName()
+    {
         return $this->contractor ? $this->contractor : '';
     }
 

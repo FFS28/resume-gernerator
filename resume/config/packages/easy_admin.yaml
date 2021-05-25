@@ -77,7 +77,7 @@ easy_admin:
           - { property: 'displayName', label: 'Name' }
           - { property: 'typeName', label: 'Type' }
           - { property: 'client', type: 'association', targetEntity: 'App\Entity\Company', associationType: !php/const Doctrine\ORM\Mapping\ClassMetadataInfo::MANY_TO_ONE }
-          - contractor
+          - contractorName
           - { property: 'persons', type: 'array' }
           - notes
         filters:
