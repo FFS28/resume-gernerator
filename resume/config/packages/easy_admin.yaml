@@ -68,16 +68,17 @@ easy_admin:
           - city
           - { type: 'group', columns: 3, label: 'Notes' }
           - notes
-          - { type: 'group', columns: 12, label: 'Experiences' }
-          - { property: experiences, label: '', type: embedded_list }
+          - tjm
+          #- { type: 'group', columns: 12, label: 'Experiences' }
+          #- { property: experiences, label: '', type: embedded_list }
           - { type: 'group', columns: 12, label: 'Invoices' }
           - { property: invoices, label: '', type: embedded_list }
       list:
         fields:
           - { property: 'displayName', label: 'Name' }
-          - { property: 'typeName', label: 'Type' }
+          - { property: 'typeName', label: 'Type', trans: true }
           - { property: 'client', type: 'association', targetEntity: 'App\Entity\Company', associationType: !php/const Doctrine\ORM\Mapping\ClassMetadataInfo::MANY_TO_ONE }
-          - contractorName
+          - { property: 'contractorName', label: 'Contractor' }
           - { property: 'persons', type: 'array' }
           - notes
         filters:
@@ -276,7 +277,7 @@ easy_admin:
       list:
         fields:
           - company
-          - client
+          - { property: 'clientName', label: 'Client' }
           - dateBegin
           - dateEnd
           - onHomepage

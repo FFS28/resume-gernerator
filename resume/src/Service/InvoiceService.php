@@ -288,6 +288,10 @@ class InvoiceService
             $invoice->setExperience($experiences[0]);
         }
 
+        if ($company->getTjm()) {
+            $invoice->setTjm($company->getTjm());
+        }
+
         $this->calculTva($invoice);
 
         $this->entityManager->persist($invoice);

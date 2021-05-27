@@ -106,6 +106,11 @@ class Company
      */
     private $notes;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $tjm;
+
     public function __construct()
     {
         $this->experiences = new ArrayCollection();
@@ -390,6 +395,9 @@ class Company
         return $this;
     }
 
+    /**
+     * @return Company|null
+     */
     public function getContractor()
     {
         return $this->contractor;
@@ -454,6 +462,18 @@ class Company
     public function setNotes(?string $notes): self
     {
         $this->notes = $notes;
+
+        return $this;
+    }
+
+    public function getTjm(): ?int
+    {
+        return $this->tjm;
+    }
+
+    public function setTjm(?int $tjm): self
+    {
+        $this->tjm = $tjm;
 
         return $this;
     }

@@ -77,6 +77,7 @@ class Experience
     private $invoices;
 
     /**
+     * @var Company
      * @ORM\ManyToOne(targetEntity="App\Entity\Company")
      * @ORM\JoinColumn(nullable=true)
      */
@@ -300,6 +301,12 @@ class Experience
     public function getClient(): ?Company
     {
         return $this->client;
+    }
+
+
+    public function getClientName(): string
+    {
+        return $this->client ? $this->client->getName() : '';
     }
 
     public function setClient(?Company $client): self
