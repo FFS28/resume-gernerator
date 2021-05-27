@@ -93,6 +93,7 @@ easy_admin:
           - firstname
           - lastname
           - email
+          - copyEmail
           - phones
           - isInvoicingDefault
       list:

@@ -61,6 +61,11 @@ class Person
      */
     private $isInvoicingDefault;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $copyEmail;
+
     public function __toString(): string
     {
         return $this->getCivilityName() . ' ' . $this->getFirstname(). ' ' . $this->getLastname();
@@ -164,6 +169,18 @@ class Person
     public function setIsInvoicingDefault(bool $isInvoicingDefault): self
     {
         $this->isInvoicingDefault = $isInvoicingDefault;
+
+        return $this;
+    }
+
+    public function getCopyEmail(): ?string
+    {
+        return $this->copyEmail;
+    }
+
+    public function setCopyEmail(?string $copyEmail): self
+    {
+        $this->copyEmail = $copyEmail;
 
         return $this;
     }

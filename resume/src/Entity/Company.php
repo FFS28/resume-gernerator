@@ -326,19 +326,17 @@ class Company
         return $this->persons;
     }
 
-    public function getEmail(): string
+    public function getEmails(): array
     {
-        $email = '';
         foreach ($this->getPersons() as $person)
         {
             if ($person->getIsInvoicingDefault()) {
-                return $person->getEmail();
-            }
-            elseif (!$email) {
-                $email = $person->getEmail();
+                return [$person->getEmail(), $person->getCopyEmail()];
+            } else {
+                return [$person->getEmail(), $person->getCopyEmail()];
             }
         }
-        return $email;
+        return [];
     }
 
     public function addPerson(Person $person): self

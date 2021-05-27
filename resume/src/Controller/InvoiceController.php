@@ -97,14 +97,15 @@ class InvoiceController extends EasyAdminController
         $id = $this->request->query->get('id');
         /** @var Invoice $entity */
         $entity = $this->em->getRepository(Invoice::class)->find($id);
+        $emails = $entity->getCompany()->getEmail();
 
-        if ($entity && $entity->getFilename() && $entity->getCompany()->getEmail()) {
+        if ($entity && $entity->getFilename() && count($emails) > 0) {
             $this->invoiceService->createPdf($entity);
 
             $email = (new Email())
                 ->from($this->getParameter('MAILER_FROM'))
                 ->to($this->getParameter('APP_ENV') == 'prod'
-                    ? $entity->getCompany()->getEmail()
+                    ? $emails[0]
                     : $this->getParameter('MAILER_FROM')
                 )
                 ->addCc($this->getParameter('MAILER_FROM'))
@@ -117,6 +118,10 @@ class InvoiceController extends EasyAdminController
                 ->attachFromPath(
                     $this->getParameter('PDF_DIRECTORY').$entity->getFilename(),
                     'invoice-jeremy-achain-'.$entity->getNumber().'.pdf');
+
+            if ($this->getParameter('APP_ENV') == 'prod' && count($emails) > 0) {
+                $email->addCc($emails[1]);
+            }
 
             $this->mailer->send($email);
 
