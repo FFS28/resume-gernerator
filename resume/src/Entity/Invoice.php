@@ -122,6 +122,7 @@ class Invoice
     private $activities;
 
     /**
+     * @var Period
      * @ORM\ManyToOne(targetEntity="App\Entity\Period", inversedBy="invoices")
      */
     private $period;
@@ -225,6 +226,11 @@ class Invoice
     public function getExperience(): ?Experience
     {
         return $this->experience;
+    }
+
+    public function getExperienceName(): string
+    {
+        return $this->experience ? $this->getExperience()->__toString() : '';
     }
 
     public function setExperience(?Experience $experience): self
@@ -447,6 +453,11 @@ class Invoice
     public function getPeriod(): ?Period
     {
         return $this->period;
+    }
+
+    public function getPeriodName(): string
+    {
+        return $this->period ? $this->period->__toString() : '';
     }
 
     public function setPeriod(?Period $period): self

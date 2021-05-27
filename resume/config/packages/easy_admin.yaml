@@ -148,7 +148,7 @@ easy_admin:
         fields:
           - number
           - company
-          - experience
+          - { property: 'experienceName', label: 'Experience' }
           - { property: 'totalTtc', format: '%.0f' }
           - { property: 'totalNet', format: '%.0f' }
           - { property: 'totalHt', format: '%.0f' }
@@ -156,7 +156,7 @@ easy_admin:
           - daysCount
           - createdAt
           - payedAt
-          - period
+          - { property: 'periodName', label: 'Period' }
           - { property: 'socialDeclaration', label: 'Declarations' }
         sort: [ 'createdAt', 'DESC' ]
         filters:

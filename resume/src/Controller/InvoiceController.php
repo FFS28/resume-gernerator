@@ -97,7 +97,7 @@ class InvoiceController extends EasyAdminController
         $id = $this->request->query->get('id');
         /** @var Invoice $entity */
         $entity = $this->em->getRepository(Invoice::class)->find($id);
-        $emails = $entity->getCompany()->getEmail();
+        $emails = $entity->getCompany()->getEmails();
 
         if ($entity && $entity->getFilename() && count($emails) > 0) {
             $this->invoiceService->createPdf($entity);
@@ -122,8 +122,6 @@ class InvoiceController extends EasyAdminController
             if ($this->getParameter('APP_ENV') == 'prod' && count($emails) > 0) {
                 $email->addCc($emails[1]);
             }
-
-            $this->mailer->send($email);
 
             return $this->redirectToReferrer();
         }
