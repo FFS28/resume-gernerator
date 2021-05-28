@@ -105,11 +105,6 @@ class InvoiceController extends EasyAdminController
 
             $email = (new Email())
                 ->from($this->getParameter('MAILER_FROM'))
-                ->to($this->getParameter('APP_ENV') == 'prod'
-                    ? $emails[0]
-                    : $this->getParameter('MAILER_FROM')
-                )
-                ->addCc($this->getParameter('MAILER_FROM'))
                 ->subject($this->getParameter('MAILER_SUBJECT') . ' ' . $this->translator->trans('Invoice') . ' n°' . $entity->getNumber())
                 ->text($this->renderView(
                     'email/invoice.txt.twig',
