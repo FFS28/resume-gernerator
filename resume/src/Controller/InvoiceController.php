@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Mime\Message;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -109,8 +110,7 @@ class InvoiceController extends EasyAdminController
                     : $this->getParameter('MAILER_FROM')
                 )
                 ->addCc($this->getParameter('MAILER_FROM'))
-                ->subject($this->getParameter('MAILER_SUBJECT') . ' ' .
-                    $this->translator->trans('Invoice') . ' n°' . $entity->getNumber())
+                ->subject($this->getParameter('MAILER_SUBJECT') . ' ' . $this->translator->trans('Invoice') . ' n°' . $entity->getNumber())
                 ->text($this->renderView(
                     'email/invoice.txt.twig',
                     ['invoice' => $entity]
@@ -119,9 +119,19 @@ class InvoiceController extends EasyAdminController
                     $this->getParameter('PDF_DIRECTORY').$entity->getFilename(),
                     'invoice-jeremy-achain-'.$entity->getNumber().'.pdf');
 
-            if ($this->getParameter('APP_ENV') == 'prod' && count($emails) > 0) {
-                $email->addCc($emails[1]);
+            if ($this->getParameter('APP_ENV') == 'prod') {
+                $email->to($emails[0]);
+                $email->addCc($this->getParameter('MAILER_FROM'));
+
+                if (count($emails) > 0) {
+                    $email->addCc($emails[1]);
+                }
+
+            } else {
+                $email->to($this->getParameter('MAILER_FROM'));
             }
+
+            $this->mailer->send($email);
 
             return $this->redirectToReferrer();
         }
