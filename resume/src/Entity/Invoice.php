@@ -159,6 +159,11 @@ class Invoice
         $this->activities = new ArrayCollection();
     }
 
+    public function isCredit(): bool
+    {
+        return $this->getTotalHt() < 0;
+    }
+
     public function isEditable(): bool
     {
         return !$this->getPayedAt() && $this->getStatus() === self::STATUS_DRAFT;
@@ -292,11 +297,8 @@ class Invoice
     public function setTotalHt(?string $totalHt): self
     {
         $this->totalHt = $totalHt;
-        if (!$this->getDaysCount()) {
+        if (!$this->getDaysCount() && $this->getTjm()) {
             $this->setDaysCount($this->getTotalHt() / $this->getTjm());
-        }
-        if ($this->getExtraHt()) {
-
         }
 
         return $this;

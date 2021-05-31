@@ -91,7 +91,7 @@ class InvoiceService
 
         /* Header settings */
         $pdfInvoice->setColor("#5cb85c");      // pdf color scheme
-        $pdfInvoice->setType(StringHelper::encode("Facture n° " . $invoice->getNumber()));    // Invoice Type
+        $pdfInvoice->setType(StringHelper::encode("Facture n° " . $invoice->getNumber() . ($invoice->isCredit() ? ' (Avoir)' : '')));    // Invoice Type
         $pdfInvoice->setNumberFormat(',', ' ');
         $pdfInvoice->setReference($invoice->getNumber());   // Reference
         $pdfInvoice->setDate($invoice->getCreatedAt()->format('d/m/Y'));   //Billing Date
@@ -110,15 +110,17 @@ class InvoiceService
             StringHelper::encode($invoice->getCompany()->getPostalCode() . ' ' . $invoice->getCompany()->getCity())
         ]);
 
-        $pdfInvoice->addItem(
-            StringHelper::encode("Journée de prestation"),
-            "",
-            $invoice->getDaysCount(),
-            $invoice->getTotalTax() ? (Invoice::TAX_MULTIPLIER * 100)."%" : '',
-            $invoice->getTjm(),
-            '',
-            $invoice->getTotalHt()
-        );
+        if ($invoice->getDaysCount()) {
+            $pdfInvoice->addItem(
+                StringHelper::encode("Journée de prestation"),
+                "",
+                $invoice->getDaysCount(),
+                $invoice->getTotalTax() ? (Invoice::TAX_MULTIPLIER * 100) . "%" : '',
+                $invoice->getTjm(),
+                '',
+                $invoice->getTotalHt()
+            );
+        }
 
         if ($invoice->getExtraLibelle() && $invoice->getExtraHt()) {
             $pdfInvoice->addItem(
