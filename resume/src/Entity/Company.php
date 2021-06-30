@@ -111,6 +111,11 @@ class Company
      */
     private $tjm;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $service;
+
     public function __construct()
     {
         $this->experiences = new ArrayCollection();
@@ -331,9 +336,9 @@ class Company
         foreach ($this->getPersons() as $person)
         {
             if ($person->getIsInvoicingDefault()) {
-                return [$person->getEmail(), $person->getCopyEmail()];
+                return [$person->getEmail(), $person->getCopyEmail(), $person->getCopyEmailBis()];
             } else {
-                return [$person->getEmail(), $person->getCopyEmail()];
+                return [$person->getEmail(), $person->getCopyEmail(), $person->getCopyEmailBis()];
             }
         }
         return [];
@@ -472,6 +477,18 @@ class Company
     public function setTjm(?int $tjm): self
     {
         $this->tjm = $tjm;
+
+        return $this;
+    }
+
+    public function getService(): ?string
+    {
+        return $this->service;
+    }
+
+    public function setService(?string $service): self
+    {
+        $this->service = $service;
 
         return $this;
     }

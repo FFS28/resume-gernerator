@@ -66,6 +66,12 @@ class Person
      */
     private $copyEmail;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    // @TODO A refactorer
+    private $copyEmailBis;
+
     public function __toString(): string
     {
         return $this->getCivilityName() . ' ' . $this->getFirstname(). ' ' . $this->getLastname();
@@ -181,6 +187,18 @@ class Person
     public function setCopyEmail(?string $copyEmail): self
     {
         $this->copyEmail = $copyEmail;
+
+        return $this;
+    }
+
+    public function getCopyEmailBis(): ?string
+    {
+        return $this->copyEmailBis;
+    }
+
+    public function setCopyEmailBis(?string $copyEmailBis): self
+    {
+        $this->copyEmailBis = $copyEmailBis;
 
         return $this;
     }

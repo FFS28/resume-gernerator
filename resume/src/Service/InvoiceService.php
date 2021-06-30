@@ -105,7 +105,7 @@ class InvoiceService
         ]);
         $pdfInvoice->setTo([
             StringHelper::encode($invoice->getCompany()->getName()),
-            '',
+            StringHelper::encode($invoice->getCompany()->getService()),
             StringHelper::encode($invoice->getCompany()->getStreet()),
             StringHelper::encode($invoice->getCompany()->getPostalCode() . ' ' . $invoice->getCompany()->getCity())
         ]);

@@ -41,6 +41,7 @@ Clients: Clients
 Contractor: Prestataire
 Display name: Nom personnalisé
 Address: Adresse
+Service: Service
 Street: Rue
 Postal code: Code postal
 City: Ville
@@ -59,6 +60,7 @@ Firstname: Prénom
 Lastname: Nom
 Email: Email
 Copy email: Email de copie
+Copy email bis: Email de copie
 Phones: Téléphones
 Is invoicing default: Gère la facturation
 M: M
