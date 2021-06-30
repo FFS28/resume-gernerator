@@ -139,8 +139,11 @@ class InvoiceService
         $pdfInvoice->addTotal("TVA ".(Invoice::TAX_MULTIPLIER * 100)."%", $invoice->getTotalTax());
         $pdfInvoice->addTotal("Total TTC", $invoice->getTotalTtc(), true);
 
-        $pdfInvoice->addTitle("Règlement");
+        if ($invoice->getObject()) {
+            $pdfInvoice->addTitle($invoice->getObject());
+        }
 
+        $pdfInvoice->addTitle("Règlement");
         $pdfInvoice->addParagraph(StringHelper::encode("
             RIB : 10278 07374 00020438301 93
             IBAN : FR76 1027 8073 7400 0204 3830 193
@@ -148,7 +151,6 @@ class InvoiceService
         "));
 
         $pdfInvoice->addTitle(StringHelper::encode("Informations légales"));
-
         $legalInformations = "
             Taux des pénalités en cas de retard de paiement : taux directeur de refinancement de la BCE, majoré de 10 points
             En cas de retard de paiement, indemnité forfaitaire légale pour frais de recouvrement : 40,00 EUR
