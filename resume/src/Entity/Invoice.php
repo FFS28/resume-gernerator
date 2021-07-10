@@ -159,6 +159,11 @@ class Invoice
         $this->activities = new ArrayCollection();
     }
 
+    public function updateHt(): void
+    {
+        $this->totalHt = $this->tjm * $this->daysCount + $this->extraHt;
+    }
+
     public function isCredit(): bool
     {
         return $this->getTotalHt() < 0;

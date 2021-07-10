@@ -294,6 +294,7 @@ class InvoiceService
 
         if ($company->getTjm()) {
             $invoice->setTjm($company->getTjm());
+            $invoice->updateHt();
         }
 
         $this->calculTva($invoice);
