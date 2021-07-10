@@ -93,6 +93,7 @@ easy_admin:
           - { property: 'civility', type: 'choice', type_options: { choices: !php/const App\Entity\Person::CIVILITIES } }
           - firstname
           - lastname
+          - emails
           - email
           - copyEmail
           - copyEmailBis
@@ -104,7 +105,7 @@ easy_admin:
           - { property: civilityName, label: 'Civility' }
           - firstname
           - lastname
-          - email
+          - emails
           - phones
     Invoice:
       class: App\Entity\Invoice
@@ -128,7 +129,8 @@ easy_admin:
           - { type: 'group', columns: 2, label: 'Calculated' }
           - totalHt
           - totalTax
-          - { type: 'group', columns: 2, label: 'Date' }
+          - { type: 'group', columns: 2, label: 'References' }
+          - reference
           - { property: 'createdAt', type_options: { widget: 'single_text', html5: true } }
           - { type: 'group', columns: 2, label: 'Payment' }
           - { property: 'payedBy', type: 'choice', type_options: { choices: !php/const App\Entity\Invoice::PAYED_BYS } }

@@ -59,6 +59,7 @@ Civility: Civilité
 Firstname: Prénom
 Lastname: Nom
 Email: Email
+Emails: Emails
 Copy email: Email de copie
 Copy email bis: Email de copie
 Phones: Téléphones
@@ -71,7 +72,9 @@ Invoices: Factures
 Check: Chèque
 Transfert: Virement
 Tjm: TJM
-Object: Référence
+Object: Objet
+References: Références
+Reference: Référence
 Total: Total
 Total ht: Total HT
 Total net: Total net
