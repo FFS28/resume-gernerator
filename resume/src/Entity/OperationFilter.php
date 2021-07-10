@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @UniqueEntity(fields={"name"}, message="A filter with same name already exists")
+ * @UniqueEntity(fields={"name", "date", "amount"}, message="A filter with same name already exists")
  * @ORM\Entity(repositoryClass=OperationFilterRepository::class)
  */
 class OperationFilter
