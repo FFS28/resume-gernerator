@@ -483,7 +483,7 @@ easy_admin:
           - date
           - { property: type, trans: true}
           - target
-          - { property: 'label', label: 'Name' }
+          - label
           - name
           - location
           - amount
