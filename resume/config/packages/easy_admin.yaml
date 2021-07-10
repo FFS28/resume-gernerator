@@ -94,9 +94,6 @@ easy_admin:
           - firstname
           - lastname
           - emails
-          - email
-          - copyEmail
-          - copyEmailBis
           - phones
           - isInvoicingDefault
       list:

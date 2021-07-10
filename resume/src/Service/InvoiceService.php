@@ -140,7 +140,7 @@ class InvoiceService
         $pdfInvoice->addTotal("Total TTC", $invoice->getTotalTtc(), true);
 
         if ($invoice->getReference()) {
-            $pdfInvoice->addTitle($invoice->getReference());
+            $pdfInvoice->addTitle(StringHelper::encode('Référence externe : ' . $invoice->getReference()));
         }
 
         $pdfInvoice->addTitle("Règlement");

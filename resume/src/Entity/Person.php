@@ -41,11 +41,6 @@ class Person
     private $lastname;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $email;
-
-    /**
      * @ORM\Column(type="simple_array", nullable=true)
      */
     private $phones = [];
@@ -60,17 +55,6 @@ class Person
      * @ORM\Column(type="boolean")
      */
     private $isInvoicingDefault;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $copyEmail;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    // @TODO A refactorer
-    private $copyEmailBis;
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
@@ -136,18 +120,6 @@ class Person
         return $this;
     }
 
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    public function setEmail(?string $email): self
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
     public function getPhones(): ?array
     {
         return $this->phones;
@@ -180,30 +152,6 @@ class Person
     public function setIsInvoicingDefault(bool $isInvoicingDefault): self
     {
         $this->isInvoicingDefault = $isInvoicingDefault;
-
-        return $this;
-    }
-
-    public function getCopyEmail(): ?string
-    {
-        return $this->copyEmail;
-    }
-
-    public function setCopyEmail(?string $copyEmail): self
-    {
-        $this->copyEmail = $copyEmail;
-
-        return $this;
-    }
-
-    public function getCopyEmailBis(): ?string
-    {
-        return $this->copyEmailBis;
-    }
-
-    public function setCopyEmailBis(?string $copyEmailBis): self
-    {
-        $this->copyEmailBis = $copyEmailBis;
 
         return $this;
     }
