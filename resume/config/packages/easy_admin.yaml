@@ -458,8 +458,8 @@ easy_admin:
         fields:
           - name
           - { property: type, trans: true}
-          - target
           - label
+          - target
           - date
           - amount
         filters:
@@ -483,7 +483,7 @@ easy_admin:
           - date
           - { property: type, trans: true}
           - target
-          - { property: 'label', label: 'Name' }
+          - label
           - name
           - location
           - amount
