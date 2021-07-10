@@ -450,8 +450,8 @@ easy_admin:
         fields:
           - name
           - { property: 'type', type: 'choice', type_options: { choices: !php/const App\Entity\Operation::TYPES } }
-          - target
           - label
+          - target
           - { property: 'date', type_options: { widget: 'single_text', html5: true } }
           - { property: 'amount', type: 'number', type_options: { html5: true, input: 'number', scale: 2, attr: { step: 0.01 } } }
       list:
