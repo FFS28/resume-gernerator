@@ -118,14 +118,11 @@ class InvoiceController extends EasyAdminController
                 $email->to($emails[0]);
                 $email->addCc($this->getParameter('MAILER_FROM'));
 
-                // @TODO A refactorer
                 if (count($emails) > 1) {
-                    $email->addCc($emails[1]);
+                    for($i = 1; $i < count($emails); $i++) {
+                        $email->addCc($emails[$i]);
+                    }
                 }
-                if (count($emails) > 2) {
-                    $email->addCc($emails[2]);
-                }
-
             } else {
                 $email->to($this->getParameter('MAILER_FROM'));
             }

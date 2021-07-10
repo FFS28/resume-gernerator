@@ -139,8 +139,8 @@ class InvoiceService
         $pdfInvoice->addTotal("TVA ".(Invoice::TAX_MULTIPLIER * 100)."%", $invoice->getTotalTax());
         $pdfInvoice->addTotal("Total TTC", $invoice->getTotalTtc(), true);
 
-        if ($invoice->getObject()) {
-            $pdfInvoice->addTitle($invoice->getObject());
+        if ($invoice->getReference()) {
+            $pdfInvoice->addTitle($invoice->getReference());
         }
 
         $pdfInvoice->addTitle("Règlement");

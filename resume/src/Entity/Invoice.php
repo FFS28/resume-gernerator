@@ -142,6 +142,11 @@ class Invoice
      */
     private $extraHt;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $reference;
+
     const TJM_DEFAULT = 400;
     const LIMIT_AE_TVA = 33200;
     const LIMIT_AE = 70000;
@@ -523,6 +528,18 @@ class Invoice
     public function setExtraHt(?string $extraHt): self
     {
         $this->extraHt = $extraHt;
+
+        return $this;
+    }
+
+    public function getReference(): ?string
+    {
+        return $this->reference;
+    }
+
+    public function setReference(?string $reference): self
+    {
+        $this->reference = $reference;
 
         return $this;
     }

@@ -336,9 +336,7 @@ class Company
         foreach ($this->getPersons() as $person)
         {
             if ($person->getIsInvoicingDefault()) {
-                return [$person->getEmail(), $person->getCopyEmail(), $person->getCopyEmailBis()];
-            } else {
-                return [$person->getEmail(), $person->getCopyEmail(), $person->getCopyEmailBis()];
+                return $person->getEmails();
             }
         }
         return [];

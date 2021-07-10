@@ -72,6 +72,11 @@ class Person
     // @TODO A refactorer
     private $copyEmailBis;
 
+    /**
+     * @ORM\Column(type="simple_array", nullable=true)
+     */
+    private $emails = [];
+
     public function __toString(): string
     {
         return $this->getCivilityName() . ' ' . $this->getFirstname(). ' ' . $this->getLastname();
@@ -199,6 +204,18 @@ class Person
     public function setCopyEmailBis(?string $copyEmailBis): self
     {
         $this->copyEmailBis = $copyEmailBis;
+
+        return $this;
+    }
+
+    public function getEmails(): ?array
+    {
+        return $this->emails;
+    }
+
+    public function setEmails(?array $emails): self
+    {
+        $this->emails = $emails;
 
         return $this;
     }
