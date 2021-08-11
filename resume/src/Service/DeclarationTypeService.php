@@ -55,9 +55,9 @@ class DeclarationTypeService
 
             case Declaration::TYPE_TVA:
                 return [
-                    7,
-                    12,
-                    4
+                    6,// 7
+                    11,// 12
+                    3 // 4
                 ];
                 break;
 
