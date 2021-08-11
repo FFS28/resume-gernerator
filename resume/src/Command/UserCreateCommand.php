@@ -50,8 +50,8 @@ class UserCreateCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $email = $input->getArgument('email');
-        $username = $input->getArgument('username');
         $password = $input->getArgument('password');
+        $username = $input->getArgument('username');
         $role = $input->getArgument('role');
 
         $user = new User();

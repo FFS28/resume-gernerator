@@ -12,7 +12,6 @@ security:
         app_user_provider:
             entity:
                 class: App\Entity\User
-                property: email
 
     firewalls:
         dev:
