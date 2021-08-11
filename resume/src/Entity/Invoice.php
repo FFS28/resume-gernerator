@@ -156,8 +156,8 @@ class Invoice
         $this->daysCount = 0;
         $this->tjm = self::TJM_DEFAULT;
         $this->createdAt = new \DateTime();
-        $this->object = '';
-        $this->setNumber((new \DateTime())->format(Invoice::NUMBER_DATE_FORMAT));
+        $this->object = "Prestation de développement web - " . (new \DateTime())->format('Y-m');
+        $this>setNumber((new \DateTime())->format(Invoice::NUMBER_DATE_FORMAT));
         $this->setPayedBy(self::PAYEDBY_TRANSFERT);
         $this->status = self::STATUS_DRAFT;
         $this->dueInterval = 'P1M';
