@@ -7,10 +7,9 @@
             <md-button class="md-icon-button menu-button" @click="filtersShowed = true">
               <md-icon>menu</md-icon>
             </md-button>
-            <span class="md-title">Kitchen Party</span>
           </div>
-          <div class="md-toolbar-section-start" v-if="!$isMobile()">
-            <md-field class="field-type">
+          <div class="md-toolbar-section-start">
+            <md-field class="field-type" v-if="!$isMobile()">
               <label for="type">Type</label>
               <md-select v-model="form.type" name="type" id="type">
                 <md-option value="">Tous</md-option>
@@ -19,7 +18,7 @@
                 <md-option value="sweet">Sucré</md-option>
               </md-select>
             </md-field>
-            <md-field class="field-diet">
+            <md-field class="field-diet" v-if="!$isMobile()">
               <label for="diet">Régime</label>
               <md-select v-model="form.diet" name="diet" id="diet">
                 <md-option value="">Tous</md-option>
