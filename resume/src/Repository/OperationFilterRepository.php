@@ -62,6 +62,19 @@ class OperationFilterRepository extends ServiceEntityRepository
         return $query->getQuery()->getResult();
     }
 
+    public function getLabelsAndTypes(): array
+    {
+        $query = $this->createQueryBuilder('o')
+            ->select('o.type')
+            ->addSelect('o.label')
+            ->distinct()
+            ->andWhere('o.label IS NOT NULL')
+            ->andWhere('o.label != :empty')
+            ->setParameter('empty', '')
+        ;
+        return $query->getQuery()->getScalarResult();
+    }
+
     // /**
     //  * @return OperationFilter[] Returns an array of OperationFilter objects
     //  */

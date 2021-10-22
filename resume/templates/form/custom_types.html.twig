@@ -1,0 +1,19 @@
+{# views/form/fields.html.twig #}
+
+{% block datalist_widget %}
+    <input list="{{ id }}_list" {{ block('widget_attributes') }}{% if value is not empty %}value="{{ value }}"{% endif %}>
+    <datalist id="{{ id }}_list">
+        {% for choice in choices %}
+                <option value="{{ choice }}">{{ choice }}</option>
+        {% endfor %}
+    </datalist>
+{% endblock %}
+
+{% block operation_filter_label_widget %}
+    <input list="{{ id }}_list" {{ block('widget_attributes') }}{% if value is not empty %}value="{{ value }}"{% endif %}>
+    <datalist id="{{ id }}_list">
+        {% for choice in choices %}
+            <option value="{{ choice['label'] }}">{{ choice['type'] | trans }}</option>
+        {% endfor %}
+    </datalist>
+{% endblock %}
