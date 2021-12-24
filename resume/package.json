@@ -8,7 +8,7 @@
     "bootstrap-datetimepicker": "^0.0.7",
     "chart.js": "^2.9.4",
     "jquery": "^3.6.0",
-    "node-sass": "^4.13.1",
+    "node-sass": "^4.14.1",
     "sass-loader": "9",
     "serialize-javascript": ">=3.1.0",
     "stimulus": "^2.0.0",
