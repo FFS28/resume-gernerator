@@ -27,9 +27,9 @@
 ### Installation
 
 - symfony composer install
-- symfony doctrine:database:create
-- symfony doctrine:schema:update --force
-- symfony doctrine:fixtures:load --env=dev
+- symfony console doctrine:database:create
+- symfony console doctrine:schema:update --force
+- symfony console doctrine:fixtures:load --env=dev
 - yarn
 - symfony server:start
 - yarn encore dev --watch
