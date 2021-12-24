@@ -66,6 +66,11 @@ class Company
      */
     private $type;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $reference;
+
     const TYPE_CLIENT    = "client";
     const TYPE_PROSPECT = "prospect";
     const TYPE_ARCHIVE = "archive";
@@ -487,6 +492,18 @@ class Company
     public function setService(?string $service): self
     {
         $this->service = $service;
+
+        return $this;
+    }
+
+    public function getReference(): ?string
+    {
+        return $this->reference;
+    }
+
+    public function setReference(?string $reference): self
+    {
+        $this->reference = $reference;
 
         return $this;
     }

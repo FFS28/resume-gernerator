@@ -72,6 +72,7 @@ easy_admin:
           - { type: 'group', columns: 3, label: 'Notes' }
           - notes
           - tjm
+          - reference
           #- { type: 'group', columns: 12, label: 'Experiences' }
           #- { property: experiences, label: '', type: embedded_list }
           - { type: 'group', columns: 12, label: 'Invoices' }

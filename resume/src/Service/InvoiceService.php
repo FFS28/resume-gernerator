@@ -297,6 +297,10 @@ class InvoiceService
             $invoice->updateHt();
         }
 
+        if ($company->getReference()) {
+            $invoice->setReference($company->getReference());
+        }
+
         $this->calculTva($invoice);
 
         $this->entityManager->persist($invoice);
