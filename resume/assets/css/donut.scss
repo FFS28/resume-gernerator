@@ -27,9 +27,11 @@
 
 @mixin donut-chart($name, $perc, $size, $width, $base, $center, $color, $textColor: $color, $textSize: 40px) {
 
+  $percDiz: calc( $perc / 10);
+  $sizeDemi: calc( $size / 2);
   $color2: $color;
   $base2: $base;
-  $deg: ($perc/100*360)+deg;
+  $deg: ( calc( $perc/100 )*360 )+deg;
   $deg1: 90deg;
   $deg2: $deg;
   $keyframe-donut: 'donut-anim-' + $perc;
@@ -39,7 +41,7 @@
     $base: $color;
     $color: $base2;
     $color2: $base2;
-    $deg1: ($perc/100*360+90)+deg;
+    $deg1: ( calc( $perc/100 )*360+90 )+deg;
     $deg2: 0deg;
   }
 
@@ -53,14 +55,14 @@
 
       .slice {
         &.one {
-          clip: rect(0 $size $size/2 0);
+          clip: rect(0 $size $sizeDemi 0);
           -webkit-transform: rotate($deg1);
           transform: rotate($deg1);
           background: $color;
         }
 
         &.two {
-          clip: rect(0 $size/2 $size 0);
+          clip: rect(0 $sizeDemi $size 0);
           -webkit-transform: rotate($deg2);
           transform: rotate($deg2);
           background: $color2;
@@ -81,7 +83,7 @@
           font-weight: bold;
 
           &:after {
-            content: '#{$perc / 10}';
+            content: '#{$percDiz}';
           }
         }
       }

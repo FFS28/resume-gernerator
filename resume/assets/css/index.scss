@@ -455,23 +455,23 @@ form{
       padding-left: 0;
     }
   }
-  &#skills {
+  #skills {
     display: none;
   }
   #attributes li:not(.separator) {
     margin: 0 10px;
     font-size: 12px;
   }
-  &#experiences ul li, &#educations ul li {
+  #experiences ul li, #educations ul li {
     padding: 20px 10px;
   }
-  #me, #attributes, &.section {
+  #me, #attributes, .section {
     background: #fff !important;
   }
   #quote i {
     display: none;
   }
-  &#hobbies {
+  #hobbies {
     text-align: left !important;
   }
 }
