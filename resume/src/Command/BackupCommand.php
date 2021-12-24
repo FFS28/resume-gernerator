@@ -30,12 +30,11 @@ class BackupCommand extends Command
     protected $mailer;
 
     public function __construct(
-        string $name = null,
         KernelInterface $appKernel,
         ParameterBagInterface $params,
         MailerInterface $mailer,
     ) {
-        parent::__construct($name);
+        parent::__construct();
         $this->mailer = $mailer;
         $this->params = $params;
         $this->appKernel = $appKernel;

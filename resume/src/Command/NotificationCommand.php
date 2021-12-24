@@ -33,7 +33,6 @@ class NotificationCommand extends Command
     protected $companyService;
 
     public function __construct(
-        string $name = null,
         ParameterBagInterface $params,
         MailerInterface $mailer,
         Environment $templating,
@@ -43,7 +42,7 @@ class NotificationCommand extends Command
         ReportService $reportService,
         CompanyService $companyService
     ) {
-        parent::__construct($name);
+        parent::__construct();
         $this->params = $params;
         $this->mailer = $mailer;
         $this->translator = $translator;
