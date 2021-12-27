@@ -73,6 +73,7 @@ easy_admin:
           - notes
           - tjm
           - reference
+          - { property: 'file', type: 'file' }
           #- { type: 'group', columns: 12, label: 'Experiences' }
           #- { property: experiences, label: '', type: embedded_list }
           - { type: 'group', columns: 12, label: 'Invoices' }
