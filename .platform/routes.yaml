@@ -1,15 +1,4 @@
-"http://{default}":
-  type: redirect
-  to: "https://www.{default}/"
-
-"http://www.{default}":
-  type: redirect
-  to: "https://www.{default}/"
-
-"https://www.{default}":
-  type: redirect
-  to: "https://www.{default}/"
-
-"https://www.{default}/":
+"https://{default}/":
   type: upstream
   upstream: "resume:http"
+
