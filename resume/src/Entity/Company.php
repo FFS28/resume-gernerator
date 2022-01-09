@@ -124,7 +124,7 @@ class Company
     private $service;
 
     /**
-     * @ORM\Column(type="string", length=255, unique=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $filename;
 
