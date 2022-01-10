@@ -104,6 +104,7 @@ class StatementService
         $positiveFilters = array_column($this->operationFilterRepository->getPositiveFilters(), 'name');
         $positiveExceptionFilters = $this->operationFilterRepository->getPositiveExceptionFilters();
         $filters = $this->operationFilterRepository->getFilters();
+        $history = [];
 
         foreach ($operations as $operationLine) {
             /** @var \DateTime $date */
@@ -112,8 +113,9 @@ class StatementService
             $amount = $operationLine[2];
             $label = '';
             $isPositiv = false;
+            $log = $date->format('Ymd') . ' ' . $name . ' ' . $amount;
 
-            if  (StringHelper::contains($name, $positiveFilters) === true) {
+            if  (StringHelper::contains($name, $positiveFilters) === true || in_array($log, $history)) {
                 $isPositiv = true;
             } else {
                 foreach ($positiveExceptionFilters as $exception) {
@@ -128,6 +130,7 @@ class StatementService
 
             $amount = $isPositiv ? $amount : -$amount;
             $totalAmount += $amount;
+            $history[] = $log;
 
             if ($amount > 0) {
                 $logPositives[] = $name . ' : ' . $amount;

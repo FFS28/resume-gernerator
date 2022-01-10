@@ -13,38 +13,38 @@ easy_admin:
     menu:
       - { label: 'Return to website', url: '/', icon: 'home' }
 
-      - { label: 'Dashboard', url: '/admin/dashboard', icon: 'chart-bar', role: ROLE_ADMIN }
-      - { label: 'Report', url: '/admin/report', icon: 'calendar-alt', role: ROLE_ADMIN }
+      - { label: 'Dashboard', url: '/admin/dashboard', icon: 'chart-bar' }
+      - { label: 'Report', url: '/admin/report', icon: 'calendar-alt' }
 
-      - { label: 'Invoicing', role: ROLE_ADMIN }
-      - { entity: 'Invoice', label: 'Invoices', icon: 'coins', role: ROLE_ADMIN }
-      - { entity: 'Purchase', label: 'Purchases', icon: 'credit-card', role: ROLE_ADMIN }
-      - { entity: 'Declaration', label: 'Declarations', icon: 'landmark', role: ROLE_ADMIN }
-      - { entity: 'Activity', label: 'Activities', icon: 'calendar-check', role: ROLE_ADMIN }
-      - { entity: 'Company', label: 'Companies', icon: 'building', role: ROLE_ADMIN }
-      - { entity: 'Person', label: 'Persons', icon: 'users', role: ROLE_ADMIN }
+      - { label: 'Invoicing' }
+      - { entity: 'Invoice', label: 'Invoices', icon: 'coins' }
+      - { entity: 'Purchase', label: 'Purchases', icon: 'credit-card' }
+      - { entity: 'Declaration', label: 'Declarations', icon: 'landmark' }
+      - { entity: 'Activity', label: 'Activities', icon: 'calendar-check' }
+      - { entity: 'Company', label: 'Companies', icon: 'building' }
+      - { entity: 'Person', label: 'Persons', icon: 'users' }
 
-      - { label: 'Resume', role: ROLE_ADMIN }
-      - { entity: 'Experience', label: 'Experiences', icon: 'map-marker-alt', role: ROLE_ADMIN }
-      - { entity: 'Skill', label: 'Skills', icon: 'fill-drip', role: ROLE_ADMIN }
-      - { entity: 'Attribute', label: 'Attributes', icon: 'address-card', role: ROLE_ADMIN }
-      - { entity: 'Hobby', label: 'Hobbies', icon: 'chess', role: ROLE_ADMIN }
-      - { entity: 'Education', label: 'Educations', icon: 'graduation-cap', role: ROLE_ADMIN  }
-      - { entity: 'Link', label: 'Links', icon: 'link', role: ROLE_ADMIN }
+      - { label: 'Resume' }
+      - { entity: 'Experience', label: 'Experiences', icon: 'map-marker-alt' }
+      - { entity: 'Skill', label: 'Skills', icon: 'fill-drip' }
+      - { entity: 'Attribute', label: 'Attributes', icon: 'address-card' }
+      - { entity: 'Hobby', label: 'Hobbies', icon: 'chess' }
+      - { entity: 'Education', label: 'Educations', icon: 'graduation-cap'  }
+      - { entity: 'Link', label: 'Links', icon: 'link' }
 
-      - { label: 'Other', role: ROLE_ADMIN }
-      - { label: 'Invoices book', url: '/admin/invoice/csv', icon: 'file-excel', role: ROLE_ADMIN }
+      - { label: 'Other' }
+      - { label: 'Invoices book', url: '/admin/invoice/csv', icon: 'file-excel' }
 
-      - { label: 'Kitchen', role: ROLE_KITCHEN }
-      - { entity: 'Recipe', label: 'Recipes', icon: 'concierge-bell', role: ROLE_KITCHEN, default: true }
-      - { entity: 'Ingredient', label: 'Ingredients', icon: 'apple-alt', role: ROLE_KITCHEN }
-      - { entity: 'KitchenIngredient', label: 'Fridge', icon: 'archive', role: ROLE_KITCHEN }
+      - { label: 'Kitchen' }
+      - { entity: 'Recipe', label: 'Recipes', icon: 'concierge-bell', default: true }
+      - { entity: 'Ingredient', label: 'Ingredients', icon: 'apple-alt' }
+      - { entity: 'KitchenIngredient', label: 'Fridge', icon: 'archive' }
 
-      - { label: 'Accounting', role: ROLE_ADMIN }
-      - { label: 'Statistiques', url: '/admin/accounting', icon: 'chart-pie', role: ROLE_ADMIN }
-      - { entity: 'Statement', label: 'Statements', icon: 'file-alt', role: ROLE_ADMIN }
-      - { entity: 'Operation', label: 'Operations', icon: 'columns', role: ROLE_ADMIN }
-      - { entity: 'OperationFilter', label: 'Filters', icon: 'filter', role: ROLE_ADMIN }
+      - { label: 'Accounting' }
+      - { label: 'Statistiques', url: '/admin/accounting', icon: 'chart-pie' }
+      - { entity: 'Statement', label: 'Statements', icon: 'file-alt' }
+      - { entity: 'Operation', label: 'Operations', icon: 'columns' }
+      - { entity: 'OperationFilter', label: 'Filters', icon: 'filter' }
   formats:
     date: 'd/m/Y'
   list:
@@ -53,7 +53,6 @@ easy_admin:
     Company:
       class: App\Entity\Company
       controller: App\Controller\CompanyController
-      role: ROLE_ADMIN
       form:
         fields:
           - { type: 'group', columns: 3, label: 'Principal' }
@@ -91,7 +90,6 @@ easy_admin:
         max_results: 20
     Person:
       class: App\Entity\Person
-      role: ROLE_ADMIN
       form:
         fields:
           - { property: 'company' }
@@ -112,7 +110,6 @@ easy_admin:
     Invoice:
       class: App\Entity\Invoice
       controller: App\Controller\InvoiceController
-      role: ROLE_ADMIN
       form:
         fields:
           - { type: 'group', columns: 2 }
@@ -181,7 +178,6 @@ easy_admin:
     Purchase:
       class: App\Entity\Purchase
       controller: App\Controller\PurchaseController
-      role: ROLE_ADMIN
       form:
         fields:
           - number
@@ -206,7 +202,6 @@ easy_admin:
     Declaration:
       class: App\Entity\Declaration
       controller: App\Controller\DeclarationController
-      role: ROLE_ADMIN
       form:
         fields:
           - { type: 'group', columns: 3, label: '' }
@@ -247,10 +242,8 @@ easy_admin:
           - period
     Period:
       class: App\Entity\Period
-      role: ROLE_ADMIN
     Activity:
       class: App\Entity\Activity
-      role: ROLE_ADMIN
       form:
         fields:
           - { property: 'company',  type: 'easyadmin_autocomplete', type_options: { class: 'App\Entity\Company' } }
@@ -271,7 +264,6 @@ easy_admin:
     Experience:
       class: App\Entity\Experience
       controller: App\Controller\ExperienceController
-      role: ROLE_ADMIN
       form:
         fields:
           - { type: 'group', columns: 4, label: 'Principal' }
@@ -301,7 +293,6 @@ easy_admin:
           - update
     Skill:
       class: App\Entity\Skill
-      role: ROLE_ADMIN
       form:
         fields:
           - name
@@ -319,7 +310,6 @@ easy_admin:
           - onHomepage
     Attribute:
       class: App\Entity\Attribute
-      role: ROLE_ADMIN
       form:
         fields:
           - slug
@@ -335,7 +325,6 @@ easy_admin:
           - weight
     Hobby:
       class: App\Entity\Hobby
-      role: ROLE_ADMIN
       form:
         fields:
           - name
@@ -345,7 +334,6 @@ easy_admin:
         sort: ['name', 'DESC']
     Link:
       class: App\Entity\Link
-      role: ROLE_ADMIN
       form:
         fields:
           - icon
@@ -358,7 +346,6 @@ easy_admin:
         sort: ['name', 'DESC']
     Education:
       class: App\Entity\Education
-      role: ROLE_ADMIN
       form:
         fields:
           - name
@@ -380,7 +367,6 @@ easy_admin:
     Recipe:
       class: App\Entity\Recipe
       controller: App\Controller\RecipeController
-      role: ROLE_KITCHEN
       form:
         fields:
           - { type: 'group', columns: 12, label: '' }
@@ -406,7 +392,6 @@ easy_admin:
         sort: [ 'name', 'ASC' ]
     Ingredient:
       class: App\Entity\Ingredient
-      role: ROLE_KITCHEN
       form:
         fields:
           - name
@@ -423,7 +408,6 @@ easy_admin:
     KitchenIngredient:
       class: App\Entity\KitchenIngredient
       controller: App\Controller\KitchenIngredientController
-      role: ROLE_KITCHEN
       form:
         fields:
           - ingredient
@@ -447,7 +431,6 @@ easy_admin:
     Statement:
       class: App\Entity\Statement
       controller: App\Controller\StatementController
-      role: ROLE_ADMIN
       new:
         fields:
           - { property: 'file', type: 'file' }
@@ -466,7 +449,6 @@ easy_admin:
         sort: [ 'date', 'DESC' ]
     OperationFilter:
       class: App\Entity\OperationFilter
-      role: ROLE_ADMIN
       form:
         fields:
           - name
@@ -490,7 +472,6 @@ easy_admin:
     Operation:
       class: App\Entity\Operation
       controller: App\Controller\OperationController
-      role: ROLE_ADMIN
       form:
         fields:
           - { property: 'date', type_options: { widget: 'single_text', html5: true } }
