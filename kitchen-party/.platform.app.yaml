@@ -1,0 +1,11 @@
+name: kitchen-party
+
+type: nodejs:12
+
+web:
+    locations:
+        "/":
+            root: "dist"
+            index:
+                - "index.html"
+            passthru: /index.html

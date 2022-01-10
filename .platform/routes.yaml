@@ -2,3 +2,7 @@
   type: upstream
   upstream: "resume:http"
 
+"https://dev.jeremy-achain.dev/":
+  type: upstream
+  upstream: "kitchen-party:http"
+
