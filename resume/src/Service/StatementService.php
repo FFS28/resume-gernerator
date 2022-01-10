@@ -115,13 +115,14 @@ class StatementService
             $isPositiv = false;
             $log = $date->format('Ymd') . ' ' . $name . ' ' . $amount;
 
-            if  (StringHelper::contains($name, $positiveFilters) === true || in_array($log, $history)) {
+            if  (StringHelper::contains($name, $positiveFilters) === true) {
                 $isPositiv = true;
             } else {
                 foreach ($positiveExceptionFilters as $exception) {
                     if (strpos($name, $exception['name']) > -1
                         && $date->format('d/m/Y') === $exception['date']->format('d/m/Y')
-                        && $amount == floatval($exception['amount'])) {
+                        && $amount == floatval($exception['amount'])
+                        && !in_array($log, $history)) {
                         $isPositiv = true;
                         break;
                     }
