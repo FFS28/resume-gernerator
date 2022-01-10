@@ -1,9 +1,15 @@
-"http://{all}":
+"http://{default}":
   type: redirect
-  to: "https://{all}/"
+  to: "https://www.{default}/"
 
-"https://{all}/":
+"http://www.{default}":
+  type: redirect
+  to: "https://www.{default}/"
+
+"https://www.{default}":
+  type: redirect
+  to: "https://www.{default}/"
+
+"https://www.{default}/":
   type: upstream
-  # Route requests to the "app" application
-  # "app" is the name defined in .symfony.cloud.yaml
   upstream: "resume:http"
