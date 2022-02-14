@@ -13,7 +13,7 @@ easy_admin:
     menu:
       - { label: 'Return to website', url: '/', icon: 'home' }
 
-      - { label: 'Dashboard', url: '/admin/dashboard', icon: 'chart-bar' }
+      - { label: 'Dashboard', url: '/admin/dashboard', icon: 'chart-bar', default: true }
       - { label: 'Report', url: '/admin/report', icon: 'calendar-alt' }
 
       - { label: 'Invoicing' }
@@ -36,7 +36,7 @@ easy_admin:
       - { label: 'Invoices book', url: '/admin/invoice/csv', icon: 'file-excel' }
 
       - { label: 'Kitchen' }
-      - { entity: 'Recipe', label: 'Recipes', icon: 'concierge-bell', default: true }
+      - { entity: 'Recipe', label: 'Recipes', icon: 'concierge-bell' }
       - { entity: 'Ingredient', label: 'Ingredients', icon: 'apple-alt' }
       - { entity: 'KitchenIngredient', label: 'Fridge', icon: 'archive' }
 
