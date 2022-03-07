@@ -55,7 +55,7 @@ crons:
         # every monday at 9 AM
         spec: '0 9 * * 1'
         cmd: |
-            if [ "$SYMFONY_BRANCH" = master ]; then
+            if [ "$PLATFORM_ENVIRONMENT_TYPE" = "production" ]; then
                 croncape php bin/console app:notifications
 
                 pg_dump --dbname=postgres://main:main@database.internal:5432/main | gzip > ./data/dump/resume-$(date +"%Y-%m-%d-%H-%M-%S").dump
@@ -67,7 +67,7 @@ crons:
         # everyday at 5 AM
         spec: '0 5 * * *'
         cmd: |
-            if [ "$SYMFONY_BRANCH" = master ]; then
+            if [ "$PLATFORM_ENVIRONMENT_TYPE" = "production" ]; then
                 croncape symfony env:snapshot:create --no-wait
             fi
 
@@ -76,7 +76,7 @@ crons:
         # for the master branch, aka production
         spec: '0 10 1,15 * *'
         cmd: |
-            if [ "$SYMFONY_BRANCH" = master ]; then
+            if [ "$PLATFORM_ENVIRONMENT_TYPE" = "production" ]; then
                 croncape symfony redeploy --no-wait
             fi
 
