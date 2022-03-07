@@ -68,7 +68,7 @@ crons:
         spec: '0 5 * * *'
         cmd: |
             if [ "$PLATFORM_ENVIRONMENT_TYPE" = "production" ]; then
-                croncape symfony env:snapshot:create --no-wait
+                platform snapshot:create --no-wait
             fi
 
     renewcert:
@@ -77,7 +77,7 @@ crons:
         spec: '0 10 1,15 * *'
         cmd: |
             if [ "$PLATFORM_ENVIRONMENT_TYPE" = "production" ]; then
-                croncape symfony redeploy --no-wait
+                symfony redeploy --no-wait
             fi
 
 
