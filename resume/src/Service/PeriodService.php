@@ -43,10 +43,10 @@ class PeriodService
         $year = intval($date->format('Y'));
 
         $annualyPeriod = $this->periodRepository->findOneBy([
-            'year' => $year
+            'year' => $year - 1
         ]);
         $quarterlyPeriod = $this->periodRepository->findOneBy([
-            'year' => $year,
+            'year' => $year - 1,
             'quarter' => ceil(intval($date->format('n')) / 3)
         ]);
 
