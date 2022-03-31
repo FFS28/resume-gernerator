@@ -4,9 +4,9 @@ Gestion de mon cv et de toutes la partie administrative de mon activité de free
 
 ## STACK
 
-Symfony 5.2
-PHP 8.0
-Composer 2  
+Symfony 5.2  
+PHP 8.0  
+Composer 2    
 
 ## FEATURES
 
