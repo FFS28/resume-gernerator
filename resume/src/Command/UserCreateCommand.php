@@ -7,32 +7,20 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserCreateCommand extends Command
 {
     protected static $defaultName = 'app:user:create';
 
-    /**
-     * @var UserPasswordEncoderInterface
-     */
-    protected $passwordEncoder;
-    /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-
     public function __construct(
-        UserPasswordEncoderInterface $passwordEncoder,
-        EntityManagerInterface $entityManager,
+        protected UserPasswordHasherInterface $passwordHasher,
+        protected EntityManagerInterface $entityManager,
     )
     {
         parent::__construct();
-        $this->passwordEncoder = $passwordEncoder;
-        $this->entityManager = $entityManager;
     }
 
     protected function configure()
@@ -55,9 +43,9 @@ class UserCreateCommand extends Command
 
         $user = new User();
         $user->setEmail($email);
-        $user->setUsername($username ? $username : $email);
+        $user->setUsername($username ?: $email);
         $user->setPlainPassword($password);
-        $user->setPassword($this->passwordEncoder->encodePassword($user, $user->getPlainPassword()));
+        $user->setPassword($this->passwordHasher->hashPassword($user, $user->getPlainPassword()));
         $user->setIsActive(true);
         $user->setRoles($role ? [$role] : ['ROLE_USER']);
 

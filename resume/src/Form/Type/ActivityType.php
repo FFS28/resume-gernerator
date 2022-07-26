@@ -3,7 +3,6 @@
 namespace App\Form\Type;
 
 use App\Entity\Company;
-use App\Entity\Invoice;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -21,31 +20,30 @@ class ActivityType extends AbstractType
                 'required' => false,
             ])
             ->add('company', EntityType::class, [
-                'class' => Company::class,
+                'class'    => Company::class,
                 'required' => false
             ])
             ->add('value', NumberType::class, [
-                'html5' => true,
-                'attr' => [
-                    'max'=>"1",
-                    'min'=>"0",
-                    'step'=>"0.5"
+                'html5'    => true,
+                'attr'     => [
+                    'max'  => "1",
+                    'min'  => "0",
+                    'step' => "0.5"
                 ],
                 'required' => false,
             ])
             ->add('date', DateType::class, [
                 'required' => false,
-                'attr' => [
+                'attr'     => [
                     'class' => 'hidden'
                 ]
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => null
-        ]);
+                                   'data_class' => null
+                               ]);
     }
 }

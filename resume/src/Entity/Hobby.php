@@ -2,33 +2,25 @@
 
 namespace App\Entity;
 
+use App\Repository\HobbyRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Stringable;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\HobbyRepository")
- */
-class Hobby
+#[ORM\Entity(repositoryClass: HobbyRepository::class)]
+class Hobby implements Stringable
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: Types::INTEGER)]
+    private int $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $name;
+    #[ORM\Column(type: Types::STRING, length: 255)]
+    private ?string $name = null;
 
     public function __toString(): string
     {
         return $this->getName();
-    }
-
-    public function getId()
-    {
-        return $this->id;
     }
 
     public function getName(): ?string
@@ -41,5 +33,10 @@ class Hobby
         $this->name = $name;
 
         return $this;
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
     }
 }

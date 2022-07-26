@@ -72,13 +72,13 @@
 
 {% block body %}
     {% if not format %}
-        <a id="download" href="{{ url('index', {'format' : 'pdf', 'all' : all}) }}" target="_blank" class="hidden-print" rel="noreferrer" >⇩</a>
+        <a id="download" href="{{ url('app_index', {'format' : 'pdf', 'all' : all}) }}" target="_blank" class="hidden-print" rel="noreferrer" >⇩</a>
     {% endif %}
     <div itemscope itemtype="http://schema.org/Person">
         <div id="head" class="text-center {% if format %}html-pdf{% endif %}">
             {% if messageSended %}
                 <div id="message" class="hidden-print">
-                    <a class="close" href="{{ url('index') }}">&times;</a>
+                    <a class="close" href="{{ url('app_index') }}">&times;</a>
                     {{ 'Message sended' | trans }}
                 </div>
             {% elseif attributes['message'] is defined and attributes['message'].value and not format %}
@@ -241,7 +241,7 @@
         </ul>
     </div>
     {% if not format %}
-        <a id="" class="hidden-print" href="{{ url('index', {'format' : 'pdf', 'all' : all}) }}"></a>
+        <a id="" class="hidden-print" href="{{ url('app_index', {'format' : 'pdf', 'all' : all}) }}"></a>
         {% if contactForm is defined %}
             <div class="hidden-print" id="contact">
                 {{ form(contactForm) }}

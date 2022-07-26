@@ -1,16 +1,18 @@
 <?php
+
 namespace App\DQL;
 
+use Doctrine\ORM\Query\AST\Functions\FunctionNode;
+use Doctrine\ORM\Query\AST\InputParameter;
 use Doctrine\ORM\Query\Lexer;
 use Doctrine\ORM\Query\Parser;
-use Doctrine\ORM\Query\AST\Functions\FunctionNode;
 use Doctrine\ORM\Query\SqlWalker;
-use Doctrine\ORM\Query\AST\InputParameter;
 
 class RightFunction extends FunctionNode
 {
     /** @var InputParameter firstValue */
     public $firstValue = null;
+
     /** @var InputParameter secondValue */
     public $secondValue = null;
 
@@ -29,6 +31,6 @@ class RightFunction extends FunctionNode
         return 'RIGHT(' .
             $this->firstValue->dispatch($sqlWalker) . ', ' .
             $this->secondValue->dispatch($sqlWalker) .
-        ')';
+            ')';
     }
 }

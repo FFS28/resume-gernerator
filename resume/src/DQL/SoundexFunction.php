@@ -1,11 +1,12 @@
 <?php
+
 namespace App\DQL;
 
-use Doctrine\ORM\Query\Lexer;
 use Doctrine\ORM\Query\AST\Functions\FunctionNode;
+use Doctrine\ORM\Query\AST\InputParameter;
+use Doctrine\ORM\Query\Lexer;
 use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\SqlWalker;
-use Doctrine\ORM\Query\AST\InputParameter;
 
 class SoundexFunction extends FunctionNode
 {
@@ -24,6 +25,6 @@ class SoundexFunction extends FunctionNode
     {
         return 'SOUNDEX(' .
             $this->value->dispatch($sqlWalker) .
-        ')';
+            ')';
     }
 }

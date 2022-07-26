@@ -1,5 +1,12 @@
 Web Developer: Développeur Web
 Return to website: Retour sur le site web
+Logout: Se deconnecter
+Informations: Informations
+
+Update: Mettre à jour
+Edit: Éditer
+Delete: Supprimer
+Download: Télécharger
 
 Attribute: Attribut
 Attributes: Attributs
@@ -9,30 +16,33 @@ Icon: Icone
 Value: Valeur
 Weight: Poids
 Age: '{age} ans'
-Is listable: est listable
+Is Listable: Est listable
 
 Education: Formation
 Educations: Formations
 Name: Nom
 School: Ecole
 Details: Détails
-Date begin: Date de début
-Date end: Date de fin
+Date Begin: Date de début
+Date End: Date de fin
+Dates: Dates
 
 Experience: Experience
 Experiences: Experiences
 Main experiences: Principales experiences
 Title: Titre
 Description: Description
-Is freelance: Freelance
+Is Freelance: Freelance
 Freelance: Freelance
 Employee: Employé
-On site: Sur place
-On homepage: Page d'accueil
+On Site: Sur place
+On Homepage: Page d'accueil
 Options: Options
 Invoicing: Facturation
 in progress: en cours
 today: aujourd'hui
+Mission: Mission
+Parameters: Paramètres
 
 Company: Entreprise
 Companies: Entreprises
@@ -40,11 +50,11 @@ Location: Localisation
 Client: Client
 Clients: Clients
 Contractor: Prestataire
-Display name: Nom personnalisé
+Display Name: Nom personnalisé
 Address: Adresse
 Service: Service
 Street: Rue
-Postal code: Code postal
+Postal Code: Code postal
 City: Ville
 Principal: Principal
 Hierarchy: Hierarchie
@@ -64,9 +74,10 @@ Emails: Emails
 Copy email: Email de copie
 Copy email bis: Email de copie
 Phones: Téléphones
+Is Invoicing Default: Gère la facturation
 Is invoicing default: Gère la facturation
-M: M
-Mme: Mme
+Men: M
+Women: Mme
 
 Invoice: Facture
 Invoices: Factures
@@ -77,38 +88,40 @@ Object: Objet
 References: Références
 Reference: Référence
 Total: Total
-Total ht: Total HT
-Total net: Total net
-Total tax: Total TVA
-Total ttc: Total TTC
-Created at: Créé le
-Created at year: Créé l'année
-Created at quarter: Créé le trimestre
-Payed at: Payé le
-Payed at year: Payé l'année
-Payed at quarter: Payé le trimestre
-Payed by: Payé par
+Total Ht: Total HT
+Total Net: Total net
+Total Tax: Total TVA
+Total Ttc: Total TTC
+Created At: Créé le
+Created At year: Créé l'année
+Created At quarter: Créé le trimestre
+Payed At: Payé le
+Payed At year: Payé l'année
+Payed At quarter: Payé le trimestre
+Payed By: Payé par
 Number: Numéro
 Status: Statut
 Draft: Brouillon
 draft: Brouillon
+Valid: Validé
+valid: Validé
 Waiting: En attente
 waiting: En attente
 Payed: Encaissé
 payed: Encaissé
+Marqued as payed: Marquer comme payé
 Credit: Avoir
-Days count: Nombre de jours
+Days Count: Jours
 Payment: Paiement
 Pdf: Pdf
 30 days end of month: 30 jours fin du mois
 Validate: Valider
-Due interval: Intervalle de paiement
+Due Interval: Intervalle de paiement
 Calculated: Calculé
 Invoices book: Livre des recettes
-Extra ht: Extra HT
-Extra libelle: Extra libellé
+Extra Ht: Extra HT
+Extra Libelle: Extra libellé
 Extra: Extra
-Update: Mettre à jour
 
 Activities: Journées
 Activity: Journée
@@ -122,7 +135,7 @@ Url: URL
 
 Skill: Compétence
 Skills: Compétences
-Main skills: Compétences principales
+Main Skills: Compétences principales
 Type: Type
 Level: Niveau
 Parent: Parent
@@ -202,6 +215,7 @@ Worked days: Jours travaillés
 Revenues by years: CA par années
 Revenues by quarter: CA par trimestre
 Days by month: Journées par mois
+Days by year: Journées par année
 Unpayed invoices: Factures en cours
 Current experiences: Missions en cours
 Global statistics: Statistiques globales
@@ -225,61 +239,10 @@ New message: Nouveau message
 Message sended: Message envoyé
 Notifications: Notifications
 
-Kitchen: Cuisine
-Fridge: Frigo
-Ingredient: Ingrédient
-Ingredients: Ingrédients
-Recipe: Recette
-Recipes: Recettes
-RecipeIngredient: Ingrédient
-recipeingredient: Ingrédient
-Recipe ingredients: Frigo
-KitchenIngredient: Frigo
-KitchenIngredients: Frigo
-Is vege: Végétarien
-Is vegan: Végan
-Preparation duration: Temps de préparation (min)
-Cooking duration: Temps de cuisson (min)
-Waiting duration: Temps de repos (min)
-Nb slices: Nombre de parts
-Instructions: Instructions
-Quantity: Quantité
-Source: Source
-Image file: Photo
-Image: Photo
-Is liquid: Liquide ?
-Is recipe: Recette ?
-form.label.delete: Supprimer la photo ?
-Measure: Mesure
-Unit: Unité
-None: Aucun
-
-g: g
-kg: kg
-ml: ml
-cl: cl
-l: l
-c-à-s: c-à-S
-c-à-c: c-à-C
-0: ''
-
-meat: Viandes
-fish_seafood: Poissons et fruits de mer
-fruit_vegetable_mushroom: Fruits, légumes et champignons
-cereal_legume: Céréales et Légumineuses
-animal_fat: Matières grasses animales
-vegetable_fat: Matières grasses végétales
-yeast: Levures
-aromatic_herb: Herbes aromatiques
-spice: Epices
-sugar: Sucres
-salt: Sels
-alcohol: Alcools
-water: Eau
-
 OperationFilter: Filtre
 OperationFilters: Filtres
 Filters: Filtres
+Filter: Filtre
 Accounting: Comptabilité
 Operation: Opération
 Operations: Opérations
@@ -293,14 +256,31 @@ Target: Cible
 Analyze: Analyse
 Label: Catégorie
 Statistiques: Statistiques
+Categories: Catégories
 
 
-supply: Fourniture
-food: Nourriture
-charge: Charge
-subscription: Abonnement
-income: Revenu
-refund: Remboursement
+Supply: Fourniture
+Food: Nourriture
+Charge: Charge
+Subscription: Abonnement
+Income: Revenu
+Refund: Remboursement
+Hidden: Caché
 other: Autre
 hobby: Loisir
-hidden: Caché
+
+vich_uploader:
+  form_label:
+    delete_confirm: Supprimer ?
+
+flash_message:
+  create: L'objet "%entityType% %entityName%" a été créé.
+  update: L'objet "%entityType% %entityName%" a été mis à jour.
+  delete: L'objet "%entityType% %entityName%" a été supprimé.
+  mark_as_waiting: L'objet "%entityType% %entityName%" a été marqué comme "en attente".
+  mark_as_payed: L'objet "%entityType% %entityName%" a été marqué comme "payé".
+  invoice_sended: La facture "%entityName%" a été envoyé.
+  invoice_not_sended: La facture "%entityName%" n'a pas été envoyé. Pas d'email configuré.
+  declaration_calculated: Déclaration "%entityName%" recalculé.
+  statement_analyzed_success: Le relevé "%entityName%" a été analysé avec %operationsCount% opérations.
+  statement_analyzed_error: Le relevé "%entityName%" a été analysé sans résultats.

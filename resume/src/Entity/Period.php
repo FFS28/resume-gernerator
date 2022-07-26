@@ -2,63 +2,51 @@
 
 namespace App\Entity;
 
+use App\Enum\InvoiceStatusEnum;
+use App\Repository\PeriodRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Stringable;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\PeriodRepository")
- */
-class Period
+#[ORM\Entity(repositoryClass: PeriodRepository::class)]
+class Period implements Stringable
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: Types::INTEGER)]
+    private int $id;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Invoice", mappedBy="period")
+     * @var Collection<Invoice>
      */
-    private $invoices;
+    #[ORM\OneToMany(mappedBy: 'period', targetEntity: Invoice::class)]
+    private Collection $invoices;
+
+    #[ORM\OneToMany(mappedBy: 'period', targetEntity: Declaration::class)]
+    private Collection $declarations;
+
+    #[ORM\Column(type: Types::INTEGER)]
+    private ?int $year = null;
+
+    #[ORM\Column(type: Types::INTEGER, nullable: true)]
+    private ?int $quarter = null;
+
+    #[ORM\ManyToOne(targetEntity: Period::class, inversedBy: 'periodsQuarter')]
+    private ?Period $periodYear = null;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Declaration", mappedBy="period")
+     * @var Collection<Period>
      */
-    private $declarations;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $year;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $quarter;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Period", inversedBy="periodsQuarter")
-     */
-    private $periodYear;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Period", mappedBy="periodYear")
-     */
-    private $periodsQuarter;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Purchase", mappedBy="period")
-     */
-    private $purchases;
+    #[ORM\OneToMany(mappedBy: 'periodYear', targetEntity: Period::class)]
+    private Collection $periodsQuarter;
 
     public function __construct()
     {
         $this->invoices = new ArrayCollection();
         $this->declarations = new ArrayCollection();
         $this->periodsQuarter = new ArrayCollection();
-        $this->purchases = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -66,20 +54,44 @@ class Period
         return $this->id;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         $array = [
             $this->getYear()
         ];
         if ($this->getQuarter()) {
-            $array[] = 'T'.$this->getQuarter();
+            $array[] = 'T' . $this->getQuarter();
         }
 
         return implode(' - ', $array);
     }
 
+    public function getYear(): ?int
+    {
+        return $this->year;
+    }
+
+    public function setYear(int $year): self
+    {
+        $this->year = $year;
+
+        return $this;
+    }
+
+    public function getQuarter(): ?int
+    {
+        return $this->quarter;
+    }
+
+    public function setQuarter(int $quarter): self
+    {
+        $this->quarter = $quarter;
+
+        return $this;
+    }
+
     /**
-     * @return Collection|Invoice[]
+     * @return Collection<Invoice>
      */
     public function getInvoices(): Collection
     {
@@ -94,7 +106,7 @@ class Period
         $invoices = [];
         /** @var Invoice $invoice */
         foreach ($this->invoices as $invoice) {
-            if ($invoice->getStatus() === Invoice::STATUS_PAYED) {
+            if ($invoice->getStatus() === InvoiceStatusEnum::Payed) {
                 $invoices[] = $invoice;
             }
         }
@@ -125,7 +137,7 @@ class Period
     }
 
     /**
-     * @return Collection|Declaration[]
+     * @return Collection<Declaration>
      */
     public function getDeclarations(): Collection
     {
@@ -155,44 +167,8 @@ class Period
         return $this;
     }
 
-    public function getYear(): ?int
-    {
-        return $this->year;
-    }
-
-    public function setYear(int $year): self
-    {
-        $this->year = $year;
-
-        return $this;
-    }
-
-    public function getQuarter(): ?int
-    {
-        return $this->quarter;
-    }
-
-    public function setQuarter(int $quarter): self
-    {
-        $this->quarter = $quarter;
-
-        return $this;
-    }
-
-    public function getPeriodYear(): ?self
-    {
-        return $this->periodYear;
-    }
-
-    public function setPeriodYear(?self $periodYear): self
-    {
-        $this->periodYear = $periodYear;
-
-        return $this;
-    }
-
     /**
-     * @return Collection|self[]
+     * @return Collection<self>
      */
     public function getPeriodsQuarter(): Collection
     {
@@ -222,33 +198,14 @@ class Period
         return $this;
     }
 
-    /**
-     * @return Collection|Purchase[]
-     */
-    public function getPurchases(): Collection
+    public function getPeriodYear(): ?self
     {
-        return $this->purchases;
+        return $this->periodYear;
     }
 
-    public function addPurchase(Purchase $purchase): self
+    public function setPeriodYear(?self $periodYear): self
     {
-        if (!$this->purchases->contains($purchase)) {
-            $this->purchases[] = $purchase;
-            $purchase->setPeriod($this);
-        }
-
-        return $this;
-    }
-
-    public function removePurchase(Purchase $purchase): self
-    {
-        if ($this->purchases->contains($purchase)) {
-            $this->purchases->removeElement($purchase);
-            // set the owning side to null (unless already changed)
-            if ($purchase->getPeriod() === $this) {
-                $purchase->setPeriod(null);
-            }
-        }
+        $this->periodYear = $periodYear;
 
         return $this;
     }

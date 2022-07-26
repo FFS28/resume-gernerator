@@ -3,40 +3,23 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Asset\Packages;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-use Symfony\Component\Security\Http\Authenticator\Passport\Badge\CsrfTokenBadge;
-use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
-use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
-use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
-use Symfony\Component\Security\Http\Authenticator\Passport\PassportInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UserController extends AbstractController
 {
-    /**
-     * @Route("/login", name="login")
-     * @param Request $request
-     * @param AuthenticationUtils $authenticationUtils
-     * @return Response
-     */
-    public function login(
-        Request $request,
-        AuthenticationUtils $authenticationUtils
-    ) {
+    #[Route(path: '/login', name: 'login')]
+    public function login(AuthenticationUtils $authenticationUtils, FormFactoryInterface $formFactory) : Response
+    {
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
-
-        $form = $this->get('form.factory')
+        $form = $formFactory
             ->createNamedBuilder('login')
+            ->setAction('/login')
             ->add('_username', null, ['label' => 'Username'])
             ->add('_password', PasswordType::class, ['label' => 'Password'])
             ->add('_password', PasswordType::class, ['label' => 'Password'])
@@ -50,16 +33,4 @@ class UserController extends AbstractController
             'error' => $error,
         ]);
     }
-
-    /*public function login(Request $request): PassportInterface
-    {
-        $password = $request->request->get('password');
-        $username = $request->request->get('username');
-
-        return new Passport(
-            new UserBadge($username), // Badge pour transporter l'user
-            new PasswordCredentials($password), // Badge pour transporter le password
-            [new CsrfTokenBadge('login', $csrfToken)] // Badge pour transporter un token CSRF
-        );
-    }*/
 }

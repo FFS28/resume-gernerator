@@ -2,46 +2,35 @@
 
 namespace App\Entity;
 
+use App\Repository\AttributeRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Stringable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\AttributeRepository")
- * @UniqueEntity("slug")
- */
-class Attribute
+#[ORM\Entity(repositoryClass: AttributeRepository::class)]
+#[UniqueEntity('slug')]
+class Attribute implements Stringable
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: Types::INTEGER)]
+    private int $id;
 
-    /**
-     * @ORM\Column(type="string", length=255, unique=true)
-     */
-    private $slug;
-    
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $icon;
+    #[ORM\Column(type: Types::STRING, length: 255, unique: true)]
+    private ?string $slug = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $value;
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $icon = null;
 
-    /**
-     * @ORM\Column(type="smallint", nullable=true)
-     */
-    private $weight;
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $value = null;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $isListable;
+    #[ORM\Column(type: Types::SMALLINT, nullable: true)]
+    private ?int $weight = null;
+
+    #[ORM\Column(type: Types::BOOLEAN, nullable: true)]
+    private bool $isListable;
 
     public function __construct()
     {
@@ -51,11 +40,6 @@ class Attribute
     public function __toString(): string
     {
         return $this->getSlug();
-    }
-
-    public function getId()
-    {
-        return $this->id;
     }
 
     public function getSlug(): ?string
@@ -68,6 +52,11 @@ class Attribute
         $this->slug = $slug;
 
         return $this;
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
     }
 
     public function getIcon(): ?string

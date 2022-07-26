@@ -2,7 +2,7 @@
 # Files in the packages/ subdirectory configure your dependencies.
 
 # Put parameters here that don't need to change on each machine where the app is deployed
-# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     APP_ENV: '%env(APP_ENV)%'
     APP_DIR: '%kernel.project_dir%'
@@ -11,7 +11,6 @@ parameters:
     COMPANY_NAME: '%env(COMPANY_NAME)%'
     PDF_DIRECTORY: '%kernel.project_dir%%env(DIRECTORY_INVOICE)%'
     PROOF_DIRECTORY: 'upload%env(DIRECTORY_PURCHASE)%'
-    RECIPE_DIRECTORY: 'upload%env(DIRECTORY_RECIPE)%'
     STATEMENT_DIRECTORY: '%env(DIRECTORY_STATEMENT)%'
     BACKUP_DIRECTORY: '%env(DIRECTORY_BACKUP)%'
     google_recaptcha_site_key: '%env(GOOGLE_RECAPTCHA_SITE_KEY)%'
@@ -25,14 +24,11 @@ services:
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     App\:
-        resource: '../src/*'
-        exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
-
-    # controllers are imported separately to make sure services can be injected
-    # as action arguments even if you don't extend any base controller class
-    App\Controller\:
-        resource: '../src/Controller'
-        tags: ['controller.service_arguments']
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
@@ -48,11 +44,6 @@ services:
             $companyApe: '%env(COMPANY_APE)%'
             $companyStatut: '%env(COMPANY_STATUT)%'
             $companyTva: '%env(COMPANY_TVA)%'
-
-    App\Service\PurchaseService:
-        public: true
-        arguments:
-            $proofDirectory: '%PROOF_DIRECTORY%'
 
     App\Service\StatementService:
         public: true

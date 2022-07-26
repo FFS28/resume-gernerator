@@ -2,164 +2,109 @@
 
 namespace App\Entity;
 
+use App\Enum\DeclarationTypeEnum;
+use App\Enum\InvoicePaymentTypeEnum;
+use App\Enum\InvoiceStatusEnum;
+use App\Repository\InvoiceRepository;
+use DateInterval;
+use DateTime;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
+use Stringable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use App\Validator\InvoiceTax;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\InvoiceRepository")
- * @UniqueEntity("number")
- */
-class Invoice
+#[ORM\Entity(repositoryClass: InvoiceRepository::class)]
+#[UniqueEntity('number')]
+class Invoice implements Stringable
 {
-    /**
-     * @ORM\Id()', default: true , role: ROLE_USER_LIST }
-      - { entity: 'UsersManagement', label: 'Members management', icon: 'user' , role: ROLE_USER_ALL }
-      - { label: 'Meetings' }
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
-
-    /**
-     * @ORM\Column(type="string", length=255, unique=true)
-     */
-    private $number;
-
-    const NUMBER_DATE_FORMAT = 'Ym-';
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Company", inversedBy="invoices", cascade={"persist"})
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $company;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Experience", inversedBy="invoices", cascade={"persist"})
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $experience;
-
-    /**
-     * @ORM\Column(type="date")
-     */
-    private $createdAt;
-
-    /**
-     * @ORM\Column(type="date", nullable=true)
-     */
-    private $payedAt;
-
-    /**
-     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
-     */
-    private $totalHt;
-
-    /**
-     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
-     */
-    private $totalTax;
-
-    const TAX_MULTIPLIER = 0.2;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $object;
-
-    /**
-     * @ORM\Column(type="smallint", nullable=true)
-     */
-    private $tjm;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $payedBy;
-
-    const PAYEDBY_CHECK    = "check";
-    const PAYEDBY_TRANSFERT = "transfert";
-
+    final const NUMBER_DATE_FORMAT = 'Ym-';
+    final const TAX_MULTIPLIER = 0.2;
+    final const DUE_INTERVAL_1M = 'P1M';
     /** @var array user friendly named type */
-    const PAYED_BYS = [
-        'Check' => self::PAYEDBY_CHECK,
-        'Transfert' => self::PAYEDBY_TRANSFERT,
-    ];
-
-    const STATUS_DRAFT = 'draft';
-    const STATUS_WAITING = 'waiting';
-    const STATUS_PAYED = 'payed';
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true))
-     */
-    private $status;
-
-    /** @var array user friendly named type */
-    const STATUES = [
-        'Draft' => self::STATUS_DRAFT,
-        'Waiting' => self::STATUS_WAITING,
-        'Payed' => self::STATUS_PAYED,
-    ];
-
-    const DUE_INTERVAL_1M = 'P1M';
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $dueInterval;
-
-    /** @var array user friendly named type */
-    const DUE_INTERVALES = [
+    final const DUE_INTERVALES = [
         '30 days end of month' => self::DUE_INTERVAL_1M,
     ];
+    final const TJM_DEFAULT = 400;
+    final const LIMIT_AE_TVA = 33200;
+    final const LIMIT_AE = 70000;
+
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: Types::INTEGER)]
+    private int $id;
+
+    #[ORM\Column(type: Types::STRING, length: 255, unique: true)]
+    private ?string $number;
+
+    #[ORM\ManyToOne(targetEntity: Company::class, cascade: ['persist'], inversedBy: 'invoices')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Company $company = null;
+
+    #[ORM\ManyToOne(targetEntity: Experience::class, cascade: ['persist'], inversedBy: 'invoices')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Experience $experience = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private DateTimeInterface $createdAt;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?DateTimeInterface $payedAt = null;
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    private ?string $totalHt = null;
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    private ?string $totalTax = null;
+
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $object = null;
+
+    #[ORM\Column(type: Types::SMALLINT, nullable: true)]
+    private int $tjm;
+
+    #[ORM\Column(type: Types::STRING, nullable: true, enumType: InvoicePaymentTypeEnum::class)]
+    private ?InvoicePaymentTypeEnum $payedBy;
+
+    #[ORM\Column(type: Types::STRING, nullable: true, enumType: InvoiceStatusEnum::class)]
+    private ?InvoiceStatusEnum $status;
+
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $dueInterval;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Activity", mappedBy="invoice", cascade={"persist", "remove"})
+     * @var Collection<Activity>
      */
-    private $activities;
+    #[ORM\OneToMany(mappedBy: 'invoice', targetEntity: Activity::class, cascade: ['persist', 'remove'])]
+    private Collection $activities;
 
-    /**
-     * @var Period
-     * @ORM\ManyToOne(targetEntity="App\Entity\Period", inversedBy="invoices")
-     */
-    private $period;
+    #[ORM\ManyToOne(targetEntity: Period::class, inversedBy: 'invoices')]
+    private ?Period $period = null;
 
-    /**
-     * @ORM\Column(type="decimal", precision=3, scale=1, nullable=true)
-     */
-    private $daysCount;
+    #[ORM\Column(type: Types::DECIMAL, precision: 3, scale: 1, nullable: true)]
+    private float $daysCount;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $extraLibelle;
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $extraLibelle = null;
 
-    /**
-     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
-     */
-    private $extraHt;
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    private ?string $extraHt = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $reference;
-
-    const TJM_DEFAULT = 400;
-    const LIMIT_AE_TVA = 33200;
-    const LIMIT_AE = 70000;
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $reference = null;
 
     public function __construct()
     {
         $this->daysCount = 0;
         $this->tjm = self::TJM_DEFAULT;
-        $this->createdAt = new \DateTime();
-        $this->object = "Prestation de développement web - " . (new \DateTime())->format('Y-m');
-        $this->setNumber((new \DateTime())->format(Invoice::NUMBER_DATE_FORMAT));
-        $this->setPayedBy(self::PAYEDBY_TRANSFERT);
-        $this->status = self::STATUS_DRAFT;
+        $this->createdAt = new DateTime();
+        $this->object = "Prestation de développement web - " . (new DateTime())->format('Y-m');
+        $this->setNumber((new DateTime())->format(Invoice::NUMBER_DATE_FORMAT));
+        $this->setPayedBy(InvoicePaymentTypeEnum::Transfert);
+        $this->status = InvoiceStatusEnum::Draft;
         $this->dueInterval = 'P1M';
         $this->activities = new ArrayCollection();
     }
@@ -174,9 +119,75 @@ class Invoice
         return $this->getTotalHt() < 0;
     }
 
+    public function getTotalHt(): ?string
+    {
+        return $this->totalHt;
+    }
+
+    public function setTotalHt(?string $totalHt): self
+    {
+        $this->totalHt = $totalHt;
+        if (!$this->getDaysCount() && $this->getTjm()) {
+            $this->setDaysCount($this->getTotalHt() / $this->getTjm());
+        }
+
+        return $this;
+    }
+
+    public function getDaysCount(): ?float
+    {
+        return $this->daysCount;
+    }
+
+    public function setDaysCount(?float $daysCount): self
+    {
+        $this->daysCount = $daysCount;
+        if (!$this->getTotalHt()) {
+            $this->setTotalHt($this->getDaysCount() * $this->getTjm());
+        }
+
+        return $this;
+    }
+
+    public function getTjm(): ?int
+    {
+        return $this->tjm;
+    }
+
+    public function setTjm(?int $tjm): self
+    {
+        $this->tjm = $tjm;
+
+        return $this;
+    }
+
     public function isEditable(): bool
     {
-        return !$this->getPayedAt() && $this->getStatus() === self::STATUS_DRAFT;
+        return !$this->getPayedAt() && $this->getStatus() === InvoiceStatusEnum::Draft;
+    }
+
+    public function getPayedAt(): ?DateTimeInterface
+    {
+        return $this->payedAt;
+    }
+
+    public function setPayedAt(?DateTimeInterface $payedAt): self
+    {
+        $this->payedAt = $payedAt;
+
+        return $this;
+    }
+
+    public function getStatus(): ?InvoiceStatusEnum
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?InvoiceStatusEnum $status): self
+    {
+        $this->status = $status;
+
+        return $this;
     }
 
     public function getTotalNet(): float
@@ -187,7 +198,7 @@ class Invoice
     /**
      * @param Activity[] $activities
      */
-    public function importActivities(array $activities)
+    public function importActivities(array $activities): void
     {
         $dayCount = 0;
 
@@ -201,17 +212,7 @@ class Invoice
 
     public function getFilename(): string
     {
-        return $this->getNumber().'.pdf';
-    }
-
-    public function __toString(): string
-    {
-        return $this->getNumber();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
+        return $this->getNumber() . '.pdf';
     }
 
     public function getNumber(): ?string
@@ -226,6 +227,11 @@ class Invoice
         return $this;
     }
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
     public function getCompany(): ?Company
     {
         return $this->company;
@@ -238,9 +244,9 @@ class Invoice
         return $this;
     }
 
-    public function getExperience(): ?Experience
+    public function getExperienceCompany(): string
     {
-        return $this->experience;
+        return $this->experience ? $this->getExperience()->getCompany()->getDisplayName() : '';
     }
 
     public function getExperienceName(): string
@@ -248,33 +254,19 @@ class Invoice
         return $this->experience ? $this->getExperience()->__toString() : '';
     }
 
+    public function __toString(): string
+    {
+        return $this->getNumber();
+    }
+
+    public function getExperience(): ?Experience
+    {
+        return $this->experience;
+    }
+
     public function setExperience(?Experience $experience): self
     {
         $this->experience = $experience;
-
-        return $this;
-    }
-
-    public function getCreatedAt(): ?\DateTimeInterface
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function getPayedAt(): ?\DateTimeInterface
-    {
-        return $this->payedAt;
-    }
-
-    public function setPayedAt(?\DateTimeInterface $payedAt): self
-    {
-        $this->payedAt = $payedAt;
 
         return $this;
     }
@@ -299,19 +291,9 @@ class Invoice
         return ceil($this->payedAt->format('n') / 3);
     }
 
-    public function getTotalHt(): ?string
+    public function getTotalTtc(): ?string
     {
-        return $this->totalHt;
-    }
-
-    public function setTotalHt(?string $totalHt): self
-    {
-        $this->totalHt = $totalHt;
-        if (!$this->getDaysCount() && $this->getTjm()) {
-            $this->setDaysCount($this->getTotalHt() / $this->getTjm());
-        }
-
-        return $this;
+        return $this->getTotalHt() + $this->getTotalTax();
     }
 
     public function getTotalTax(): ?string
@@ -326,11 +308,6 @@ class Invoice
         return $this;
     }
 
-    public function getTotalTtc(): ?string
-    {
-        return $this->getTotalHt() + $this->getTotalTax();
-    }
-
     public function getObject(): ?string
     {
         return $this->object;
@@ -343,66 +320,51 @@ class Invoice
         return $this;
     }
 
-    public function getTjm(): ?int
-    {
-        return $this->tjm;
-    }
-
-    public function setTjm(?int $tjm): self
-    {
-        $this->tjm = $tjm;
-
-        return $this;
-    }
-
-    public function getPayedBy(): ?string
+    public function getPayedBy(): ?InvoicePaymentTypeEnum
     {
         return $this->payedBy;
     }
 
-    public function setPayedBy(?string $payedBy): self
+    public function setPayedBy(InvoicePaymentTypeEnum $payedBy): self
     {
         $this->payedBy = $payedBy;
 
         return $this;
     }
 
+    public function getPayedByName(): ?string
+    {
+        return $this->payedBy->toString();
+    }
+
+    public function getStatusName(): string
+    {
+        return $this->status->toString();
+    }
+
     /**
-     * @return string
+     * @throws Exception
      */
-    public function getPayedByName()
+    public function getDueAt(): ?DateTime
     {
-        $payedByName = array_flip(self::PAYED_BYS);
-        if (!isset($payedByName[$this->payedBy])) {
-            return null;
-        }
+        if (!$this->getCreatedAt() || !$this->getDueInterval()) return null;
 
-        return $payedByName[$this->payedBy];
+        $createdAt = $this->getCreatedAt();
+        $lastDayOfMonth = new DateTime($createdAt->format('Y-m-t'));
+        $firstDayOfNextMonth = (clone $lastDayOfMonth)->add(new DateInterval('P1D'));
+        return new DateTime($firstDayOfNextMonth->format('Y-m-t'));
     }
 
-    public function getStatus(): ?string
+    public function getCreatedAt(): ?DateTimeInterface
     {
-        return $this->status;
+        return $this->createdAt;
     }
 
-    public function setStatus(?string $status): self
+    public function setCreatedAt(DateTimeInterface $createdAt): self
     {
-        $this->status = $status;
+        $this->createdAt = $createdAt;
 
         return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getStatusName()
-    {
-        $statusName = array_flip(self::STATUES);
-        if (!isset($statusName[$this->status])) {
-            return null;
-        }
-
-        return $statusName[$this->status];
     }
 
     public function getDueInterval(): ?string
@@ -418,21 +380,7 @@ class Invoice
     }
 
     /**
-     * @return \DateTime|null
-     * @throws \Exception
-     */
-    public function getDueAt(): ?\DateTime
-    {
-        if (!$this->getCreatedAt() || !$this->getDueInterval()) return null;
-
-        $createdAt = $this->getCreatedAt();
-        $lastDayOfMonth = new \DateTime($createdAt->format('Y-m-t'));
-        $firstDayOfNextMonth = (clone $lastDayOfMonth)->add(new \DateInterval('P1D'));
-        return new \DateTime($firstDayOfNextMonth->format('Y-m-t'));
-    }
-
-    /**
-     * @return Collection|Activity[]
+     * @return Collection<Activity>
      */
     public function getActivities(): Collection
     {
@@ -462,21 +410,9 @@ class Invoice
         return $this;
     }
 
-    public function getPeriod(): ?Period
-    {
-        return $this->period;
-    }
-
     public function getPeriodName(): string
     {
         return $this->period ? $this->period->__toString() : '';
-    }
-
-    public function setPeriod(?Period $period): self
-    {
-        $this->period = $period;
-
-        return $this;
     }
 
     public function getSocialDeclaration(): ?Declaration
@@ -484,7 +420,7 @@ class Invoice
         if ($this->getPeriod()) {
             $declarations = $this->getPeriod()->getDeclarations();
             foreach ($declarations as $declaration) {
-                if ($declaration->getType() === Declaration::TYPE_SOCIAL) {
+                if ($declaration->getType() === DeclarationTypeEnum::Social) {
                     return $declaration;
                 }
             }
@@ -493,17 +429,14 @@ class Invoice
         return null;
     }
 
-    public function getDaysCount(): ?float
+    public function getPeriod(): ?Period
     {
-        return $this->daysCount;
+        return $this->period;
     }
 
-    public function setDaysCount(?float $daysCount): self
+    public function setPeriod(?Period $period): self
     {
-        $this->daysCount = $daysCount;
-        if (!$this->getTotalHt()) {
-            $this->setTotalHt($this->getDaysCount() * $this->getTjm());
-        }
+        $this->period = $period;
 
         return $this;
     }

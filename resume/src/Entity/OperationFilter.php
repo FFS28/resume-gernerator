@@ -2,52 +2,44 @@
 
 namespace App\Entity;
 
+use App\Enum\OperationTypeEnum;
 use App\Repository\OperationFilterRepository;
+use DateTimeInterface;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-/**
- * @UniqueEntity(fields={"name", "date", "amount"}, message="A filter with same name already exists")
- * @ORM\Entity(repositoryClass=OperationFilterRepository::class)
- */
+#[UniqueEntity(fields: ['name', 'date', 'amount'], message: 'A filter with same name already exists')]
+#[ORM\Entity(repositoryClass: OperationFilterRepository::class)]
 class OperationFilter
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: Types::INTEGER)]
+    private int $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $name;
+    #[ORM\Column(type: Types::STRING, length: 255)]
+    private ?string $name = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $type;
+    #[ORM\Column(type: Types::STRING, nullable: true, enumType: OperationTypeEnum::class)]
+    private ?OperationTypeEnum $type = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $target;
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $target = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $label;
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $label = null;
 
-    /**
-     * @ORM\Column(type="date", nullable=true)
-     */
-    private $date;
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?DateTimeInterface $date = null;
 
-    /**
-     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
-     */
-    private $amount;
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    private ?string $amount = null;
+
+    public function __toString(): string
+    {
+        return $this->getName();
+    }
 
     public function getId(): ?int
     {
@@ -66,16 +58,21 @@ class OperationFilter
         return $this;
     }
 
-    public function getType(): ?string
+    public function getType(): ?OperationTypeEnum
     {
         return $this->type;
     }
 
-    public function setType(string $type): self
+    public function setType(?OperationTypeEnum $type): self
     {
         $this->type = $type;
 
         return $this;
+    }
+
+    public function getTypeName(): ?string
+    {
+        return $this->type->toString();
     }
 
     public function getTarget(): ?string
@@ -102,12 +99,12 @@ class OperationFilter
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    public function getDate(): ?DateTimeInterface
     {
         return $this->date;
     }
 
-    public function setDate(?\DateTimeInterface $date): self
+    public function setDate(?DateTimeInterface $date): self
     {
         $this->date = $date;
 

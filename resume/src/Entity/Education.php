@@ -2,63 +2,44 @@
 
 namespace App\Entity;
 
+use App\Repository\EducationRepository;
+use DateTimeInterface;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Stringable;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\EducationRepository")
- */
-class Education
+#[ORM\Entity(repositoryClass: EducationRepository::class)]
+class Education implements Stringable
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: Types::INTEGER)]
+    private int $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $name;
+    #[ORM\Column(type: Types::STRING, length: 255)]
+    private ?string $name = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $school;
+    #[ORM\Column(type: Types::STRING, length: 255)]
+    private ?string $school = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $details;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $details = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $location;
+    #[ORM\Column(type: Types::STRING, length: 255)]
+    private ?string $location = null;
 
-    /**
-     * @ORM\Column(type="smallint")
-     */
-    private $level;
+    #[ORM\Column(type: Types::SMALLINT)]
+    private ?int $level = null;
 
-    /**
-     * @ORM\Column(type="date")
-     */
-    private $dateBegin;
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?DateTimeInterface $dateBegin = null;
 
-    /**
-     * @ORM\Column(type="date")
-     */
-    private $dateEnd;
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?DateTimeInterface $dateEnd = null;
 
     public function __toString(): string
     {
         return $this->getName();
-    }
-
-    public function getId()
-    {
-        return $this->id;
     }
 
     public function getName(): ?string
@@ -71,6 +52,11 @@ class Education
         $this->name = $name;
 
         return $this;
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
     }
 
     public function getSchool(): ?string
@@ -121,24 +107,24 @@ class Education
         return $this;
     }
 
-    public function getDateBegin(): ?\DateTimeInterface
+    public function getDateBegin(): ?DateTimeInterface
     {
         return $this->dateBegin;
     }
 
-    public function setDateBegin(\DateTimeInterface $dateBegin): self
+    public function setDateBegin(DateTimeInterface $dateBegin): self
     {
         $this->dateBegin = $dateBegin;
 
         return $this;
     }
 
-    public function getDateEnd(): ?\DateTimeInterface
+    public function getDateEnd(): ?DateTimeInterface
     {
         return $this->dateEnd;
     }
 
-    public function setDateEnd(\DateTimeInterface $dateEnd): self
+    public function setDateEnd(DateTimeInterface $dateEnd): self
     {
         $this->dateEnd = $dateEnd;
 

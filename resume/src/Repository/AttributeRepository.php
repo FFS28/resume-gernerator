@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Attribute;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\QueryException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -19,6 +20,9 @@ class AttributeRepository extends ServiceEntityRepository
         parent::__construct($registry, Attribute::class);
     }
 
+    /**
+     * @throws QueryException
+     */
     public function findAllIndexedBy($attribute, $isListable)
     {
         $query = $this->createQueryBuilder('a');
@@ -26,38 +30,9 @@ class AttributeRepository extends ServiceEntityRepository
         $query->where('a.isListable = :isListable')
             ->setParameter('isListable', $isListable);
 
-         return $query->indexBy('a', 'a.' . $attribute)
+        return $query->indexBy('a', 'a.' . $attribute)
             ->orderBy('a.weight', 'DESC')
             ->getQuery()
             ->getResult();
     }
-
-//    /**
-//     * @return Attribute[] Returns an array of Attribute objects
-//     */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('a.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Attribute
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

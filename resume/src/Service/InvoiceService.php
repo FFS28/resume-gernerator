@@ -7,82 +7,61 @@ use App\Entity\Invoice;
 use App\Helper\StringHelper;
 use App\Repository\ExperienceRepository;
 use App\Repository\InvoiceRepository;
-use DateInterval;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
+use Exception;
 use Konekt\PdfInvoice\InvoicePrinter;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class InvoiceService
 {
-    public $pdfFileDirectory;
-    public $companyName;
-    public $companyStreet;
-    public $companyCity;
-    public $companySiret;
-    public $companyApe;
-    public $companyStatut;
-    public $companyTva;
-
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
-    /** @var InvoiceRepository */
-    private $invoiceRepository;
-
-    /** @var ExperienceRepository */
-    private $experienceRepository;
-
-    /** @var PeriodService */
-    private $periodService;
-
-    /** @var SerializerInterface */
-    private $serializer;
-
-    /** @var TranslatorInterface */
-    private $translator;
-
     public function __construct(
-        string $pdfFileDirectory,
-        string $companyName,
-        string $companyStreet,
-        string $companyCity,
-        string $companySiret,
-        string $companyApe,
-        string $companyStatut,
-        string $companyTva,
-        EntityManagerInterface $entityManager,
-        InvoiceRepository $invoiceRepository,
-        ExperienceRepository $experienceRepository,
-        PeriodService $periodService,
-        SerializerInterface $serializer,
-        TranslatorInterface $translator
+        public string                           $pdfFileDirectory, public string $companyName,
+        public string                           $companyStreet, public string $companyCity,
+        public string                           $companySiret, public string $companyApe,
+        public string                           $companyStatut, public string $companyTva,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly InvoiceRepository      $invoiceRepository,
+        private readonly ExperienceRepository   $experienceRepository,
+        private readonly PeriodService          $periodService,
+        private readonly SerializerInterface    $serializer,
+        private readonly TranslatorInterface    $translator
     ) {
-        $this->pdfFileDirectory = $pdfFileDirectory;
-        $this->companyName = $companyName;
-        $this->companyStreet = $companyStreet;
-        $this->companyCity = $companyCity;
-        $this->companySiret = $companySiret;
-        $this->companyApe = $companyApe;
-        $this->companyStatut = $companyStatut;
-        $this->companyTva = $companyTva;
+    }
 
-        $this->entityManager = $entityManager;
-        $this->invoiceRepository = $invoiceRepository;
-        $this->experienceRepository = $experienceRepository;
-        $this->periodService = $periodService;
+    /**
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
+    public function countWaitingInvoices(): int
+    {
+        return $this->invoiceRepository->countWaiting();
+    }
 
-        $this->serializer = $serializer;
-        $this->translator = $translator;
+    /**
+     * Crée ou récupère le fichier pdf actuellement stocké
+     * @throws Exception
+     */
+    public function getOrCreatePdf(Invoice $invoice, bool $force = false): string
+    {
+        if (!$force && file_exists($this->pdfFileDirectory . $invoice->getFilename())) {
+            return file_get_contents($this->pdfFileDirectory . $invoice->getFilename());
+        }
+
+        $pdf = $this->createPdf($invoice);
+        $pdf->render($this->pdfFileDirectory . $invoice->getFilename(), 'F');
+
+        return $this->pdfFileDirectory . $invoice->getFilename();
     }
 
     /**
      * Crée un facture pdf à partir d'un objet facture
-     * @param Invoice $invoice
-     * @return InvoicePrinter
-     * @throws \Exception
+     * @throws Exception
      */
-    public function createPdf(Invoice $invoice)
+    public function createPdf(Invoice $invoice): InvoicePrinter
     {
         $pdfInvoice = new InvoicePrinter('A4', '€', 'fr');
 
@@ -91,24 +70,28 @@ class InvoiceService
 
         /* Header settings */
         $pdfInvoice->setColor("#5cb85c");      // pdf color scheme
-        $pdfInvoice->setType(StringHelper::encode("Facture n° " . $invoice->getNumber() . ($invoice->isCredit() ? ' (Avoir)' : '')));    // Invoice Type
+        $pdfInvoice->setType(
+            StringHelper::encode("Facture n° " . $invoice->getNumber() . ($invoice->isCredit() ? ' (Avoir)' : ''))
+        );                                     // Invoice Type
         $pdfInvoice->setNumberFormat(',', ' ');
-        $pdfInvoice->setReference($invoice->getNumber());   // Reference
+        $pdfInvoice->setReference($invoice->getNumber());                  // Reference
         $pdfInvoice->setDate($invoice->getCreatedAt()->format('d/m/Y'));   //Billing Date
-        $pdfInvoice->setDue($invoice->getDueAt()->format('d/m/Y'));   //Billing Date
+        $pdfInvoice->setDue($invoice->getDueAt()->format('d/m/Y'));        //Billing Date
 
         $pdfInvoice->setFrom([
-            StringHelper::encode($this->companyName),
-            '',
-            StringHelper::encode($this->companyStreet),
-            StringHelper::encode($this->companyCity)
-        ]);
+                                 StringHelper::encode($this->companyName),
+                                 '',
+                                 StringHelper::encode($this->companyStreet),
+                                 StringHelper::encode($this->companyCity)
+                             ]);
         $pdfInvoice->setTo([
-            StringHelper::encode($invoice->getCompany()->getName()),
-            StringHelper::encode($invoice->getCompany()->getService()),
-            StringHelper::encode($invoice->getCompany()->getStreet()),
-            StringHelper::encode($invoice->getCompany()->getPostalCode() . ' ' . $invoice->getCompany()->getCity())
-        ]);
+                               StringHelper::encode($invoice->getCompany()->getName()),
+                               StringHelper::encode($invoice->getCompany()->getService()),
+                               StringHelper::encode($invoice->getCompany()->getStreet()),
+                               StringHelper::encode(
+                                   $invoice->getCompany()->getPostalCode() . ' ' . $invoice->getCompany()->getCity()
+                               )
+                           ]);
 
         if ($invoice->getDaysCount()) {
             $pdfInvoice->addItem(
@@ -127,7 +110,7 @@ class InvoiceService
                 StringHelper::encode($invoice->getExtraLibelle()),
                 "",
                 "",
-                $invoice->getTotalTax() ? (Invoice::TAX_MULTIPLIER * 100)."%" : '',
+                $invoice->getTotalTax() ? (Invoice::TAX_MULTIPLIER * 100) . "%" : '',
                 $invoice->getExtraHt(),
                 '',
                 $invoice->getExtraHt()
@@ -136,7 +119,7 @@ class InvoiceService
 
         $pdfInvoice->AliasNbPages('');
         $pdfInvoice->addTotal("Total HT", $invoice->getTotalHt());
-        $pdfInvoice->addTotal("TVA ".(Invoice::TAX_MULTIPLIER * 100)."%", $invoice->getTotalTax());
+        $pdfInvoice->addTotal("TVA " . (Invoice::TAX_MULTIPLIER * 100) . "%", $invoice->getTotalTax());
         $pdfInvoice->addTotal("Total TTC", $invoice->getTotalTtc(), true);
 
         if ($invoice->getReference()) {
@@ -144,11 +127,15 @@ class InvoiceService
         }
 
         $pdfInvoice->addTitle("Règlement");
-        $pdfInvoice->addParagraph(StringHelper::encode("
+        $pdfInvoice->addParagraph(
+            StringHelper::encode(
+                "
             RIB : 10278 07374 00020438301 93
             IBAN : FR76 1027 8073 7400 0204 3830 193
             BIC : CMCIFR2A
-        "));
+        "
+            )
+        );
 
         $pdfInvoice->addTitle(StringHelper::encode("Informations légales"));
         $legalInformations = "
@@ -158,10 +145,10 @@ class InvoiceService
           
             Dispensé d'immatriculation au Registre du Commerce et des Sociétés et au Répertoire des Métiers";
 
-        if(!$invoice->getTotalTax()) {
+        if (!$invoice->getTotalTax()) {
             $legalInformations = "
             TVA non applicable, art. 293B du CGI
-            ".$legalInformations;
+            " . $legalInformations;
         }
 
         $pdfInvoice->addParagraph(StringHelper::encode($legalInformations));
@@ -180,41 +167,21 @@ class InvoiceService
     }
 
     /**
-     * Crée ou récupère le fichier pdf actuellement stocké
-     * @param Invoice $invoice
-     * @param bool $force
-     * @return string
-     * @throws \Exception
-     */
-    public function getOrCreatePdf(Invoice $invoice, $force = false): string
-    {
-        if (!$force && file_exists($this->pdfFileDirectory.$invoice->getFilename())) {
-            return file_get_contents($this->pdfFileDirectory.$invoice->getFilename());
-        }
-
-        $pdf = $this->createPdf($invoice);
-        $pdf->render($this->pdfFileDirectory.$invoice->getFilename(), 'F');
-
-        return file_get_contents($this->pdfFileDirectory.$invoice->getFilename());
-    }
-
-    /**
      * Génère le livre de recette en CSV
-     * @return string
      */
     public function generateInvoicesBook(): string
     {
-        $invoices = $this->invoiceRepository->findAll();
+        $invoices = $this->invoiceRepository->findInvoicesBy(null, null, true);
 
         $columns = ["Date d'encaissement",
-            "Référence de la facture",
-            "Nom du client",
-            "Nature de la vente",
-            "Montant de la vente",
-            "Mode d'encaissement"];
+                    "Référence de la facture",
+                    "Nom du client",
+                    "Nature de la vente",
+                    "Montant de la vente",
+                    "Mode d'encaissement"];
         $dataCsv = [];
 
-        foreach($invoices as $invoice) {
+        foreach ($invoices as $invoice) {
             $dataCsv[] = [
                 $columns[0] => $invoice->getPayedAt() ? $invoice->getPayedAt()->format('d/m/Y') : '',
                 $columns[1] => $invoice->getNumber(),
@@ -225,7 +192,7 @@ class InvoiceService
             ];
         }
 
-        $filename = $this->pdfFileDirectory.'livre-recettes.csv';
+        $filename = $this->pdfFileDirectory . 'livre-recettes.csv';
 
         file_put_contents(
             $filename,
@@ -238,47 +205,28 @@ class InvoiceService
     }
 
     /**
-     * Calcul la TVA d'une facture
-     * @param Invoice $invoice
-     */
-    public function calculTva(Invoice $invoice)
-    {
-        $isOutOfTaxLimit = $this->invoiceRepository->isOutOfTaxLimit($invoice->getTotalHt());
-
-        if ($isOutOfTaxLimit) {
-            $invoice->setTotalTax($invoice->getTotalHt() * Invoice::TAX_MULTIPLIER);
-        }
-    }
-
-    /**
      * Calcul le total hors taxes
-     * @param Invoice $invoice
      */
-    public function calculTotalHt(Invoice $invoice)
+    public function calculTotalHt(Invoice $invoice): void
     {
         $invoice->setTotalHt($invoice->getTjm() * $invoice->getDaysCount() + $invoice->getExtraHt());
     }
 
     /**
      * Met à jour la période d'une facture
-     * @param Invoice $invoice
-     * @throws \Exception
+     * @throws Exception
      */
-    public function updatePeriod(Invoice $invoice)
+    public function updatePeriod(Invoice $invoice): void
     {
-        list ($annualyPeriod, $quarterlyPeriod) = $this->periodService->getCurrentPeriod();
+        [$annualyPeriod, $quarterlyPeriod] = $this->periodService->getCurrentPeriod();
         $invoice->setPeriod($quarterlyPeriod);
     }
 
     /**
      * Crée une factures à partir d'un rapport d'activité
-     * @param \DateTime $currentDate
-     * @param Company $company
-     * @param array $activities
-     * @return Invoice
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException|NoResultException
      */
-    public function createByActivities(\DateTime $currentDate, Company $company, array $activities): Invoice
+    public function createByActivities(DateTime $currentDate, Company $company, array $activities): Invoice
     {
         $number = $this->invoiceRepository->getNewInvoiceNumber($currentDate);
 
@@ -310,13 +258,26 @@ class InvoiceService
     }
 
     /**
-     * Envoi d'un mail si la date d'échéance d'une facture approche et qu'elle n'est toujours pas indiqué comme payé
-     * @return array
-     * @throws \Exception
+     * Calcul la TVA d'une facture
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
-    public function getNotifications()
+    public function calculTva(Invoice $invoice): void
     {
-        $date = new \DateTime();
+        $isOutOfTaxLimit = $this->invoiceRepository->isOutOfTaxLimit($invoice->getTotalHt());
+
+        if ($isOutOfTaxLimit) {
+            $invoice->setTotalTax($invoice->getTotalHt() * Invoice::TAX_MULTIPLIER);
+        }
+    }
+
+    /**
+     * Envoi d'un mail si la date d'échéance d'une facture approche et qu'elle n'est toujours pas indiqué comme payé
+     * @throws Exception
+     */
+    public function getNotifications(): array
+    {
+        $date = new DateTime();
         $notifications = [];
 
         $unpayedInvoices = $this->invoiceRepository->findInvoicesBy(null, null, false);
@@ -324,8 +285,9 @@ class InvoiceService
         if (count($unpayedInvoices) > 0) {
             foreach ($unpayedInvoices as $invoice) {
                 if ($invoice->getDueAt() && $invoice->getDueAt() < $date) {
-                    $notifications[] = 'Facture ' .$invoice->getNumber().
-                        ' de '.$invoice->getTotalTtc().'€ TTC à encaisser depuis le ' . $invoice->getDueAt()->format('d/m/Y');
+                    $notifications[] = 'Facture ' . $invoice->getNumber() .
+                        ' de ' . $invoice->getTotalTtc() . '€ TTC à encaisser depuis le ' . $invoice->getDueAt(
+                        )->format('d/m/Y');
                 }
             }
         }

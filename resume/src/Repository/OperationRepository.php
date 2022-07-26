@@ -3,7 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\Operation;
+use App\Enum\OperationTypeEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -19,7 +22,7 @@ class OperationRepository extends ServiceEntityRepository
         parent::__construct($registry, Operation::class);
     }
 
-    public function listYears()
+    public function listYears(): array
     {
         return $this->createQueryBuilder('o')
             ->select('DISTINCT ToChar(o.date, \'YYYY\') AS date')
@@ -27,7 +30,11 @@ class OperationRepository extends ServiceEntityRepository
             ->getScalarResult();
     }
 
-    public function findDateNameAmount($date, $name, $amount) {
+    /**
+     * @throws NonUniqueResultException
+     */
+    public function findDateNameAmount($date, $name, $amount)
+    {
         return $this->createQueryBuilder('o')
             ->andWhere('o.date = :date')
             ->andWhere('o.name = :name')
@@ -36,23 +43,22 @@ class OperationRepository extends ServiceEntityRepository
             ->setParameter('name', $name)
             ->setParameter('amount', $amount)
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getOneOrNullResult();
     }
 
-    public function getTotalsByMonthAndType($year = null, $type = null) {
+    public function getTotalsByMonthAndType($year = null, $type = null)
+    {
         $query = $this->createQueryBuilder('o')
             ->select('SUM(o.amount) total')
             ->addSelect('o.type')
             ->addSelect('ToChar(o.date, \'YYYY-MM\') AS date')
-            ->where('o.type != :hidden')->setParameter('hidden', Operation::TYPE_HIDDEN)
+            ->where('o.type != :hidden')->setParameter('hidden', OperationTypeEnum::Hidden)
             ->orderBy('date', 'asc')
             ->addGroupBy('date')
-            ->addGroupBy('o.type')
-        ;
+            ->addGroupBy('o.type');
 
         if (!$type) {
-            $query->andWhere('o.type != :other')->setParameter('other', Operation::TYPE_OTHER);
+            $query->andWhere('o.type != :other')->setParameter('other', OperationTypeEnum::Other);
         }
 
         if ($year) {
@@ -66,16 +72,16 @@ class OperationRepository extends ServiceEntityRepository
         return $query->getQuery()->getResult();
     }
 
-    public function getTotalsByMonthAndLabel($year = null, $type = null) {
+    public function getTotalsByMonthAndLabel($year = null, $type = null)
+    {
         $query = $this->createQueryBuilder('o')
             ->select('SUM(o.amount) total')
             ->addSelect('o.label')
             ->addSelect('ToChar(o.date, \'YYYY-MM\') AS date')
-            ->where('o.type != :hidden')->setParameter('hidden', Operation::TYPE_HIDDEN)
+            ->where('o.type != :hidden')->setParameter('hidden', OperationTypeEnum::Hidden)
             ->orderBy('date', 'asc')
             ->addGroupBy('date')
-            ->addGroupBy('o.label')
-        ;
+            ->addGroupBy('o.label');
 
         if ($year) {
             $query->andWhere('ToChar(o.date, \'YYYY\') = :year')->setParameter('year', $year);
@@ -88,32 +94,16 @@ class OperationRepository extends ServiceEntityRepository
         return $query->getQuery()->getResult();
     }
 
-    // /**
-    //  * @return Operation[] Returns an array of Operation objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
+    public function countNullTypes(): int
     {
-        return $this->createQueryBuilder('o')
-            ->andWhere('o.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('o.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $query = $this->createQueryBuilder('o')
+            ->select('COUNT(o.id) nullCount')
+            ->where('o.type IS NULL');
 
-    /*
-    public function findOneBySomeField($value): ?Operation
-    {
-        return $this->createQueryBuilder('o')
-            ->andWhere('o.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return $query->getQuery()->getSingleScalarResult();
     }
-    */
 }

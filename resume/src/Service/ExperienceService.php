@@ -2,30 +2,16 @@
 
 namespace App\Service;
 
-use App\Entity\Declaration;
 use App\Entity\Experience;
-use App\Entity\Invoice;
-use App\Repository\ExperienceRepository;
-use App\Repository\DeclarationRepository;
-use App\Repository\InvoiceRepository;
-use App\Repository\PeriodRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class ExperienceService
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
-    /** @var ExperienceRepository */
-    private $ExperienceRepository;
-
-    public function __construct(
-        EntityManagerInterface $entityManager
-    ) {
-        $this->entityManager = $entityManager;
+    public function __construct(private readonly EntityManagerInterface $entityManager)
+    {
     }
 
-    public function update(array $ids)
+    public function update(array $ids): void
     {
         $repository = $this->entityManager->getRepository(Experience::class);
 

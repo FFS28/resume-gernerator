@@ -2,97 +2,46 @@
 
 namespace App\Entity;
 
+use App\Enum\OperationTypeEnum;
 use App\Repository\OperationRepository;
+use DateTimeInterface;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-/**
- * @UniqueEntity(fields={"date", "name", "amount"}, message="Operation already exists")
- * @ORM\Entity(repositoryClass=OperationRepository::class)
- */
+#[UniqueEntity(fields: ['date', 'name', 'amount'], message: 'Operation already exists')]
+#[ORM\Entity(repositoryClass: OperationRepository::class)]
 class Operation
 {
-    const TYPE_INCOME    = "income";
-    const TYPE_REFUND    = "refund";
-    const TYPE_SUPPLY    = "supply";
-    const TYPE_FOOD = "food";
-    const TYPE_CHARGE = "charge";
-    const TYPE_SUBSCRIPTION  = "subscription";
-    const TYPE_HOBBY  = "hobby";
-    const TYPE_OTHER  = "other";
-    const TYPE_HIDDEN  = "hidden";
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: Types::INTEGER)]
+    private int $id;
 
-    /** @var array user friendly named type */
-    const TYPES = [
-        'income' => self::TYPE_INCOME,
-        'refund' => self::TYPE_REFUND,
-        'supply' => self::TYPE_SUPPLY,
-        'food' => self::TYPE_FOOD,
-        'charge' => self::TYPE_CHARGE,
-        'subscription' => self::TYPE_SUBSCRIPTION,
-        'hobby' => self::TYPE_HOBBY,
-        'other' => self::TYPE_OTHER,
-        'hidden' => self::TYPE_HIDDEN,
-    ];
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?DateTimeInterface $date = null;
 
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Column(type: Types::STRING, length: 255)]
+    private ?string $name = null;
 
-    /**
-     * @ORM\Column(type="date")
-     */
-    private $date;
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
+    private ?string $amount = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $name;
+    #[ORM\Column(type: Types::STRING, nullable: true, enumType: OperationTypeEnum::class)]
+    private ?OperationTypeEnum $type = null;
 
-    /**
-     * @ORM\Column(type="decimal", precision=10, scale=2)
-     */
-    private $amount;
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $target = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $type;
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $label = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $target;
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $location = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $label;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $location;
-
-    public function __construct()
+    public function __toString(): string
     {
-
-    }
-
-    /**
-     * @return string
-     */
-    public function getTypeName()
-    {
-        $typeName = array_flip(self::TYPES);
-        if (!isset($typeName[$this->type])) {
-            return null;
-        }
-
-        return $typeName[$this->type];
+        return "$this->name $this->date->format('d/m/Y') $this->amount";
     }
 
     public function getId(): ?int
@@ -100,12 +49,12 @@ class Operation
         return $this->id;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    public function getDate(): ?DateTimeInterface
     {
         return $this->date;
     }
 
-    public function setDate(\DateTimeInterface $date): self
+    public function setDate(DateTimeInterface $date): self
     {
         $this->date = $date;
 
@@ -136,16 +85,21 @@ class Operation
         return $this;
     }
 
-    public function getType(): ?string
+    public function getType(): ?OperationTypeEnum
     {
         return $this->type;
     }
 
-    public function setType(?string $type): self
+    public function setType(?OperationTypeEnum $type): self
     {
         $this->type = $type;
 
         return $this;
+    }
+
+    public function getTypeName(): ?string
+    {
+        return $this->type->toString();
     }
 
     public function getTarget(): ?string
@@ -162,7 +116,7 @@ class Operation
 
     public function getLabel(): ?string
     {
-        return $this->label ? $this->label : $this->name;
+        return $this->label ?: $this->name;
     }
 
     public function setLabel(?string $label): self

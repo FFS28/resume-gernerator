@@ -2,8 +2,8 @@
 
 namespace App\Repository;
 
-use App\Entity\Operation;
 use App\Entity\OperationFilter;
+use App\Enum\OperationTypeEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -20,17 +20,18 @@ class OperationFilterRepository extends ServiceEntityRepository
         parent::__construct($registry, OperationFilter::class);
     }
 
-    public function getPositiveFilters()
+    public function getPositiveFilters(): array|float|int|string
     {
         $query = $this->createQueryBuilder('o')
             ->select('o.name')
             ->andWhere('o.amount IS NULL')
-            ->andWhere('o.date IS NULL')
-        ;
+            ->andWhere('o.date IS NULL');
 
-        $query->andWhere($query->expr()->in('o.type', [
-            Operation::TYPE_INCOME, Operation::TYPE_REFUND
-        ]));
+        $query->andWhere(
+            $query->expr()->in('o.type', [
+                OperationTypeEnum::Income->value, OperationTypeEnum::Refund->value
+            ])
+        );
 
         return $query->getQuery()->getScalarResult();
     }
@@ -42,8 +43,7 @@ class OperationFilterRepository extends ServiceEntityRepository
             ->addSelect('o.date')
             ->addSelect('o.amount')
             ->andWhere('o.amount IS NOT NULL')
-            ->andWhere('o.date IS NOT NULL')
-        ;
+            ->andWhere('o.date IS NOT NULL');
 
         return $query->getQuery()->getResult();
     }
@@ -56,8 +56,7 @@ class OperationFilterRepository extends ServiceEntityRepository
             ->addSelect('o.target')
             ->addSelect('o.label')
             ->andWhere('o.amount IS NULL')
-            ->andWhere('o.date IS NULL')
-        ;
+            ->andWhere('o.date IS NULL');
 
         return $query->getQuery()->getResult();
     }
@@ -70,37 +69,7 @@ class OperationFilterRepository extends ServiceEntityRepository
             ->distinct()
             ->andWhere('o.label IS NOT NULL')
             ->andWhere('o.label != :empty')
-            ->setParameter('empty', '')
-        ;
+            ->setParameter('empty', '');
         return $query->getQuery()->getScalarResult();
     }
-
-    // /**
-    //  * @return OperationFilter[] Returns an array of OperationFilter objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('o')
-            ->andWhere('o.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('o.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?OperationFilter
-    {
-        return $this->createQueryBuilder('o')
-            ->andWhere('o.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

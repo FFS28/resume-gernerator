@@ -2,109 +2,53 @@
 
 namespace App\Entity;
 
+use App\Enum\SkillTypeEnum;
 use App\Helper\StringHelper;
+use App\Repository\SkillRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Stringable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\SkillRepository")
- * @UniqueEntity("slug")
- */
-class Skill
+#[ORM\Entity(repositoryClass: SkillRepository::class)]
+#[UniqueEntity('slug')]
+class Skill implements Stringable
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+    #[ORM\Column(type: Types::INTEGER, nullable: false)]
+    #[ORM\Id, ORM\GeneratedValue(strategy: 'IDENTITY')]
+    private int $id;
+
+    #[ORM\Column(type: Types::STRING, length: 100, nullable: false)]
+    private string $name;
+
+    #[ORM\Column(type: Types::STRING, length: 255, unique: true)]
+    private ?string $slug = null;
+
+    #[ORM\Column(type: Types::STRING, enumType: SkillTypeEnum::class)]
+    private SkillTypeEnum $type;
+
+    #[ORM\Column(type: Types::INTEGER, nullable: true)]
+    private int $level;
+
+    #[ORM\Column(name: 'on_homepage', type: Types::BOOLEAN, nullable: false)]
+    private bool $onHomepage;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=100, nullable=false)
+     * @var Collection<Experience>
      */
-    private $name;
+    #[ORM\ManyToMany(targetEntity: Experience::class, mappedBy: 'skills', cascade: ['persist'])]
+    private Collection $experiences;
+
+    #[ORM\ManyToOne(targetEntity: Skill::class, inversedBy: 'children')]
+    private ?Skill $parent = null;
 
     /**
-     * @ORM\Column(type="string", length=255, unique=true)
+     * @var Collection<Skill>
      */
-    private $slug;
-
-    const TYPE_SOFTWARE    = "software";
-    const TYPE_FRAMEWORK = "framework";
-    const TYPE_PLATFORM = "platform";
-    const TYPE_LANGUAGE  = "language";
-    const TYPE_OS  = "os";
-    const TYPE_VERSION  = "version";
-
-    /** @var array user friendly named type */
-    const TYPES = [
-        'Software' => self::TYPE_SOFTWARE,
-        'Framework' => self::TYPE_FRAMEWORK,
-        'Platform' => self::TYPE_PLATFORM,
-        'Language' => self::TYPE_LANGUAGE,
-        'OS' => self::TYPE_OS,
-        'Version' => self::TYPE_VERSION,
-    ];
-
-    public function __toString(): string
-    {
-        return $this->getName();
-    }
-
-    /**
-     * @return string
-     */
-    public function getTypeName()
-    {
-        $typeName = array_flip(self::TYPES);
-        if (!isset($typeName[$this->type])) {
-            return null;
-        }
-
-        return $typeName[$this->type];
-    }
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="type", type="string")
-     */
-    private $type;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="level", type="integer", nullable=true)
-     */
-    private $level;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="on_homepage", type="boolean", nullable=false)
-     */
-    private $onHomepage;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Experience", mappedBy="skills", cascade={"persist"})
-     */
-    private $experiences;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Skill", inversedBy="children")
-     */
-    private $parent;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Skill", mappedBy="parent")
-     */
-    private $children;
+    #[ORM\OneToMany(mappedBy: 'parent', targetEntity: Skill::class)]
+    private Collection $children;
 
     public function __construct()
     {
@@ -113,9 +57,9 @@ class Skill
         $this->level = 0;
     }
 
-    public function getId(): ?int
+    public function __toString(): string
     {
-        return $this->id;
+        return $this->getName();
     }
 
     public function getName(): ?string
@@ -131,6 +75,11 @@ class Skill
         return $this;
     }
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
     public function getSlug(): ?string
     {
         return $this->slug;
@@ -143,16 +92,21 @@ class Skill
         return $this;
     }
 
-    public function getType(): ?string
+    public function getType(): ?SkillTypeEnum
     {
         return $this->type;
     }
 
-    public function setType(?string $type): self
+    public function setType(?SkillTypeEnum $type): self
     {
         $this->type = $type;
 
         return $this;
+    }
+
+    public function getTypeName(): string
+    {
+        return $this->type->toString();
     }
 
     public function getLevel(): ?int
@@ -180,7 +134,7 @@ class Skill
     }
 
     /**
-     * @return Collection|Experience[]
+     * @return Collection<Experience>
      */
     public function getExperiences(): Collection
     {
@@ -207,25 +161,13 @@ class Skill
         return $this;
     }
 
-    public function getParent(): ?self
-    {
-        return $this->parent;
-    }
-
     public function getParentName(): ?string
     {
-        return $this->parent ? $this->parent->getName() : null;
-    }
-
-    public function setParent(?self $parent): self
-    {
-        $this->parent = $parent;
-
-        return $this;
+        return $this->parent?->getName();
     }
 
     /**
-     * @return Collection|Skill[]
+     * @return Collection<Skill>
      */
     public function getChildren(): Collection
     {
@@ -251,6 +193,18 @@ class Skill
                 $child->setParent(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getParent(): ?self
+    {
+        return $this->parent;
+    }
+
+    public function setParent(?self $parent): self
+    {
+        $this->parent = $parent;
 
         return $this;
     }

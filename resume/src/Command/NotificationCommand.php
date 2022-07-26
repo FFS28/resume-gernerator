@@ -2,55 +2,38 @@
 
 namespace App\Command;
 
-use App\Service\CompanyService;
 use App\Service\DeclarationService;
 use App\Service\InvoiceService;
 use App\Service\ReportService;
+use Exception;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
-use Symfony\Component\Templating\EngineInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class NotificationCommand extends Command
 {
     protected static $defaultName = 'app:notifications';
 
-    protected $params;
-    protected $mailer;
-    protected $templating;
-    protected $translator;
-    protected $declarationService;
-    protected $invoiceService;
-    protected $reportService;
-    protected $companyService;
-
     public function __construct(
-        ParameterBagInterface $params,
-        MailerInterface $mailer,
-        Environment $templating,
-        TranslatorInterface $translator,
-        DeclarationService $declarationService,
-        InvoiceService $invoiceService,
-        ReportService $reportService,
-        CompanyService $companyService
+        protected ParameterBagInterface $params,
+        protected MailerInterface $mailer,
+        protected Environment $templating,
+        protected TranslatorInterface $translator,
+        protected DeclarationService $declarationService,
+        protected InvoiceService $invoiceService,
+        protected ReportService $reportService,
     ) {
         parent::__construct();
-        $this->params = $params;
-        $this->mailer = $mailer;
-        $this->translator = $translator;
-        $this->templating = $templating;
-        $this->declarationService = $declarationService;
-        $this->invoiceService = $invoiceService;
-        $this->reportService = $reportService;
-        $this->companyService = $companyService;
     }
 
     protected function configure()
@@ -60,6 +43,13 @@ class NotificationCommand extends Command
         ;
     }
 
+    /**
+     * @throws SyntaxError
+     * @throws TransportExceptionInterface
+     * @throws RuntimeError
+     * @throws LoaderError
+     * @throws Exception
+     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
@@ -68,7 +58,6 @@ class NotificationCommand extends Command
             $this->invoiceService->getNotifications(),
             $this->declarationService->getNotifications(),
             $this->reportService->getNotifications(),
-            $this->companyService->getNotifications()
         );
 
         if (count($notifications) > 0) {

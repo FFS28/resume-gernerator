@@ -4,7 +4,9 @@ namespace App\Repository;
 
 use App\Entity\Declaration;
 use App\Entity\Invoice;
+use App\Enum\DeclarationTypeEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -20,22 +22,27 @@ class DeclarationRepository extends ServiceEntityRepository
         parent::__construct($registry, Declaration::class);
     }
 
-    public function getByInvoice(string $type, Invoice $invoice)
+    /**
+     * @throws NonUniqueResultException
+     */
+    public function getByInvoice(string $type, Invoice $invoice): ?Declaration
     {
         return $this->getByDate($type, $invoice->getPayedAtYear(), $invoice->getPayedAtQuarter());
     }
 
-    public function getByDate($type, int $year, int $quarter = 0)
+    /**
+     * @throws NonUniqueResultException
+     */
+    public function getByDate($type, int $year, int $quarter = 0): ?Declaration
     {
         $query = $this->createQueryBuilder('d')
             ->where('d.type = :type')
             ->join('d.period', 'p')
             ->setParameter('type', $type)
             ->andWhere('p.year = :year')
-            ->setParameter('year', $year)
-        ;
+            ->setParameter('year', $year);
 
-        if ($type === Declaration::TYPE_SOCIAL) {
+        if ($type === DeclarationTypeEnum::Social) {
             $query->andWhere('p.quarter = :quarter')
                 ->setParameter('quarter', $quarter);
         }

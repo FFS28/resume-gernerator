@@ -1,6 +1,6 @@
-@import "flexbox";
-@import "variables";
-@import "form";
+@import "./modules/flexbox";
+@import "./modules/variables";
+@import "./modules/form";
 
 body{
   @include flexbox();

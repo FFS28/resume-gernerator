@@ -1,0 +1,4 @@
+
+vich_uploader:
+  form_label:
+    delete_confirm: vich_uploader.form_label.delete_confirm

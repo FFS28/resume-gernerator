@@ -1,61 +1,52 @@
 <?php
+
 namespace App\Entity;
 
+use App\Repository\UserRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\ArrayShape;
+use Stringable;
+use Symfony\Component\Security\Core\User\EquatableInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-/**
- * @ORM\Table(name="app_users")
- * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- */
-class User implements UserInterface, \Serializable
+#[ORM\Table(name: 'app_users')]
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+class User implements UserInterface, Stringable, PasswordAuthenticatedUserInterface, EquatableInterface
 {
-    /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+    #[ORM\Column(type: Types::INTEGER)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    private int $id;
+
+    #[ORM\Column(type: Types::STRING, length: 25, unique: true)]
+    private string $username;
+
+    #[ORM\Column(type: Types::STRING, length: 254, unique: true)]
+    #[Assert\NotBlank]
+    #[Assert\Email]
+    private string $email;
+
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 250)]
+    private string $plainPassword;
+
+    #[ORM\Column(type: Types::STRING, length: 64)]
+    private ?string $password = null;
+
+    #[ORM\Column(type: Types::STRING, length: 250)]
+    private string $salt;
+
+    #[ORM\Column(name: 'is_active', type: Types::BOOLEAN)]
+    private bool $isActive;
 
     /**
-     * @ORM\Column(type="string", length=25, unique=true)
+     * @var string[]
      */
-    private $username;
-
-    /**
-     * @ORM\Column(type="string", length=254, unique=true)
-     * @Assert\NotBlank()
-     * @Assert\Email()
-     */
-    private $email;
-
-    /**
-     * @Assert\NotBlank()
-     * @Assert\Length(max=250)
-     */
-    private $plainPassword;
-
-    /**
-     * @ORM\Column(type="string", length=64)
-     */
-    private $password;
-
-    /**
-     * @ORM\Column(type="string", length=250)
-     */
-    private $salt;
-
-    /**
-     * @ORM\Column(name="is_active", type="boolean")
-     */
-    private $isActive;
-
-    /**
-     * @ORM\Column(name="roles", type="array")
-     */
-    private $roles = [];
+    #[ORM\Column(name: 'roles', type: 'array')]
+    private array $roles = [];
 
     public function __construct()
     {
@@ -63,23 +54,14 @@ class User implements UserInterface, \Serializable
         $this->salt = md5(uniqid('', true));
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getUsername();
     }
 
-    function getId() {
-        return $this->id;
-    }
-
-    function getEmail() {
-        return $this->email;
-    }
-
-    public function setEmail(string $email): self
+    public function getId(): int
     {
-        $this->email = $email;
-        return $this;
+        return $this->id;
     }
 
     public function getUsername(): string
@@ -90,6 +72,17 @@ class User implements UserInterface, \Serializable
     public function setUsername(string $username): self
     {
         $this->username = $username;
+        return $this;
+    }
+
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
         return $this;
     }
 
@@ -104,7 +97,7 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }
@@ -129,7 +122,8 @@ class User implements UserInterface, \Serializable
     /**
      * @return string[]
      */
-    public function getRoles() {
+    public function getRoles(): array
+    {
         if (empty($this->roles)) {
             return ['ROLE_USER'];
         }
@@ -146,42 +140,56 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
-    function addRole(string $role) {
+    function addRole(string $role)
+    {
         $this->roles[] = $role;
     }
 
-    function getIsActive(): bool {
+    function getIsActive(): bool
+    {
         return $this->isActive;
     }
 
-    function setIsActive(bool $isActive): self {
+    function setIsActive(bool $isActive): self
+    {
         $this->isActive = $isActive;
         return $this;
     }
 
-    public function eraseCredentials()
+    public function getUserIdentifier(): string
+    {
+        return $this->username;
+    }
+
+    public function isIsActive(): ?bool
+    {
+        return $this->isActive;
+    }
+
+    public function eraseCredentials(): void
     {
     }
 
-    /** @see \Serializable::serialize() */
-    public function serialize()
+    /**
+     * @return string[]
+     */
+    #[ArrayShape(['id' => "int", 'username' => "string"])]
+    public function __serialize(): array
     {
-        return serialize(array(
-            $this->id,
-            $this->username,
-            $this->password,
-            $this->salt,
-        ));
+        return [
+            'id'       => $this->id,
+            'username' => $this->username,
+        ];
     }
 
-    /** @see \Serializable::unserialize() */
-    public function unserialize($serialized)
+    public function __unserialize(array $data)
     {
-        list (
-            $this->id,
-            $this->username,
-            $this->password,
-            $this->salt
-            ) = unserialize($serialized, array('allowed_classes' => false));
+        $this->id = $data['id'];
+        $this->username = $data['username'];
+    }
+
+    public function isEqualTo(UserInterface $user): bool
+    {
+        return $this->id === $user->getId();
     }
 }

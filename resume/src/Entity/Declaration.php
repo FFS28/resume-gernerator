@@ -2,87 +2,52 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Enum\DeclarationStatusEnum;
+use App\Enum\DeclarationTypeEnum;
+use App\Repository\DeclarationRepository;
+use DateTimeInterface;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Stringable;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\DeclarationRepository")
- */
-class Declaration
+#[ORM\Entity(repositoryClass: DeclarationRepository::class)]
+class Declaration implements Stringable
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    final const SOCIAL_NON_COMMERCIALE = 0.22;
+    final const SOCIAL_CFP = 0.002;
+    final const IMPOT_ABATTEMENT = 0.34;
 
-    /**
-     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
-     */
-    private $revenue;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: Types::INTEGER)]
+    private int $id;
 
-    /**
-     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
-     */
-    private $tax;
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    private ?string $revenue = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $type;
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    private ?string $tax = null;
 
-    const TYPE_TVA    = "tva";
-    const TYPE_SOCIAL = "social";
-    const TYPE_IMPOT = "impot";
-    const TYPE_CFE = "cfe";
+    #[ORM\Column(type: Types::STRING, enumType: DeclarationTypeEnum::class)]
+    private ?DeclarationTypeEnum $type = null;
 
-    /** @var array user friendly named type */
-    const TYPES = [
-        'TVA' => self::TYPE_TVA,
-        'Social' => self::TYPE_SOCIAL,
-        'Impot' => self::TYPE_IMPOT,
-        'CFE' => self::TYPE_CFE,
-    ];
+    #[ORM\ManyToOne(targetEntity: Period::class, inversedBy: 'declarations')]
+    private ?Period $period = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Period", inversedBy="declarations")
-     */
-    private $period;
+    #[ORM\Column(type: Types::STRING, nullable: true, enumType: DeclarationStatusEnum::class)]
+    private DeclarationStatusEnum $status;
 
-    const SOCIAL_NON_COMMERCIALE = 0.22;
-    const SOCIAL_CFP = 0.002;
-
-    const IMPOT_ABATTEMENT = 0.34;
-
-    const STATUS_WAITING = 'waiting';
-    const STATUS_PAYED = 'payed';
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true))
-     */
-    private $status;
-
-    /**
-     * @ORM\Column(type="date", nullable=true)
-     */
-    private $payedAt;
-
-    /** @var array user friendly named type */
-    const STATUSES = [
-        'Waiting' => self::STATUS_WAITING,
-        'Payed' => self::STATUS_PAYED,
-    ];
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?DateTimeInterface $payedAt = null;
 
     public function __construct()
     {
-        $this->setStatus(self::STATUS_WAITING);
+        $this->setStatus(DeclarationStatusEnum::Waiting);
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        $str = $this->getTypeName().' ';
+        $str = ucfirst($this->getType()->toString()) . ' ';
         $period = $this->getPeriod();
 
         if ($period->getYear()) {
@@ -95,9 +60,40 @@ class Declaration
         return $str;
     }
 
+    public function getType(): ?DeclarationTypeEnum
+    {
+        return $this->type;
+    }
+
+    public function setType(DeclarationTypeEnum $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getPeriod(): ?Period
+    {
+        return $this->period;
+    }
+
+    public function setPeriod(?Period $period): self
+    {
+        $this->period = $period;
+
+        return $this;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getRate(): float
+    {
+        return $this->getRevenue() > 0
+            ? round($this->getTax() * 100 / $this->getRevenue(), 2)
+            : 0;
     }
 
     public function getRevenue(): ?string
@@ -124,81 +120,34 @@ class Declaration
         return $this;
     }
 
-    public function getRate(): float
+    public function getTypeName(): ?string
     {
-        return $this->getRevenue() > 0
-            ? round($this->getTax() * 100 / $this->getRevenue(), 2)
-            : 0;
+        return $this->type->toString();
     }
 
-    public function getType(): ?string
-    {
-        return $this->type;
-    }
-
-    public function setType(string $type): self
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTypeName()
-    {
-        $typeName = array_flip(self::TYPES);
-        if (!isset($typeName[$this->type])) {
-            return null;
-        }
-
-        return $typeName[$this->type];
-    }
-
-    public function getPeriod(): ?Period
-    {
-        return $this->period;
-    }
-
-    public function setPeriod(?Period $period): self
-    {
-        $this->period = $period;
-
-        return $this;
-    }
-
-    public function getStatus(): ?string
+    public function getStatus(): ?DeclarationStatusEnum
     {
         return $this->status;
     }
 
-    public function setStatus(string $status): self
+    public function setStatus(DeclarationStatusEnum $status): self
     {
         $this->status = $status;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getStatusName()
+    public function getStatusName(): ?string
     {
-        $statusName = array_flip(self::STATUSES);
-        if (!isset($statusName[$this->status])) {
-            return null;
-        }
-
-        return $statusName[$this->status];
+        return $this->status->toString();
     }
 
-    public function getPayedAt(): ?\DateTimeInterface
+    public function getPayedAt(): ?DateTimeInterface
     {
         return $this->payedAt;
     }
 
-    public function setPayedAt(?\DateTimeInterface $payedAt): self
+    public function setPayedAt(?DateTimeInterface $payedAt): self
     {
         $this->payedAt = $payedAt;
 
@@ -227,27 +176,4 @@ class Declaration
 
         return $period->getPayedInvoices();
     }
-
-    /**
-     * @return Purchase[]
-     */
-    public function getPurchases(): array
-    {
-        if ($this->getType() !== self::TYPE_TVA) {
-            return [];
-        }
-
-        $period = $this->getPeriod();
-        if (!$period) {
-            return [];
-        }
-
-        return $period->getPurchases()->toArray();
-    }
-
-    public function setInvoices(?array $invoices)
-    {
-        return $this;
-    }
-
 }

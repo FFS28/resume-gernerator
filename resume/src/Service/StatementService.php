@@ -3,50 +3,37 @@
 namespace App\Service;
 
 
-use App\Entity\Activity;
 use App\Entity\Operation;
 use App\Entity\Statement;
 use App\Helper\StringHelper;
 use App\Repository\OperationFilterRepository;
 use App\Repository\OperationRepository;
-use App\Repository\StatementRepository;
-use DateInterval;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
+use Exception;
 use Smalot\PdfParser\Parser;
-use Spatie\PdfToText\Pdf;
-use Symfony\Component\HttpKernel\KernelInterface;
 
 class StatementService
 {
-
-
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
-    /** @var StatementRepository */
-    private $statementRepository;
-    /** @var OperationRepository */
-    private $operationRepository;
-    /** @var OperationFilterRepository */
-    private $operationFilterRepository;
-    
-    private $statementDirectory;
-
     public function __construct(
-        string $statementDirectory,
-        EntityManagerInterface $entityManager,
-        StatementRepository $statementRepository,
-        OperationRepository $operationRepository,
-        OperationFilterRepository $operationFilterRepository
+        private readonly string                    $statementDirectory,
+        private readonly EntityManagerInterface    $entityManager,
+        private readonly OperationRepository       $operationRepository,
+        private readonly OperationFilterRepository $operationFilterRepository
     ) {
-        $this->entityManager = $entityManager;
-        $this->statementRepository = $statementRepository;
-        $this->operationRepository = $operationRepository;
-        $this->operationFilterRepository = $operationFilterRepository;
-        $this->statementDirectory = $statementDirectory;
     }
 
-    public function extractOperations(Statement $statement)
+    public function get(Statement $statement): bool|string
+    {
+        return $this->statementDirectory . $statement->getFilename();
+    }
+
+    /**
+     * @throws NonUniqueResultException
+     * @throws Exception
+     */
+    public function extractOperations(Statement $statement, bool $throwError): void
     {
         $filePath = $this->statementDirectory . $statement->getFilename();
         $operations = [];
@@ -60,20 +47,16 @@ class StatementService
         $lines = explode("\n", $text);
         $startAmount = $endAmount = $totalAmount = $nbOperations = 0;
 
-        $extractDate = $extractOperations = false;
+        $extractOperations = false;
 
         foreach ($lines as $index => $line) {
             if ($extractOperations && $index > $extractOperations) {
-                if (strpos($line, "Date\tDate valeur\tOpération\tDébit EUROS\tCrédit EUROS\t") === 0) {
+                if (str_starts_with($line, "Date\tDate valeur\tOpération\tDébit EUROS\tCrédit EUROS\t")) {
                     $extractOperations = false;
                 } else {
                     $operation = explode("\t", $line);
                     if (preg_match('#\d{2}/\d{2}/\d{4}#', $operation[0])) {
-                        $date = \DateTime::createFromFormat('d/m/Y', $operation[0]);
-
-                        if (!$statement->getDate()) {
-                            $statement->setDate($date);
-                        }
+                        $date = DateTime::createFromFormat('d/m/Y', $operation[0]);
 
                         $operations[] = [
                             $date,
@@ -84,12 +67,14 @@ class StatementService
                         $operations[count($operations) - 1][1] .= ' - ' . $operation[0];
                     }
                 }
-            } elseif (strpos($line, 'Compte Courant JEUNE ACTIF N°') === 0
-                || strpos($line, 'C/C EUROCOMPTE DUO CONFORT N°') === 0) {
+            } elseif (str_starts_with($line, 'Compte Courant JEUNE ACTIF N°')
+                || str_starts_with($line, 'C/C EUROCOMPTE DUO CONFORT N°')) {
                 $extractOperations = $index + 1;
             } elseif (strpos($line, 'SOLDE CREDITEUR ') > -1) {
                 $lineArray = explode("\t", $line);
-                $amount = StringHelper::extractAmount(strpos($line, 'SOLDE CREDITEUR ')  === 0 ? $lineArray[1] : $lineArray[2]);
+                $amount = StringHelper::extractAmount(
+                    str_starts_with($line, 'SOLDE CREDITEUR ') ? $lineArray[1] : $lineArray[2]
+                );
 
                 if ($startAmount && !$endAmount) {
                     $endAmount = $amount;
@@ -99,27 +84,24 @@ class StatementService
             }
         }
 
-        $statement->setOperationsCount(count($operations));
-
         $positiveFilters = array_column($this->operationFilterRepository->getPositiveFilters(), 'name');
         $positiveExceptionFilters = $this->operationFilterRepository->getPositiveExceptionFilters();
         $filters = $this->operationFilterRepository->getFilters();
         $history = [];
 
         foreach ($operations as $operationLine) {
-            /** @var \DateTime $date */
+            /** @var DateTime $date */
             $date = $operationLine[0];
             $name = $operationLine[1];
             $amount = $operationLine[2];
-            $label = '';
             $isPositiv = false;
             $log = $date->format('Ymd') . ' ' . $name . ' ' . $amount;
 
-            if  (StringHelper::contains($name, $positiveFilters) === true) {
+            if (StringHelper::contains($name, $positiveFilters) === true) {
                 $isPositiv = true;
             } else {
                 foreach ($positiveExceptionFilters as $exception) {
-                    if (strpos($name, $exception['name']) > -1
+                    if (strpos($name, (string)$exception['name']) > -1
                         && $date->format('d/m/Y') === $exception['date']->format('d/m/Y')
                         && $amount == floatval($exception['amount'])
                         && !in_array($log, $history)) {
@@ -153,30 +135,34 @@ class StatementService
         }
 
         if (round($startAmount + $totalAmount, 2) != round($endAmount, 2)) {
-            dump($date->format('d/m/Y'));
-            dump("Start : " . $startAmount, "End : " . $endAmount, "Total : " . ($startAmount + $totalAmount));
-            dump("Positives");
-            dump($logPositives);
-            dump("Negatives");
-            dump($logNegatives);
+            if ($throwError) {
+                if (isset($date)) {
+                    dump('Date : ' . $date->format('d/m/Y'));
+                }
+                dump("Montant de départ : " . $startAmount);
+                dump("Montant de fin : " . $endAmount);
+                dump("Total calculé : " . ($startAmount + $totalAmount));
+                dump("Différence : " . round($endAmount - ($startAmount + $totalAmount), 2));
+                dump("Valeurs positives");
+                dump($logPositives);
+                dump("Valeurs negatives");
+                dump($logNegatives);
 
-            exit;
-            throw new \Exception('Les comptes ne tombent pas juste');
+                exit;
+            }
+        } else {
+            $statement->setOperationsCount(count($operations));
+            $this->entityManager->flush();
         }
 
-        if ($nbOperations === 0) {
-            throw new \Exception('Aucune ligne ajouté');
-        }
-
-        $this->entityManager->flush();
     }
 
-    public function analyseOperation(Operation $operation, array $filters)
+    public function analyseOperation(Operation $operation, array $filters): void
     {
         if (
             preg_match('#PAIEMENT\s+(PSC|CB)\s+[\d\s]+\s+([A-Za-z\s]*)\s+-#', $operation->getName(), $matches)
             && count($matches) == 3) {
-            $operation->setLocation(trim(str_replace('FR ', '', $matches[2])));
+            $operation->setLocation(trim(str_replace('FR ', '', (string)$matches[2])));
         }
         if (!$operation->getLabel()) {
             $operation->setLabel(trim(str_replace('CARTE 12946058', '', $operation->getName())));

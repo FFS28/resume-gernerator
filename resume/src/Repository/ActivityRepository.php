@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Activity;
 use App\Entity\Company;
-use App\Entity\Invoice;
+use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -22,26 +22,22 @@ class ActivityRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param \DateTimeInterface $date
      * @return Activity[]
      */
-    public function findByDate(\DateTimeInterface $date): array
+    public function findByDate(DateTimeInterface $date): array
     {
         return $this->createQueryBuilder('a')
             ->where('ToChar(a.date, \'YYYYMM\') = :date')
             ->andWhere('a.value > 0')
             ->setParameter('date', $date->format('Ym'))
             ->getQuery()
-            ->getResult()
-            ;
+            ->getResult();
     }
 
     /**
-     * @param Company $company
-     * @param \DateTimeInterface $date
-     * @return Activity[]
+     * @return array<Activity>|null
      */
-    public function findByCompanyAndDate(Company $company, \DateTimeInterface $date): ?array
+    public function findByCompanyAndDate(Company $company, DateTimeInterface $date): ?array
     {
         return $this->createQueryBuilder('a')
             ->where('a.company = :company')
@@ -50,51 +46,16 @@ class ActivityRepository extends ServiceEntityRepository
             ->setParameter('company', $company)
             ->setParameter('date', $date->format('Ym'))
             ->getQuery()
-            ->getResult()
-            ;
+            ->getResult();
     }
 
-    /**
-     * @param Invoice $invoice
-     * @param \DateTimeInterface $date
-     */
-    public function cleanByDate(\DateTimeInterface $date)
+    public function cleanByDate(DateTimeInterface $date): void
     {
-        $activities = $this->createQueryBuilder('a')
+        $this->createQueryBuilder('a')
             ->delete()
             ->andWhere('ToChar(a.date, \'YYYYMM\') = :date')
             ->setParameter('date', $date->format('Ym'))
             ->getQuery()
-            ->execute()
-            ;
+            ->execute();
     }
-
-    // /**
-    //  * @return Activity[] Returns an array of Activity objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('a.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Activity
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

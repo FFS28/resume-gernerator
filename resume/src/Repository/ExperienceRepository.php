@@ -2,10 +2,12 @@
 
 namespace App\Repository;
 
-use App\Entity\Activity;
 use App\Entity\Experience;
+use DateInterval;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 
 /**
  * @method Experience|null find($id, $lockMode = null, $lockVersion = null)
@@ -22,7 +24,7 @@ class ExperienceRepository extends ServiceEntityRepository
 
     /**
      * @return Experience[]
-     * @throws \Exception
+     * @throws Exception
      */
     public function getCurrents(): array
     {
@@ -35,60 +37,29 @@ class ExperienceRepository extends ServiceEntityRepository
                     $query->expr()->gte('e.dateEnd', ':date')
                 )
             )
-            ->setParameter('date', (new \DateTime())->sub(new \DateInterval('P1M'))->format('Y-m-d'));
-        ;
+            ->setParameter('date', (new DateTime())->sub(new DateInterval('P1M'))->format('Y-m-d'));
 
         return $query->getQuery()->getResult();
     }
 
     /**
-     * @param \DateTime $date
      * @return Experience[]
      */
-    public function findByDate(\DateTime $date): array
+    public function findByDate(DateTime $date): array
     {
         $query = $this->createQueryBuilder('e')
             ->setParameter('date', $date->format('Y-m-d'));
 
         $query->where(':date BETWEEN e.dateBegin AND e.dateEnd')
-        ->orWhere(
-            $query->expr()->andX(
-                $query->expr()->gte( ':date', 'e.dateBegin'),
-                $query->expr()->isNull('e.dateEnd')
-            )
-        );
+            ->orWhere(
+                $query->expr()->andX(
+                    $query->expr()->gte(':date', 'e.dateBegin'),
+                    $query->expr()->isNull('e.dateEnd')
+                )
+            );
 
         return $query
             ->getQuery()
             ->getResult();
     }
-
-//    /**
-//     * @return Experience[] Returns an array of Experience objects
-//     */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('e.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Experience
-    {
-        return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

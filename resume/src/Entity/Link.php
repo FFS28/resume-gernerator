@@ -2,43 +2,31 @@
 
 namespace App\Entity;
 
+use App\Repository\LinkRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Stringable;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\LinkRepository")
- */
-class Link
+#[ORM\Entity(repositoryClass: LinkRepository::class)]
+class Link implements Stringable
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: Types::INTEGER)]
+    private int $id;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $name;
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $name = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $icon;
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $icon = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $url;
+    #[ORM\Column(type: Types::STRING, length: 255)]
+    private ?string $url = null;
 
     public function __toString(): string
     {
         return $this->getName();
-    }
-
-    public function getId()
-    {
-        return $this->id;
     }
 
     public function getName(): ?string
@@ -51,6 +39,11 @@ class Link
         $this->name = $name;
 
         return $this;
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
     }
 
     public function getIcon(): ?string

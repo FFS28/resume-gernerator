@@ -1,0 +1,66 @@
+{# note that the Twig block name starts with an uppercase letter
+   ('_Product_...' instead of '_product_...') because the first part
+   of the block name is the unmodified entity name #}
+{% block invoices %}
+    {% set CompanyType = enum('App\\Enum\\CompanyTypeEnum') %}
+    <style>
+        .table {
+            color: var(--form-label-color);
+        }
+    </style>
+    <table class="table">
+        <thead>
+        <tr>
+            {% set totalColspan = 2 %}
+            {% if source == 'declaration' %}
+                {% set totalColspan = totalColspan + 1 %}
+                <th scope="col">Entreprise</th>
+            {% endif %}
+            {% if source == 'company' and form.parent.vars.value.type == CompanyType.ESN %}
+                {% set totalColspan = totalColspan + 1 %}
+                <th scope="col">Client</th>
+            {% endif %}
+            <th scope="col">Numéro</th>
+            <th scope="col">Payé le</th>
+            <th scope="col" class="text-right">HT</th>
+            <th scope="col" class="text-right">TVA</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% set totalHt = 0 %}
+        {% set totalTax = 0 %}
+        {% for invoice in data %}
+            <tr>
+                {% if source == 'declaration' %}
+                    <td>{{ invoice.company }}</td>
+                {% endif %}
+                {% if invoice.company.type == CompanyType.ESN %}
+                    <td>{{ invoice.experienceCompany }}</td>
+                {% endif %}
+                <td>{{ invoice.number }}</td>
+                <td>{{ invoice.payedAt | date('d/m/Y') }}</td>
+                <td class="text-right">{{ invoice.totalHt | format_currency('EUR') }}</td>
+                <td class="text-right">{{ invoice.totalTax ? (invoice.totalTax | format_currency('EUR')) : '' }}</td>
+            </tr>
+            {% set totalHt = totalHt + invoice.totalHt %}
+            {% set totalTax = totalTax + invoice.totalTax %}
+        {% endfor %}
+        </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="{{ totalColspan }}" class="text-right">Total :</td>
+            <td class="text-right">{{ totalHt | format_currency('EUR') }}</td>
+            <td class="text-right">{{ totalTax | format_currency('EUR') }}</td>
+        </tr>
+        </tfoot>
+    </table>
+{% endblock %}
+
+{% block _Declaration_invoices_widget %}
+    {% set source = 'declaration' %}
+    {{ block('invoices') }}
+{% endblock %}
+{% block _Company_invoices_widget %}
+    {% set source = 'company' %}
+    {{ block('invoices') }}
+{% endblock %}

@@ -2,6 +2,7 @@
 
 namespace App\Subscriber;
 
+use JetBrains\PhpStorm\ArrayShape;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -13,7 +14,8 @@ use Symfony\Component\HttpKernel\KernelEvents;
 class ResponseSubscriber implements EventSubscriberInterface
 {
     /** @inheritdoc */
-    public static function getSubscribedEvents()
+    #[ArrayShape([KernelEvents::RESPONSE => "string"])]
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::RESPONSE => 'onResponse'

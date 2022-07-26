@@ -6,8 +6,6 @@ abstract class StringHelper
 {
     /**
      * Crée un slug
-     * @param string $text
-     * @return string
      */
     public static function slugify(string $text): string
     {
@@ -16,35 +14,27 @@ abstract class StringHelper
         // transliterate
         $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
         // remove unwanted characters
-        $text = preg_replace('~[^-\w]+~', '', $text);
+        $text = preg_replace('~[^\\-\w]+~', '', $text);
         // trim
         $text = trim($text, '-');
         // remove duplicate -
         $text = preg_replace('~-+~', '-', $text);
         // lowercase
-        $text = strtolower($text);
-
-        return $text;
+        return strtolower($text);
     }
 
     /**
      * Supprime tout les caractères spéciaux
-     * @param string $str
-     * @return string
      */
     public static function clean(string $str): string
     {
         $str = preg_replace('#&([A-za-z])(?:acute|cedil|caron|circ|grave|orn|ring|slash|th|tilde|uml);#', '\1', $str);
         $str = preg_replace('#&([A-za-z]{2})(?:lig);#', '\1', $str); // pour les ligatures e.g. '&oelig;'
-        $str = preg_replace('|[^\w\s/-_\.\+\*\?%!#@$\(\),;"\':]|u', '', $str);
-
-        return $str;
+        return preg_replace('|[^\w\s/-_\.\+\*\?%!#@$\(\),;"\':]|u', '', $str);
     }
 
     /**
      * Supprime tout les espaces
-     * @param string $str
-     * @return string
      */
     public static function removeSpaces(string $str): string
     {
@@ -53,10 +43,8 @@ abstract class StringHelper
 
     /**
      * Supprime tout les accents
-     * @param $stripAccents
-     * @return string
      */
-    public static function stripAccents($stripAccents)
+    public static function stripAccents(string $stripAccents): string
     {
         return strtr(
             utf8_decode($stripAccents),
@@ -67,8 +55,6 @@ abstract class StringHelper
 
     /**
      * Encode pour les PDF
-     * @param string|null $string
-     * @return string
      */
     public static function encode(?string $string): string
     {
@@ -81,16 +67,20 @@ abstract class StringHelper
             @iconv($fromEncoding, $toEncoding, $string);
     }
 
-    public static function extractAmount($string)
+    public static function extractAmount(string $string): float
     {
         $amount = str_replace(',', '.', str_replace('.', '', $string));
         return floatval($amount);
     }
 
-    public static function contains($string, Array $search, $caseInsensitive = false) {
+    /**
+     * @param string[] $search
+     */
+    public static function contains(string $string, array $search, bool $caseInsensitive = false): bool
+    {
         $exp = '#'
             . implode('|', $search)
             . ($caseInsensitive ? '#i' : '#');
-        return preg_match($exp, $string) ? true : false;
+        return (bool)preg_match($exp, $string);
     }
 }

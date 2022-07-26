@@ -1,19 +1,7 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+controllers:
+    resource: ../src/Controller/
+    type: annotation
 
-logout:
-    path: /logout
-
-redirect:
-    path: /fr/{all}
-    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::urlRedirectAction
-    defaults:
-        path: /
-        permanent: true
-    requirements:
-        all: ".+"
-
-authentication_token:
-    path: /authentication_token
-    methods: ['POST']
+kernel:
+    resource: ../src/Kernel.php
+    type: annotation

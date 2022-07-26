@@ -2,98 +2,56 @@
 
 namespace App\Entity;
 
+use App\Enum\PersonCivilityEnum;
+use App\Repository\PersonRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Stringable;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\PersonRepository")
- */
-class Person
+#[ORM\Entity(repositoryClass: PersonRepository::class)]
+class Person implements Stringable
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: Types::INTEGER)]
+    private int $id;
+
+    #[ORM\Column(type: Types::STRING, nullable: true, enumType: PersonCivilityEnum::class)]
+    private ?PersonCivilityEnum $civility = null;
+
+    #[ORM\Column(type: Types::STRING, length: 255)]
+    private ?string $firstname = null;
+
+    #[ORM\Column(type: Types::STRING, length: 255)]
+    private ?string $lastname = null;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string[]
      */
-    private $civility;
+    #[ORM\Column(type: 'simple_array', nullable: true)]
+    private array $phones = [];
 
-    const CIVILITY_H    = "h";
-    const CIVILITY_F    = "f";
+    #[ORM\ManyToOne(targetEntity: Company::class, cascade: ['persist'], inversedBy: 'persons')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Company $company = null;
 
-    /** @var array user friendly named type */
-    const CIVILITIES = [
-        'M' => self::CIVILITY_H ,
-        'Mme' => self::CIVILITY_F,
-    ];
+    #[ORM\Column(type: Types::BOOLEAN)]
+    private ?bool $isInvoicingDefault = null;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @var string[]
      */
-    private $firstname;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $lastname;
-
-    /**
-     * @ORM\Column(type="simple_array", nullable=true)
-     */
-    private $phones = [];
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Company", inversedBy="persons", cascade={"persist"})
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $company;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $isInvoicingDefault;
-
-    /**
-     * @ORM\Column(type="simple_array", nullable=true)
-     */
-    private $emails = [];
+    #[ORM\Column(type: 'simple_array', nullable: true)]
+    private array $emails = [];
 
     public function __toString(): string
     {
-        return $this->getCivilityName() . ' ' . $this->getFirstname(). ' ' . $this->getLastname();
+        return $this->getCivilityName() . ' ' . $this->getFirstname() . ' ' . $this->getLastname();
     }
 
-    public function getId(): ?int
+    public function getCivilityName(): ?string
     {
-        return $this->id;
-    }
-
-    public function getCivility(): ?string
-    {
-        return $this->civility;
-    }
-
-    public function setCivility(?string $civility): self
-    {
-        $this->civility = $civility;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCivilityName()
-    {
-        $civilityNames = array_flip(self::CIVILITIES);
-        if (!isset($civilityNames[$this->civility])) {
-            return null;
-        }
-
-        return $civilityNames[$this->civility];
+        return $this->civility?->toString();
     }
 
     public function getFirstname(): ?string
@@ -116,6 +74,23 @@ class Person
     public function setLastname(string $lastname): self
     {
         $this->lastname = $lastname;
+
+        return $this;
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getCivility(): ?PersonCivilityEnum
+    {
+        return $this->civility;
+    }
+
+    public function setCivility(?PersonCivilityEnum $civility): self
+    {
+        $this->civility = $civility;
 
         return $this;
     }

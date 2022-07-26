@@ -1,16 +1,18 @@
 <?php
+
 namespace App\DQL;
 
-use Doctrine\ORM\Query\Lexer;
 use Doctrine\ORM\Query\AST\Functions\FunctionNode;
+use Doctrine\ORM\Query\AST\InputParameter;
+use Doctrine\ORM\Query\Lexer;
 use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\SqlWalker;
-use Doctrine\ORM\Query\AST\InputParameter;
 
 class CollateFunction extends FunctionNode
 {
     /** @var InputParameter expressionToCollate */
     public $expressionToCollate = null;
+
     public $collation = null;
 
     public function parse(Parser $parser)

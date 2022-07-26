@@ -2,144 +2,99 @@
 
 namespace App\Entity;
 
+use App\Enum\CompanyTypeEnum;
 use App\Helper\StringHelper;
+use App\Repository\CompanyRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Stringable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\CompanyRepository")
- * @UniqueEntity("slug")
- */
-class Company
+#[ORM\Entity(repositoryClass: CompanyRepository::class)]
+#[UniqueEntity('slug')]
+class Company implements Stringable
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: Types::INTEGER)]
+    private int $id;
+
+    #[ORM\Column(type: Types::STRING, length: 255)]
+    private ?string $name = null;
+
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $displayName = null;
+
+    #[ORM\Column(type: Types::STRING, length: 255, unique: true)]
+    private ?string $slug = null;
+
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: Experience::class, cascade: ['persist'])]
+    private Collection $experiences;
+
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: Invoice::class, cascade: ['persist'])]
+    private Collection $invoices;
+
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $street = null;
+
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $postalCode = null;
+
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $city = null;
+
+    #[ORM\Column(type: Types::STRING, nullable: true, enumType: CompanyTypeEnum::class)]
+    private CompanyTypeEnum $type;
+
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $reference = null;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @var Collection<Person>
      */
-    private $name;
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: Person::class, cascade: ['persist'])]
+    private Collection $persons;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @var Collection<Activity>
      */
-    private $displayName;
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: Activity::class)]
+    private Collection $activities;
+
+    #[ORM\ManyToOne(targetEntity: Company::class, inversedBy: 'clients')]
+    private ?self $contractor = null;
 
     /**
-     * @ORM\Column(type="string", length=255, unique=true)
+     * @var Collection<self>
      */
-    private $slug;
+    #[ORM\OneToMany(mappedBy: 'contractor', targetEntity: Company::class)]
+    private Collection $clients;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Experience", mappedBy="company", cascade={"persist"})
-     */
-    private $experiences;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $notes = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Invoice", mappedBy="company", cascade={"persist"})
-     */
-    private $invoices;
+    #[ORM\Column(type: Types::INTEGER, nullable: true)]
+    private ?int $tjm = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $street;
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $service = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $postalCode;
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $filename = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $city;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $type;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $reference;
-
-    const TYPE_CLIENT    = "client";
-    const TYPE_PROSPECT = "prospect";
-    const TYPE_ARCHIVE = "archive";
-    const TYPE_ESN = "esn";
-    const TYPE_COMPANY = "company";
-
-    /** @var array user friendly named type */
-    const TYPES = [
-        'Client' => self::TYPE_CLIENT,
-        'Prospect' => self::TYPE_PROSPECT,
-        'Archive' => self::TYPE_ARCHIVE,
-        'ESN' => self::TYPE_ESN,
-        'Company' => self::TYPE_COMPANY,
-    ];
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Person", mappedBy="company", cascade={"persist"})
-     */
-    private $persons;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Activity", mappedBy="company")
-     */
-    private $activities;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Company", inversedBy="clients")
-     */
-    private $contractor;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Company", mappedBy="contractor")
-     */
-    private $clients;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $notes;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $tjm;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $service;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $filename;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     * @var \DateTime
-     */
-    private $updatedAt;
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private DateTime $updatedAt;
 
     /**
      * @Vich\UploadableField(mapping="statements", fileNameProperty="filename")
-     * @var File
      */
-    private $file;
+    private File $file;
 
     public function __construct()
     {
@@ -155,9 +110,16 @@ class Company
         return $this->getDisplayName();
     }
 
-    public function getId()
+    public function getDisplayName(): ?string
     {
-        return $this->id;
+        return $this->displayName ?: $this->getName();
+    }
+
+    public function setDisplayName(?string $displayName): self
+    {
+        $this->displayName = $displayName;
+
+        return $this;
     }
 
     public function getName(): ?string
@@ -173,6 +135,11 @@ class Company
         return $this;
     }
 
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
     public function getSlug(): ?string
     {
         return $this->slug;
@@ -185,46 +152,35 @@ class Company
         return $this;
     }
 
-    public function getType(): ?string
+    public function getType(): ?CompanyTypeEnum
     {
         return $this->type;
     }
 
-    public function setType(string $type): self
+    public function setType(CompanyTypeEnum $type): self
     {
         $this->type = $type;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getTypeName()
+    public function getTypeName(): ?string
     {
-        $typeName = array_flip(self::TYPES);
-        if (!isset($typeName[$this->type])) {
-            return null;
-        }
+        return $this->type->toString();
+    }
 
-        return $typeName[$this->type];
+    public function getLastExperience(): ?Experience
+    {
+        $count = count($this->getExperiences());
+        return $count > 1 ? $this->experiences[$count - 1] : null;
     }
 
     /**
-     * @return Collection|Experience[]
+     * @return Collection<Experience>
      */
     public function getExperiences(): Collection
     {
         return $this->experiences;
-    }
-
-    /**
-     * @return Experience
-     */
-    public function getLastExperience()
-    {
-        $count = count($this->getExperiences());
-        return $count > 1 ? $this->experiences[$count - 1] : null;
     }
 
     public function addExperience(Experience $experience): self
@@ -251,10 +207,10 @@ class Company
     }
 
     /**
-     * @param Company[] $contractors
-     * @return Company[]
+     * @param self[] $contractors
+     * @return self[]
      */
-    public function getAllContractors($contractors = []): array
+    public function getAllContractors(array $contractors = []): array
     {
         if ($this->getContractor()) {
             $contractor = $this->getContractor();
@@ -269,8 +225,20 @@ class Company
         return $contractors;
     }
 
+    public function getContractor(): ?Company
+    {
+        return $this->contractor;
+    }
+
+    public function setContractor(?self $contractor): self
+    {
+        $this->contractor = $contractor;
+
+        return $this;
+    }
+
     /**
-     * @return Collection|Invoice[]
+     * @return Collection<Invoice>
      */
     public function getInvoices(): Collection
     {
@@ -296,18 +264,6 @@ class Company
                 $invoice->setCompany(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getDisplayName(): ?string
-    {
-        return $this->displayName ? $this->displayName : $this->getName();
-    }
-
-    public function setDisplayName(?string $displayName): self
-    {
-        $this->displayName = $displayName;
 
         return $this;
     }
@@ -348,23 +304,22 @@ class Company
         return $this;
     }
 
-    /**
-     * @return Collection|Person[]
-     */
-    public function getPersons(): Collection
-    {
-        return $this->persons;
-    }
-
     public function getEmails(): array
     {
-        foreach ($this->getPersons() as $person)
-        {
+        foreach ($this->getPersons() as $person) {
             if ($person->getIsInvoicingDefault()) {
                 return $person->getEmails();
             }
         }
         return [];
+    }
+
+    /**
+     * @return Collection<Person>
+     */
+    public function getPersons(): Collection
+    {
+        return $this->persons;
     }
 
     public function addPerson(Person $person): self
@@ -391,7 +346,7 @@ class Company
     }
 
     /**
-     * @return Collection|Activity[]
+     * @return Collection<Activity>
      */
     public function getActivities(): Collection
     {
@@ -402,7 +357,7 @@ class Company
     {
         if (!$this->activities->contains($activity)) {
             $this->activities[] = $activity;
-            $activity->setInvoice($this);
+            $activity->setCompany($this);
         }
 
         return $this;
@@ -413,36 +368,21 @@ class Company
         if ($this->activities->contains($activity)) {
             $this->activities->removeElement($activity);
             // set the owning side to null (unless already changed)
-            if ($activity->getInvoice() === $this) {
-                $activity->setInvoice(null);
+            if ($activity->getCompany() === $this) {
+                $activity->setCompany(null);
             }
         }
 
         return $this;
     }
 
-    /**
-     * @return Company|null
-     */
-    public function getContractor()
+    public function getContractorName(): string
     {
-        return $this->contractor;
-    }
-
-    public function getContractorName()
-    {
-        return $this->contractor ? $this->contractor : '';
-    }
-
-    public function setContractor(?self $contractor): self
-    {
-        $this->contractor = $contractor;
-
-        return $this;
+        return $this->contractor ? (string)$this->contractor : '';
     }
 
     /**
-     * @return Collection|self[]
+     * @return Collection<self>
      */
     public function getClients(): Collection
     {
@@ -450,11 +390,11 @@ class Company
     }
 
     /**
-     * @return Company
+     * @return self|null
      */
-    public function getClient()
+    public function getClient(): self|null
     {
-        return count($this->clients) == 1 ? $this->clients[0] : '';
+        return count($this->clients) == 1 ? $this->clients[0] : null;
     }
 
     public function addClient(self $client): self
@@ -540,7 +480,12 @@ class Company
         return $this;
     }
 
-    public function setFile(File $file = null)
+    public function getFile(): File
+    {
+        return $this->file;
+    }
+
+    public function setFile(File $file = null): void
     {
         $this->file = $file;
 
@@ -549,12 +494,7 @@ class Company
         // otherwise the event listeners won't be called and the file is lost
         if ($file) {
             // if 'updatedAt' is not defined in your entity, use another property
-            $this->updatedAt = new \DateTime('now');
+            $this->updatedAt = new DateTime('now');
         }
-    }
-
-    public function getFile()
-    {
-        return $this->file;
     }
 }

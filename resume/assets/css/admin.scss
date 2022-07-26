@@ -1,112 +1,150 @@
-.datagrid td.actions .actions-dropdown .dropdown-menu {
-  min-width: auto;
+@import "modules/flexbox";
 
-  a{
-    display: block;
-    text-align: right;
-    margin-right: 10px;
-    margin-top: 10px;
-
-    &:first-child {
-      margin-top: 0;
-    }
-  }
+:root {
+  /* make the backend contents as wide as the browser window */
+  --body-max-width: 100%;
+  /* make the base font size smaller */
+  --font-size-base: 13px;
+  /* remove all border radius to make corners straight */
+  --border-radius: 0px;
 }
 
-#main {
-  form {
-    .form-group {
-      .select2-container {
-        width: auto !important;
+#content-resizer-handler {
+  display: none;
+}
+
+.rtl {
+  text-align: right;
+}
+
+.dashboard {
+  .container {
+    max-width: none;
+  }
+
+  #navigation {
+    background-color: rgba(0, 0, 0, 0.2);
+
+    .row {
+      .col {
+        padding: 0;
+        display: flex;
+
+        a {
+          flex: 1;
+          padding: 10px;
+
+          &:hover, &.active {
+            background-color: rgba(0, 0, 0, 0.8);
+          }
+        }
       }
     }
   }
-}
 
-body.list-kitcheningredient {
-  .form-action-search input[type=search].form-control {
-    max-width: 125px
-  }
-  #main {
-    form {
-      .form-group {
-        padding-left: 0;
-        padding-right: 0;
+  #graphs {
+    .row {
+      padding-top: 40px;
+
+      .col {
+        h4 {
+          font-size: 30px;
+        }
+
+        span {
+          font-size: 30px;
+          font-weight: 700;
+          color: rgb(96, 165, 250);
+        }
       }
     }
   }
+
   table {
-    th.ingredient, td.ingredient{
-      width: 130px;
-    }
-    th.measure, td.measure{
-      width: 80px;
+    margin-top: 40px;
+
+    th {
+      padding: 8px;
     }
   }
-}
-body.edit-kitcheningredient, body.new-kitcheningredient {
-  #main {
-    form {
-      &.edit-form, &.new-form {
-        button[type=submit] {
-          width: 112px;
-          overflow: hidden;
+
+  #calendar {
+    margin-top: 40px;
+
+    .th {
+      padding: 10px;
+      font-weight: bold;
+    }
+
+    .th, .day {
+      border: 1px solid rgba(255, 255, 255, 0.2)
+    }
+
+    .day {
+      padding: 0;
+
+      &.day-active {
+        background: rgba(255, 255, 255, 0.2);
+      }
+
+      &.date-now {
+        span {
+          background: rgba(6, 165, 250, 1);
+          color: white
+        }
+      }
+
+      & > label {
+        width: 100%;
+        display: flex;
+        height: 120px;
+
+        @include flex-direction(column);
+        @include justify-content(flex-start);
+
+        span {
+          text-align: left;
+          padding: 5px;
+          font-weight: bold;
+          color: rgb(6, 165, 250);
+        }
+
+        input, select {
+          display: none;
+        }
+
+        input[type=number] {
+          background: transparent;
+          border: none;
+          width: 100%;
+          text-align: center;
+          font-size: 30px;
+          line-height: 30px;
+          max-width: 80px;
+          margin: 10px auto;
+        }
+
+        select {
+          margin: 0 20px;
+          padding: 5px;
+        }
+      }
+
+      input[type=checkbox], input[type=number] + div {
+        display: none;
+      }
+
+      input[type=checkbox]:checked + label {
+        background: rgba(6, 165, 250, 0.36);
+
+        input[type=number], select {
+          display: block !important;
         }
       }
     }
   }
-}
 
-#new-recipe-form, #edit-recipe-form{
-  .form-group {
-    display: block;
-
-    .col-form-label {
-      text-align: left;
-      width: 100px;
-    }
-  }
-
-  .field-ingredients{
-    width: 100%;
-
-    .field-recipe_ingredient{
-      width: 100%;
-      padding-bottom: 0;
-
-      .form-widget-compound{
-        display: inline-block;
-        width: calc(100% - 23px);
-
-        .form-group{
-          display: inline-block;
-          vertical-align: top;
-
-          &.field-easyadmin_autocomplete{
-            width: 200px;
-          }
-
-          &.field-number{
-            width: 85px;
-          }
-
-          &.field-choice{
-            .form-check{
-              display: inline-block;
-              margin-right: 28px;
-            }
-          }
-
-          &.field-text{
-            width: 120px;
-          }
-        }
-      }
-    }
-
-    .field-collection-item-action{
-      top: 25px;
-    }
+  .form-actions {
+    margin-top: 20px;
   }
 }
-

@@ -1,0 +1,95 @@
+{% set active_route = app.request.attributes.get('_route') | default('app_index') %}
+{% set active_params = app.request.attributes.get('_route_params') | default([]) %}
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block page_title %}{{ 'Dashboard' | trans }}{% endblock %}
+{% block page_actions %}
+    <a class="btn btn-primary" href="{{ url('invoices_csv') }}">
+        {{ 'Invoices book' | trans }}
+    </a>
+{% endblock %}
+
+{% block main %}
+    <div id="dashboard" class="dashboard">
+        <div id="navigation" class="container text-center">
+            <div class="row align-items-center">
+                {% for year in years %}
+                    <div class="col">
+                        <a class="{% if year == activeYear %}active{% endif %}"
+                           href="{{ url(active_route, (active_params | merge({'year' : year}))) }}">{{ year }}</a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div id="graphs" class="container text-center">
+            <div class="row align-items-center">
+                <div class="col">
+                    {% if (nextDueDate | length) != 0 %}
+                        <h4>{{ 'Declaration' | trans }} {{ nextDueDate[4].toString() | trans }}</h4>
+                        <span style="font-size: 24px">
+                            {{ (nextDueDate[3] ? 'now' : nextDueDate[1]) | date('d') }}-{{ nextDueDate[2] | date('d') }}  {{ nextDueDate[1] | date('F') | trans }}
+                        </span>
+                    {% endif %}
+                </div>
+                <div class="col">
+                    {% if currentYear == activeYear %}
+                        <h4>{{ 'Days remaining' | trans }}</h4>
+                        <span>{{ remainingDaysBeforeLimit | round }}</span>
+                    {% else %}
+                        <h4>{{ 'Worked days' | trans }}</h4>
+                        <span>{{ dayCount | round }}</span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="row align-items-start row-cols-3">
+                <div class="col">
+                    <h4>{{ 'Revenues by years' | trans }}</h4>
+                    {{ render_chart(chartRevenuesByYears, {'id' : 'revenuesByYears'}) }}
+                </div>
+                <div class="col">
+                    <h4>{{ 'Days by year' | trans }}</h4>
+                    {{ render_chart(chartDaysByYears, {'id' : 'daysByYears'}) }}
+                </div>
+                <div class="col">
+                    <h4>{{ 'Days by month' | trans }}</h4>
+                    {{ render_chart(chartDaysByMonth, {'id' : 'daysByMonth'}) }}
+                </div>
+            </div>
+        </div>
+
+        <table class="datagrid table">
+            <thead>
+            <tr>
+                <th class="">Année</th>
+                <th class="rtl">HT</th>
+                <th class="rtl">Impot</th>
+                <th class="rtl">Sociales</th>
+                <th class="rtl">TVA</th>
+                <th class="rtl">CFE</th>
+                <th class="rtl">Occupation</th>
+                <th class="rtl">Revenu par an</th>
+                <th class="rtl">Revenu par mois</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for globalYear in globalByYears %}
+                <tr>
+                    <td class="">{{ globalYear['year'] }}</td>
+                    <td class="rtl">{{ globalYear['ht'] | format_currency('EUR', locale='fr') }}</td>
+                    <td class="rtl">{{ globalYear['impot'] | format_currency('EUR', locale='fr') }}</td>
+                    <td class="rtl">{{ globalYear['social'] | format_currency('EUR', locale='fr') }}</td>
+                    <td class="rtl">{{ globalYear['tva'] | format_currency('EUR', locale='fr') }}</td>
+                    <td class="rtl">{{ globalYear['cfe'] | format_currency('EUR', locale='fr') }}</td>
+                    <td class="rtl">{{ globalYear['percent'] }}%</td>
+                    <td class="rtl">{{ globalYear['net'] | format_currency('EUR', locale='fr') }}</td>
+                    <td class="rtl">{{ globalYear['netByMonth'] | format_currency('EUR', locale='fr') }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block body_javascript %}
+    {{ encore_entry_script_tags('app') }}
+{% endblock %}

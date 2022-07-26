@@ -4,10 +4,13 @@ namespace App\Repository;
 
 use App\Entity\Company;
 use App\Entity\Invoice;
+use App\Enum\InvoiceStatusEnum;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method Invoice|null find($id, $lockMode = null, $lockVersion = null)
@@ -30,20 +33,20 @@ class InvoiceRepository extends ServiceEntityRepository
         $query = $this->createQueryBuilder('i')
             ->select('ToChar(i.payedAt, \'YYYY\') AS year')
             ->orderBy('year')
+            ->where('i.payedAt IS NOT NULL')
             ->distinct();
 
-        return array_map(function($arr) {return $arr['year'];}, $query->getQuery()->getScalarResult());
+        return array_map(fn($arr) => $arr['year'], $query->getQuery()->getScalarResult());
     }
 
     /**
-     * @param \DateTime $date
-     * @return string
+     * @param DateTime|null $date
      * @throws NonUniqueResultException
      */
-    public function getNewInvoiceNumber($date = null): string
+    public function getNewInvoiceNumber(DateTime $date = null): string
     {
         if (!$date) {
-            $date = new \DateTime('now');
+            $date = new DateTime('now');
         }
 
         $date_number = $date->format(Invoice::NUMBER_DATE_FORMAT);
@@ -58,77 +61,44 @@ class InvoiceRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
 
-        if ($lastInvoice && strpos($lastInvoice['number'], '-') > -1) {
-            $lastNumber = substr($lastInvoice['number'], strpos($lastInvoice['number'], '-') + 1);
+        if ($lastInvoice && strpos((string)$lastInvoice['number'], '-') > -1) {
+            $lastNumber = substr((string)$lastInvoice['number'], strpos((string)$lastInvoice['number'], '-') + 1);
         }
 
         return $date_number . (intval($lastNumber) + 1);
     }
 
     /**
-     * @param \DateTime $date
      * @return Invoice[]
      */
-    public function getByDate(\DateTime $date): array
+    public function getByDate(DateTime $date): array
     {
         return $this->createQueryBuilder('i')
-        ->where('ToChar(i.createdAt, \'YYYYMM\') = :date')
-        ->setParameter('date', $date->format('Ym'))
-        ->getQuery()
-        ->getResult();
+            ->where('ToChar(i.createdAt, \'YYYYMM\') = :date')
+            ->setParameter('date', $date->format('Ym'))
+            ->getQuery()
+            ->getResult();
     }
 
     /**
-     * @param Company $company
-     * @param \DateTime $date
      * @return Invoice[]
      */
-    public function getByCompanyAndDate(Company $company, \DateTime $date): array
+    public function getByCompanyAndDate(Company $company, DateTime $date): array
     {
         return $this->createQueryBuilder('i')
-        ->where('i.company = :company')
-        ->andWhere('ToChar(i.createdAt, \'YYYYMM\') = :date')
-        ->setParameter('company', $company)
-        ->setParameter('date', $date->format('Ym'))
-        ->getQuery()
-        ->getResult();
+            ->where('i.company = :company')
+            ->andWhere('ToChar(i.createdAt, \'YYYYMM\') = :date')
+            ->setParameter('company', $company)
+            ->setParameter('date', $date->format('Ym'))
+            ->getQuery()
+            ->getResult();
     }
 
     /**
-     * @param QueryBuilder $query
-     * @param int $year
-     * @param int $quarter
-     * @param bool $isPayed
-     * @return QueryBuilder
-     */
-    private function addFilters(QueryBuilder $query, int $year = null, int $quarter = null, $isPayed = null): QueryBuilder
-    {
-        if ($year !== null) {
-            $query->andWhere('ToChar(i.payedAt, \'YYYY\') = :year')
-                ->setParameter('year', (string) $year);
-        }
-
-        if ($quarter !== null) {
-            $query->andWhere('ToChar(i.payedAt, \'Q\') = :quarter')
-                ->setParameter('quarter', (string) $quarter);
-        }
-
-        if ($isPayed !== null) {
-            if ($isPayed == true) {
-                $query->andWhere('i.payedAt IS NOT NULL');
-            } else {
-                $query->andWhere('i.payedAt IS NULL');
-            }
-        }
-
-        return $query;
-    }
-
-    /**
-     * @param int $year
-     * @param int $quarter
-     * @param bool $isPayed
-     * @return Invoice[]
+     * @param int|null $year
+     * @param int|null $quarter
+     * @param null $isPayed
+     * @return array<Invoice>
      */
     public function findInvoicesBy(int $year = null, int $quarter = null, $isPayed = null): array
     {
@@ -141,14 +111,40 @@ class InvoiceRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param string $groupBy
-     * @param int $year
-     * @param int $quarter
-     * @param bool $isPayed
-     * @return Invoice[]
+     * @param int|null $year
+     * @param int|null $quarter
+     * @param null $isPayed
      */
-    public function getSalesRevenuesGroupBy(string $groupBy, int $year = null, int $quarter = null, $isPayed = true): array
-    {
+    private function addFilters(QueryBuilder $query, int $year = null, int $quarter = null, $isPayed = null
+    ): QueryBuilder {
+        if ($year !== null) {
+            $query->andWhere('ToChar(i.payedAt, \'YYYY\') = :year')
+                ->setParameter('year', (string)$year);
+        }
+
+        if ($quarter !== null) {
+            $query->andWhere('ToChar(i.payedAt, \'Q\') = :quarter')
+                ->setParameter('quarter', (string)$quarter);
+        }
+
+        if ($isPayed !== null) {
+            if ($isPayed) {
+                $query->andWhere('i.payedAt IS NOT NULL');
+            } else {
+                $query->andWhere('i.payedAt IS NULL');
+            }
+        }
+
+        return $query;
+    }
+
+    /**
+     * @param int|null $year
+     * @param int|null $quarter
+     * @return array<Invoice>
+     */
+    public function getSalesRevenuesGroupBy(string $groupBy, int $year = null, int $quarter = null, bool $isPayed = true
+    ): array {
         $query = $this->createQueryBuilder('i')
             ->select('SUM(i.totalHt) total');
 
@@ -178,31 +174,53 @@ class InvoiceRepository extends ServiceEntityRepository
         return $query->getQuery()->getResult();
     }
 
-    public function getDaysCountByMonth(int $year)
+    public function getDaysCountByMonth(int $year): array
     {
         $query = $this->createQueryBuilder('i')
-            ->select('ToChar(i.payedAt, \'MM\') AS month')
+            ->select('ToChar(i.createdAt, \'MM\') AS month')
             ->addSelect('SUM(i.daysCount) total')
             ->orderBy('month')
             ->groupBy('month');
 
-        $query = $this->addFilters($query, $year, null, null);
+        $query = $this->addFilters($query, $year);
 
-        return array_map(function($arr) {$arr['total'] = floatval($arr['total']); return $arr;}, $query->getQuery()->getResult());
+        return array_map(
+            function ($arr) {
+                $arr['total'] = floatval($arr['total']);
+                return $arr;
+            },
+            $query->getQuery()->getResult()
+        );
+    }
+
+    public function getDaysCountByYears(): array
+    {
+        $query = $this->createQueryBuilder('i')
+            ->select('ToChar(i.createdAt, \'YYYY\') AS year')
+            ->addSelect('SUM(i.daysCount) total')
+            ->orderBy('year')
+            ->groupBy('year');
+
+        return array_map(
+            function ($arr) {
+                $arr['total'] = floatval($arr['total']);
+                return $arr;
+            },
+            $query->getQuery()->getResult()
+        );
     }
 
     /**
-     * @param int $year
-     * @return float
+     * @param int|null $year
      * @throws NonUniqueResultException
-     * @throws \Doctrine\ORM\NoResultException
+     * @throws NoResultException
      */
-    public function getDaysCountByYear(int $year = null)
+    public function getDaysCountByYear(int $year = null): float
     {
         $query = $this->createQueryBuilder('i')
             ->select('SUM(i.totalHt / i.tjm) total');
 
-        $query = $this->addFilters($query, $year, null, null);
+        $query = $this->addFilters($query, $year);
 
         return floatval($query->getQuery()->getSingleScalarResult());
     }
@@ -211,27 +229,8 @@ class InvoiceRepository extends ServiceEntityRepository
      * @param int|null $year
      * @param int|null $quarter
      * @param null $isPayed
-     * @return int
      * @throws NonUniqueResultException
-     * @throws \Doctrine\ORM\NoResultException
-     */
-    public function getSalesRevenuesBy(int $year = null, int $quarter = null, $isPayed = true): int
-    {
-        $query = $this->createQueryBuilder('i')
-            ->select('SUM(i.totalHt) total');
-
-        $query = $this->addFilters($query, $year, $quarter, $isPayed);
-
-        return intval($query->getQuery()->getSingleScalarResult());
-    }
-
-    /**
-     * @param int|null $year
-     * @param int|null $quarter
-     * @param null $isPayed
-     * @return int
-     * @throws NonUniqueResultException
-     * @throws \Doctrine\ORM\NoResultException
+     * @throws NoResultException
      */
     public function getSalesTaxesBy(int $year = null, int $quarter = null, $isPayed = null): int
     {
@@ -243,56 +242,73 @@ class InvoiceRepository extends ServiceEntityRepository
         return intval($query->getQuery()->getSingleScalarResult());
     }
 
+    /**
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
     public function remainingDaysBeforeTaxLimit(): float
     {
-        $remainingRevenues = Invoice::LIMIT_AE_TVA - $this->getSalesRevenuesBy((new \DateTime('now'))->format('Y'));
+        $remainingRevenues = Invoice::LIMIT_AE_TVA - $this->getSalesRevenuesBy((new DateTime('now'))->format('Y'));
 
         return $remainingRevenues < 0 ? 0 : $remainingRevenues / Invoice::TJM_DEFAULT;
     }
 
+    /**
+     * @param int|null $year
+     * @param int|null $quarter
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
+    public function getSalesRevenuesBy(int $year = null, int $quarter = null, ?bool $isPayed = true): int
+    {
+        $query = $this->createQueryBuilder('i')
+            ->select('SUM(i.totalHt) total');
+
+        $query = $this->addFilters($query, $year, $quarter, $isPayed);
+
+        return intval($query->getQuery()->getSingleScalarResult());
+    }
+
+    /**
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
     public function remainingDaysBeforeLimit(): float
     {
-        $remainingRevenues = Invoice::LIMIT_AE - $this->getSalesRevenuesBy((new \DateTime('now'))->format('Y'));
+        $remainingRevenues = Invoice::LIMIT_AE - $this->getSalesRevenuesBy((new DateTime('now'))->format('Y'));
 
         return $remainingRevenues < 0 ? 0 : $remainingRevenues / Invoice::TJM_DEFAULT;
     }
 
+    /**
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
     public function isOutOfTaxLimit($newInvoiceAmount = 0): bool
     {
         return ($this->getSalesRevenuesBy() + $newInvoiceAmount) >= Invoice::LIMIT_AE_TVA;
     }
 
+    /**
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
     public function isOutOfLimit($newInvoiceAmount = 0): bool
     {
         return ($this->getSalesRevenuesBy() + $newInvoiceAmount) >= Invoice::LIMIT_AE;
     }
 
-    // /**
-    //  * @return Invoice[] Returns an array of Invoice objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
+    public function countWaiting(): int
     {
-        return $this->createQueryBuilder('i')
-            ->andWhere('i.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('i.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $query = $this->createQueryBuilder('i')
+            ->select('COUNT(i.id) waitingCount')
+            ->where('i.status = :waiting')
+            ->setParameter('waiting', InvoiceStatusEnum::Waiting);
 
-    /*
-    public function findOneBySomeField($value): ?Invoice
-    {
-        return $this->createQueryBuilder('i')
-            ->andWhere('i.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return $query->getQuery()->getSingleScalarResult();
     }
-    */
 }

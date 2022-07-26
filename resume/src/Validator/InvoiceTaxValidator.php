@@ -3,19 +3,21 @@
 namespace App\Validator;
 
 use App\Repository\InvoiceRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 class InvoiceTaxValidator extends ConstraintValidator
 {
-    /** @var InvoiceRepository */
-    private $invoiceRepository;
-
-    public function __construct(InvoiceRepository $invoiceRepository)
+    public function __construct(private readonly InvoiceRepository $invoiceRepository)
     {
-        $this->invoiceRepository = $invoiceRepository;
     }
 
+    /**
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
     public function validate($value, Constraint $constraint)
     {
         /* @var $constraint  InvoiceTax */
