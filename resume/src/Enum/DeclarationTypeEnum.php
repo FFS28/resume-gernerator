@@ -32,4 +32,11 @@ enum DeclarationTypeEnum: string
             yield $case->value => $case->toString();
         }
     }
+
+    public static function values(): Traversable
+    {
+        foreach (self::cases() as $case) {
+            yield $case->toString() => $case->value;
+        }
+    }
 }

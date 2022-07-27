@@ -6,6 +6,11 @@ use App\Entity\Company;
 use App\Entity\Invoice;
 use App\Enum\InvoicePaymentTypeEnum;
 use App\Enum\InvoiceStatusEnum;
+use App\Filter\DateMonthFilter;
+use App\Filter\DateQuarterFilter;
+use App\Filter\DateYearFilter;
+use App\Filter\EnumFilter;
+use App\Form\Filter\InvoiceStatusFilterType;
 use App\Repository\ActivityRepository;
 use App\Repository\InvoiceRepository;
 use App\Service\FlashbagService;
@@ -17,6 +22,7 @@ use Doctrine\ORM\NoResultException;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
@@ -108,6 +114,18 @@ class InvoiceCrudController extends AbstractCrudController
             ->add(Crud::PAGE_INDEX, $actionDelete);
 
         return $actions;
+    }
+
+    public function configureFilters(Filters $filters): Filters
+    {
+        return $filters
+            ->add('company')
+            ->add('period')
+            ->add(DateYearFilter::new('createdAt', 'Created At year'))
+            ->add(DateQuarterFilter::new('createdAt','Created At quarter'))
+            ->add(DateMonthFilter::new('createdAt','Created At month'))
+            ->add(EnumFilter::new('status', InvoiceStatusFilterType::class))
+        ;
     }
 
     public function configureFields(string $pageName): iterable

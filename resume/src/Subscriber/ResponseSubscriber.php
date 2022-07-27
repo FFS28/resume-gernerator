@@ -24,7 +24,6 @@ class ResponseSubscriber implements EventSubscriberInterface
 
     /**
      * Callback function for event subscriber
-     * @param ResponseEvent $event
      */
     public function onResponse(ResponseEvent $event)
     {

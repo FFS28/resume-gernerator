@@ -17,7 +17,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  */
 #[UniqueEntity(fields: ['filename'], message: 'Operation already exists')]
 #[ORM\Entity(repositoryClass: StatementRepository::class)]
-class Statement
+class Statement implements \Stringable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

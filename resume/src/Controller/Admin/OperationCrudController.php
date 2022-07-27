@@ -4,6 +4,11 @@ namespace App\Controller\Admin;
 
 use App\Entity\Operation;
 use App\Enum\OperationTypeEnum;
+use App\Filter\DateMonthFilter;
+use App\Filter\DateQuarterFilter;
+use App\Filter\DateYearFilter;
+use App\Filter\EnumFilter;
+use App\Form\Filter\OperationTypeFilterType;
 use App\Repository\OperationFilterRepository;
 use App\Service\FlashbagService;
 use App\Service\StatementService;
@@ -11,6 +16,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\BatchActionDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
@@ -56,6 +62,19 @@ class OperationCrudController extends AbstractCrudController
             ->addBatchAction($analyzeAction);
 
         return $actions;
+    }
+
+    public function configureFilters(Filters $filters): Filters
+    {
+        return $filters
+            ->add(DateYearFilter::new('date', 'Created At year'))
+            ->add(DateMonthFilter::new('date', 'Created At month'))
+            ->add(EnumFilter::new('type', OperationTypeFilterType::class))
+            ->add('label')
+            ->add('target')
+            ->add('name')
+            ->add('location')
+        ;
     }
 
     public function configureFields(string $pageName): iterable

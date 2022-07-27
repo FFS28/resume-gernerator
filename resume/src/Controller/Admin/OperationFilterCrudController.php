@@ -4,7 +4,12 @@ namespace App\Controller\Admin;
 
 use App\Entity\OperationFilter;
 use App\Enum\OperationTypeEnum;
+use App\Filter\DateMonthFilter;
+use App\Filter\DateYearFilter;
+use App\Filter\EnumFilter;
+use App\Form\Filter\OperationTypeFilterType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
@@ -30,6 +35,18 @@ class OperationFilterCrudController extends AbstractCrudController
             ;
     }
 
+
+    public function configureFilters(Filters $filters): Filters
+    {
+        return $filters
+            ->add('name')
+            ->add(EnumFilter::new('type', OperationTypeFilterType::class))
+            ->add('label')
+            ->add('target')
+            ->add(DateYearFilter::new('date', 'Created At year'))
+            ->add(DateMonthFilter::new('date', 'Created At month'))
+        ;
+    }
 
     public function configureFields(string $pageName): iterable
     {

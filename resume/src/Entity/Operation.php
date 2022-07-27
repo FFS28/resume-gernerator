@@ -11,7 +11,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[UniqueEntity(fields: ['date', 'name', 'amount'], message: 'Operation already exists')]
 #[ORM\Entity(repositoryClass: OperationRepository::class)]
-class Operation
+class Operation implements \Stringable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

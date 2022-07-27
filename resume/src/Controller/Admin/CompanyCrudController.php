@@ -4,8 +4,11 @@ namespace App\Controller\Admin;
 
 use App\Entity\Company;
 use App\Enum\CompanyTypeEnum;
+use App\Filter\EnumFilter;
+use App\Form\Filter\CompanyTypeFilterType;
 use App\Form\Type\PersonType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
@@ -33,6 +36,15 @@ class CompanyCrudController extends AbstractCrudController
             ->setDefaultSort(['name' => 'ASC'])
             ->setSearchFields(['name', 'displayName', 'type', 'contractor.name', 'clients.name',
                                'persons.firstname', 'persons.lastname', 'persons.emails'])
+        ;
+    }
+
+    public function configureFilters(Filters $filters): Filters
+    {
+        return $filters
+            ->add('name')
+            ->add(EnumFilter::new('type', CompanyTypeFilterType::class))
+            ->add('contractor')
         ;
     }
 

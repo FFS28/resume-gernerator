@@ -16,11 +16,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class ReportService
 {
     public function __construct(
-        private EntityManagerInterface $entityManager,
-        private InvoiceRepository      $invoiceRepository,
-        private ActivityRepository     $activityRepository,
-        private ExperienceRepository   $experienceRepository,
-        private TranslatorInterface    $translator,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly InvoiceRepository      $invoiceRepository,
+        private readonly ActivityRepository     $activityRepository,
+        private readonly ExperienceRepository   $experienceRepository,
+        private readonly TranslatorInterface    $translator,
     ) {
 
     }
@@ -110,11 +110,11 @@ class ReportService
         $viewData['companies'] = [];
         $currentExperiences = $this->experienceRepository->getCurrents();
         foreach ($currentExperiences as $experience) {
-            $viewData['companies'][] = $experience->getClient() ? $experience->getClient() : $experience->getCompany();
+            $viewData['companies'][] = $experience->getClient() ?: $experience->getCompany();
         }
-        $viewData['activeCompany'] = count(
+        $viewData['activeCompany'] = (is_countable($viewData['companies']) ? count(
                 $viewData['companies']
-            ) == 1 ?? !$company ? $viewData['companies'][0] : $company;
+            ) : 0) == 1 ?? !$company ? $viewData['companies'][0] : $company;
 
         $viewData['invoices'] = $this->invoiceRepository->getByDate($currentDate);
 

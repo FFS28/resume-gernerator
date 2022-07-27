@@ -5,6 +5,9 @@ namespace App\Controller\Admin;
 use App\Entity\Declaration;
 use App\Enum\DeclarationStatusEnum;
 use App\Enum\DeclarationTypeEnum;
+use App\Filter\EnumFilter;
+use App\Form\Filter\DeclarationStatusFilterType;
+use App\Form\Filter\DeclarationTypeFilterType;
 use App\Service\DeclarationService;
 use App\Service\FlashbagService;
 use DateTime;
@@ -12,6 +15,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
@@ -67,6 +71,15 @@ class DeclarationCrudController extends AbstractCrudController
         ;
 
         return $actions;
+    }
+
+    public function configureFilters(Filters $filters): Filters
+    {
+        return $filters
+            ->add(EnumFilter::new('type', DeclarationTypeFilterType::class))
+            ->add('period')
+            ->add(EnumFilter::new('status', DeclarationStatusFilterType::class))
+        ;
     }
 
     public function configureFields(string $pageName): iterable

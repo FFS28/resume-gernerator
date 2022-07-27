@@ -30,8 +30,8 @@ class AccountingService
         'types' => "array",
         'activeType' => "string",
         'activeYear' => "int",
-        'chartTotalsByMonthAndLabel' => "\Symfony\UX\Chartjs\Model\Chart",
-        'chartTotalsByMonthAndType' => "\Symfony\UX\Chartjs\Model\Chart"
+        'chartTotalsByMonthAndLabel' => \Symfony\UX\Chartjs\Model\Chart::class,
+        'chartTotalsByMonthAndType' => \Symfony\UX\Chartjs\Model\Chart::class
     ])]
     public function getDashboard(?int $year, ?string $type): array
     {
@@ -85,32 +85,32 @@ class AccountingService
                                                     [
                                                         'label' => $this->translator->trans(OperationTypeEnum::Charge->toString()),
                                                         'backgroundColor' => '#18227c',
-                                                        'data' => array_map(function($item) {return $item[OperationTypeEnum::Charge->value];}, $totalsByMonthAndTypeStats),
+                                                        'data' => array_map(fn($item) => $item[OperationTypeEnum::Charge->value], $totalsByMonthAndTypeStats),
                                                     ],
                                                     [
                                                         'label' => $this->translator->trans(OperationTypeEnum::Food->toString()),
                                                         'backgroundColor' => '#33691e',
-                                                        'data' => array_map(function($item) {return $item[OperationTypeEnum::Food->value];}, $totalsByMonthAndTypeStats),
+                                                        'data' => array_map(fn($item) => $item[OperationTypeEnum::Food->value], $totalsByMonthAndTypeStats),
                                                     ],
                                                     [
                                                         'label' => $this->translator->trans(OperationTypeEnum::Supply->toString()),
                                                         'backgroundColor' => '#ff6f00',
-                                                        'data' => array_map(function($item) {return $item[OperationTypeEnum::Supply->value];}, $totalsByMonthAndTypeStats),
+                                                        'data' => array_map(fn($item) => $item[OperationTypeEnum::Supply->value], $totalsByMonthAndTypeStats),
                                                     ],
                                                     [
                                                         'label' => $this->translator->trans(OperationTypeEnum::Hobby->toString()),
                                                         'backgroundColor' => '#fdd835',
-                                                        'data' => array_map(function($item) {return $item[OperationTypeEnum::Hobby->value];}, $totalsByMonthAndTypeStats),
+                                                        'data' => array_map(fn($item) => $item[OperationTypeEnum::Hobby->value], $totalsByMonthAndTypeStats),
                                                     ],
                                                     [
                                                         'label' => $this->translator->trans(OperationTypeEnum::Subscription->toString()),
                                                         'backgroundColor' => '#ad1457',
-                                                        'data' => array_map(function($item) {return $item[OperationTypeEnum::Subscription->value];}, $totalsByMonthAndTypeStats),
+                                                        'data' => array_map(fn($item) => $item[OperationTypeEnum::Subscription->value], $totalsByMonthAndTypeStats),
                                                     ],
                                                     [
                                                         'label' => $this->translator->trans(OperationTypeEnum::Other->toString()),
                                                         'backgroundColor' => '#616161',
-                                                        'data' => array_map(function($item) {return $item[OperationTypeEnum::Other->value];}, $totalsByMonthAndTypeStats),
+                                                        'data' => array_map(fn($item) => $item[OperationTypeEnum::Other->value], $totalsByMonthAndTypeStats),
                                                     ],
                                                 ],
                                             ]);

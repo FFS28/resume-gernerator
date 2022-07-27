@@ -41,10 +41,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class DashboardController extends AbstractDashboardController
 {
     public function __construct(
-        private DashboardService  $dashboardService,
-        private ReportService     $reportService,
-        private AccountingService $accountingService,
-        private InvoiceService    $invoiceService
+        private readonly DashboardService  $dashboardService,
+        private readonly ReportService     $reportService,
+        private readonly AccountingService $accountingService,
+        private readonly InvoiceService    $invoiceService
     ) {
     }
 
@@ -68,9 +68,10 @@ class DashboardController extends AbstractDashboardController
     #[Route('/admin/report/{year<\d+>?0}/{month<\d+>?0}/{slug?}', name: 'report')]
     public function report(Request $request, int $year = 0, int $month = 0, Company $company = null): Response
     {
+        $viewData = [];
         $viewData['currentYear'] = (new DateTime())->format('Y');
-        $viewData['activeYear'] = intval($year ? $year : $viewData['currentYear']);
-        $viewData['activeMonth'] = intval($month ? $month : (new DateTime())->format('m'));
+        $viewData['activeYear'] = intval($year ?: $viewData['currentYear']);
+        $viewData['activeMonth'] = intval($month ?: (new DateTime())->format('m'));
 
         $currentDate = new DateTime(
             $viewData['activeYear'] . ($viewData['activeMonth'] < 10 ? '0' : '') . $viewData['activeMonth'] . '01'
@@ -199,6 +200,7 @@ class DashboardController extends AbstractDashboardController
 
     public function configureAssets(): Assets
     {
-        return Assets::new()->addCssFile('build/css/admin.css');
+        return Assets::new()
+            ->addCssFile('build/css/admin.css');
     }
 }

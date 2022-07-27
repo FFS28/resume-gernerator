@@ -17,11 +17,8 @@ class MonthActivitiesType extends AbstractType
 {
     public DateTime $currentDate;
 
-    public ReportService $reportService;
-
-    public function __construct(ReportService $reportService)
+    public function __construct(public ReportService $reportService)
     {
-        $this->reportService = $reportService;
     }
 
     /**

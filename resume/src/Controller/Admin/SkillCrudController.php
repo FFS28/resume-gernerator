@@ -5,7 +5,10 @@ namespace App\Controller\Admin;
 use App\Entity\Skill;
 use App\Enum\DeclarationTypeEnum;
 use App\Enum\SkillTypeEnum;
+use App\Filter\EnumFilter;
+use App\Form\Filter\SkillTypeFilterType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
@@ -30,6 +33,16 @@ class SkillCrudController extends AbstractCrudController
             ->setEntityLabelInPlural('Skills')
             ->setDefaultSort(['onHomepage' => 'DESC', 'level' => 'DESC'])
             ->setSearchFields(['name', 'type', 'level'])
+            ;
+    }
+
+    public function configureFilters(Filters $filters): Filters
+    {
+        return $filters
+            ->add('name')
+            ->add(EnumFilter::new('type', SkillTypeFilterType::class))
+            ->add('parent')
+            ->add('onHomepage')
             ;
     }
 

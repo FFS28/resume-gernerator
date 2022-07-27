@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Attribute;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
@@ -23,6 +24,15 @@ class AttributeCrudController extends AbstractCrudController
             ->setEntityLabelInPlural('Attributes')
             ->setDefaultSort(['isListable' => 'ASC', 'weight' => 'DESC'])
             ->setSearchFields(['name', 'slug', 'icon'])
+            ;
+    }
+
+    public function configureFilters(Filters $filters): Filters
+    {
+        return $filters
+            ->add('slug')
+            ->add('value')
+            ->add('isListable')
             ;
     }
 
