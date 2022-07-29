@@ -129,12 +129,12 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToUrl('Return to website', 'fa fa-arrow-left', '/');
-        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-chart-bar');
 
         yield MenuItem::section('Invoicing');
+        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-chart-bar');
         yield MenuItem::linkToRoute('Report', 'fa fa-calendar-alt', 'report');
         yield MenuItem::linkToCrud('Invoices', 'fa fa-coins', Invoice::class)
-            ->setBadge($this->invoiceService->countWaitingInvoices());
+            ->setBadge($this->invoiceService->countWaitingInvoices() ?? '');
         yield MenuItem::linkToCrud('Declarations', 'fa fa-landmark', Declaration::class);
         yield MenuItem::linkToCrud('Companies', 'fa fa-building', Company::class);
         yield MenuItem::linkToCrud('Persons', 'fa fa-users', Person::class);
@@ -147,14 +147,12 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Educations', 'fa fa-graduation-cap', Education::class);
         yield MenuItem::linkToCrud('Links', 'fa fa-link', Link::class);
 
-        yield MenuItem::section('Other');
-
         yield MenuItem::section('Accounting');
 
         yield MenuItem::linkToRoute('Dashboard', 'fa fa-chart-pie', 'accounting');
         yield MenuItem::linkToCrud('Statements', 'fa fa-file-alt', Statement::class);
         yield MenuItem::linkToCrud('Operations', 'fa fa-columns', Operation::class)
-            ->setBadge($this->accountingService->getNullTypesCount());
+            ->setBadge($this->accountingService->getNullTypesCount() ?? '');
         yield MenuItem::linkToCrud('Filters', 'fa fa-filter', OperationFilter::class);
     }
 

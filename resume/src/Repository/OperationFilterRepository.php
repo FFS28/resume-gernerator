@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\OperationFilter;
 use App\Enum\OperationTypeEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**

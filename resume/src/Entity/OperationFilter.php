@@ -8,6 +8,7 @@ use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[UniqueEntity(fields: ['name', 'date', 'amount'], message: 'A filter with same name already exists')]
 #[ORM\Entity(repositoryClass: OperationFilterRepository::class)]
@@ -35,6 +36,9 @@ class OperationFilter implements \Stringable
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     private ?string $amount = null;
+
+    public ?string $labelAutocomplete;
+    public ?string $labelCustom = '';
 
     public function __toString(): string
     {

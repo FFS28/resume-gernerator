@@ -258,15 +258,24 @@ Analyze: Analyse
 Label: Catégorie
 Statistiques: Statistiques
 Categories: Catégories
+Label Autocomplete: Catégorie existante
+Label Custom: Catégorie personnalisée
 
 
 Supply: Fourniture
+supply: Fourniture
 Food: Nourriture
+food: Nourriture
 Charge: Charge
+charge: Charge
 Subscription: Abonnement
+subscription: Abonnement
 Income: Revenu
+income: Revenu
 Refund: Remboursement
+refund: Remboursement
 Hidden: Caché
+hidden: Caché
 other: Autre
 hobby: Loisir
 
