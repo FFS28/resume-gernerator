@@ -20,7 +20,7 @@
                     {% for month in months %}
                         <div class="col">
                             <a class="{% if month['int'] == activeMonth %}active{% endif %}"
-                               href="{{ url(active_route, (active_params | merge({'month' : month['int']}))) }}">{{ month['str'] }}</a>
+                               href="{{ url(active_route, (active_params | merge(month['int'] == activeMonth ? {'month' : 0} : {'month' : month['int']}))) }}">{{ month['str'] }}</a>
                         </div>
                     {% endfor %}
                 </div>
@@ -28,7 +28,7 @@
             <div class="row align-items-center">
                 {% for typeKey, typeValue in types %}
                     <div class="col">
-                        <a class="{% if typeKey == activeType %}active{% endif %}" href="{{ url(active_route, (active_params | merge({'type' : typeKey}))) }}">{{ typeValue | trans }}</a>
+                        <a class="{% if typeKey == activeType %}active{% endif %}" href="{{ url(active_route, (active_params | merge(typeKey == activeType ? {'type' : 0} : {'type' : typeKey}))) }}">{{ typeValue | trans }}</a>
                     </div>
                 {% endfor %}
             </div>
