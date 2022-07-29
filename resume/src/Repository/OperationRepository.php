@@ -94,6 +94,37 @@ class OperationRepository extends ServiceEntityRepository
         return $query->getQuery()->getResult();
     }
 
+    public function getTotalsByLabel(int $year, int $month, string $type = null)
+    {
+        $query = $this->createQueryBuilder('o')
+            ->select('SUM(o.amount) total')
+            ->andWhere('ToChar(o.date, \'YYYY\') = :year')->setParameter('year', $year)
+            ->andWhere('ToChar(o.date, \'MM\') = :month')->setParameter('month', $month < 10 ? '0'.$month : $month)
+        ;
+        $query->andWhere(
+            $query->expr()->notIn('o.type', [
+                OperationTypeEnum::Income->value, OperationTypeEnum::Refund->value, OperationTypeEnum::Hidden->value
+            ])
+        );
+
+        if ($type) {
+            $query
+                ->addSelect('o.label')
+                ->addGroupBy('o.label')
+                ->andWhere('o.type = :type')->setParameter('type', $type)
+                ->orderBy('o.label', 'asc')
+            ;
+        } else {
+            $query
+                ->addSelect('o.type')
+                ->addGroupBy('o.type')
+                ->orderBy('o.type', 'asc')
+            ;
+        }
+
+        return $query->getQuery()->getResult();
+    }
+
     /**
      * @throws NonUniqueResultException
      * @throws NoResultException

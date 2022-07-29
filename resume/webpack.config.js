@@ -21,9 +21,10 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('js/html2pdf.bundle', './assets/js/html2pdf.bundle.js')
-    .addEntry('js/app', './assets/js/app.js')
+    .addEntry('js/chartjs-plugin-datalabels', './node_modules/chartjs-plugin-datalabels/dist/chartjs-plugin-datalabels.min.js')
     .addEntry('js/admin', './assets/js/admin.js')
     .addEntry('app', './assets/app.js')
+    .addEntry('app-chartjs-plugins', './assets/app-chartjs-plugins.js')
     .addEntry('bootstrap', './assets/bootstrap.js')
 
     .addStyleEntry('css/admin', './assets/css/admin.scss')

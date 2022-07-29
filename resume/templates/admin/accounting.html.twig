@@ -15,6 +15,16 @@
                     </div>
                 {% endfor %}
             </div>
+            {% if months is defined %}
+                <div class="row align-items-center">
+                    {% for month in months %}
+                        <div class="col">
+                            <a class="{% if month['int'] == activeMonth %}active{% endif %}"
+                               href="{{ url(active_route, (active_params | merge({'month' : month['int']}))) }}">{{ month['str'] }}</a>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
             <div class="row align-items-center">
                 {% for typeKey, typeValue in types %}
                     <div class="col">
@@ -33,10 +43,15 @@
                     {{ render_chart(chartTotalsByMonthAndLabel, {'id' : 'totalsByMonthAndLabel'}) }}
                 </div>
             {% endif %}
+            {% if chartTotalsByLabel is defined %}
+                <div class="row align-items-center" style="margin-top: 40px;">
+                    {{ render_chart(chartTotalsByLabel, {'id' : 'totalsByLabel'}) }}
+                </div>
+            {% endif %}
         </div>
     </div>
 {% endblock %}
 
 {% block body_javascript %}
-    {{ encore_entry_script_tags('app') }}
+    {{ encore_entry_script_tags('app-chartjs-plugins') }}
 {% endblock %}

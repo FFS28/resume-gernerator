@@ -7,6 +7,7 @@ use App\Entity\Operation;
 use App\Enum\InvoiceStatusEnum;
 use App\Enum\OperationTypeEnum;
 use App\Repository\OperationRepository;
+use DateTime;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use JetBrains\PhpStorm\ArrayShape;
@@ -25,6 +26,9 @@ class AccountingService
 
     }
 
+    /**
+     * @throws \Exception
+     */
     #[ArrayShape([
         'years' => "array",
         'types' => "array",
@@ -33,7 +37,7 @@ class AccountingService
         'chartTotalsByMonthAndLabel' => \Symfony\UX\Chartjs\Model\Chart::class,
         'chartTotalsByMonthAndType' => \Symfony\UX\Chartjs\Model\Chart::class
     ])]
-    public function getDashboard(?int $year, ?string $type): array
+    public function getDashboard(?int $year, ?int $month, ?string $type): array
     {
         $colors = [
             "#25CCF7","#FD7272","#54a0ff","#00d2d3",
@@ -46,9 +50,16 @@ class AccountingService
             "#fab1a0","#ff7675","#fd79a8","#fdcb6e","#e17055",
             "#d63031","#feca57","#5f27cd","#54a0ff","#01a3a4"
         ];
+        $colorsByTypes = [
+            OperationTypeEnum::Charge->toString() => '#18227c',
+            OperationTypeEnum::Food->toString() => '#33691e',
+            OperationTypeEnum::Supply->toString() => '#ff6f00',
+            OperationTypeEnum::Hobby->toString() => '#fdd835',
+            OperationTypeEnum::Subscription->toString() => '#ad1457',
+            OperationTypeEnum::Other->toString() => '#616161',
+        ];
         $years = array_column($this->operationRepository->listYears(), 'date');
         sort($years);
-
 
         $types = iterator_to_array(OperationTypeEnum::choices(), true);
 
@@ -60,8 +71,21 @@ class AccountingService
             'years' => $years,
             'types' => $types,
             'activeType' => $type,
-            'activeYear' => $year
+            'activeYear' => $year,
+            'activeMonth' => $month,
+            'months' => []
         ];
+
+
+        if ($viewData['activeYear']) {
+            for ($i = 1; $i <= 12; $i++) {
+                $monthDate = new DateTime($viewData['activeYear'] . ($i < 10 ? '0' : '') . $i . '01');
+                $viewData['months'][] = [
+                    'int' => $i,
+                    'str' => $this->translator->trans($monthDate->format('F'))
+                ];
+            }
+        }
 
         $totalsByMonthAndType = $this->operationRepository->getTotalsByMonthAndType($year, $type);
         $totalsByMonthAndTypeStats = [];
@@ -84,32 +108,32 @@ class AccountingService
                                                 'datasets' => [
                                                     [
                                                         'label' => $this->translator->trans(OperationTypeEnum::Charge->toString()),
-                                                        'backgroundColor' => '#18227c',
+                                                        'backgroundColor' => $colorsByTypes[OperationTypeEnum::Charge->toString()],
                                                         'data' => array_map(fn($item) => $item[OperationTypeEnum::Charge->value], $totalsByMonthAndTypeStats),
                                                     ],
                                                     [
                                                         'label' => $this->translator->trans(OperationTypeEnum::Food->toString()),
-                                                        'backgroundColor' => '#33691e',
+                                                        'backgroundColor' => $colorsByTypes[OperationTypeEnum::Food->toString()],
                                                         'data' => array_map(fn($item) => $item[OperationTypeEnum::Food->value], $totalsByMonthAndTypeStats),
                                                     ],
                                                     [
                                                         'label' => $this->translator->trans(OperationTypeEnum::Supply->toString()),
-                                                        'backgroundColor' => '#ff6f00',
+                                                        'backgroundColor' => $colorsByTypes[OperationTypeEnum::Supply->toString()],
                                                         'data' => array_map(fn($item) => $item[OperationTypeEnum::Supply->value], $totalsByMonthAndTypeStats),
                                                     ],
                                                     [
                                                         'label' => $this->translator->trans(OperationTypeEnum::Hobby->toString()),
-                                                        'backgroundColor' => '#fdd835',
+                                                        'backgroundColor' => $colorsByTypes[OperationTypeEnum::Hobby->toString()],
                                                         'data' => array_map(fn($item) => $item[OperationTypeEnum::Hobby->value], $totalsByMonthAndTypeStats),
                                                     ],
                                                     [
                                                         'label' => $this->translator->trans(OperationTypeEnum::Subscription->toString()),
-                                                        'backgroundColor' => '#ad1457',
+                                                        'backgroundColor' => $colorsByTypes[OperationTypeEnum::Subscription->toString()],
                                                         'data' => array_map(fn($item) => $item[OperationTypeEnum::Subscription->value], $totalsByMonthAndTypeStats),
                                                     ],
                                                     [
                                                         'label' => $this->translator->trans(OperationTypeEnum::Other->toString()),
-                                                        'backgroundColor' => '#616161',
+                                                        'backgroundColor' => $colorsByTypes[OperationTypeEnum::Other->toString()],
                                                         'data' => array_map(fn($item) => $item[OperationTypeEnum::Other->value], $totalsByMonthAndTypeStats),
                                                     ],
                                                 ],
@@ -135,8 +159,8 @@ class AccountingService
         $viewData['chartTotalsByMonthAndType'] = $chartTotalsByMonthAndType;
 
         if ($type) {
-            $totalsByMonthAndLabel = $this->operationRepository->getTotalsByMonthAndLabel($year, $type);
             $totalsByMonthAndLabelStats = $labels = $totalsByMonthAndLabelDatasets = [];
+            $totalsByMonthAndLabel = $this->operationRepository->getTotalsByMonthAndLabel($year, $type);
 
             foreach ($totalsByMonthAndLabel as $row) {
                 $totalsByMonthAndLabelStats[$row['date']][$row['label']] = -floatval($row['total']);
@@ -156,8 +180,8 @@ class AccountingService
                     'data' => array_fill(0, count($totalsByMonthAndLabelLabels), 0)
                 ];
             }
-            foreach ($totalsByMonthAndLabelStats as $monthIndex => $month) {
-                foreach ($month as $label => $total) {
+            foreach ($totalsByMonthAndLabelStats as $monthIndex => $monthValue) {
+                foreach ($monthValue as $label => $total) {
                     $labelIndex = array_search($label, $labels);
                     $totalsByMonthAndLabelDatasets[$labelIndex]['data'][$monthIndex] = $total;
                 }
@@ -168,6 +192,47 @@ class AccountingService
                                                      'datasets' => $totalsByMonthAndLabelDatasets
                                                  ]);
             $viewData['chartTotalsByMonthAndLabel'] = $chartTotalsByMonthAndLabel;
+        }
+
+        if ($year && $month) {
+            $totalsByLabelStats = $labels = $totalsByLabelDatasets = $colorsByLabels = [];
+            $totalsByLabel = $this->operationRepository->getTotalsByLabel($year, $month, $type);
+
+            foreach ($totalsByLabel as $index => $row) {
+                $label = $type ? $row['label'] : $row['type']->toString();
+                $totalsByLabelStats[$label] = abs(floatval($row['total']));
+
+                if (!in_array($label, $labels)) {
+                    $labels[] = $type ? $label : $this->translator->trans($label);
+                }
+                $colorsByLabels[] = $type ? $colors[$index] : $colorsByTypes[$label];
+            }
+
+            $monthDate = new DateTime($viewData['activeYear'] . ($month < 10 ? '0' : '') . $month . '01');
+
+            $chartTotalsByLabel = $this->chartBuilder->createChart(Chart::TYPE_BAR);
+            $chartTotalsByLabel->setData([
+                                                     'labels' => $labels,
+                                                     'datasets' => [[
+                                                         'label' => $this->translator->trans($monthDate->format('F')),
+                                                         'backgroundColor' => $colorsByLabels,
+                                                         'data' => array_values($totalsByLabelStats)
+                                                     ]]
+                                                 ]);
+            $chartTotalsByLabel->setOptions([
+                'indexAxis' => 'y',
+                'plugins' => [
+                    'datalabels' => [
+                        'display' => true,
+                        'anchor' => 'end',
+                        'align' => 'right',
+                        'font' => [
+                            'weight' => 'bold'
+                        ]
+                    ]
+                ]
+            ]);
+            $viewData['chartTotalsByLabel'] = $chartTotalsByLabel;
         }
 
         return $viewData;

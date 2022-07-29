@@ -37,6 +37,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\MenuItemDto;
 
 class DashboardController extends AbstractDashboardController
 {
@@ -98,10 +99,10 @@ class DashboardController extends AbstractDashboardController
         return $this->render('admin/report.html.twig', $viewData);
     }
 
-    #[Route('/admin/accounting/{year<\d+>?0}/{type<\w+>?}', name: 'accounting')]
-    public function accouting(int $year = 0, $type = ''): Response
+    #[Route('/admin/accounting/{year<\d+>?0}/{month<\d+>?0}/{type<\w+>?}', name: 'accounting')]
+    public function accouting(int $year = 0, int $month = 0, $type = ''): Response
     {
-        $viewData = $this->accountingService->getDashboard($year, $type);
+        $viewData = $this->accountingService->getDashboard($year, $month, $type);
         return $this->render('admin/accounting.html.twig', $viewData);
     }
 
