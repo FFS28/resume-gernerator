@@ -6,6 +6,7 @@ use App\Service\DeclarationService;
 use App\Service\InvoiceService;
 use App\Service\ReportService;
 use Exception;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -20,10 +21,13 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
+#[AsCommand(
+    name: 'app:notifications',
+    description: 'Envoi les notifications par email',
+    aliases: []
+)]
 class NotificationCommand extends Command
 {
-    protected static $defaultName = 'app:notifications';
-
     public function __construct(
         protected ParameterBagInterface $params,
         protected MailerInterface $mailer,
@@ -34,13 +38,6 @@ class NotificationCommand extends Command
         protected ReportService $reportService,
     ) {
         parent::__construct();
-    }
-
-    protected function configure()
-    {
-        $this
-            ->setDescription('Envoi les notifications par email')
-        ;
     }
 
     /**

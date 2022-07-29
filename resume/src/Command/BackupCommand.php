@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -12,24 +13,19 @@ use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
-
+#[AsCommand(
+    name: 'app:my-notifications',
+    description: 'Envoi des backups par email',
+    aliases: []
+)]
 class BackupCommand extends Command
 {
-    protected static $defaultName = 'app:backup';
-
     public function __construct(
         protected KernelInterface $appKernel,
         protected ParameterBagInterface $params,
         protected MailerInterface $mailer,
     ) {
         parent::__construct();
-    }
-
-    protected function configure()
-    {
-        $this
-            ->setDescription('Envoi des backups par email')
-        ;
     }
 
     /**
