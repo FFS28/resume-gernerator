@@ -134,7 +134,7 @@ class InvoiceCrudController extends AbstractCrudController
             yield TextField::new('number');
             yield AssociationField::new('company');
             yield TextField::new('experienceCompany', 'Client');
-            yield MoneyField::new('totalHt')->setCurrency('EUR')->setStoredAsCents(false)->setNumDecimals(0);
+            yield MoneyField::new('totalTtc')->setCurrency('EUR')->setStoredAsCents(false)->setNumDecimals(0);
             yield MoneyField::new('totalNet')->setCurrency('EUR')->setStoredAsCents(false);
             yield MoneyField::new('totalHt')->setCurrency('EUR')->setStoredAsCents(false)->setNumDecimals(0);
             yield MoneyField::new('totalTax')->setCurrency('EUR')->setStoredAsCents(false)->setNumDecimals(0);

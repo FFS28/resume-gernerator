@@ -61,10 +61,6 @@ class AccountingService
         $years = array_column($this->operationRepository->listYears(), 'date');
         sort($years);
 
-        if (!$year) {
-            $year = end($years);
-        }
-
         $types = iterator_to_array(OperationTypeEnum::choices(), true);
 
         unset($types[OperationTypeEnum::Hidden->value]);

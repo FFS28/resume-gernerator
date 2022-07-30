@@ -128,13 +128,16 @@ class DashboardController extends AbstractDashboardController
      */
     public function configureMenuItems(): iterable
     {
+        $countWaitingInvoices = $this->invoiceService->countWaitingInvoices();
+        $getNullTypesCount = $this->accountingService->getNullTypesCount();
+
         yield MenuItem::linkToUrl('Return to website', 'fa fa-arrow-left', '/');
 
         yield MenuItem::section('Invoicing');
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-chart-bar');
         yield MenuItem::linkToRoute('Report', 'fa fa-calendar-alt', 'report');
         yield MenuItem::linkToCrud('Invoices', 'fa fa-coins', Invoice::class)
-            ->setBadge($this->invoiceService->countWaitingInvoices() ?? '');
+            ->setBadge($countWaitingInvoices > 0 ?? '');
         yield MenuItem::linkToCrud('Declarations', 'fa fa-landmark', Declaration::class);
         yield MenuItem::linkToCrud('Companies', 'fa fa-building', Company::class);
         yield MenuItem::linkToCrud('Persons', 'fa fa-users', Person::class);
@@ -152,7 +155,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToRoute('Dashboard', 'fa fa-chart-pie', 'accounting');
         yield MenuItem::linkToCrud('Statements', 'fa fa-file-alt', Statement::class);
         yield MenuItem::linkToCrud('Operations', 'fa fa-columns', Operation::class)
-            ->setBadge($this->accountingService->getNullTypesCount() ?? '');
+            ->setBadge($getNullTypesCount > 0 ?? '');
         yield MenuItem::linkToCrud('Filters', 'fa fa-filter', OperationFilter::class);
     }
 
