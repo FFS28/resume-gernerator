@@ -108,6 +108,7 @@ class StatementService
             $name = $operationLine[1];
             $amount = $operationLine[2];
             $isPositiv = false;
+            $filterId = '';
             $log = $date->format('Ymd') . ' ' . $name . ' ' . $amount;
 
             if (StringHelper::contains($name, $positiveFilters) === true) {
@@ -117,7 +118,8 @@ class StatementService
                     if (strpos($name, (string)$exception['name']) > -1
                         && $date->format('d/m/Y') === $exception['date']->format('d/m/Y')
                         && $amount == floatval($exception['amount'])
-                        && !in_array($log, $history)) {
+                        && (!in_array($log, $history) || $exception['hasDuplicate'])) {
+                        $filterId = $exception['id'];
                         $isPositiv = true;
                         break;
                     }
@@ -128,13 +130,14 @@ class StatementService
             $totalAmount += $amount;
             $history[] = $log;
 
-            if ($amount > 0) {
-                $logPositives[] = $name . ' : ' . $amount;
+            if ($isPositiv) {
+                $logPositives[] = $name . ' / ' . $amount . ' / Filter id : ' . $filterId;
             } else {
-                $logNegatives[] = $name . ' : ' . $amount . ' : ' . $date->format('d/m/Y');
+                $logNegatives[] = $name . ' / ' . $amount . ' / Daté du ' . $date->format('d/m/Y');
             }
 
-            if (!$this->operationRepository->findDateNameAmount($date, $name, $amount)) {
+            $operationExists = $this->operationRepository->findDateNameAmount($date, $name, $amount);
+            if (count($operationExists) === 0) {
                 $operation = new Operation();
                 $operation->setDate($date);
                 $operation->setName($name);

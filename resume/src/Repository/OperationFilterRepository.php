@@ -40,9 +40,11 @@ class OperationFilterRepository extends ServiceEntityRepository
     public function getPositiveExceptionFilters()
     {
         $query = $this->createQueryBuilder('o')
+            ->select('o.id')
             ->select('o.name')
             ->addSelect('o.date')
             ->addSelect('o.amount')
+            ->addSelect('o.hasDuplicate')
             ->andWhere('o.amount IS NOT NULL')
             ->andWhere('o.date IS NOT NULL');
 

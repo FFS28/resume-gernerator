@@ -40,6 +40,9 @@ class OperationFilter implements \Stringable
     public ?string $labelAutocomplete = '';
     public ?string $labelCustom = '';
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $hasDuplicate = null;
+
     public function __toString(): string
     {
         return $this->getName();
@@ -123,6 +126,18 @@ class OperationFilter implements \Stringable
     public function setAmount(?string $amount): self
     {
         $this->amount = $amount;
+
+        return $this;
+    }
+
+    public function isHasDuplicate(): ?bool
+    {
+        return $this->hasDuplicate;
+    }
+
+    public function setHasDuplicate(?bool $hasDuplicate): self
+    {
+        $this->hasDuplicate = $hasDuplicate;
 
         return $this;
     }

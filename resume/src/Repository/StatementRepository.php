@@ -19,7 +19,7 @@ class StatementRepository extends ServiceEntityRepository
         parent::__construct($registry, Statement::class);
     }
 
-    public function getSavingAmounts(int $year = null)
+    public function getSavingAmounts(int $year = null): array|float|int|string
     {
         $query = $this->createQueryBuilder('s')
             ->select('ToChar(s.date, \'YYYY-MM-DD\') AS date')

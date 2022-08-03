@@ -18,6 +18,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
@@ -101,6 +102,10 @@ class OperationFilterCrudController extends AbstractCrudController
         yield TextField::new('target')->setColumns(2);
         yield DateField::new('date')->setColumns(2);
         yield MoneyField::new('amount')->setColumns(2)->setCurrency('EUR')->setStoredAsCents(false)->setNumDecimals(2);
+
+        if (Crud::PAGE_EDIT === $pageName || Crud::PAGE_NEW === $pageName) {
+            yield BooleanField::new('hasDuplicate')->setColumns(2);
+        }
     }
 
     public function createEditForm(EntityDto $entityDto, KeyValueStore $formOptions, AdminContext $context): FormInterface

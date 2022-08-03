@@ -43,7 +43,7 @@ class OperationRepository extends ServiceEntityRepository
             ->setParameter('name', $name)
             ->setParameter('amount', $amount)
             ->getQuery()
-            ->getOneOrNullResult();
+            ->getResult();
     }
 
     public function getTotalsByMonthAndType($year = null, $type = null)
