@@ -11,7 +11,7 @@
                 {% for year in years %}
                     <div class="col">
                         <a class="{% if year == activeYear %}active{% endif %}"
-                           href="{{ url(active_route, (active_params | merge({'year' : year}))) }}">{{ year }}</a>
+                           href="{{ url(active_route, (active_params | merge(year == activeYear ? {'year' : 0} : {'year' : year}))) }}">{{ year }}</a>
                     </div>
                 {% endfor %}
             </div>

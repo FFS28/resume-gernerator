@@ -97,7 +97,7 @@ class StatementService
             }
         }
 
-        $positiveFilters = array_column($this->operationFilterRepository->getPositiveFilters(), 'name');
+        $positiveFilters = $this->operationFilterRepository->getPositiveFilters();
         $positiveExceptionFilters = $this->operationFilterRepository->getPositiveExceptionFilters();
         $filters = $this->operationFilterRepository->getFilters();
         $history = [];
@@ -111,14 +111,19 @@ class StatementService
             $filterId = '';
             $log = $date->format('Ymd') . ' ' . $name . ' ' . $amount;
 
-            if (StringHelper::contains($name, $positiveFilters) === true) {
-                $isPositiv = true;
-            } else {
+            foreach ($positiveFilters as $positiveFilter) {
+                if (strpos($name, (string)$positiveFilter['name']) > -1) {
+                    $filterId = $positiveFilter['id'];
+                    $isPositiv = true;
+                }
+            }
+            if (!$isPositiv) {
                 foreach ($positiveExceptionFilters as $exception) {
                     if (strpos($name, (string)$exception['name']) > -1
                         && $date->format('d/m/Y') === $exception['date']->format('d/m/Y')
                         && $amount == floatval($exception['amount'])
-                        && (!in_array($log, $history) || $exception['hasDuplicate'])) {
+                        && (!in_array($log, $history) || $exception['hasDuplicate'])
+                    ) {
                         $filterId = $exception['id'];
                         $isPositiv = true;
                         break;

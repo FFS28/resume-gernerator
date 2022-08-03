@@ -23,6 +23,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\FormInterface;
@@ -57,6 +58,7 @@ class OperationFilterCrudController extends AbstractCrudController
     public function configureFilters(Filters $filters): Filters
     {
         return $filters
+            ->add('id')
             ->add('name')
             ->add(EnumFilter::new('type', OperationTypeFilterType::class))
             ->add('label')
@@ -68,6 +70,10 @@ class OperationFilterCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
+        if (Crud::PAGE_INDEX === $pageName) {
+            yield NumberField::new('id');
+        }
+
         yield FormField::addPanel('Operation');
         yield TextField::new('name');
 

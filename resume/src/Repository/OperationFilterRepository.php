@@ -24,7 +24,8 @@ class OperationFilterRepository extends ServiceEntityRepository
     public function getPositiveFilters(): array|float|int|string
     {
         $query = $this->createQueryBuilder('o')
-            ->select('o.name')
+            ->select('o.id')
+            ->addSelect('o.name')
             ->andWhere('o.amount IS NULL')
             ->andWhere('o.date IS NULL');
 
@@ -41,7 +42,7 @@ class OperationFilterRepository extends ServiceEntityRepository
     {
         $query = $this->createQueryBuilder('o')
             ->select('o.id')
-            ->select('o.name')
+            ->addSelect('o.name')
             ->addSelect('o.date')
             ->addSelect('o.amount')
             ->addSelect('o.hasDuplicate')
