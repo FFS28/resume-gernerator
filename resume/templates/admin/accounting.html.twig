@@ -2,7 +2,7 @@
 {% set active_params = app.request.attributes.get('_route_params') | default([]) %}
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
-{% block page_title %}{{ 'Accounting' | trans }}{% endblock %}
+{% block page_title %}{{ 'Dashboard' | trans }}{% endblock %}
 
 {% block main %}
     <div id="accounting" class="dashboard">
@@ -46,11 +46,6 @@
             {% if chartTotalsByLabel is defined %}
                 <div class="row align-items-center" style="margin-top: 40px;">
                     {{ render_chart(chartTotalsByLabel, {'id' : 'totalsByLabel'}) }}
-                </div>
-            {% endif %}
-            {% if chartSavingAmounts is defined %}
-                <div class="row align-items-center" style="margin-top: 40px;">
-                    {{ render_chart(chartSavingAmounts, {'id' : 'savingAmounts'}) }}
                 </div>
             {% endif %}
         </div>

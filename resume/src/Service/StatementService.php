@@ -8,19 +8,25 @@ use App\Entity\Statement;
 use App\Helper\StringHelper;
 use App\Repository\OperationFilterRepository;
 use App\Repository\OperationRepository;
+use App\Repository\StatementRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Exception;
 use Smalot\PdfParser\Parser;
+use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
+use Symfony\UX\Chartjs\Model\Chart;
 
 class StatementService
 {
     public function __construct(
         private readonly string                    $statementDirectory,
         private readonly EntityManagerInterface    $entityManager,
+        private readonly StatementRepository       $statementRepository,
         private readonly OperationRepository       $operationRepository,
-        private readonly OperationFilterRepository $operationFilterRepository
+        private readonly OperationFilterRepository $operationFilterRepository,
+        private readonly ChartBuilderInterface     $chartBuilder,
     ) {
     }
 
@@ -203,5 +209,46 @@ class StatementService
                 break;
             }
         }
+    }
+
+    public function getDashboard(int $year): array
+    {
+        $years = array_column($this->statementRepository->listYears(), 'date');
+        sort($years);
+
+        $viewData = [
+            'years' => $years,
+            'activeYear' => $year
+        ];
+        $savingAmounts = $this->statementRepository->getSavingAmounts($year);
+        $labels = $values = [];
+
+        foreach ($savingAmounts as $savingAmount) {
+            $labels[] = $savingAmount['date'];
+            $values[] = $savingAmount['savingAmount'];
+        }
+        $chartSavingAmounts = $this->chartBuilder->createChart(Chart::TYPE_LINE);
+        $chartSavingAmounts->setData([
+                                         'labels' => $labels,
+                                         'datasets' => [[
+                                                            'label' => 'Livret Bleu',
+                                                            'borderColor' => 'rgba(96, 165, 250, 0.6)',
+                                                            'backgroundColor' => 'rgba(96, 165, 250, 0.6)',
+                                                            'data' => $values
+                                                        ]]
+                                     ]);
+        $viewData['chartSavingAmounts'] = $chartSavingAmounts;
+
+        return $viewData;
+    }
+
+
+    /**
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
+    public function getNoOcrCount(): int
+    {
+        return $this->statementRepository->countNoOcr();
     }
 }

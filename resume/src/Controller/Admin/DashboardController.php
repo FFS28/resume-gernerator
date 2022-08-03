@@ -21,6 +21,7 @@ use App\Service\AccountingService;
 use App\Service\DashboardService;
 use App\Service\InvoiceService;
 use App\Service\ReportService;
+use App\Service\StatementService;
 use DateTime;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
@@ -45,6 +46,7 @@ class DashboardController extends AbstractDashboardController
         private readonly DashboardService  $dashboardService,
         private readonly ReportService     $reportService,
         private readonly AccountingService $accountingService,
+        private readonly StatementService  $statementService,
         private readonly InvoiceService    $invoiceService
     ) {
     }
@@ -99,11 +101,21 @@ class DashboardController extends AbstractDashboardController
         return $this->render('admin/report.html.twig', $viewData);
     }
 
+    /**
+     * @throws Exception
+     */
     #[Route('/admin/accounting/{year<\d+>?0}/{month<\d+>?0}/{type<\w+>?}', name: 'accounting')]
     public function accouting(int $year = 0, int $month = 0, $type = ''): Response
     {
         $viewData = $this->accountingService->getDashboard($year, $month, $type);
         return $this->render('admin/accounting.html.twig', $viewData);
+    }
+
+    #[Route('/admin/saving/{year<\d+>?0}', name: 'saving')]
+    public function saving(int $year = 0): Response
+    {
+        $viewData = $this->statementService->getDashboard($year);
+        return $this->render('admin/saving.html.twig', $viewData);
     }
 
     public function configureDashboard(): Dashboard
@@ -129,7 +141,8 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         $countWaitingInvoices = $this->invoiceService->countWaitingInvoices();
-        $getNullTypesCount = $this->accountingService->getNullTypesCount();
+        $countNullTypes = $this->accountingService->getNullTypesCount();
+        $countNoOcr = $this->statementService->getNoOcrCount();
 
         yield MenuItem::linkToUrl('Return to website', 'fa fa-arrow-left', '/');
 
@@ -153,9 +166,11 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::section('Accounting');
 
         yield MenuItem::linkToRoute('Dashboard', 'fa fa-chart-pie', 'accounting');
-        yield MenuItem::linkToCrud('Statements', 'fa fa-file-alt', Statement::class);
+        yield MenuItem::linkToRoute('Saving', 'fa fa-vault', 'saving');
+        yield MenuItem::linkToCrud('Statements', 'fa fa-file-alt', Statement::class)
+            ->setBadge($countNoOcr > 0 ?? '');
         yield MenuItem::linkToCrud('Operations', 'fa fa-columns', Operation::class)
-            ->setBadge($getNullTypesCount > 0 ?? '');
+            ->setBadge($countNullTypes > 0 ?? '');
         yield MenuItem::linkToCrud('Filters', 'fa fa-filter', OperationFilter::class);
     }
 
