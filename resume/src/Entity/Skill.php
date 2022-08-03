@@ -26,7 +26,7 @@ class Skill implements Stringable
     #[ORM\Column(type: Types::STRING, length: 255, unique: true)]
     private ?string $slug = null;
 
-    #[ORM\Column(type: Types::STRING, enumType: SkillTypeEnum::class)]
+    #[ORM\Column(type: Types::STRING, nullable: true, enumType: SkillTypeEnum::class)]
     private SkillTypeEnum $type;
 
     #[ORM\Column(type: Types::INTEGER, nullable: true)]

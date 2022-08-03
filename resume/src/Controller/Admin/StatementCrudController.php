@@ -50,7 +50,13 @@ class StatementCrudController extends AbstractCrudController
     {
         $ocrAction = Action::new('ocr', 'Ocr', 'fa fa-eye')
             ->linkToCrudAction('ocrAction')
-            ->displayIf(fn(Statement $statement) => $statement->getOperationsCount() == 0)
+            ->displayIf(fn(Statement $statement) =>
+                $statement->getOperationsCount() == 0 ||
+                $statement->getStartAmount() == null ||
+                $statement->getEndAmount() == null ||
+                $statement->getGapAmount() == null ||
+                $statement->getSavingAmount() == null
+            )
             ->addCssClass('btn-sm btn-success');
 
         $downloadAction = Action::new('download', 'Download', 'fa-solid fa-file-pdf')
@@ -77,6 +83,10 @@ class StatementCrudController extends AbstractCrudController
         }
         if (Crud::PAGE_INDEX === $pageName) {
             yield NumberField::new('operationsCount', 'Operations');
+            yield NumberField::new('startAmount');
+            yield NumberField::new('endAmount');
+            yield NumberField::new('gapAmount');
+            yield NumberField::new('savingAmount');
         }
     }
 
@@ -115,6 +125,8 @@ class StatementCrudController extends AbstractCrudController
      */
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
+        parent::persistEntity($entityManager, $entityInstance);
+
         if (!$entityInstance->getDate()) {
             $matches = [];
 
@@ -128,9 +140,9 @@ class StatementCrudController extends AbstractCrudController
             } else {
                 $entityInstance->setDate(new DateTime());
             }
-        }
 
-        parent::persistEntity($entityManager, $entityInstance);
+            $entityManager->flush();
+        }
 
         if ($entityInstance->getOperationsCount() == 0) {
             $this->extractWithMessage($entityInstance, false);

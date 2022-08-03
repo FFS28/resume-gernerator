@@ -43,6 +43,18 @@ class Statement implements \Stringable
 
     private ?TranslatorInterface $translator = null;
 
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    private ?string $startAmount = null;
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    private ?string $endAmount = null;
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    private ?string $gapAmount = null;
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    private ?string $savingAmount = null;
+
     public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
@@ -51,6 +63,10 @@ class Statement implements \Stringable
     public function __toString(): string
     {
         $date = $this->getDate();
+        if (!$date) {
+            return '###';
+        }
+
         if ($this->translator) {
             return $this->translator->trans($date->format('F')) . " " . $date->format('Y');
         } else {
@@ -113,6 +129,54 @@ class Statement implements \Stringable
     public function setOperationsCount(?int $operationsCount): self
     {
         $this->operationsCount = $operationsCount;
+
+        return $this;
+    }
+
+    public function getStartAmount(): ?string
+    {
+        return $this->startAmount;
+    }
+
+    public function setStartAmount(?string $startAmount): self
+    {
+        $this->startAmount = $startAmount;
+
+        return $this;
+    }
+
+    public function getEndAmount(): ?string
+    {
+        return $this->endAmount;
+    }
+
+    public function setEndAmount(?string $endAmount): self
+    {
+        $this->endAmount = $endAmount;
+
+        return $this;
+    }
+
+    public function getGapAmount(): ?string
+    {
+        return $this->gapAmount;
+    }
+
+    public function setGapAmount(?string $gapAmount): self
+    {
+        $this->gapAmount = $gapAmount;
+
+        return $this;
+    }
+
+    public function getSavingAmount(): ?string
+    {
+        return $this->savingAmount;
+    }
+
+    public function setSavingAmount(?string $savingAmount): self
+    {
+        $this->savingAmount = $savingAmount;
 
         return $this;
     }

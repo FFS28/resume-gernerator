@@ -46,8 +46,10 @@ class StatementService
 
         $lines = explode("\n", $text);
         $startAmount = $endAmount = $totalAmount = $nbOperations = 0;
+        $livretBleuStart = $livretBleuEnd = null;
 
         $extractOperations = false;
+        $extractOtherAccounts = false;
 
         foreach ($lines as $index => $line) {
             if ($extractOperations && $index > $extractOperations) {
@@ -70,17 +72,28 @@ class StatementService
             } elseif (str_starts_with($line, 'Compte Courant JEUNE ACTIF N°')
                 || str_starts_with($line, 'C/C EUROCOMPTE DUO CONFORT N°')) {
                 $extractOperations = $index + 1;
-            } elseif (strpos($line, 'SOLDE CREDITEUR ') > -1) {
+            } elseif (strpos($line, 'SOLDE ') > -1) {
                 $lineArray = explode("\t", $line);
+
                 $amount = StringHelper::extractAmount(
-                    str_starts_with($line, 'SOLDE CREDITEUR ') ? $lineArray[1] : $lineArray[2]
+                    str_starts_with($line, 'SOLDE ') ? $lineArray[1] : $lineArray[2]
                 );
 
-                if ($startAmount && !$endAmount) {
-                    $endAmount = $amount;
-                } elseif (!$startAmount) {
-                    $startAmount = $amount;
+                if ($extractOtherAccounts) {
+                    if ($livretBleuStart !== null) {
+                        $livretBleuStart = $amount;
+                    } else {
+                        $livretBleuEnd = $amount;
+                    }
+                } else {
+                    if ($startAmount && !$endAmount) {
+                        $endAmount = $amount;
+                    } elseif (!$startAmount) {
+                        $startAmount = $amount;
+                    }
                 }
+            } elseif (strpos($line, 'LIVRET BLEU') > -1) {
+                $extractOtherAccounts = true;
             }
         }
 
@@ -151,7 +164,13 @@ class StatementService
                 exit;
             }
         } else {
+            $statement->setStartAmount($startAmount);
+            $statement->setEndAmount($endAmount);
+            $statement->setGapAmount($endAmount - $startAmount);
+            $statement->setSavingAmount($livretBleuEnd !== null ? $livretBleuEnd : 0);
+
             $statement->setOperationsCount(count($operations));
+
             $this->entityManager->flush();
         }
 

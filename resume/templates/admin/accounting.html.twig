@@ -48,6 +48,11 @@
                     {{ render_chart(chartTotalsByLabel, {'id' : 'totalsByLabel'}) }}
                 </div>
             {% endif %}
+            {% if chartSavingAmounts is defined %}
+                <div class="row align-items-center" style="margin-top: 40px;">
+                    {{ render_chart(chartSavingAmounts, {'id' : 'savingAmounts'}) }}
+                </div>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

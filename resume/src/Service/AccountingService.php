@@ -7,6 +7,7 @@ use App\Entity\Operation;
 use App\Enum\InvoiceStatusEnum;
 use App\Enum\OperationTypeEnum;
 use App\Repository\OperationRepository;
+use App\Repository\StatementRepository;
 use DateTime;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
@@ -19,6 +20,7 @@ class AccountingService
 {
     public function __construct(
         private readonly OperationRepository $operationRepository,
+        private readonly StatementRepository $statementRepository,
         private readonly ChartBuilderInterface $chartBuilder,
         private readonly TranslatorInterface $translator
     )
@@ -234,6 +236,25 @@ class AccountingService
             ]);
             $viewData['chartTotalsByLabel'] = $chartTotalsByLabel;
         }
+
+        $savingAmounts = $this->statementRepository->getSavingAmounts($year);
+        $labels = $values = [];
+
+        foreach ($savingAmounts as $savingAmount) {
+            $labels[] = $savingAmount['date'];
+            $values[] = $savingAmount['savingAmount'];
+        }
+        $chartSavingAmounts = $this->chartBuilder->createChart(Chart::TYPE_LINE);
+        $chartSavingAmounts->setData([
+                                         'labels' => $labels,
+                                         'datasets' => [[
+                                                            'label' => 'Livret Bleu',
+                                                            'borderColor' => 'rgba(96, 165, 250, 0.6)',
+                                                            'backgroundColor' => 'rgba(96, 165, 250, 0.6)',
+                                                            'data' => $values
+                                                        ]]
+                                     ]);
+        $viewData['chartSavingAmounts'] = $chartSavingAmounts;
 
         return $viewData;
     }

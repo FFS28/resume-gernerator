@@ -18,4 +18,19 @@ class StatementRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Statement::class);
     }
+
+    public function getSavingAmounts(int $year = null)
+    {
+        $query = $this->createQueryBuilder('s')
+            ->select('ToChar(s.date, \'YYYY-MM-DD\') AS date')
+            ->addSelect('s.savingAmount')
+            ->orderBy('date', 'ASC')
+        ;
+
+        if ($year) {
+            $query->andWhere('ToChar(s.date, \'YYYY\') = :year')->setParameter('year', $year);
+        }
+
+        return $query->getQuery()->getArrayResult();
+    }
 }
