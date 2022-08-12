@@ -37,7 +37,8 @@ class StatementRepository extends ServiceEntityRepository
     {
         $query = $this->createQueryBuilder('s')
             ->select('COUNT(s.id) nullCount')
-            ->where('s.operationsCount > 0');
+            ->where('s.operationsCount = 0')
+            ->orWhere('s.operationsCount IS NULL');
 
         return $query->getQuery()->getSingleScalarResult();
     }

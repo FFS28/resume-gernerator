@@ -50,11 +50,15 @@ class Skill implements Stringable
     #[ORM\OneToMany(mappedBy: 'parent', targetEntity: Skill::class)]
     private Collection $children;
 
+    #[ORM\ManyToMany(targetEntity: Project::class, mappedBy: 'skills')]
+    private Collection $projects;
+
     public function __construct()
     {
         $this->experiences = new ArrayCollection();
         $this->children = new ArrayCollection();
         $this->level = 0;
+        $this->projects = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -226,5 +230,32 @@ class Skill implements Stringable
         }
 
         return $parents;
+    }
+
+    /**
+     * @return Collection<int, Project>
+     */
+    public function getProjects(): Collection
+    {
+        return $this->projects;
+    }
+
+    public function addProject(Project $project): self
+    {
+        if (!$this->projects->contains($project)) {
+            $this->projects->add($project);
+            $project->addSkill($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProject(Project $project): self
+    {
+        if ($this->projects->removeElement($project)) {
+            $project->removeSkill($this);
+        }
+
+        return $this;
     }
 }

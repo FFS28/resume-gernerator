@@ -8,6 +8,7 @@ use App\Repository\EducationRepository;
 use App\Repository\ExperienceRepository;
 use App\Repository\HobbyRepository;
 use App\Repository\LinkRepository;
+use App\Repository\ProjectRepository;
 use App\Repository\SkillRepository;
 use Doctrine\ORM\Query\QueryException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,7 +28,7 @@ class IndexController extends AbstractController
     #[Route(path: '/', name: 'app_index')]
     public function index(Request              $request, AttributeRepository $attributeRepository,
                           SkillRepository      $skillRepository, ExperienceRepository $experienceRepository,
-                          EducationRepository  $educationRepository, HobbyRepository $hobbyRepository,
+                          EducationRepository  $educationRepository, HobbyRepository $hobbyRepository, ProjectRepository $projectRepository,
                           LinkRepository       $linkRepository, MailerInterface $mailer, TranslatorInterface $translator
     ): Response {
         $form = $this->createForm(ContactFormType::class);
@@ -41,6 +42,7 @@ class IndexController extends AbstractController
             'skills'              => $skillRepository->findBy(['onHomepage' => true], ['level' => 'DESC']),
             'experiences'         => $experienceRepository->findBy($experiencesFilter, ['dateBegin' => 'DESC']),
             'educations'          => $educationRepository->findBy([], ['dateBegin' => 'DESC']),
+            'projects'            => $projectRepository->findBy([], ['name' => 'ASC']),
             'hobbies'             => $hobbyRepository->findAll(),
             'links'               => $linkRepository->findAll(),
             'format'              => $format,

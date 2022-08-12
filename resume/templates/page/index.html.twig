@@ -22,7 +22,7 @@
                     margin: [0.2, 0.1, 0.2, 0.1],
                     filename: '{{ filename }}{% if all is defined and all %}-full{% endif %}.pdf',
                     jsPDF: { unit: 'in', orientation: 'portrait' },
-                    pagebreak: { before: ['#educations'], after: [], avoid: ['li'] }
+                    pagebreak: { before: [], after: ['#experiences'], avoid: ['li'] }
                 }).from(element).save().then(function() {
                     setTimeout(function(){
                         window.close();
@@ -195,6 +195,37 @@
                     <div class="badges">
                         <span class="badge">{{ (experience.isFreelance ? 'Freelance' : 'Employee') | trans }}</span>
                         {% for skill in experience.skills %}
+                            <span class="badge">{{ skill }}</span>
+                        {% endfor %}
+                    </div>
+                    {% if format == 'doc' %}<br/>{% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+        <div class="clearfix"></div>
+    </div>
+    <div id="projects" class="section text-center {% if format %}html-pdf{% endif %}">
+        <h2>{{ 'Projects' | trans }}</h2>
+        <ul>
+            {% for project in projects %}
+                <li>
+                    {% if format == 'doc' %}
+                        <b>{{ project.name }}</b>
+                    {% else %}
+                        <h4 class="title">
+                            {% if project.websiteUrl %}
+                                <a target="_blank" href="{{ project.websiteUrl }}">{{ project.name }}</a>
+                            {% else %}
+                                {{ project.name }}
+                            {% endif %}
+                        </h4>
+                    {% endif %}
+                    <div class="description">{{ project.description | nl2br }}</div>
+                    {% if project.sourceUrl %}
+                        <a class="hidden-print" target="_blank" href="{{ project.sourceUrl }}">{{ 'Source Url' | trans }}</a>
+                    {% endif %}
+                    <div class="badges">
+                        {% for skill in project.skills %}
                             <span class="badge">{{ skill }}</span>
                         {% endfor %}
                     </div>

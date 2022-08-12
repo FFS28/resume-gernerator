@@ -13,6 +13,7 @@ use App\Entity\Link;
 use App\Entity\Operation;
 use App\Entity\OperationFilter;
 use App\Entity\Person;
+use App\Entity\Project;
 use App\Entity\Skill;
 use App\Entity\Statement;
 use App\Entity\User;
@@ -150,7 +151,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-chart-bar');
         yield MenuItem::linkToRoute('Report', 'fa fa-calendar-alt', 'report');
         yield MenuItem::linkToCrud('Invoices', 'fa fa-coins', Invoice::class)
-            ->setBadge($countWaitingInvoices > 0 ?? '');
+            ->setBadge($countWaitingInvoices > 0 ? $countWaitingInvoices : '');
         yield MenuItem::linkToCrud('Declarations', 'fa fa-landmark', Declaration::class);
         yield MenuItem::linkToCrud('Companies', 'fa fa-building', Company::class);
         yield MenuItem::linkToCrud('Persons', 'fa fa-users', Person::class);
@@ -159,6 +160,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Experiences', 'fa fa-map-marker-alt', Experience::class);
         yield MenuItem::linkToCrud('Skills', 'fa fa-fill-drip', Skill::class);
         yield MenuItem::linkToCrud('Attributes', 'fa fa-address-card', Attribute::class);
+        yield MenuItem::linkToCrud('Projects', 'fa fa-screwdriver-wrench', Project::class);
         yield MenuItem::linkToCrud('Hobbies', 'fa fa-chess', Hobby::class);
         yield MenuItem::linkToCrud('Educations', 'fa fa-graduation-cap', Education::class);
         yield MenuItem::linkToCrud('Links', 'fa fa-link', Link::class);
@@ -168,9 +170,9 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToRoute('Dashboard', 'fa fa-chart-pie', 'accounting');
         yield MenuItem::linkToRoute('Saving', 'fa fa-vault', 'saving');
         yield MenuItem::linkToCrud('Statements', 'fa fa-file-alt', Statement::class)
-            ->setBadge($countNoOcr > 0 ?? '');
+            ->setBadge($countNoOcr > 0 ? $countNoOcr : '');
         yield MenuItem::linkToCrud('Operations', 'fa fa-columns', Operation::class)
-            ->setBadge($countNullTypes > 0 ?? '');
+            ->setBadge($countNullTypes > 0 ? $countNullTypes : '');
         yield MenuItem::linkToCrud('Filters', 'fa fa-filter', OperationFilter::class);
     }
 
