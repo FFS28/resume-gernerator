@@ -14,15 +14,17 @@
 
 {% block javascripts %}
     {% if format == 'pdf' %}
-        <script type='text/javascript' src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
+        <!-- version fixé lié à des soucis inndiqué sur "https://ekoopmans.github.io/html2pdf.js/" -->
+        <script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
         <script type='text/javascript'>
             window.onload = function() {
                 let element = document.getElementById('body');
-                let worker = html2pdf().set({
+                html2pdf().set({
                     margin: [0.2, 0.1, 0.2, 0.1],
                     filename: '{{ filename }}{% if all is defined and all %}-full{% endif %}.pdf',
                     jsPDF: { unit: 'in', orientation: 'portrait' },
-                    pagebreak: { before: [], after: ['#experiences'], avoid: ['li'] }
+                    // "after" pose des problèmes de marge sur la page suivante
+                    pagebreak: { before: ['#projects'], after: [], avoid: ['li'] }
                 }).from(element).save().then(function() {
                     setTimeout(function(){
                         window.close();
@@ -74,221 +76,224 @@
     {% if not format %}
         <a id="download" href="{{ url('app_index', {'format' : 'pdf', 'all' : all}) }}" target="_blank" class="hidden-print" rel="noreferrer" >⇩</a>
     {% endif %}
-    <div itemscope itemtype="http://schema.org/Person">
-        <div id="head" class="text-center {% if format %}html-pdf{% endif %}">
-            {% if messageSended %}
-                <div id="message" class="hidden-print">
-                    <a class="close" href="{{ url('app_index') }}">&times;</a>
-                    {{ 'Message sended' | trans }}
-                </div>
-            {% elseif attributes['message'] is defined and attributes['message'].value and not format %}
-                <div id="message" class="hidden-print">
-                    <button class="close" onclick="document.getElementById('message').remove()">&times;</button>
-                    {{ attributes['message'].value | raw }}
-                </div>
-            {% endif %}
-            <div id="me">
-                {% if attributes['quote'] is defined and not format%}
-                    <div id="quote" class="hidden-print">
-                        <i class="fas fa-quote-left hidden-xs" aria-hidden="true">&ldquo;</i>
-                        <span class="quote">{{ attributes['quote'].value }}</span>
-                        <i class="fas fa-quote-right hidden-xs" aria-hidden="true">&rdquo;</i>
+    <div class="{% if format %}html-pdf{% endif %}">
+        <div itemscope itemtype="http://schema.org/Person">
+            <div id="head" class="text-center {% if format %}html-pdf{% endif %}">
+                {% if messageSended %}
+                    <div id="message" class="hidden-print">
+                        <a class="close" href="{{ url('app_index') }}">&times;</a>
+                        {{ 'Message sended' | trans }}
                     </div>
-                    <div id="delimiter" class="hidden-xs hidden-print"></div>
+                {% elseif attributes['message'] is defined and attributes['message'].value and not format %}
+                    <div id="message" class="hidden-print">
+                        <button class="close" onclick="document.getElementById('message').remove()">&times;</button>
+                        {{ attributes['message'].value | raw }}
+                    </div>
                 {% endif %}
-                <h1 id="name">
-                    {% if attributes['name'] is defined %}
-                        <div class="name" itemprop="name">{{ attributes['name'].value }}</div>
-                    {% endif %}
-                    {% if attributes['job'] is defined %}
-                        <div class="h2 job" itemprop="jobTitle">{{ attributes['job'].value }}</div>
-                    {% endif %}
-                </h1>
-            </div>
-        </div>
-        <div class="{% if format %}html-pdf{% endif %}">
-            {% if attributes['subtitle'] is defined and not format%}
-                <h2 id="subtitle" class="text-center hidden-print">{{ attributes['subtitle'].value }}</h2>
-            {% endif %}
-            <div id="attributes" class="ul text-center">
-                {% set age = date('now').diff((date('1988-09-05'))).format('%y') %}
-                <li>{{ 'Age' | trans({'{age}':age}) }}</li>
-                {% if attributes['city'] is defined %}
-                    <li class="separator hidden-xs"><i class="fas fa-circle"></i></li>
-                    <li itemprop="homeLocation" itemscope itemtype="http://schema.org/PostalAddress">
-                        <span itemprop="addressLocality">{{ attributes['city'].value }}</span>
-                    </li>
-                {% endif %}
-                {% for attribute in attributes_listable %}
-                    <li class="separator hidden-xs"><i class="fas fa-circle"></i></li>
-                    <li>
-                        {% if attribute.icon %}<i class="icon {{ attribute.icon }}"></i>{% endif %}
-                        <span>{{ attribute.value }}</span>
-                    </li>
-                {% endfor %}
-                {% if format and attributes['telephone'] is defined %}
-                    <li>Téléphone : {{ attributes['telephone'].value }}</li>
-                {% endif %}
-                {% if format and attributes['email'] is defined %}
-                    <li>Email : {{ attributes['email'].value }}</li>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-    {% if not format %}
-        <div id="skills" class="section text-center {% if format %}html-pdf{% endif %}">
-            <h2>
-                {{ 'Skills' | trans }}
-            </h2>
-            <ul>
-                {% for skill in skills %}
-                    <li>
-                        <div class="">
-                            {% if format %}
-                                <div class="bar-chart">
-                                    <div style="height:{{ (10 - skill.level) * 10 }}%"></div>
-                                    <span>{{ skill.level }}</span>
-                                </div>
-                            {% else %}
-                                <div class="donut-chart donut-{{ skill.level }}">
-                                    <div class="slice one"></div>
-                                    <div class="slice two"></div>
-                                    <div class="chart-center">
-                                        <span></span>
-                                    </div>
-                                </div>
-                            {% endif %}
+                <div id="me">
+                    {% if attributes['quote'] is defined and not format%}
+                        <div id="quote" class="hidden-print">
+                            <i class="fas fa-quote-left hidden-xs" aria-hidden="true">&ldquo;</i>
+                            <span class="quote">{{ attributes['quote'].value }}</span>
+                            <i class="fas fa-quote-right hidden-xs" aria-hidden="true">&rdquo;</i>
                         </div>
-                        <div class="name">{{ skill.name }}</div>
-                    </li>
-                {% endfor %}
-            </ul>
+                        <div id="delimiter" class="hidden-xs hidden-print"></div>
+                    {% endif %}
+                    <h1 id="name">
+                        {% if attributes['name'] is defined %}
+                            <div class="name" itemprop="name">{{ attributes['name'].value }}</div>
+                        {% endif %}
+                        {% if attributes['job'] is defined %}
+                            <div class="h2 job" itemprop="jobTitle">{{ attributes['job'].value }}</div>
+                        {% endif %}
+                    </h1>
+                </div>
+            </div>
+            <div class="{% if format %}html-pdf{% endif %}">
+                {% if attributes['subtitle'] is defined and not format%}
+                    <h2 id="subtitle" class="text-center hidden-print">{{ attributes['subtitle'].value }}</h2>
+                {% endif %}
+                <div id="attributes" class="ul text-center">
+                    {% set age = date('now').diff((date('1988-09-05'))).format('%y') %}
+                    <li>{{ 'Age' | trans({'{age}':age}) }}</li>
+                    {% if attributes['city'] is defined %}
+                        <li class="separator hidden-xs"><i class="fas fa-circle"></i></li>
+                        <li itemprop="homeLocation" itemscope itemtype="http://schema.org/PostalAddress">
+                            <span itemprop="addressLocality">{{ attributes['city'].value }}</span>
+                        </li>
+                    {% endif %}
+                    {% for attribute in attributes_listable %}
+                        <li class="separator hidden-xs"><i class="fas fa-circle"></i></li>
+                        <li>
+                            {% if attribute.icon %}<i class="icon {{ attribute.icon }}"></i>{% endif %}
+                            <span>{{ attribute.value }}</span>
+                        </li>
+                    {% endfor %}
+                    {% if format and attributes['telephone'] is defined %}
+                        <li>Téléphone : {{ attributes['telephone'].value }}</li>
+                    {% endif %}
+                    {% if format and attributes['email'] is defined %}
+                        <li>Email : {{ attributes['email'].value }}</li>
+                    {% endif %}
+                </div>
+            </div>
         </div>
-    {% endif %}
-    <div id="experiences" class="section text-center {% if format %}html-pdf{% endif %}">
-        <h2>
-            {% if all is defined and all %}
-                {{ 'Experiences' | trans }}
-            {% else %}
-                {{ 'Main experiences' | trans }}
-            {% endif %}
-        </h2>
-        <ul>
-            {% for experience in experiences %}
-                <li>
-                    <div class="date">
-                        <span>{{ experience.dateBegin | date('F') | trans }} {{ experience.dateBegin | date('Y') }}</span>&nbsp;-&nbsp;
-                        <span>{% if experience.dateEnd %}
-                                {{ experience.dateEnd | date('F') | trans }} {{ experience.dateEnd | date('Y') }}
-                            {% else %}
-                                {{ 'today' | trans }}
-                            {% endif %}</span>
-                    </div>
-                    {% if format == 'doc' %}
-                        <b><span>{{ experience.title }}</span> / <span>{{ experience.company.name }}</span></b>
-                    {% else %}
-                        <h4 class="title">
-                            <span>{{ experience.title }}</span> / <span>{{ experience.company.name }}</span>
-                        </h4>
-                    {% endif %}
-                    <div class="description">{{ experience.description | nl2br }}</div>
-                    <div class="badges">
-                        <span class="badge">{{ (experience.isFreelance ? 'Freelance' : 'Employee') | trans }}</span>
-                        {% for skill in experience.skills %}
-                            <span class="badge">{{ skill }}</span>
-                        {% endfor %}
-                    </div>
-                    {% if format == 'doc' %}<br/>{% endif %}
-                </li>
-            {% endfor %}
-        </ul>
-        <div class="clearfix"></div>
-    </div>
-    <div id="projects" class="section text-center {% if format %}html-pdf{% endif %}">
-        <h2>{{ 'Projects' | trans }}</h2>
-        <ul>
-            {% for project in projects %}
-                <li>
-                    {% if format == 'doc' %}
-                        <b>{{ project.name }}</b>
-                    {% else %}
-                        <h4 class="title">
-                            {% if project.websiteUrl %}
-                                <a target="_blank" href="{{ project.websiteUrl }}">{{ project.name }}</a>
-                            {% else %}
-                                {{ project.name }}
-                            {% endif %}
-                        </h4>
-                    {% endif %}
-                    <div class="description">{{ project.description | nl2br }}</div>
-                    {% if project.sourceUrl %}
-                        <a class="hidden-print" target="_blank" href="{{ project.sourceUrl }}">{{ 'Source Url' | trans }}</a>
-                    {% endif %}
-                    <div class="badges">
-                        {% for skill in project.skills %}
-                            <span class="badge">{{ skill }}</span>
-                        {% endfor %}
-                    </div>
-                    {% if format == 'doc' %}<br/>{% endif %}
-                </li>
-            {% endfor %}
-        </ul>
-        <div class="clearfix"></div>
-    </div>
-    <div id="educations" class="section text-center {% if format %}html-pdf{% endif %}">
-        <h2>{{ 'Educations' | trans }}</h2>
-        <ul>
-            {% for education in educations %}
-                <li>
-                    <div class="date">
-                        <span>{{ education.dateBegin | date('F') | trans }} {{ education.dateBegin | date('Y') }}</span> - <span>{{ education.dateEnd | date('F') | trans }} {{ education.dateEnd | date('Y') }}</span>
-                    </div>
-
-                    {% if format == 'doc' %}
-                        <b><span>Bac +{{ education.level }}</span> : <span>{{ education.name }}</span></b>
-                    {% else %}
-                        <h4 class="title"><span>Bac +{{ education.level }}</span> : <span>{{ education.name }}</span></h4>
-                    {% endif %}
-                    {% if education.details %}
-                        <div>{{ education.details }}</div>
-                    {% endif %}
-                    {% if education.school %}
-                        <div>{{ education.school }}</div>
-                    {% endif %}
-                    {% if education.location %}
-                        <div><span class="badge">{{ education.location }}</span></div>
-                    {% endif %}
-                    {% if format == 'doc' %}<br/>{% endif %}
-                </li>
-            {% endfor %}
-        </ul>
-    </div>
-    <div id="hobbies" class="section text-center {% if format %}html-pdf{% endif %}">
-        <h2>{{ 'Hobbies' | trans }}</h2>
-        <ul>
-            {% for hobby in hobbies %}
-                <li class="badge">{{ hobby.name }}</li>
-            {% endfor %}
-        </ul>
-    </div>
-    {% if not format %}
-        <a id="" class="hidden-print" href="{{ url('app_index', {'format' : 'pdf', 'all' : all}) }}"></a>
-        {% if contactForm is defined %}
-            <div class="hidden-print" id="contact">
-                {{ form(contactForm) }}
+        {% if not format %}
+            <div id="skills" class="section text-center {% if format %}html-pdf{% endif %}">
+                <h2>
+                    {{ 'Skills' | trans }}
+                </h2>
+                <ul>
+                    {% for skill in skills %}
+                        <li>
+                            <div class="">
+                                {% if format %}
+                                    <div class="bar-chart">
+                                        <div style="height:{{ (10 - skill.level) * 10 }}%"></div>
+                                        <span>{{ skill.level }}</span>
+                                    </div>
+                                {% else %}
+                                    <div class="donut-chart donut-{{ skill.level }}">
+                                        <div class="slice one"></div>
+                                        <div class="slice two"></div>
+                                        <div class="chart-center">
+                                            <span></span>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="name">{{ skill.name }}</div>
+                        </li>
+                    {% endfor %}
+                </ul>
             </div>
         {% endif %}
-        <div id="links" class="hidden-print">
+        <div id="experiences" class="section text-center {% if format %}html-pdf{% endif %}">
+            <h2>
+                {% if all is defined and all %}
+                    {{ 'Experiences' | trans }}
+                {% else %}
+                    {{ 'Main experiences' | trans }}
+                {% endif %}
+            </h2>
             <ul>
-                {% for link in links %}
+                {% for experience in experiences %}
                     <li>
-                        <a href="{{ link.url }}" target="_blank" rel="noreferrer" >
-                            {% if link.icon %}<i class="icon {{ link.icon }}"></i>{% endif %}
-                            {% if link.name %}<span>{{ link.name }}</span>{% endif %}
-                        </a>
+                        <div class="date">
+                            <span>{{ experience.dateBegin | date('F') | trans }} {{ experience.dateBegin | date('Y') }}</span>&nbsp;-&nbsp;
+                            <span>{% if experience.dateEnd %}
+                                    {{ experience.dateEnd | date('F') | trans }} {{ experience.dateEnd | date('Y') }}
+                                {% else %}
+                                    {{ 'today' | trans }}
+                                {% endif %}</span>
+                        </div>
+                        {% if format == 'doc' %}
+                            <b><span>{{ experience.title }}</span> / <span>{{ experience.company.name }}</span></b>
+                        {% else %}
+                            <h4 class="title">
+                                <span>{{ experience.title }}</span> / <span>{{ experience.company.name }}</span>
+                            </h4>
+                        {% endif %}
+                        <div class="description">{{ experience.description | nl2br }}</div>
+                        <div class="badges">
+                            <span class="badge">{{ (experience.isFreelance ? 'Freelance' : 'Employee') | trans }}</span>
+                            {% for skill in experience.skills %}
+                                <span class="badge">{{ skill }}</span>
+                            {% endfor %}
+                        </div>
+                        {% if format == 'doc' %}<br/>{% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+        <div id="projects" class="section text-center {% if format %}html-pdf{% endif %}">
+            <h2>{{ 'Projects' | trans }}</h2>
+            <ul>
+                {% for project in projects %}
+                    <li>
+                        {% if format %}
+                            <b>{{ project.name }}</b><br/>
+                            <i>{{ project.websiteUrl }}</i>
+                        {% else %}
+                            <h4 class="title">
+                                {% if project.websiteUrl %}
+                                    <a target="_blank" href="{{ project.websiteUrl }}">{{ project.name }}</a>
+                                {% else %}
+                                    {{ project.name }}
+                                {% endif %}
+                            </h4>
+                        {% endif %}
+                        <div class="description">{{ project.description | nl2br }}</div>
+                        {% if project.sourceUrl %}
+                            <a class="hidden-print" target="_blank" href="{{ project.sourceUrl }}">{{ 'Source Url' | trans }}</a>
+                        {% endif %}
+                        <div class="badges">
+                            {% for skill in project.skills %}
+                                <span class="badge">{{ skill }}</span>
+                            {% endfor %}
+                        </div>
+                        {% if format == 'doc' %}<br/>{% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+        <div id="educations" class="section text-center {% if format %}html-pdf{% endif %}">
+            <h2>{{ 'Educations' | trans }}</h2>
+            <ul>
+                {% for education in educations %}
+                    <li>
+                        <div class="date">
+                            <span>{{ education.dateBegin | date('F') | trans }} {{ education.dateBegin | date('Y') }}</span> - <span>{{ education.dateEnd | date('F') | trans }} {{ education.dateEnd | date('Y') }}</span>
+                        </div>
+
+                        {% if format == 'doc' %}
+                            <b><span>Bac +{{ education.level }}</span> : <span>{{ education.name }}</span></b>
+                        {% else %}
+                            <h4 class="title"><span>Bac +{{ education.level }}</span> : <span>{{ education.name }}</span></h4>
+                        {% endif %}
+                        {% if education.details %}
+                            <div>{{ education.details }}</div>
+                        {% endif %}
+                        {% if education.school %}
+                            <div>{{ education.school }}</div>
+                        {% endif %}
+                        {% if education.location %}
+                            <div><span class="badge">{{ education.location }}</span></div>
+                        {% endif %}
+                        {% if format == 'doc' %}<br/>{% endif %}
                     </li>
                 {% endfor %}
             </ul>
         </div>
-    {% endif %}
+        <div id="hobbies" class="section text-center {% if format %}html-pdf{% endif %}">
+            <h2>{{ 'Hobbies' | trans }}</h2>
+            <ul>
+                {% for hobby in hobbies %}
+                    <li class="badge">{{ hobby.name }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% if not format %}
+            <a id="" class="hidden-print" href="{{ url('app_index', {'format' : 'pdf', 'all' : all}) }}"></a>
+            {% if contactForm is defined %}
+                <div class="hidden-print" id="contact">
+                    {{ form(contactForm) }}
+                </div>
+            {% endif %}
+            <div id="links" class="hidden-print">
+                <ul>
+                    {% for link in links %}
+                        <li>
+                            <a href="{{ link.url }}" target="_blank" rel="noreferrer" >
+                                {% if link.icon %}<i class="icon {{ link.icon }}"></i>{% endif %}
+                                {% if link.name %}<span>{{ link.name }}</span>{% endif %}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    </div>
 {% endblock %}

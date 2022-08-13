@@ -209,7 +209,7 @@ h4{
 
   }
   .description{
-    margin-bottom: 5px;
+    margin: 10px 0;
   }
 }
 
@@ -434,24 +434,22 @@ form{
 }
 
 @mixin html-pdf(){
-  html, body{
-    font-family: DejaVuSans, sans-serif;
-  }
-
   .hidden-print {
     display: none !important;
   }
   .hidden-xs {
     display: none !important;
   }
+
   h1{
     padding: 0;
   }
   h2 {
-    padding-top: 40px;
+    padding-top: 40px !important;
     text-align: left;
     padding-left: 10px;
   }
+
   ul {
     padding-left: 0;
     padding-right: 0;
@@ -491,6 +489,7 @@ form{
 .html-pdf {
   @include html-pdf();
   background: #fff !important;
+  font-family: DejaVuSans, sans-serif;
 }
 
 @media print {
