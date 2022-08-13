@@ -4,8 +4,8 @@ Gestion de mon cv et de toutes la partie administrative de mon activité de free
 
 ## STACK
 
-Symfony 5.2  
-PHP 8.0  
+Symfony 6.1
+PHP 8.1  
 Composer 2    
 
 ## FEATURES
@@ -16,15 +16,16 @@ Gestion des :
 - Caractéristiques principales (TJM, localisation, temps de travail, ...)
 - Expériences
 - Compétences
+- Projets
 - Formations
 - Loisirs
 - Liens externes (Linkedin, ...)
 
-### Companies
+### Entreprises
 
 Liste des entreprises, des liens qu'elles ont entre elle, et des contacts.  
 
-### Dashboard
+### Tableau de bord
 
 Statistiques du CA par années et trimestres, nombre de jours travaillés par mois. 
 Date de la prochaine déclaration. 
@@ -35,12 +36,12 @@ Statistiques globales de chaque années.
 
 Création d'un rapport d'activité, par mois et par client, sous la forme d'un calendrier, avec export pdf et création de facture pré-remplis.  
 
-### Invoicing
+### Facturation
 
 Génération de facture de type régie avec export pdf et envoie au client. 
 OCR sur les factures pour récupération TVA. 
 
-### Declarations
+### Déclarations
 
 Regroupement des factures par trimestre et par an pour les déclarations d'impôt, de TVA et cotisations sociales. 
 Idée des montants à déclarer et à payer.  
@@ -52,3 +53,8 @@ Avertissement des factures à encaisser et des déclarations à faire quand elle
 ### Export
 
 Génération du livre des recettes.
+
+### Comptabilité
+
+Import des relevés bancaire et analyse des lignes pour une catégorisation grâce a des filtres.  
+Génération de statistiques par mois / type, évolution de mes économies
