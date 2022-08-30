@@ -102,6 +102,9 @@ class DashboardService
                 'netByMonth' => round($net / 12),
             ];
         }
+        uasort($viewData['globalByYears'], function($rowA, $rowB) {
+            return $rowB['year'] - $rowA['year'];
+        });
 
         $chartRevenuesByYears = $this->chartBuilder->createChart(Chart::TYPE_BAR);
         $chartRevenuesByYears->setData([

@@ -20,7 +20,7 @@ class Experience implements Stringable
     private int $id;
 
     #[ORM\Column(type: Types::STRING, length: 255)]
-    private string $title;
+    private ?string $title = null;
 
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     private ?string $search = null;
@@ -29,16 +29,16 @@ class Experience implements Stringable
     private ?string $description = null;
 
     #[ORM\Column(type: Types::BOOLEAN)]
-    private bool $isFreelance;
+    private ?bool $isFreelance = null;
 
     #[ORM\Column(type: Types::BOOLEAN)]
-    private bool $onSite;
+    private ?bool $onSite = null;
 
     #[ORM\Column(type: Types::BOOLEAN)]
-    private bool $onHomepage;
+    private ?bool $onHomepage = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private DateTimeInterface $dateBegin;
+    private ?DateTimeInterface $dateBegin = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?DateTimeInterface $dateEnd = null;

@@ -38,7 +38,7 @@ class Invoice implements Stringable
     private int $id;
 
     #[ORM\Column(type: Types::STRING, length: 255, unique: true)]
-    private ?string $number;
+    private ?string $number = null;
 
     #[ORM\ManyToOne(targetEntity: Company::class, cascade: ['persist'], inversedBy: 'invoices')]
     #[ORM\JoinColumn(nullable: false)]
@@ -49,7 +49,7 @@ class Invoice implements Stringable
     private ?Experience $experience = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private DateTimeInterface $createdAt;
+    private ?DateTimeInterface $createdAt = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?DateTimeInterface $payedAt = null;
@@ -64,16 +64,16 @@ class Invoice implements Stringable
     private ?string $object = null;
 
     #[ORM\Column(type: Types::SMALLINT, nullable: true)]
-    private int $tjm;
+    private ?int $tjm = null;
 
     #[ORM\Column(type: Types::STRING, nullable: true, enumType: InvoicePaymentTypeEnum::class)]
-    private ?InvoicePaymentTypeEnum $payedBy;
+    private ?InvoicePaymentTypeEnum $payedBy = null;
 
     #[ORM\Column(type: Types::STRING, nullable: true, enumType: InvoiceStatusEnum::class)]
-    private ?InvoiceStatusEnum $status;
+    private ?InvoiceStatusEnum $status = null;
 
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
-    private ?string $dueInterval;
+    private ?string $dueInterval = null;
 
     /**
      * @var Collection<Activity>
@@ -85,7 +85,7 @@ class Invoice implements Stringable
     private ?Period $period = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 3, scale: 1, nullable: true)]
-    private float $daysCount;
+    private ?float $daysCount = null;
 
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     private ?string $extraLibelle = null;
@@ -181,6 +181,15 @@ class Invoice implements Stringable
     public function getStatus(): ?InvoiceStatusEnum
     {
         return $this->status;
+    }
+
+    public function getStatusOrder(): int
+    {
+        return match ($this) {
+            InvoiceStatusEnum::Draft => 0,
+            InvoiceStatusEnum::Waiting => 1,
+            InvoiceStatusEnum::Payed => 2,
+        };
     }
 
     public function setStatus(?InvoiceStatusEnum $status): self

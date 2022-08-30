@@ -218,7 +218,7 @@ class InvoiceService
      */
     public function updatePeriod(Invoice $invoice): void
     {
-        [$annualyPeriod, $quarterlyPeriod] = $this->periodService->getCurrentPeriod();
+        [, $quarterlyPeriod] = $this->periodService->getCurrentPeriod();
         $invoice->setPeriod($quarterlyPeriod);
     }
 

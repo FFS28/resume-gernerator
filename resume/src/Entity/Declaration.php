@@ -35,7 +35,7 @@ class Declaration implements Stringable
     private ?Period $period = null;
 
     #[ORM\Column(type: Types::STRING, nullable: true, enumType: DeclarationStatusEnum::class)]
-    private DeclarationStatusEnum $status;
+    private ?DeclarationStatusEnum $status = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?DateTimeInterface $payedAt = null;

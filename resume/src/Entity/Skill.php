@@ -21,19 +21,19 @@ class Skill implements Stringable
     private int $id;
 
     #[ORM\Column(type: Types::STRING, length: 100, nullable: false)]
-    private string $name;
+    private ?string $name = null;
 
     #[ORM\Column(type: Types::STRING, length: 255, unique: true)]
     private ?string $slug = null;
 
     #[ORM\Column(type: Types::STRING, nullable: true, enumType: SkillTypeEnum::class)]
-    private SkillTypeEnum $type;
+    private ?SkillTypeEnum $type = null;
 
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
-    private int $level;
+    private ?int $level = null;
 
     #[ORM\Column(name: 'on_homepage', type: Types::BOOLEAN, nullable: false)]
-    private bool $onHomepage;
+    private ?bool $onHomepage = null;
 
     /**
      * @var Collection<Experience>

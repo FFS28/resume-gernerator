@@ -68,7 +68,7 @@ class InvoiceCrudController extends AbstractCrudController
         return $crud
             ->setEntityLabelInSingular('Invoice')
             ->setEntityLabelInPlural('Invoices')
-            ->setDefaultSort(['status' => 'DESC', 'createdAt' => 'DESC'])
+            ->setDefaultSort(['createdAt' => 'DESC'])
             ->setSearchFields(['company.name', 'period.year'])
             ->showEntityActionsInlined(false);
     }

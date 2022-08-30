@@ -30,7 +30,7 @@ class Attribute implements Stringable
     private ?int $weight = null;
 
     #[ORM\Column(type: Types::BOOLEAN, nullable: true)]
-    private bool $isListable;
+    private ?bool $isListable = null;
 
     public function __construct()
     {

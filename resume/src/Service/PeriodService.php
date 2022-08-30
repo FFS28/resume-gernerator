@@ -61,11 +61,12 @@ class PeriodService
 
         $year = intval($date->format('Y'));
 
+        // @TODO J'ai supprimé le "$year - 1" parce qu'il crée un bug (aout 2022 => 2021 T3)
         $annualyPeriod = $this->periodRepository->findOneBy([
-                                                                'year' => $year - 1
+                                                                'year' => $year
                                                             ]);
         $quarterlyPeriod = $this->periodRepository->findOneBy([
-                                                                  'year'    => $year - 1,
+                                                                  'year'    => $year,
                                                                   'quarter' => ceil(intval($date->format('n')) / 3)
                                                               ]);
 

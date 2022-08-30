@@ -50,7 +50,7 @@ class Company implements Stringable
     private ?string $city = null;
 
     #[ORM\Column(type: Types::STRING, nullable: true, enumType: CompanyTypeEnum::class)]
-    private CompanyTypeEnum $type;
+    private ?CompanyTypeEnum $type = null;
 
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     private ?string $reference = null;
@@ -89,12 +89,12 @@ class Company implements Stringable
     private ?string $filename = null;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
-    private DateTime $updatedAt;
+    private ?DateTime $updatedAt = null;
 
     /**
      * @Vich\UploadableField(mapping="statements", fileNameProperty="filename")
      */
-    private File $file;
+    private ?File $file = null;
 
     public function __construct()
     {

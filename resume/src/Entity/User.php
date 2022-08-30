@@ -22,25 +22,25 @@ class User implements UserInterface, Stringable, PasswordAuthenticatedUserInterf
     private int $id;
 
     #[ORM\Column(type: Types::STRING, length: 25, unique: true)]
-    private string $username;
+    private ?string $username = null;
 
     #[ORM\Column(type: Types::STRING, length: 254, unique: true)]
     #[Assert\NotBlank]
     #[Assert\Email]
-    private string $email;
+    private ?string $email = null;
 
     #[Assert\NotBlank]
     #[Assert\Length(max: 250)]
-    private string $plainPassword;
+    private ?string $plainPassword = null;
 
     #[ORM\Column(type: Types::STRING, length: 64)]
     private ?string $password = null;
 
     #[ORM\Column(type: Types::STRING, length: 250)]
-    private string $salt;
+    private ?string $salt = null;
 
     #[ORM\Column(name: 'is_active', type: Types::BOOLEAN)]
-    private bool $isActive;
+    private ?bool $isActive = null;
 
     /**
      * @var string[]
