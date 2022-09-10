@@ -49,6 +49,12 @@ class OperationFilterRepository extends ServiceEntityRepository
             ->andWhere('o.amount IS NOT NULL')
             ->andWhere('o.date IS NOT NULL');
 
+        $query->andWhere(
+            $query->expr()->in('o.type', [
+                OperationTypeEnum::Refund->value
+            ])
+        );
+
         return $query->getQuery()->getResult();
     }
 

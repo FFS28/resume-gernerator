@@ -128,7 +128,7 @@ class StatementService
                     if (strpos($name, (string)$exception['name']) > -1
                         && $date->format('d/m/Y') === $exception['date']->format('d/m/Y')
                         && $amount == floatval($exception['amount'])
-                        && (!in_array($log, $history) || $exception['hasDuplicate'])
+                        && (!in_array($log, $history) || $exception['hasDuplicate'] === true)
                     ) {
                         $filterId = $exception['id'];
                         $isPositiv = true;
@@ -142,9 +142,9 @@ class StatementService
             $history[] = $log;
 
             if ($isPositiv) {
-                $logPositives[] = $name . ' / ' . $amount . ' / Filter id : ' . $filterId;
+                $logPositives[] = $name . ' / Filter id : ' . $filterId. ' / Daté du ' . $date->format('d/m/Y') . ' / ' . $amount . ' €';
             } else {
-                $logNegatives[] = $name . ' / ' . $amount . ' / Daté du ' . $date->format('d/m/Y');
+                $logNegatives[] = $name . ' / Daté du ' . $date->format('d/m/Y') . ' / ' . $amount . ' €';
             }
 
             $operationExists = $this->operationRepository->findDateNameAmount($date, $name, $amount);

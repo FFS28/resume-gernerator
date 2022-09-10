@@ -41,7 +41,7 @@ class Operation implements \Stringable
 
     public function __toString(): string
     {
-        return "$this->name $this->date->format('d/m/Y') $this->amount";
+        return "$this->name " . $this->date->format('d/m/Y'). " $this->amount";
     }
 
     public function getId(): ?int
