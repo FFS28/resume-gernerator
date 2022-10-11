@@ -25,6 +25,7 @@ mounts:
     "/var": { source: local, source_path: var }
     "/data/invoices": { source: local, source_path: invoices }
     "/data/statements": { source: local, source_path: statements }
+    "/data/consumptions": { source: local, source_path: consumptions }
     "/data/dump": { source: local, source_path: dump }
     "/public/upload": { source: local, source_path: uploads }
 

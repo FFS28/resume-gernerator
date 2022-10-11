@@ -4,6 +4,9 @@ namespace App\Controller\Admin;
 
 use App\Entity\Attribute;
 use App\Entity\Company;
+use App\Entity\Consumption;
+use App\Entity\ConsumptionMonth;
+use App\Entity\ConsumptionStatement;
 use App\Entity\Declaration;
 use App\Entity\Education;
 use App\Entity\Experience;
@@ -174,6 +177,12 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Operations', 'fa fa-columns', Operation::class)
             ->setBadge($countNullTypes > 0 ? $countNullTypes : '');
         yield MenuItem::linkToCrud('Filters', 'fa fa-filter', OperationFilter::class);
+
+        yield MenuItem::section('Consumption');
+
+        yield MenuItem::linkToCrud('ConsumptionStatements', 'fa fa-file', ConsumptionStatement::class);
+        yield MenuItem::linkToCrud('ConsumptionMonths', 'fa fa-calendar-days', ConsumptionMonth::class);
+        yield MenuItem::linkToCrud('Consumptions', 'fa fa-bolt', Consumption::class);
     }
 
     public function configureActions(): Actions
@@ -193,9 +202,7 @@ class DashboardController extends AbstractDashboardController
             ->add(Crud::PAGE_INDEX, $editAction)
 
             ->remove(Crud::PAGE_INDEX, Action::DELETE)
-            ->add(Crud::PAGE_INDEX, $actionDelete)
-
-            ->disable(Action::BATCH_DELETE);
+            ->add(Crud::PAGE_INDEX, $actionDelete);
     }
 
     /**

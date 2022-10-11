@@ -289,6 +289,26 @@ hidden: Caché
 other: Autre
 hobby: Loisir
 
+Consumption: Consommation
+Consumptions: Consommations
+ConsumptionMonth: Relevé
+ConsumptionMonths: Relevés
+ConsumptionStatement: Relevé de consommation
+ConsumptionStatements: Relevés de consommation
+Low Hour: Heure creuse
+Full Hour: Heure pleine
+Weekend Hour: Heure Weekend
+Meter Low Hour: Heure creuse
+Meter Full Hour: Heure pleine
+Meter Weekend Hour: Heure Weekend
+Diff Low Hour: Heure creuse
+Diff Full Hour: Heure pleine
+Diff Weekend Hour: Heure Weekend
+Consumption Month: Mois
+Diff Total: Total
+Start Date: Début
+End Date: Fin
+
 vich_uploader:
   form_label:
     delete_confirm: Supprimer ?
@@ -304,3 +324,5 @@ flash_message:
   declaration_calculated: Déclaration "%entityName%" recalculé.
   statement_analyzed_success: Le relevé "%entityName%" a été analysé avec %operationsCount% opérations.
   statement_analyzed_error: Le relevé "%entityName%" a été analysé sans résultats.
+  operations_analyzed: Les opérations ont été analysés.
+  consumptions_analyzed_success: Le relevé "%entityName%" a été analysé avec %count% consommations.

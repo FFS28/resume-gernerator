@@ -30,7 +30,7 @@ class Statement implements \Stringable
     #[ORM\Column(type: Types::STRING, length: 255, unique: true)]
     private ?string $filename = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?DateTimeInterface $updatedAt = null;
 
     /**

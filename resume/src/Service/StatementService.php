@@ -41,7 +41,7 @@ class StatementService
      */
     public function extractOperations(Statement $statement, bool $throwError): void
     {
-        $filePath = $this->statementDirectory . $statement->getFilename();
+        $filePath = $this->get($statement);
         $operations = [];
         $logPositives = $logNegatives = [];
 

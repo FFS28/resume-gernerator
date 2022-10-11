@@ -113,6 +113,8 @@ class InvoiceCrudController extends AbstractCrudController
             ->remove(Crud::PAGE_INDEX, Action::DELETE)
             ->add(Crud::PAGE_INDEX, $actionDelete);
 
+        $actions->disable(Action::BATCH_DELETE);
+
         return $actions;
     }
 

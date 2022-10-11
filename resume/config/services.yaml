@@ -10,8 +10,8 @@ parameters:
     MAILER_SUBJECT: '%env(MAILER_SUBJECT)%'
     COMPANY_NAME: '%env(COMPANY_NAME)%'
     PDF_DIRECTORY: '%kernel.project_dir%%env(DIRECTORY_INVOICE)%'
-    PROOF_DIRECTORY: 'upload%env(DIRECTORY_PURCHASE)%'
     STATEMENT_DIRECTORY: '%env(DIRECTORY_STATEMENT)%'
+    CONSUMPTION_DIRECTORY: '%env(DIRECTORY_CONSUMPTION)%'
     BACKUP_DIRECTORY: '%env(DIRECTORY_BACKUP)%'
     google_recaptcha_site_key: '%env(GOOGLE_RECAPTCHA_SITE_KEY)%'
 
@@ -49,3 +49,8 @@ services:
         public: true
         arguments:
             $statementDirectory: '%kernel.project_dir%/data%STATEMENT_DIRECTORY%'
+
+    App\Service\ConsumptionService:
+        public: true
+        arguments:
+            $consumptionStatementDirectory: '%kernel.project_dir%/data%CONSUMPTION_DIRECTORY%'

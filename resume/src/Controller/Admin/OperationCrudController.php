@@ -62,6 +62,8 @@ class OperationCrudController extends AbstractCrudController
         $actions
             ->addBatchAction($analyzeAction);
 
+        $actions->disable(Action::BATCH_DELETE);
+
         return $actions;
     }
 

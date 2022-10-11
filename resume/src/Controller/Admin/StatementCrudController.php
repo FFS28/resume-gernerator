@@ -70,6 +70,8 @@ class StatementCrudController extends AbstractCrudController
             ->add(Crud::PAGE_INDEX, $ocrAction)
             ->add(Crud::PAGE_EDIT, $ocrAction);
 
+        $actions->disable(Action::BATCH_DELETE);
+
         return $actions;
     }
 

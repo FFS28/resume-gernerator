@@ -58,3 +58,8 @@ Génération du livre des recettes.
 
 Import des relevés bancaire et analyse des lignes pour une catégorisation grâce a des filtres.  
 Génération de statistiques par mois / type, évolution de mes économies
+
+### Consommation électrique
+
+Analyse des relevés de consommation électrique
+Génération de statistiques par mois, comparatifs entre chaque années

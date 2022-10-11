@@ -70,6 +70,8 @@ class DeclarationCrudController extends AbstractCrudController
             ->remove(Crud::PAGE_INDEX, Action::DELETE)
         ;
 
+        $actions->disable(Action::BATCH_DELETE);
+
         return $actions;
     }
 
