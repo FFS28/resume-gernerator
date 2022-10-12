@@ -42,7 +42,9 @@ class ConsumptionCrudController extends AbstractCrudController
             yield AssociationField::new('consumptionMonth')->setFormTypeOption('disabled','disabled');
             yield DateField::new('date')->setFormTypeOption('disabled','disabled');
         } else {
-            yield AssociationField::new('consumptionMonth');
+            if(Crud::PAGE_INDEX !== $pageName) {
+                yield AssociationField::new('consumptionMonth');
+            }
             yield DateField::new('date');
         }
         yield NumberField::new('meterLowHour');

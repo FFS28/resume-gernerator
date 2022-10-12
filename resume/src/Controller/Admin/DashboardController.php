@@ -22,6 +22,7 @@ use App\Entity\Statement;
 use App\Entity\User;
 use App\Form\Type\MonthActivitiesType;
 use App\Service\AccountingService;
+use App\Service\ConsumptionService;
 use App\Service\DashboardService;
 use App\Service\InvoiceService;
 use App\Service\ReportService;
@@ -51,7 +52,8 @@ class DashboardController extends AbstractDashboardController
         private readonly ReportService     $reportService,
         private readonly AccountingService $accountingService,
         private readonly StatementService  $statementService,
-        private readonly InvoiceService    $invoiceService
+        private readonly InvoiceService    $invoiceService,
+        private readonly ConsumptionService    $consumptionService,
     ) {
     }
 
@@ -113,6 +115,16 @@ class DashboardController extends AbstractDashboardController
     {
         $viewData = $this->accountingService->getDashboard($year, $month, $type);
         return $this->render('admin/accounting.html.twig', $viewData);
+    }
+
+    /**
+     * @throws Exception
+     */
+    #[Route('/admin/consumption/{year<\d+>?0}/{month<\d+>?0}/{type<\w+>?}', name: 'consumption')]
+    public function consumption(int $year = 0, int $month = 0, $type = ''): Response
+    {
+        $viewData = $this->consumptionService->getDashboard($year, $month, $type);
+        return $this->render('admin/consumption.html.twig', $viewData);
     }
 
     #[Route('/admin/saving/{year<\d+>?0}', name: 'saving')]
@@ -180,6 +192,7 @@ class DashboardController extends AbstractDashboardController
 
         yield MenuItem::section('Consumption');
 
+        yield MenuItem::linkToRoute('Dashboard', 'fa fa-chart-pie', 'consumption');
         yield MenuItem::linkToCrud('ConsumptionStatements', 'fa fa-file', ConsumptionStatement::class);
         yield MenuItem::linkToCrud('ConsumptionMonths', 'fa fa-calendar-days', ConsumptionMonth::class);
         yield MenuItem::linkToCrud('Consumptions', 'fa fa-bolt', Consumption::class);

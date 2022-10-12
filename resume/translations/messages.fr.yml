@@ -291,19 +291,19 @@ hobby: Loisir
 
 Consumption: Consommation
 Consumptions: Consommations
-ConsumptionMonth: Relevé
-ConsumptionMonths: Relevés
+ConsumptionMonth: Mois de consommation
+ConsumptionMonths: Mois de consommation
 ConsumptionStatement: Relevé de consommation
 ConsumptionStatements: Relevés de consommation
 Low Hour: Heure creuse
 Full Hour: Heure pleine
 Weekend Hour: Heure Weekend
-Meter Low Hour: Heure creuse
-Meter Full Hour: Heure pleine
-Meter Weekend Hour: Heure Weekend
-Diff Low Hour: Heure creuse
-Diff Full Hour: Heure pleine
-Diff Weekend Hour: Heure Weekend
+Meter Low Hour: Relevé heure creuse
+Meter Full Hour: H. pleine
+Meter Weekend Hour: H. Weekend
+Diff Low Hour: Conso heure creuse
+Diff Full Hour: H. pleine
+Diff Weekend Hour: H. Weekend
 Consumption Month: Mois
 Diff Total: Total
 Start Date: Début

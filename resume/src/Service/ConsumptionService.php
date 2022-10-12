@@ -5,12 +5,14 @@ namespace App\Service;
 use App\Entity\Consumption;
 use App\Entity\ConsumptionMonth;
 use App\Entity\ConsumptionStatement;
-use App\Repository\ConsumptionRepository;
 use App\Repository\ConsumptionMonthRepository;
+use App\Repository\ConsumptionRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use Hoa\Iterator\Map;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
+use Symfony\UX\Chartjs\Model\Chart;
 
 class ConsumptionService
 {
@@ -19,12 +21,9 @@ class ConsumptionService
         private readonly EntityManagerInterface     $entityManager,
         private readonly ConsumptionRepository      $consumptionRepository,
         private readonly ConsumptionMonthRepository $consumptionMonthRepository,
+        private readonly ChartBuilderInterface      $chartBuilder,
+        private readonly TranslatorInterface        $translator
     ) {
-    }
-
-    public function get(ConsumptionStatement $consumption): string
-    {
-        return $this->consumptionStatementDirectory . $consumption->getFilename();
     }
 
     /**
@@ -90,7 +89,7 @@ class ConsumptionService
             }
 
             $consumption = $this->consumptionRepository->get($date);
-            if(!$consumption) {
+            if (!$consumption) {
                 $consumption = new Consumption();
                 $consumption->setDate($date);
                 $consumption->setConsumptionMonth($consumptionMonth);
@@ -105,7 +104,9 @@ class ConsumptionService
                     if ($previousConsumption) {
                         $previousConsumption->setDiffLowHour($lowHour - $previousConsumption->getMeterLowHour());
                         $previousConsumption->setDiffFullHour($fullHour - $previousConsumption->getMeterFullHour());
-                        $previousConsumption->setDiffWeekendHour($weekendHour - $previousConsumption->getMeterWeekendHour());
+                        $previousConsumption->setDiffWeekendHour(
+                            $weekendHour - $previousConsumption->getMeterWeekendHour()
+                        );
                         $previousConsumption->setDiffTotal(
                             $previousConsumption->getDiffLowHour() +
                             $previousConsumption->getDiffFullHour() +
@@ -121,8 +122,7 @@ class ConsumptionService
                     $consumption->setDiffLowHour($nextLowHour - $lowHour);
                     $consumption->setDiffFullHour($nextFullHour - $fullHour);
                     $consumption->setDiffWeekendHour($nextWeekendHour - $weekendHour);
-                }
-                // Si c'est le dernier
+                } // Si c'est le dernier
                 else {
                     $nextConsumption = $this->consumptionRepository->get((clone $date)->modify('+1 day'));
 
@@ -133,7 +133,8 @@ class ConsumptionService
                     }
                 }
 
-                if ($consumption->getDiffLowHour() || $consumption->getDiffFullHour() || $consumption->getDiffWeekendHour()) {
+                if ($consumption->getDiffLowHour() || $consumption->getDiffFullHour(
+                    ) || $consumption->getDiffWeekendHour()) {
                     $consumption->setDiffTotal(
                         $consumption->getDiffLowHour() +
                         $consumption->getDiffFullHour() +
@@ -153,7 +154,8 @@ class ConsumptionService
         $consumptionMonthStore->map(
             function ($key, ConsumptionMonth $consumptionMonth) {
                 $currentConsumptionMonth = $this->consumptionMonthRepository->get(
-                    $consumptionMonth->getYear(), $consumptionMonth->getMonth());
+                    $consumptionMonth->getYear(), $consumptionMonth->getMonth()
+                );
 
                 if ($currentConsumptionMonth) {
                     $consumptions = $currentConsumptionMonth->getConsumptions();
@@ -183,4 +185,115 @@ class ConsumptionService
 
         return $count;
     }
+
+    public function get(ConsumptionStatement $consumption): string
+    {
+        return $this->consumptionStatementDirectory . $consumption->getFilename();
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getDashboard(int $year, int $month, ?string $type)
+    {
+        $colors = [
+            "#25CCF7", "#FD7272", "#54a0ff", "#00d2d3",
+            "#1abc9c", "#2ecc71", "#3498db", "#9b59b6", "#34495e",
+            "#16a085", "#27ae60", "#2980b9", "#8e44ad", "#2c3e50",
+            "#f1c40f", "#e67e22", "#e74c3c", "#ecf0f1", "#95a5a6",
+            "#f39c12", "#d35400", "#c0392b", "#bdc3c7", "#7f8c8d",
+            "#55efc4", "#81ecec", "#74b9ff", "#a29bfe", "#dfe6e9",
+            "#00b894", "#00cec9", "#0984e3", "#6c5ce7", "#ffeaa7",
+            "#fab1a0", "#ff7675", "#fd79a8", "#fdcb6e", "#e17055",
+            "#d63031", "#feca57", "#5f27cd", "#54a0ff", "#01a3a4"
+        ];
+
+        $years = array_column($this->consumptionRepository->listYears(), 'date');
+        sort($years);
+
+        $types = [
+            'low'     => 'Low Hour',
+            'full'    => 'Full Hour',
+            'weekend' => 'Weekend Hour',
+        ];
+
+        $months = [];
+        for ($i = 1; $i <= 12; $i++) {
+            $monthDate = new DateTime('2000' . str_pad($i, 2, "0", STR_PAD_LEFT) . '01');
+            $months[$i] = $this->translator->trans($monthDate->format('F'));
+        }
+
+        $viewData = [
+            'years'       => $years,
+            'months'      => $months,
+            'types'       => $types,
+            'activeType'  => $type,
+            'activeYear'  => $year,
+            'activeMonth' => $month,
+        ];
+
+        if (!$year) {
+            // On veux comparer les consommations d'un mois d'une année sur l'autre
+            $consumptionMonths = $this->consumptionMonthRepository->findAll();
+            $consumptionMonthsData = [];
+
+            foreach ($consumptionMonths as $consumptionMonth) {
+                if (!isset($consumptionMonthsData[$consumptionMonth->getYear()])) {
+                    $consumptionMonthsData[$consumptionMonth->getYear()] = $array = array_fill(1, 12, [
+                        null, null, null, null
+                    ]);
+                }
+                $consumptionMonthsData[$consumptionMonth->getYear()][$consumptionMonth->getMonth()] = [
+                    $consumptionMonth->getLowHourMegaWatt(),
+                    $consumptionMonth->getFullHourMegaWatt(),
+                    $consumptionMonth->getWeekendHourMegaWatt(),
+                    $consumptionMonth->getTotalMegaWatt(),
+                ];
+            }
+
+            $dataSets = [];
+            $i = 0;
+            foreach ($consumptionMonthsData as $currentYear => $consumptionYear) {
+                $data = [];
+                foreach ($consumptionYear as $index => $consumptionMonth) {
+                    $data[$months[$index]] = $consumptionMonth[3];
+                }
+
+                $dataSets[] = [
+                    'label'           => $currentYear,
+                    'borderColor'     => $colors[$i],
+                    'backgroundColor' => $colors[$i],
+                    'data'            => $data
+                ];
+
+                $i++;
+            }
+
+            $chartTotalsByYearAndMonth = $this->chartBuilder->createChart(Chart::TYPE_LINE);
+            $chartTotalsByYearAndMonth->setData([
+                                                    'labels'   => array_values($months),
+                                                    'datasets' => $dataSets
+                                                ]);
+            $viewData['chartTotalsByYearAndMonth'] = $chartTotalsByYearAndMonth;
+        } else {
+            // Sur une année, on veux voir la consommation de chaque type, sur chaque mois
+            $consumptionMonths = $this->consumptionMonthRepository->findBy(['year' => $year]);
+            $consumptionMonthData = [];
+
+            foreach ($consumptionMonths as $consumptionMonth) {
+                $consumptionMonthData[$consumptionMonth->getMonth()] = [
+                    $consumptionMonth->getLowHourMegaWatt(),
+                    $consumptionMonth->getFullHourMegaWatt(),
+                    $consumptionMonth->getWeekendHourMegaWatt(),
+                    $consumptionMonth->getTotalMegaWatt(),
+                ];
+            }
+        }
+
+        dump($viewData);
+        //exit;
+
+        return $viewData;
+    }
+
 }

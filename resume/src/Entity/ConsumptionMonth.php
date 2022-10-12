@@ -48,9 +48,16 @@ class ConsumptionMonth implements Stringable
         return str_pad($this->getMonth(), 2, 0, STR_PAD_LEFT) . '/' . $this->getYear();
     }
 
-    public function getId(): ?int
+    public function getMonth(): ?int
     {
-        return $this->id;
+        return $this->month;
+    }
+
+    public function setMonth(int $month): self
+    {
+        $this->month = $month;
+
+        return $this;
     }
 
     public function getYear(): ?int
@@ -65,16 +72,9 @@ class ConsumptionMonth implements Stringable
         return $this;
     }
 
-    public function getMonth(): ?int
+    public function getId(): ?int
     {
-        return $this->month;
-    }
-
-    public function setMonth(int $month): self
-    {
-        $this->month = $month;
-
-        return $this;
+        return $this->id;
     }
 
     /**
@@ -107,6 +107,11 @@ class ConsumptionMonth implements Stringable
         return $this;
     }
 
+    public function getTotalMegaWatt(): ?int
+    {
+        return round(intval($this->getTotal()) / 1000);
+    }
+
     public function getTotal(): ?string
     {
         return $this->total;
@@ -117,6 +122,11 @@ class ConsumptionMonth implements Stringable
         $this->total = $total;
 
         return $this;
+    }
+
+    public function getLowHourMegaWatt(): ?int
+    {
+        return round(intval($this->getLowHour()) / 1000);
     }
 
     public function getLowHour(): ?string
@@ -131,6 +141,11 @@ class ConsumptionMonth implements Stringable
         return $this;
     }
 
+    public function getFullHourMegaWatt(): ?int
+    {
+        return round(intval($this->getFullHour()) / 1000);
+    }
+
     public function getFullHour(): ?string
     {
         return $this->fullHour;
@@ -141,6 +156,11 @@ class ConsumptionMonth implements Stringable
         $this->fullHour = $fullHour;
 
         return $this;
+    }
+
+    public function getWeekendHourMegaWatt(): ?int
+    {
+        return round(intval($this->getWeekendHour()) / 1000);
     }
 
     public function getWeekendHour(): ?string

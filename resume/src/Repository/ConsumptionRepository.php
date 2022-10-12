@@ -33,6 +33,14 @@ class ConsumptionRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
+    public function listYears(): array
+    {
+        return $this->createQueryBuilder('c')
+            ->select('DISTINCT ToChar(c.date, \'YYYY\') AS date')
+            ->getQuery()
+            ->getScalarResult();
+    }
+
     public function add(Consumption $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
