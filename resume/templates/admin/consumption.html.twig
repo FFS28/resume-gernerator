@@ -15,7 +15,7 @@
                     </div>
                 {% endfor %}
             </div>
-            {% if months is defined %}
+            {% if activeYear %}
                 <div class="row align-items-center">
                     {% for month in months %}
                         <div class="col">
@@ -39,6 +39,11 @@
             {% if chartTotalsByYearAndMonth is defined %}
                 <div class="row align-items-center" style="margin-top: 40px;">
                     {{ render_chart(chartTotalsByYearAndMonth, {'id' : 'chartTotalsByYearAndMonth'}) }}
+                </div>
+            {% endif %}
+            {% if chartTotalsByMonthAndType is defined %}
+                <div class="row align-items-center" style="margin-top: 40px;">
+                    {{ render_chart(chartTotalsByMonthAndType, {'id' : 'chartTotalsByMonthAndType'}) }}
                 </div>
             {% endif %}
         </div>

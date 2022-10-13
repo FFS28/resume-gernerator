@@ -107,23 +107,6 @@ class ConsumptionMonth implements Stringable
         return $this;
     }
 
-    public function getTotalMegaWatt(): ?int
-    {
-        return round(intval($this->getTotal()) / 1000);
-    }
-
-    public function getTotal(): ?string
-    {
-        return $this->total;
-    }
-
-    public function setTotal(string $total): self
-    {
-        $this->total = $total;
-
-        return $this;
-    }
-
     public function getLowHourMegaWatt(): ?int
     {
         return round(intval($this->getLowHour()) / 1000);
@@ -171,6 +154,23 @@ class ConsumptionMonth implements Stringable
     public function setWeekendHour(string $weekendHour): self
     {
         $this->weekendHour = $weekendHour;
+
+        return $this;
+    }
+
+    public function getTotal(): ?string
+    {
+        return $this->total;
+    }
+
+    public function getTotalMegaWatt(): ?int
+    {
+        return round(intval($this->getTotal()) / 1000);
+    }
+
+    public function setTotal(string $total): self
+    {
+        $this->total = $total;
 
         return $this;
     }

@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Consumption;
+use App\Helper\StringHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
@@ -31,6 +32,22 @@ class ConsumptionRepository extends ServiceEntityRepository
             ->setParameter('date', $date->format('Ymd'))
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    /**
+     * @param int $year
+     * @param int $month
+     * @return Consumption[]
+     */
+    public function listByYearAndMonth(int $year, int $month): array
+    {
+        return $this->createQueryBuilder('c')
+            ->where('ToChar(c.date, \'YYYY\') = :year')
+            ->andWhere('ToChar(c.date, \'MM\') = :month')
+            ->setParameter('year', $year)
+            ->setParameter('month',  StringHelper::addZeros($month, 2))
+            ->getQuery()
+            ->getResult();
     }
 
     public function listYears(): array

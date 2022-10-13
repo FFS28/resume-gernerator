@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Entity\Consumption;
 use App\Entity\ConsumptionMonth;
 use App\Entity\ConsumptionStatement;
+use App\Helper\StringHelper;
 use App\Repository\ConsumptionMonthRepository;
 use App\Repository\ConsumptionRepository;
 use DateTime;
@@ -216,10 +217,12 @@ class ConsumptionService
             'full'    => 'Full Hour',
             'weekend' => 'Weekend Hour',
         ];
+        $typeIndex = $type !== 0 ? array_search($type, array_keys($types)) : false;
+
 
         $months = [];
         for ($i = 1; $i <= 12; $i++) {
-            $monthDate = new DateTime('2000' . str_pad($i, 2, "0", STR_PAD_LEFT) . '01');
+            $monthDate = new DateTime('2000' . StringHelper::addZeros($i, 2) . '01');
             $months[$i] = $this->translator->trans($monthDate->format('F'));
         }
 
@@ -256,7 +259,7 @@ class ConsumptionService
             foreach ($consumptionMonthsData as $currentYear => $consumptionYear) {
                 $data = [];
                 foreach ($consumptionYear as $index => $consumptionMonth) {
-                    $data[$months[$index]] = $consumptionMonth[3];
+                    $data[$months[$index]] = $consumptionMonth[$typeIndex !== false ? $typeIndex : 3];
                 }
 
                 $dataSets[] = [
@@ -276,22 +279,85 @@ class ConsumptionService
                                                 ]);
             $viewData['chartTotalsByYearAndMonth'] = $chartTotalsByYearAndMonth;
         } else {
-            // Sur une année, on veux voir la consommation de chaque type, sur chaque mois
-            $consumptionMonths = $this->consumptionMonthRepository->findBy(['year' => $year]);
-            $consumptionMonthData = [];
+            if (!$month) {
+                // Sur une année, on veux voir la consommation de chaque type, sur chaque mois
+                $consumptionMonths = $this->consumptionMonthRepository->findBy(['year' => $year]);
+                $consumptionMonthsData = array_fill(1, 12, [
+                    null, null, null, null
+                ]);
 
-            foreach ($consumptionMonths as $consumptionMonth) {
-                $consumptionMonthData[$consumptionMonth->getMonth()] = [
-                    $consumptionMonth->getLowHourMegaWatt(),
-                    $consumptionMonth->getFullHourMegaWatt(),
-                    $consumptionMonth->getWeekendHourMegaWatt(),
-                    $consumptionMonth->getTotalMegaWatt(),
-                ];
+                foreach ($consumptionMonths as $consumptionMonth) {
+                    $consumptionMonthsData[$consumptionMonth->getMonth()] = [
+                        $consumptionMonth->getLowHourMegaWatt(),
+                        $consumptionMonth->getFullHourMegaWatt(),
+                        $consumptionMonth->getWeekendHourMegaWatt(),
+                        $consumptionMonth->getTotalMegaWatt(),
+                    ];
+                }
+
+                $dataSets = [];
+                if (!$type) {
+                    for ($i = 0; $i < 3; $i++) {
+                        $data = [];
+                        foreach ($consumptionMonthsData as $month) {
+                            $data[] = $month[$i];
+                        }
+
+                        $dataSets[] = [
+                            'label' => $this->translator->trans(array_values($types)[$i]),
+                            'backgroundColor' => $colors[$i],
+                            'data' => $data,
+                        ];
+                    }
+                } else {
+                    $data = [];
+                    foreach ($consumptionMonthsData as $month) {
+                        $data[] = $month[$typeIndex];
+                    }
+                    $dataSets[] = [
+                        'label' => $this->translator->trans(array_values($types)[$typeIndex]),
+                        'backgroundColor' => $colors[$typeIndex],
+                        'data' => $data,
+                    ];
+                }
+
+                $chartTotalsByMonthAndType = $this->chartBuilder->createChart(Chart::TYPE_BAR);
+                $chartTotalsByMonthAndType->setData([
+                    'labels' => array_values($months),
+                    'datasets' => $dataSets
+                ]);
+                if (!$type) {
+                    $chartTotalsByMonthAndType->setOptions([
+                        'scales' => [
+                            'x' => [
+                                'stacked' => true,
+                            ],
+                            'y' => [
+                                'stacked' => true,
+                            ]
+                        ]
+                    ]);
+                }
+                $viewData['chartTotalsByMonthAndType'] = $chartTotalsByMonthAndType;
+            } else {
+                $consumptionDays = $this->consumptionRepository->listByYearAndMonth($year, $month);
+                $consumptionDaysData = array_fill(1, 31, [
+                    null, null, null, null
+                ]);
+
+                foreach ($consumptionDays as $consumptionDay) {
+                    $consumptionDaysData[intval($consumptionDay->getDate()->format('d'))] = [
+                        $consumptionDay->getLowHourMegaWatt(),
+                        $consumptionDay->getFullHourMegaWatt(),
+                        $consumptionDay->getWeekendHourMegaWatt(),
+                        $consumptionDay->getTotalMegaWatt(),
+                    ];
+                }
+
+                dump($consumptionDays);
+                dump($consumptionDaysData);
             }
         }
-
-        dump($viewData);
-        //exit;
 
         return $viewData;
     }

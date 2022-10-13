@@ -4,6 +4,11 @@ namespace App\Helper;
 
 abstract class StringHelper
 {
+    public static function addZeros(int $number, $countOfNumbers): string
+    {
+        return str_pad($number, $countOfNumbers, "0", STR_PAD_LEFT);
+    }
+
     /**
      * Crée un slug
      */
