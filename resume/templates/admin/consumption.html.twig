@@ -36,6 +36,11 @@
         </div>
 
         <div class="container text-center">
+            {% if chartTotalsByYears is defined %}
+                <div class="row align-items-center" style="margin-top: 40px;">
+                    {{ render_chart(chartTotalsByYears, {'id' : 'chartTotalsByYears'}) }}
+                </div>
+            {% endif %}
             {% if chartTotalsByYearAndMonth is defined %}
                 <div class="row align-items-center" style="margin-top: 40px;">
                     {{ render_chart(chartTotalsByYearAndMonth, {'id' : 'chartTotalsByYearAndMonth'}) }}

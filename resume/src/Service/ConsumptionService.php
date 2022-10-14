@@ -239,6 +239,7 @@ class ConsumptionService
             // On veux comparer les consommations d'un mois d'une année sur l'autre
             $consumptionMonths = $this->consumptionMonthRepository->findAll();
             $consumptionMonthsData = [];
+            $consumptionYearsData = array_combine($years, array_fill(0, count($years), [0, 0, 0, 0]));
 
             foreach ($consumptionMonths as $consumptionMonth) {
                 if (!isset($consumptionMonthsData[$consumptionMonth->getYear()])) {
@@ -252,10 +253,15 @@ class ConsumptionService
                     $consumptionMonth->getWeekendHourMegaWatt(),
                     $consumptionMonth->getTotalMegaWatt(),
                 ];
+
+                $consumptionYearsData[$consumptionMonth->getYear()][0] += $consumptionMonth->getLowHourMegaWatt();
+                $consumptionYearsData[$consumptionMonth->getYear()][1] += $consumptionMonth->getFullHourMegaWatt();
+                $consumptionYearsData[$consumptionMonth->getYear()][2] += $consumptionMonth->getWeekendHourMegaWatt();
+                $consumptionYearsData[$consumptionMonth->getYear()][3] += $consumptionMonth->getTotalMegaWatt();
             }
 
-            $dataSets = [];
             $i = 0;
+            $dataSets = [];
             foreach ($consumptionMonthsData as $currentYear => $consumptionYear) {
                 $data = [];
                 foreach ($consumptionYear as $index => $consumptionMonth) {
@@ -274,10 +280,53 @@ class ConsumptionService
 
             $chartTotalsByYearAndMonth = $this->chartBuilder->createChart(Chart::TYPE_LINE);
             $chartTotalsByYearAndMonth->setData([
-                                                    'labels'   => array_values($months),
-                                                    'datasets' => $dataSets
-                                                ]);
+                'labels'   => array_values($months),
+                'datasets' => $dataSets
+            ]);
             $viewData['chartTotalsByYearAndMonth'] = $chartTotalsByYearAndMonth;
+
+            $dataSets = [];
+            if (!$type) {
+                for ($i = 0; $i < 3; $i++) {
+                    $data = [];
+                    foreach ($consumptionYearsData as $month) {
+                        $data[] = $month[$i];
+                    }
+
+                    $dataSets[] = [
+                        'label'           => $this->translator->trans(array_values($types)[$i]),
+                        'backgroundColor' => $colors[$i],
+                        'data'            => $data,
+                    ];
+                }
+            } else {
+                $data = [];
+                foreach ($consumptionYearsData as $month) {
+                    $data[] = $month[$typeIndex];
+                }
+                $dataSets[] = [
+                    'label'           => $this->translator->trans(array_values($types)[$typeIndex]),
+                    'backgroundColor' => $colors[$typeIndex],
+                    'data'            => $data,
+                ];
+            }
+
+            $chartTotalsByYears = $this->chartBuilder->createChart(Chart::TYPE_BAR);
+            $chartTotalsByYears->setData([
+                'labels'   => $years,
+                'datasets' => $dataSets
+            ]);
+            $chartTotalsByYears->setOptions([
+                'scales' => [
+                    'x' => [
+                        'stacked' => true,
+                    ],
+                    'y' => [
+                        'stacked' => true,
+                    ]
+                ]
+            ]);
+            $viewData['chartTotalsByYears'] = $chartTotalsByYears;
         } else {
             if (!$month) {
                 // Sur une année, on veux voir la consommation de chaque type, sur chaque mois

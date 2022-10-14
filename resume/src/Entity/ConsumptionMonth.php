@@ -107,9 +107,9 @@ class ConsumptionMonth implements Stringable
         return $this;
     }
 
-    public function getLowHourMegaWatt(): ?int
+    public function getLowHourMegaWatt(): ?float
     {
-        return round(intval($this->getLowHour()) / 1000);
+        return round(intval($this->getLowHour()) / 1000, 1);
     }
 
     public function getLowHour(): ?string
@@ -124,9 +124,9 @@ class ConsumptionMonth implements Stringable
         return $this;
     }
 
-    public function getFullHourMegaWatt(): ?int
+    public function getFullHourMegaWatt(): ?float
     {
-        return round(intval($this->getFullHour()) / 1000);
+        return round(intval($this->getFullHour()) / 1000, 1);
     }
 
     public function getFullHour(): ?string
@@ -141,9 +141,9 @@ class ConsumptionMonth implements Stringable
         return $this;
     }
 
-    public function getWeekendHourMegaWatt(): ?int
+    public function getWeekendHourMegaWatt(): ?float
     {
-        return round(intval($this->getWeekendHour()) / 1000);
+        return round(intval($this->getWeekendHour()) / 1000, 1);
     }
 
     public function getWeekendHour(): ?string
@@ -163,9 +163,9 @@ class ConsumptionMonth implements Stringable
         return $this->total;
     }
 
-    public function getTotalMegaWatt(): ?int
+    public function getTotalMegaWatt(): ?float
     {
-        return round(intval($this->getTotal()) / 1000);
+        return round(intval($this->getTotal()) / 1000, 1);
     }
 
     public function setTotal(string $total): self
