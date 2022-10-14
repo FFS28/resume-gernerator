@@ -46,6 +46,11 @@
                     {{ render_chart(chartTotalsByMonthAndType, {'id' : 'chartTotalsByMonthAndType'}) }}
                 </div>
             {% endif %}
+            {% if chartTotalsByDayAndType is defined %}
+                <div class="row align-items-center" style="margin-top: 40px;">
+                    {{ render_chart(chartTotalsByDayAndType, {'id' : 'chartTotalsByDayAndType'}) }}
+                </div>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

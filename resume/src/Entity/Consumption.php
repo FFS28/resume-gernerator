@@ -53,6 +53,19 @@ class Consumption implements Stringable
         return $this->getDate()->format('d/m/Y');
     }
 
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTimeInterface $date): self
+    {
+        $this->date = $date;
+        $this->day = intval($date->format('d'));
+
+        return $this;
+    }
+
     public function getConsumptionMonth(): ?ConsumptionMonth
     {
         return $this->consumptionMonth;
@@ -68,19 +81,6 @@ class Consumption implements Stringable
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getDate(): ?\DateTimeInterface
-    {
-        return $this->date;
-    }
-
-    public function setDate(\DateTimeInterface $date): self
-    {
-        $this->date = $date;
-        $this->day = intval($date->format('d'));
-
-        return $this;
     }
 
     public function getDay(): ?int
@@ -131,14 +131,14 @@ class Consumption implements Stringable
         return $this;
     }
 
+    public function getLowHourMegaWatt(): ?float
+    {
+        return round(intval($this->getDiffLowHour()) / 1000, 1);
+    }
+
     public function getDiffLowHour(): ?string
     {
         return $this->diffLowHour;
-    }
-
-    public function getLowHourMegaWatt(): ?int
-    {
-        return intval($this->getDiffLowHour()) / 1000;
     }
 
     public function setDiffLowHour(string $diffLowHour): self
@@ -148,14 +148,14 @@ class Consumption implements Stringable
         return $this;
     }
 
+    public function getFullHourMegaWatt(): ?float
+    {
+        return round(intval($this->getDiffFullHour()) / 1000, 1);
+    }
+
     public function getDiffFullHour(): ?string
     {
         return $this->diffFullHour;
-    }
-
-    public function getFullHourMegaWatt(): ?int
-    {
-        return round(intval($this->getDiffFullHour()) / 1000, 1);
     }
 
     public function setDiffFullHour(string $diffFullHour): self
@@ -165,14 +165,14 @@ class Consumption implements Stringable
         return $this;
     }
 
+    public function getWeekendHourMegaWatt(): ?float
+    {
+        return round(intval($this->getDiffWeekendHour()) / 1000, 1);
+    }
+
     public function getDiffWeekendHour(): ?string
     {
         return $this->diffWeekendHour;
-    }
-
-    public function getWeekendHourMegaWatt(): ?int
-    {
-        return round(intval($this->getDiffWeekendHour()) / 1000, 1);
     }
 
     public function setDiffWeekendHour(string $diffWeekendHour): self
@@ -182,14 +182,14 @@ class Consumption implements Stringable
         return $this;
     }
 
+    public function getTotalMegaWatt(): ?float
+    {
+        return round(intval($this->getDiffTotal()) / 1000, 1);
+    }
+
     public function getDiffTotal(): ?string
     {
         return $this->diffTotal;
-    }
-
-    public function getTotalMegaWatt(): ?int
-    {
-        return round(intval($this->getDiffTotal()) / 1000, 1);
     }
 
     public function setDiffTotal(string $diffTotal): self

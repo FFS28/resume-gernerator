@@ -304,9 +304,9 @@ class ConsumptionService
                         }
 
                         $dataSets[] = [
-                            'label' => $this->translator->trans(array_values($types)[$i]),
+                            'label'           => $this->translator->trans(array_values($types)[$i]),
                             'backgroundColor' => $colors[$i],
-                            'data' => $data,
+                            'data'            => $data,
                         ];
                     }
                 } else {
@@ -315,31 +315,32 @@ class ConsumptionService
                         $data[] = $month[$typeIndex];
                     }
                     $dataSets[] = [
-                        'label' => $this->translator->trans(array_values($types)[$typeIndex]),
+                        'label'           => $this->translator->trans(array_values($types)[$typeIndex]),
                         'backgroundColor' => $colors[$typeIndex],
-                        'data' => $data,
+                        'data'            => $data,
                     ];
                 }
 
                 $chartTotalsByMonthAndType = $this->chartBuilder->createChart(Chart::TYPE_BAR);
                 $chartTotalsByMonthAndType->setData([
-                    'labels' => array_values($months),
-                    'datasets' => $dataSets
-                ]);
+                                                        'labels'   => array_values($months),
+                                                        'datasets' => $dataSets
+                                                    ]);
                 if (!$type) {
                     $chartTotalsByMonthAndType->setOptions([
-                        'scales' => [
-                            'x' => [
-                                'stacked' => true,
-                            ],
-                            'y' => [
-                                'stacked' => true,
-                            ]
-                        ]
-                    ]);
+                                                               'scales' => [
+                                                                   'x' => [
+                                                                       'stacked' => true,
+                                                                   ],
+                                                                   'y' => [
+                                                                       'stacked' => true,
+                                                                   ]
+                                                               ]
+                                                           ]);
                 }
                 $viewData['chartTotalsByMonthAndType'] = $chartTotalsByMonthAndType;
             } else {
+                $days = [];
                 $consumptionDays = $this->consumptionRepository->listByYearAndMonth($year, $month);
                 $consumptionDaysData = array_fill(1, 31, [
                     null, null, null, null
@@ -354,8 +355,49 @@ class ConsumptionService
                     ];
                 }
 
-                dump($consumptionDays);
-                dump($consumptionDaysData);
+                if (!$type) {
+                    for ($i = 0; $i < 3; $i++) {
+                        $data = [];
+                        foreach ($consumptionDaysData as $day) {
+                            $data[] = $day[$i];
+                        }
+
+                        $dataSets[] = [
+                            'label'           => $this->translator->trans(array_values($types)[$i]),
+                            'backgroundColor' => $colors[$i],
+                            'data'            => $data,
+                        ];
+                    }
+                } else {
+                    $data = [];
+                    foreach ($consumptionDaysData as $day) {
+                        $data[] = $day[$typeIndex];
+                    }
+                    $dataSets[] = [
+                        'label'           => $this->translator->trans(array_values($types)[$typeIndex]),
+                        'backgroundColor' => $colors[$typeIndex],
+                        'data'            => $data,
+                    ];
+                }
+
+                $chartTotalsByDayAndType = $this->chartBuilder->createChart(Chart::TYPE_BAR);
+                $chartTotalsByDayAndType->setData([
+                                                      'labels'   => array_keys($consumptionDaysData),
+                                                      'datasets' => $dataSets
+                                                  ]);
+                if (!$type) {
+                    $chartTotalsByDayAndType->setOptions([
+                                                             'scales' => [
+                                                                 'x' => [
+                                                                     'stacked' => true,
+                                                                 ],
+                                                                 'y' => [
+                                                                     'stacked' => true,
+                                                                 ]
+                                                             ]
+                                                         ]);
+                }
+                $viewData['chartTotalsByDayAndType'] = $chartTotalsByDayAndType;
             }
         }
 

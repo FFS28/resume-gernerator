@@ -13,7 +13,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 
 class ConsumptionCrudController extends AbstractCrudController
 {
-    public function __construct() {}
+    public function __construct()
+    {
+    }
 
     public static function getEntityFqcn(): string
     {
@@ -26,8 +28,7 @@ class ConsumptionCrudController extends AbstractCrudController
             ->setEntityLabelInSingular('Consumption')
             ->setEntityLabelInPlural('Consumptions')
             ->setDefaultSort(['date' => 'DESC'])
-            ->setSearchFields(['consumptionMonth', 'day', 'date'])
-            ;
+            ->setSearchFields(['day', 'date']);
     }
 
     public function configureActions(Actions $actions): Actions
@@ -39,10 +40,10 @@ class ConsumptionCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         if (Crud::PAGE_EDIT === $pageName) {
-            yield AssociationField::new('consumptionMonth')->setFormTypeOption('disabled','disabled');
-            yield DateField::new('date')->setFormTypeOption('disabled','disabled');
+            yield AssociationField::new('consumptionMonth')->setFormTypeOption('disabled', 'disabled');
+            yield DateField::new('date')->setFormTypeOption('disabled', 'disabled');
         } else {
-            if(Crud::PAGE_INDEX !== $pageName) {
+            if (Crud::PAGE_INDEX !== $pageName) {
                 yield AssociationField::new('consumptionMonth');
             }
             yield DateField::new('date');
