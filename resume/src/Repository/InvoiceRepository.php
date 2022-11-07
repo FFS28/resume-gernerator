@@ -104,7 +104,7 @@ class InvoiceRepository extends ServiceEntityRepository
     {
         $query = $this->createQueryBuilder('i');
 
-        $query = $this->addFilters($query, $year, $quarter, $isPayed);
+        $query = $this->addFilterPayedAt($query, $year, $quarter, $isPayed);
 
         return $query->getQuery()
             ->getResult();
@@ -115,7 +115,7 @@ class InvoiceRepository extends ServiceEntityRepository
      * @param int|null $quarter
      * @param null $isPayed
      */
-    private function addFilters(QueryBuilder $query, int $year = null, int $quarter = null, $isPayed = null
+    private function addFilterPayedAt(QueryBuilder $query, int $year = null, int $quarter = null, $isPayed = null
     ): QueryBuilder {
         if ($year !== null) {
             $query->andWhere('ToChar(i.payedAt, \'YYYY\') = :year')
@@ -133,6 +133,25 @@ class InvoiceRepository extends ServiceEntityRepository
             } else {
                 $query->andWhere('i.payedAt IS NULL');
             }
+        }
+
+        return $query;
+    }
+
+    /**
+     * @param int|null $year
+     * @param int|null $quarter
+     */
+    private function addFilterCreatedAt(QueryBuilder $query, int $year = null, int $quarter = null
+    ): QueryBuilder {
+        if ($year !== null) {
+            $query->andWhere('ToChar(i.createdAt, \'YYYY\') = :year')
+                ->setParameter('year', (string)$year);
+        }
+
+        if ($quarter !== null) {
+            $query->andWhere('ToChar(i.createdAt, \'Q\') = :quarter')
+                ->setParameter('quarter', (string)$quarter);
         }
 
         return $query;
@@ -169,7 +188,7 @@ class InvoiceRepository extends ServiceEntityRepository
                 break;
         }
 
-        $query = $this->addFilters($query, $year, $quarter, $isPayed);
+        $query = $this->addFilterPayedAt($query, $year, $quarter, $isPayed);
 
         return $query->getQuery()->getResult();
     }
@@ -182,7 +201,7 @@ class InvoiceRepository extends ServiceEntityRepository
             ->orderBy('month')
             ->groupBy('month');
 
-        $query = $this->addFilters($query, $year);
+        $query = $this->addFilterCreatedAt($query, $year);
 
         return array_map(
             function ($arr) {
@@ -220,7 +239,7 @@ class InvoiceRepository extends ServiceEntityRepository
         $query = $this->createQueryBuilder('i')
             ->select('SUM(i.totalHt / i.tjm) total');
 
-        $query = $this->addFilters($query, $year);
+        $query = $this->addFilterCreatedAt($query, $year, null);
 
         return floatval($query->getQuery()->getSingleScalarResult());
     }
@@ -237,7 +256,7 @@ class InvoiceRepository extends ServiceEntityRepository
         $query = $this->createQueryBuilder('i')
             ->select('SUM(i.totalTax) total');
 
-        $query = $this->addFilters($query, $year, $quarter, $isPayed);
+        $query = $this->addFilterPayedAt($query, $year, $quarter, $isPayed);
 
         return intval($query->getQuery()->getSingleScalarResult());
     }
@@ -264,7 +283,7 @@ class InvoiceRepository extends ServiceEntityRepository
         $query = $this->createQueryBuilder('i')
             ->select('SUM(i.totalHt) total');
 
-        $query = $this->addFilters($query, $year, $quarter, $isPayed);
+        $query = $this->addFilterPayedAt($query, $year, $quarter, $isPayed);
 
         return intval($query->getQuery()->getSingleScalarResult());
     }
