@@ -286,7 +286,7 @@
                 <ul>
                     {% for link in links %}
                         <li>
-                            <a href="{{ link.url }}" target="_blank" rel="noreferrer" >
+                            <a href="{{ link.url }}" target="_blank" rel="me" >
                                 {% if link.icon %}<i class="icon {{ link.icon }}"></i>{% endif %}
                                 {% if link.name %}<span>{{ link.name }}</span>{% endif %}
                             </a>
