@@ -1,4 +1,4 @@
-# RESUME PROJECT
+# RESUME GENERATOR PROJECT
 
 Gestion de mon cv et de toutes la partie administrative de mon activité de freelance  
 
